@@ -10,6 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+
+# Environment files
+# .env and .env.example are committed (shared defaults, no secrets)
+# .env.development and .env.production are committed (non-secret URLs)
+# .env.local and .env.*.local are gitignored (personal overrides)
 *.local
 
 # Editor directories and files

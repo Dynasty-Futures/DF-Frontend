@@ -7,10 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Mail, Clock, Send } from 'lucide-react';
+import { Mail, Clock, Send, Loader2 } from 'lucide-react';
+import { useCreateTicket } from '@/hooks/useSupport';
+import { ApiError } from '@/types/api';
 
 const Support = () => {
   const { toast } = useToast();
+  const createTicket = useCreateTicket();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,20 +22,45 @@ const Support = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // This would connect to a backend ticket system
-    toast({
-      title: "Message Sent",
-      description: "We've received your support request and will respond within 24 hours.",
-    });
-    setFormData({
-      name: '',
-      email: '',
-      accountId: '',
-      subject: '',
-      message: '',
-    });
+
+    createTicket.mutate(
+      {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject || 'General Inquiry',
+        description: formData.message,
+        // If accountId is provided, attach it as a related entity
+        ...(formData.accountId && {
+          relatedEntity: 'Account',
+          relatedEntityId: formData.accountId,
+        }),
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Message Sent',
+            description: "We've received your support request and will respond within 24 hours.",
+          });
+          setFormData({
+            name: '',
+            email: '',
+            accountId: '',
+            subject: '',
+            message: '',
+          });
+        },
+        onError: (error) => {
+          const apiError = error as ApiError;
+          toast({
+            title: 'Failed to Submit',
+            description: apiError.message || 'Something went wrong. Please try again.',
+            variant: 'destructive',
+          });
+        },
+      },
+    );
   };
 
   const handleLinkClick = () => {
@@ -71,6 +99,8 @@ const Support = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
+                        minLength={2}
+                        maxLength={100}
                         className="bg-muted/30 border-border/50 focus:border-primary"
                       />
                     </div>
@@ -123,10 +153,12 @@ const Support = () => {
                     <Label htmlFor="message">Message</Label>
                     <Textarea
                       id="message"
-                      placeholder="How can we help you?"
+                      placeholder="How can we help you? (minimum 10 characters)"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
+                      minLength={10}
+                      maxLength={5000}
                       rows={6}
                       className="bg-muted/30 border-border/50 focus:border-primary resize-none"
                     />
@@ -135,10 +167,20 @@ const Support = () => {
                   <Button
                     type="submit"
                     size="lg"
+                    disabled={createTicket.isPending}
                     className="w-full bg-gradient-to-r from-primary to-teal text-primary-foreground font-semibold btn-glow"
                   >
-                    <Send className="w-4 h-4 mr-2" />
-                    Submit Request
+                    {createTicket.isPending ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Submit Request
+                      </>
+                    )}
                   </Button>
                 </form>
               </div>

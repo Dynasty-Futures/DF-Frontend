@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HelpCircle, FileText, BookOpen, ChevronRight, MessageCircle, Headphones, Rocket } from 'lucide-react';
+import { HelpCircle, FileText, BookOpen, ChevronRight, MessageCircle, Headphones, Rocket, Ticket, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import PreLaunchModal from '@/components/PreLaunchModal';
+import { useTicketsByEmail } from '@/hooks/useSupport';
+import type { TicketStatus, TicketPriority } from '@/types/support';
 
 interface HelpCardProps {
   title: string;
@@ -57,8 +61,46 @@ const HelpCard = ({ title, description, icon, to, external, onClick }: HelpCardP
   );
 };
 
+const statusColors: Record<TicketStatus, string> = {
+  OPEN: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  IN_PROGRESS: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  WAITING_RESPONSE: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  RESOLVED: 'bg-primary/20 text-primary border-primary/30',
+  CLOSED: 'bg-muted/50 text-muted-foreground border-border/50',
+};
+
+const statusLabels: Record<TicketStatus, string> = {
+  OPEN: 'Open',
+  IN_PROGRESS: 'In Progress',
+  WAITING_RESPONSE: 'Waiting',
+  RESOLVED: 'Resolved',
+  CLOSED: 'Closed',
+};
+
+const priorityLabels: Record<TicketPriority, string> = {
+  LOW: 'Low',
+  MEDIUM: 'Medium',
+  HIGH: 'High',
+  URGENT: 'Urgent',
+};
+
 const DashboardHelp = () => {
   const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const [lookupEmail, setLookupEmail] = useState('');
+  const [submittedEmail, setSubmittedEmail] = useState('');
+
+  // Only fetch when the user has submitted an email
+  const { data: ticketsResponse, isLoading: ticketsLoading, isError } = useTicketsByEmail(
+    submittedEmail,
+  );
+  const myTickets = ticketsResponse?.data ?? [];
+
+  const handleEmailLookup = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (lookupEmail.trim()) {
+      setSubmittedEmail(lookupEmail.trim().toLowerCase());
+    }
+  };
 
   return (
     <div className="space-y-10 pt-16 lg:pt-0">
@@ -120,6 +162,76 @@ const DashboardHelp = () => {
             icon={<MessageCircle size={28} className="text-primary" />}
             to="/support"
           />
+        </div>
+      </div>
+
+      {/* My Tickets Section */}
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-6 bg-primary rounded-full" />
+          <h3 className="text-lg font-semibold text-foreground">My Tickets</h3>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30">
+          <p className="text-sm text-muted-foreground mb-4">
+            Enter your email to view your support tickets.
+          </p>
+          <form onSubmit={handleEmailLookup} className="flex gap-3">
+            <Input
+              type="email"
+              placeholder="your@email.com"
+              value={lookupEmail}
+              onChange={(e) => setLookupEmail(e.target.value)}
+              className="max-w-sm bg-muted/30 border-border/50"
+              required
+            />
+            <Button type="submit" variant="outline" disabled={ticketsLoading}>
+              {ticketsLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Ticket className="h-4 w-4 mr-2" />
+              )}
+              {ticketsLoading ? '' : 'Look Up'}
+            </Button>
+          </form>
+
+          {/* Results */}
+          {submittedEmail && !ticketsLoading && (
+            <div className="mt-6 space-y-3">
+              {isError && (
+                <p className="text-sm text-destructive">
+                  Failed to load tickets. Make sure the backend is running.
+                </p>
+              )}
+              {!isError && myTickets.length === 0 && (
+                <p className="text-sm text-muted-foreground">
+                  No tickets found for {submittedEmail}.
+                </p>
+              )}
+              {myTickets.map((ticket) => (
+                <div
+                  key={ticket.id}
+                  className="flex items-center justify-between p-4 rounded-xl bg-muted/10 border border-border/30"
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-foreground truncate">{ticket.subject}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {new Date(ticket.createdAt).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                      {' · '}
+                      {priorityLabels[ticket.priority]} priority
+                    </p>
+                  </div>
+                  <Badge variant="outline" className={`ml-3 shrink-0 ${statusColors[ticket.status]}`}>
+                    {statusLabels[ticket.status]}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,109 +1,181 @@
 import { useState } from 'react';
-import { MessageSquare, Clock, User, AlertCircle, ExternalLink, Send, Paperclip, ArrowUp, X } from 'lucide-react';
+import { MessageSquare, Clock, User, AlertCircle, ExternalLink, Send, Paperclip, ArrowUp, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { AdminDataTable, Column } from '../AdminDataTable';
 import { AdminStatusBadge } from '../AdminStatusBadge';
-import { mockSupportCases, type MockSupportCase } from '@/data/mockAdminData';
+import { useTickets, useResolveTicket, useCloseTicket } from '@/hooks/useSupport';
+import type { SupportTicket, TicketStatus, TicketPriority } from '@/types/support';
+
+// Map backend enum values to display-friendly labels for the AdminStatusBadge
+const statusDisplayMap: Record<TicketStatus, string> = {
+  OPEN: 'Open',
+  IN_PROGRESS: 'In Progress',
+  WAITING_RESPONSE: 'Waiting on User',
+  RESOLVED: 'Resolved',
+  CLOSED: 'Closed',
+};
+
+const priorityColors: Record<TicketPriority, string> = {
+  LOW: 'bg-muted text-muted-foreground',
+  MEDIUM: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  HIGH: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
+  URGENT: 'bg-destructive/20 text-destructive border-destructive/30',
+};
+
+/** Get the display name for a ticket's creator (or anonymous submitter). */
+const getTicketUserName = (ticket: SupportTicket): string => {
+  if (ticket.creator) {
+    return `${ticket.creator.firstName} ${ticket.creator.lastName}`;
+  }
+  return ticket.name || ticket.email || 'Anonymous';
+};
+
+/** Format an ISO date string for display in the table. */
+const formatDate = (iso: string): string => {
+  const date = new Date(iso);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+};
 
 export function AdminSupport() {
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [priorityFilter, setPriorityFilter] = useState('all');
-  const [selectedCase, setSelectedCase] = useState<MockSupportCase | null>(null);
+  const [statusFilter, setStatusFilter] = useState<TicketStatus | 'all'>('all');
+  const [priorityFilter, setPriorityFilter] = useState<TicketPriority | 'all'>('all');
+  const [selectedCase, setSelectedCase] = useState<SupportTicket | null>(null);
 
-  const filteredCases = mockSupportCases.filter(c => {
-    if (statusFilter !== 'all' && c.status !== statusFilter) return false;
-    if (typeFilter !== 'all' && c.type !== typeFilter) return false;
-    if (priorityFilter !== 'all' && c.priority !== priorityFilter) return false;
-    return true;
-  });
+  const resolveTicket = useResolveTicket();
+  const closeTicket = useCloseTicket();
 
-  const getPriorityBadge = (priority: string) => {
-    const colors: Record<string, string> = {
-      Low: 'bg-muted text-muted-foreground',
-      Medium: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-      High: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
-      Critical: 'bg-destructive/20 text-destructive border-destructive/30',
-    };
-    return <Badge variant="outline" className={colors[priority]}>{priority}</Badge>;
+  // Build query filters from the dropdowns
+  const filters = {
+    ...(statusFilter !== 'all' && { status: statusFilter }),
+    ...(priorityFilter !== 'all' && { priority: priorityFilter }),
+    limit: 50,
   };
 
-  const columns: Column<MockSupportCase>[] = [
-    { key: 'id', header: 'Case ID', sortable: true },
-    { key: 'userName', header: 'User', sortable: true },
-    { key: 'accountId', header: 'Account', render: (item) => item.accountId || '—' },
-    { key: 'type', header: 'Type', sortable: true },
-    { key: 'priority', header: 'Priority', render: (item) => getPriorityBadge(item.priority) },
-    { key: 'status', header: 'Status', render: (item) => <AdminStatusBadge status={item.status} /> },
-    { key: 'createdAt', header: 'Created', sortable: true },
-    { key: 'updatedAt', header: 'Last Updated', sortable: true },
-    { key: 'assignedTo', header: 'Assigned', render: (item) => item.assignedTo || <span className="text-muted-foreground">Unassigned</span> },
-    { key: 'actions', header: 'Actions', render: (item) => (
-      <Button size="sm" variant="ghost" className="h-7 px-2" onClick={() => setSelectedCase(item)}>
-        <ExternalLink className="h-3 w-3 mr-1" /> View
-      </Button>
-    )},
+  const { data: ticketsResponse, isLoading, isError, error } = useTickets(filters);
+  const tickets = ticketsResponse?.data ?? [];
+
+  const getPriorityBadge = (priority: TicketPriority) => (
+    <Badge variant="outline" className={priorityColors[priority]}>
+      {priority.charAt(0) + priority.slice(1).toLowerCase()}
+    </Badge>
+  );
+
+  const columns: Column<SupportTicket>[] = [
+    {
+      key: 'id',
+      header: 'Case ID',
+      sortable: true,
+      render: (item) => (
+        <span className="font-mono text-xs">{item.id.slice(0, 8)}...</span>
+      ),
+    },
+    { key: 'userName', header: 'User', render: (item) => getTicketUserName(item) },
+    { key: 'subject', header: 'Subject', sortable: true },
+    {
+      key: 'priority',
+      header: 'Priority',
+      render: (item) => getPriorityBadge(item.priority),
+    },
+    {
+      key: 'status',
+      header: 'Status',
+      render: (item) => <AdminStatusBadge status={statusDisplayMap[item.status]} />,
+    },
+    {
+      key: 'createdAt',
+      header: 'Created',
+      sortable: true,
+      render: (item) => formatDate(item.createdAt),
+    },
+    {
+      key: 'updatedAt',
+      header: 'Last Updated',
+      sortable: true,
+      render: (item) => formatDate(item.updatedAt),
+    },
+    {
+      key: 'assignee',
+      header: 'Assigned',
+      render: (item) =>
+        item.assignee
+          ? `${item.assignee.firstName} ${item.assignee.lastName}`
+          : <span className="text-muted-foreground">Unassigned</span>,
+    },
+    {
+      key: 'actions',
+      header: 'Actions',
+      render: (item) => (
+        <Button size="sm" variant="ghost" className="h-7 px-2" onClick={() => setSelectedCase(item)}>
+          <ExternalLink className="h-3 w-3 mr-1" /> View
+        </Button>
+      ),
+    },
   ];
+
+  // Error state
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <AlertTriangle className="h-10 w-10 text-destructive mb-4" />
+        <h3 className="text-lg font-semibold text-foreground mb-2">Failed to load tickets</h3>
+        <p className="text-sm text-muted-foreground max-w-md">
+          {error?.message || 'Something went wrong. Make sure the backend is running.'}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[160px] bg-muted/20 border-border/30">
+        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as TicketStatus | 'all')}>
+          <SelectTrigger className="w-[180px] bg-muted/20 border-border/30">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="Open">Open</SelectItem>
-            <SelectItem value="Waiting on User">Waiting on User</SelectItem>
-            <SelectItem value="Under Review">Under Review</SelectItem>
-            <SelectItem value="Resolved">Resolved</SelectItem>
+            <SelectItem value="OPEN">Open</SelectItem>
+            <SelectItem value="IN_PROGRESS">In Progress</SelectItem>
+            <SelectItem value="WAITING_RESPONSE">Waiting on User</SelectItem>
+            <SelectItem value="RESOLVED">Resolved</SelectItem>
+            <SelectItem value="CLOSED">Closed</SelectItem>
           </SelectContent>
         </Select>
 
-        <Select value={typeFilter} onValueChange={setTypeFilter}>
-          <SelectTrigger className="w-[140px] bg-muted/20 border-border/30">
-            <SelectValue placeholder="Type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="Payout">Payout</SelectItem>
-            <SelectItem value="Rule Dispute">Rule Dispute</SelectItem>
-            <SelectItem value="KYC">KYC</SelectItem>
-            <SelectItem value="Billing">Billing</SelectItem>
-            <SelectItem value="Technical">Technical</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+        <Select value={priorityFilter} onValueChange={(v) => setPriorityFilter(v as TicketPriority | 'all')}>
           <SelectTrigger className="w-[140px] bg-muted/20 border-border/30">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Priority</SelectItem>
-            <SelectItem value="Low">Low</SelectItem>
-            <SelectItem value="Medium">Medium</SelectItem>
-            <SelectItem value="High">High</SelectItem>
-            <SelectItem value="Critical">Critical</SelectItem>
+            <SelectItem value="LOW">Low</SelectItem>
+            <SelectItem value="MEDIUM">Medium</SelectItem>
+            <SelectItem value="HIGH">High</SelectItem>
+            <SelectItem value="URGENT">Urgent</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Cases Table */}
       <AdminDataTable
-        data={filteredCases}
+        data={tickets}
         columns={columns}
         keyField="id"
         searchable
-        searchPlaceholder="Search cases..."
+        searchPlaceholder="Search tickets..."
+        loading={isLoading}
+        emptyMessage="No support tickets found"
       />
 
       {/* Case Detail Drawer */}
@@ -114,7 +186,7 @@ export function AdminSupport() {
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
                   <MessageSquare className="h-5 w-5" />
-                  {selectedCase.id}
+                  Ticket {selectedCase.id.slice(0, 8)}
                 </SheetTitle>
               </SheetHeader>
 
@@ -123,15 +195,13 @@ export function AdminSupport() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-muted-foreground">User</p>
-                    <p className="font-medium">{selectedCase.userName}</p>
+                    <p className="font-medium">{getTicketUserName(selectedCase)}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-muted-foreground">Account</p>
-                    <p className="font-medium">{selectedCase.accountId || '—'}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-muted-foreground">Type</p>
-                    <p className="font-medium">{selectedCase.type}</p>
+                    <p className="text-xs text-muted-foreground">Email</p>
+                    <p className="font-medium">
+                      {selectedCase.creator?.email || selectedCase.email || '—'}
+                    </p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Priority</p>
@@ -139,11 +209,19 @@ export function AdminSupport() {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Status</p>
-                    <AdminStatusBadge status={selectedCase.status} />
+                    <AdminStatusBadge status={statusDisplayMap[selectedCase.status]} />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Assigned</p>
-                    <p className="font-medium">{selectedCase.assignedTo || 'Unassigned'}</p>
+                    <p className="font-medium">
+                      {selectedCase.assignee
+                        ? `${selectedCase.assignee.firstName} ${selectedCase.assignee.lastName}`
+                        : 'Unassigned'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Created</p>
+                    <p className="font-medium">{formatDate(selectedCase.createdAt)}</p>
                   </div>
                 </div>
 
@@ -153,28 +231,13 @@ export function AdminSupport() {
                   <p className="font-medium">{selectedCase.subject}</p>
                 </div>
 
-                {/* Timeline */}
+                {/* Description */}
                 <div>
-                  <p className="text-xs text-muted-foreground mb-2">Timeline</p>
-                  <ScrollArea className="h-[200px] pr-4">
-                    <div className="space-y-3">
-                      {selectedCase.timeline.map((event, i) => (
-                        <div key={i} className="flex gap-3 p-3 rounded-lg bg-muted/10 border border-border/30">
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            event.type === 'user' ? 'bg-primary/20' : 'bg-muted'
-                          }`}>
-                            <User className="h-4 w-4" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="text-sm font-medium">{event.author}</span>
-                              <span className="text-xs text-muted-foreground">{event.timestamp}</span>
-                            </div>
-                            <p className="text-sm text-muted-foreground">{event.message}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <p className="text-xs text-muted-foreground mb-1">Description</p>
+                  <ScrollArea className="h-[160px] pr-4">
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                      {selectedCase.description}
+                    </p>
                   </ScrollArea>
                 </div>
 
@@ -208,17 +271,47 @@ export function AdminSupport() {
                   <Button size="sm" variant="outline">
                     <User className="h-3 w-3 mr-1" /> Assign
                   </Button>
-                  <Button size="sm" variant="outline">
-                    <Clock className="h-3 w-3 mr-1" /> Change Status
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <ArrowUp className="h-3 w-3 mr-1" /> Escalate to Compliance
-                  </Button>
-                  {selectedCase.type === 'Payout' && (
-                    <Button size="sm" variant="outline" className="text-yellow-400">
-                      <AlertCircle className="h-3 w-3 mr-1" /> Hold Payout
+                  {selectedCase.status !== 'RESOLVED' && selectedCase.status !== 'CLOSED' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={resolveTicket.isPending}
+                      onClick={() => {
+                        resolveTicket.mutate(selectedCase.id, {
+                          onSuccess: () => setSelectedCase(null),
+                        });
+                      }}
+                    >
+                      {resolveTicket.isPending ? (
+                        <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                      ) : (
+                        <Clock className="h-3 w-3 mr-1" />
+                      )}
+                      Resolve
                     </Button>
                   )}
+                  {selectedCase.status !== 'CLOSED' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={closeTicket.isPending}
+                      onClick={() => {
+                        closeTicket.mutate(selectedCase.id, {
+                          onSuccess: () => setSelectedCase(null),
+                        });
+                      }}
+                    >
+                      {closeTicket.isPending ? (
+                        <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 mr-1" />
+                      )}
+                      Close
+                    </Button>
+                  )}
+                  <Button size="sm" variant="outline">
+                    <ArrowUp className="h-3 w-3 mr-1" /> Escalate
+                  </Button>
                 </div>
               </div>
             </>

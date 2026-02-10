@@ -44,7 +44,18 @@ import DashboardHelp from "./pages/dashboard/DashboardHelp";
 import DashboardAffiliate from "./pages/dashboard/DashboardAffiliate";
 import DashboardJournal from "./pages/dashboard/DashboardJournal";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes before data is considered stale
+      retry: 1,                  // Retry failed queries once
+      refetchOnWindowFocus: true, // Refresh data when user tabs back
+    },
+    mutations: {
+      retry: 0, // Don't retry failed mutations (user should re-trigger)
+    },
+  },
+});
 
 // Scroll to top on route change
 const ScrollToTop = () => {
