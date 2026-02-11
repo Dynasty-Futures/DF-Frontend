@@ -107,7 +107,7 @@ const Pricing = () => {
                     </div>
                     <div>
                       <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">Standard Plan</h2>
-                      <p className="text-xl text-primary font-medium mb-2">"Pass Now, Pay Later"</p>
+                      <p className="text-xl text-primary font-medium mb-2">"Pass First, Activate Later"</p>
                       <p className="text-muted-foreground max-w-xl">Lower evaluation fee up front. If passed, a one-time $80 activation fee is required to activate your funded account.</p>
                     </div>
                   </div>

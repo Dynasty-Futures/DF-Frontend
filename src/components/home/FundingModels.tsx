@@ -1,68 +1,79 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { StandardIcon, AdvancedIcon, DynastyIcon } from '@/components/icons/PlanIcons';
-import pricingBg from '@/assets/pricing-background.png';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import {
+  StandardIcon,
+  AdvancedIcon,
+  DynastyIcon,
+} from "@/components/icons/PlanIcons";
+import pricingBg from "@/assets/pricing-background.png";
 
 const plans = [
   {
-    id: 'standard',
-    name: 'Standard Plan',
-    tagline: 'Pass Now, Pay Later',
-    description: 'Start with a low evaluation fee. Pay the activation fee only after you pass and get funded.',
+    id: "standard",
+    name: "Standard Plan",
+    tagline: "Pass First, Activate Later",
+    description:
+      "Start with a low evaluation fee. Pay the activation fee only after you pass and get funded.",
     icon: StandardIcon,
-    color: 'from-primary to-teal',
-    bgGlow: 'bg-primary/20',
-    features: ['Low upfront cost', 'Static drawdown', '5-day payout cycles'],
+    color: "from-primary to-teal",
+    bgGlow: "bg-primary/20",
+    features: ["Low upfront cost", "Static drawdown", "5-day payout cycles"],
   },
   {
-    id: 'advanced',
-    name: 'Advanced Plan',
-    tagline: 'Instant Activation, No Activation Fee',
-    description: 'One fee covers everything. When you pass, you\'re activated immediately with no extra costs.',
+    id: "advanced",
+    name: "Advanced Plan",
+    tagline: "Instant Activation, No Activation Fee",
+    description:
+      "One fee covers everything. When you pass, you're activated immediately with no extra costs.",
     icon: AdvancedIcon,
-    color: 'from-teal to-soft-blue',
-    bgGlow: 'bg-teal/20',
-    features: ['No activation fee', 'Priority support', 'Immediate activation'],
+    color: "from-teal to-soft-blue",
+    bgGlow: "bg-teal/20",
+    features: ["No activation fee", "Priority support", "Immediate activation"],
   },
   {
-    id: 'dynasty',
-    name: 'Dynasty Plan',
-    tagline: 'Instant Funding + Daily Payouts',
-    description: 'Start trading right away. Build a $3,000 buffer and unlock daily payouts for maximum flexibility.',
+    id: "dynasty",
+    name: "Dynasty Plan",
+    tagline: "Instant Funding + Daily Payouts",
+    description:
+      "Start trading right away. Build a $3,000 buffer and unlock daily payouts for maximum flexibility.",
     icon: DynastyIcon,
-    color: 'from-primary via-teal to-soft-blue',
-    bgGlow: 'bg-soft-blue/20',
-    features: ['Instant funding', 'Daily payouts available', 'Maximum flexibility'],
+    color: "from-primary via-teal to-soft-blue",
+    bgGlow: "bg-soft-blue/20",
+    features: [
+      "Instant funding",
+      "Daily payouts available",
+      "Maximum flexibility",
+    ],
   },
 ];
 
 const FundingModels = () => {
   const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
       {/* Atmospheric Background */}
-      <div 
+      <div
         className="absolute inset-0 z-0"
         style={{
           backgroundImage: `url(${pricingBg})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       />
-      
+
       {/* Dark overlay for blending */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-background via-background/50 to-background" />
-      
+
       {/* Top fade for smooth transition */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background to-transparent z-[1]" />
-      
+
       {/* Bottom fade for smooth transition */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-[1]" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -70,7 +81,8 @@ const FundingModels = () => {
             Our <span className="text-gradient">Funding Models</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Dynasty Futures offers three ways to take on the markets, each with its own structure and benefits.
+            Dynasty Futures offers three ways to take on the markets, each with
+            its own structure and benefits.
           </p>
         </div>
 
@@ -85,11 +97,15 @@ const FundingModels = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Glow effect */}
-                <div className={`absolute -top-20 -right-20 w-40 h-40 ${plan.bgGlow} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                
+                <div
+                  className={`absolute -top-20 -right-20 w-40 h-40 ${plan.bgGlow} rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                />
+
                 {/* Icon */}
                 <div className="relative mb-6">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.color} p-0.5`}>
+                  <div
+                    className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.color} p-0.5`}
+                  >
                     <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                       <Icon size={32} />
                     </div>
@@ -100,7 +116,9 @@ const FundingModels = () => {
                 <h3 className="font-display text-xl lg:text-2xl font-bold text-foreground mb-2">
                   {plan.name}
                 </h3>
-                <p className={`text-sm font-medium bg-gradient-to-r ${plan.color} bg-clip-text text-transparent mb-4`}>
+                <p
+                  className={`text-sm font-medium bg-gradient-to-r ${plan.color} bg-clip-text text-transparent mb-4`}
+                >
                   {plan.tagline}
                 </p>
                 <p className="text-muted-foreground text-sm mb-6">
@@ -110,7 +128,10 @@ const FundingModels = () => {
                 {/* Features */}
                 <ul className="space-y-2 mb-6">
                   {plan.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <li
+                      key={feature}
+                      className="flex items-center gap-2 text-sm text-muted-foreground"
+                    >
                       <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                       {feature}
                     </li>
