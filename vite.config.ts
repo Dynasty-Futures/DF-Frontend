@@ -12,16 +12,16 @@ export default defineConfig(({ mode }) => ({
         ? {
             // Forward /v1/* requests to the local backend (avoids CORS in dev)
             "/v1": {
-              target: "http://localhost:3000",
+              target: "http://127.0.0.1:3000",
               changeOrigin: true,
             },
             // Forward health check endpoints to the local backend
             "/health": {
-              target: "http://localhost:3000",
+              target: "http://127.0.0.1:3000",
               changeOrigin: true,
             },
             "/ready": {
-              target: "http://localhost:3000",
+              target: "http://127.0.0.1:3000",
               changeOrigin: true,
             },
           }
