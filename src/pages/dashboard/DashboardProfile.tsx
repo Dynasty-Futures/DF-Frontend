@@ -1,15 +1,55 @@
-import { User, Mail, Phone, MapPin, Shield, CheckCircle, AlertCircle, Globe, FileText, Lock, Settings, Bell, Eye, EyeOff, Upload, Download, Calendar, Smartphone, Copy, Key } from 'lucide-react';
+import { User, Mail, Phone, MapPin, Shield, CheckCircle, AlertCircle, Globe, FileText, Lock, Settings, Bell, Eye, EyeOff, Upload, Download, Calendar, Smartphone, Copy, Key, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
+import { apiClient } from '@/services/api';
+import { ApiError } from '@/types/api';
+import type { User as UserType } from '@/types/user';
 
 const DashboardProfile = () => {
-  const kycProgress = 66; // 2 of 3 complete
+  const { user, refreshUser } = useAuth();
+
+  // Personal info form state — initialized from the authenticated user
+  const [profileForm, setProfileForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    country: '',
+    timezone: '',
+  });
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+
+  // Sync form state when the user object loads or changes
+  useEffect(() => {
+    if (user) {
+      setProfileForm({
+        firstName: user.firstName ?? '',
+        lastName: user.lastName ?? '',
+        email: user.email ?? '',
+        phone: user.phone ?? '',
+        country: '',    // not stored on User model yet
+        timezone: '',   // not stored on User model yet
+      });
+    }
+  }, [user]);
+
+  // KYC progress derived from user data
+  const kycSteps = [
+    { label: 'Email Verified', done: user?.emailVerified ?? false },
+    // Phone and ID verification are not tracked on User yet — keep as placeholders
+    { label: 'Phone Verified', done: false },
+    { label: 'ID Verification', done: user?.kycStatus === 'APPROVED' },
+  ];
+  const kycCompleted = kycSteps.filter((s) => s.done).length;
+  const kycProgress = Math.round((kycCompleted / kycSteps.length) * 100);
+
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -24,6 +64,43 @@ const DashboardProfile = () => {
 
   // Mock backup codes
   const backupCodes = ['A7K2-M9X4', 'B3P8-N5R2', 'C6L1-Q8T7', 'D4W9-S2Y6', 'E8J5-U1V3', 'F2H7-X4Z9'];
+
+  // Save personal info
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    setIsSavingProfile(true);
+
+    try {
+      await apiClient.patch<{ success: true; data: UserType }>(
+        `/users/${user.id}`,
+        {
+          firstName: profileForm.firstName.trim(),
+          lastName: profileForm.lastName.trim(),
+          phone: profileForm.phone.trim() || null,
+        }
+      );
+
+      // Refresh the user in AuthContext so the navbar etc. updates
+      await refreshUser();
+
+      toast({
+        title: 'Profile updated',
+        description: 'Your personal information has been saved.',
+      });
+    } catch (error) {
+      const message =
+        error instanceof ApiError
+          ? error.message
+          : 'Failed to save profile. Please try again.';
+      toast({
+        title: 'Error',
+        description: message,
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSavingProfile(false);
+    }
+  };
 
   const copyBackupCodes = () => {
     navigator.clipboard.writeText(backupCodes.join('\n'));
@@ -84,7 +161,9 @@ const DashboardProfile = () => {
                   <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input 
                     id="firstName" 
-                    defaultValue="John" 
+                    value={profileForm.firstName}
+                    onChange={(e) => setProfileForm({ ...profileForm, firstName: e.target.value })}
+                    disabled={isSavingProfile}
                     className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
                   />
                 </div>
@@ -96,7 +175,9 @@ const DashboardProfile = () => {
                   <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input 
                     id="lastName" 
-                    defaultValue="Trader" 
+                    value={profileForm.lastName}
+                    onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
+                    disabled={isSavingProfile}
                     className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
                   />
                 </div>
@@ -109,10 +190,13 @@ const DashboardProfile = () => {
                   <Input 
                     id="email" 
                     type="email"
-                    defaultValue="john@example.com" 
-                    className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
+                    value={profileForm.email}
+                    readOnly
+                    disabled
+                    className="pl-12 py-6 bg-muted/20 border-border/30 rounded-xl text-base opacity-60 cursor-not-allowed"
                   />
                 </div>
+                <p className="text-xs text-muted-foreground">Email cannot be changed</p>
               </div>
               
               <div className="space-y-3">
@@ -122,7 +206,10 @@ const DashboardProfile = () => {
                   <Input 
                     id="phone" 
                     type="tel"
-                    defaultValue="+1 (555) 123-4567" 
+                    value={profileForm.phone}
+                    onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
+                    placeholder="Enter phone number"
+                    disabled={isSavingProfile}
                     className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
                   />
                 </div>
@@ -134,7 +221,10 @@ const DashboardProfile = () => {
                   <MapPin size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input 
                     id="country" 
-                    defaultValue="United States" 
+                    value={profileForm.country}
+                    onChange={(e) => setProfileForm({ ...profileForm, country: e.target.value })}
+                    placeholder="Enter country"
+                    disabled={isSavingProfile}
                     className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
                   />
                 </div>
@@ -146,15 +236,23 @@ const DashboardProfile = () => {
                   <Globe size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input 
                     id="timezone" 
-                    defaultValue="America/New_York (EST)" 
+                    value={profileForm.timezone}
+                    onChange={(e) => setProfileForm({ ...profileForm, timezone: e.target.value })}
+                    placeholder="e.g. America/New_York"
+                    disabled={isSavingProfile}
                     className="pl-12 py-6 bg-muted/20 border-border/30 focus:border-primary/50 rounded-xl text-base"
                   />
                 </div>
               </div>
             </div>
 
-            <Button className="mt-10 btn-gradient-animated text-primary-foreground px-8 py-6 text-base">
-              Save Changes
+            <Button 
+              className="mt-10 btn-gradient-animated text-primary-foreground px-8 py-6 text-base"
+              onClick={handleSaveProfile}
+              disabled={isSavingProfile}
+            >
+              {isSavingProfile && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+              {isSavingProfile ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
         </TabsContent>
@@ -168,7 +266,7 @@ const DashboardProfile = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-foreground">KYC Verification</h3>
-                <p className="text-sm text-muted-foreground">2 of 3 Complete</p>
+                <p className="text-sm text-muted-foreground">{kycCompleted} of {kycSteps.length} Complete</p>
               </div>
             </div>
 
