@@ -4,6 +4,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { env } from "@/config/env";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import RoleGuard from "@/components/auth/RoleGuard";
+
+// Pages
 import Index from "./pages/Index";
 import Pricing from "./pages/Pricing";
 import Rules from "./pages/Rules";
@@ -11,8 +18,10 @@ import FAQ from "./pages/FAQ";
 import Support from "./pages/Support";
 import Legal from "./pages/Legal";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Payouts from "./pages/Payouts";
 import AdminPage from "./pages/admin/AdminPage";
+import NotFound from "./pages/NotFound";
 
 // Admin tab imports
 import { AdminOverview } from "./components/admin/tabs/AdminOverview";
@@ -30,7 +39,6 @@ import { AdminAnnouncements } from "./components/admin/tabs/AdminAnnouncements";
 import { AdminProducts } from "./components/admin/tabs/AdminProducts";
 import { AdminIntegrations } from "./components/admin/tabs/AdminIntegrations";
 import { AdminSecurity } from "./components/admin/tabs/AdminSecurity";
-import NotFound from "./pages/NotFound";
 
 // Dashboard imports
 import DashboardLayout from "./components/dashboard/DashboardLayout";
@@ -69,60 +77,74 @@ const ScrollToTop = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/rules" element={<Rules />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/legal" element={<Legal />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/payouts" element={<Payouts />} />
-          
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminPage />}>
-            <Route index element={<AdminOverview />} />
-            <Route path="accounts" element={<AdminAccounts />} />
-            <Route path="risk" element={<AdminRiskFlags />} />
-            <Route path="payouts" element={<AdminPayouts />} />
-            <Route path="users" element={<AdminUsersKYC />} />
-            <Route path="compliance" element={<AdminCompliance />} />
-            <Route path="billing" element={<AdminBilling />} />
-            <Route path="audit" element={<AdminAuditLog />} />
-            <Route path="health" element={<AdminSystemHealth />} />
-            <Route path="settings" element={<AdminSettings />} />
-            <Route path="support" element={<AdminSupport />} />
-            <Route path="announcements" element={<AdminAnnouncements />} />
-            <Route path="products" element={<AdminProducts />} />
-            <Route path="integrations" element={<AdminIntegrations />} />
-            <Route path="security" element={<AdminSecurity />} />
-          </Route>
-          
-          {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<DashboardHome />} />
-            <Route path="accounts" element={<DashboardAccounts />} />
-            <Route path="billing" element={<DashboardBilling />} />
-            <Route path="payouts" element={<DashboardPayouts />} />
-            <Route path="affiliate" element={<DashboardAffiliate />} />
-            <Route path="profile" element={<DashboardProfile />} />
-            <Route path="achievements" element={<DashboardAchievements />} />
-            <Route path="help" element={<DashboardHelp />} />
-            <Route path="journal/:date" element={<DashboardJournal />} />
-          </Route>
-          
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <GoogleOAuthProvider clientId={env.googleClientId}>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<Index />} />
+              <Route path="/pricing" element={<Pricing />} />
+              <Route path="/rules" element={<Rules />} />
+              <Route path="/faq" element={<FAQ />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/legal" element={<Legal />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/payouts" element={<Payouts />} />
+              
+              {/* Admin Routes — requires ADMIN role */}
+              <Route path="/admin" element={
+                <RoleGuard roles={['ADMIN']}>
+                  <AdminPage />
+                </RoleGuard>
+              }>
+                <Route index element={<AdminOverview />} />
+                <Route path="accounts" element={<AdminAccounts />} />
+                <Route path="risk" element={<AdminRiskFlags />} />
+                <Route path="payouts" element={<AdminPayouts />} />
+                <Route path="users" element={<AdminUsersKYC />} />
+                <Route path="compliance" element={<AdminCompliance />} />
+                <Route path="billing" element={<AdminBilling />} />
+                <Route path="audit" element={<AdminAuditLog />} />
+                <Route path="health" element={<AdminSystemHealth />} />
+                <Route path="settings" element={<AdminSettings />} />
+                <Route path="support" element={<AdminSupport />} />
+                <Route path="announcements" element={<AdminAnnouncements />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="integrations" element={<AdminIntegrations />} />
+                <Route path="security" element={<AdminSecurity />} />
+              </Route>
+              
+              {/* Dashboard Routes — requires authentication */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }>
+                <Route index element={<DashboardHome />} />
+                <Route path="accounts" element={<DashboardAccounts />} />
+                <Route path="billing" element={<DashboardBilling />} />
+                <Route path="payouts" element={<DashboardPayouts />} />
+                <Route path="affiliate" element={<DashboardAffiliate />} />
+                <Route path="profile" element={<DashboardProfile />} />
+                <Route path="achievements" element={<DashboardAchievements />} />
+                <Route path="help" element={<DashboardHelp />} />
+                <Route path="journal/:date" element={<DashboardJournal />} />
+              </Route>
+              
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </GoogleOAuthProvider>
 );
 
 export default App;

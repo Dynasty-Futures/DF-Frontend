@@ -32,6 +32,9 @@ export const env = {
   /** Support contact email */
   supportEmail: import.meta.env.VITE_SUPPORT_EMAIL || 'support@dynastyfuturesdyn.com',
 
+  /** Google OAuth Client ID (required for Google SSO) */
+  googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '',
+
   /** True when running `npm run build` (NODE_ENV=production) */
   isProduction: import.meta.env.PROD,
 
