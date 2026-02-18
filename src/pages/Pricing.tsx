@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams, Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { StandardIcon, AdvancedIcon, DynastyIcon, CheckIcon, CrossIcon, ClockIcon, DollarIcon, ShieldIcon } from '@/components/icons/PlanIcons';
 import pricingBg from '@/assets/pricing-background.png';
-import PreLaunchModal from '@/components/PreLaunchModal';
+import { useAuth } from '@/hooks/useAuth';
+import { checkoutApi } from '@/services/checkout';
+import { ApiError } from '@/types/api';
+import { toast } from 'sonner';
 
 const standardPricing = [
   { size: '$25,000', evalFee: '$39', activationFee: '$80', evalReset: '$35', fundedReset: '$150' },
@@ -53,7 +56,10 @@ const contractLimits = {
 
 const Pricing = () => {
   const location = useLocation();
-  const [showPreLaunchModal, setShowPreLaunchModal] = useState(false);
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { isAuthenticated } = useAuth();
+  const [loadingKey, setLoadingKey] = useState<string | null>(null);
 
   useEffect(() => {
     if (location.hash) {
@@ -65,6 +71,36 @@ const Pricing = () => {
       }
     }
   }, [location]);
+
+  useEffect(() => {
+    if (searchParams.get('checkout') === 'cancelled') {
+      toast.info('Checkout was cancelled. You can select a plan whenever you\'re ready.');
+      searchParams.delete('checkout');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
+  const handleSelect = async (planType: string, accountSize: number) => {
+    const key = `${planType}-${accountSize}`;
+
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/pricing' } });
+      return;
+    }
+
+    setLoadingKey(key);
+    try {
+      const res = await checkoutApi.createSession(planType, accountSize);
+      window.location.href = res.data.checkoutUrl;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        toast.error(error.message);
+      } else {
+        toast.error('Unable to start checkout. Please try again.');
+      }
+      setLoadingKey(null);
+    }
+  };
 
   return (
     <Layout>
@@ -141,7 +177,7 @@ const Pricing = () => {
                               <td className="py-4 px-4 text-foreground">{rules.profitTarget}</td>
                               <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
                               <td className="py-4 px-4 text-foreground">{rules.dailyLoss}</td>
-                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-primary to-teal text-primary-foreground" onClick={() => setShowPreLaunchModal(true)}>Select</Button></td>
+                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-primary to-teal text-primary-foreground" disabled={loadingKey === `standard-${parseInt(row.size.replace(/[$,]/g, ''))}`} onClick={() => handleSelect('standard', parseInt(row.size.replace(/[$,]/g, '')))}>{loadingKey === `standard-${parseInt(row.size.replace(/[$,]/g, ''))}` ? 'Loading...' : 'Select'}</Button></td>
                             </tr>
                           );
                         })}
@@ -203,7 +239,7 @@ const Pricing = () => {
                               <td className="py-4 px-4 text-muted-foreground">{row.fundedReset}</td>
                               <td className="py-4 px-4 text-foreground">{rules.profitTarget}</td>
                               <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
-                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-teal to-soft-blue text-foreground" onClick={() => setShowPreLaunchModal(true)}>Select</Button></td>
+                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-teal to-soft-blue text-foreground" disabled={loadingKey === `advanced-${parseInt(row.size.replace(/[$,]/g, ''))}`} onClick={() => handleSelect('advanced', parseInt(row.size.replace(/[$,]/g, '')))}>{loadingKey === `advanced-${parseInt(row.size.replace(/[$,]/g, ''))}` ? 'Loading...' : 'Select'}</Button></td>
                             </tr>
                           );
                         })}
@@ -261,7 +297,7 @@ const Pricing = () => {
                               <td className="py-4 px-4 text-primary font-bold">{row.price}</td>
                               <td className="py-4 px-4 text-muted-foreground">{row.fundedReset}</td>
                               <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
-                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-primary to-teal text-primary-foreground" onClick={() => setShowPreLaunchModal(true)}>Select</Button></td>
+                              <td className="py-4 px-4"><Button size="sm" className="bg-gradient-to-r from-primary to-teal text-primary-foreground" disabled={loadingKey === `dynasty-${parseInt(row.size.replace(/[$,]/g, ''))}`} onClick={() => handleSelect('dynasty', parseInt(row.size.replace(/[$,]/g, '')))}>{loadingKey === `dynasty-${parseInt(row.size.replace(/[$,]/g, ''))}` ? 'Loading...' : 'Select'}</Button></td>
                             </tr>
                           );
                         })}
@@ -394,10 +430,6 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-      <PreLaunchModal 
-        externalOpen={showPreLaunchModal} 
-        onExternalClose={() => setShowPreLaunchModal(false)} 
-      />
     </Layout>
   );
 };

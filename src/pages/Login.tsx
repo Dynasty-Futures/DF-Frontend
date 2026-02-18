@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,7 @@ import { ApiError } from '@/types/api';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { login, googleLogin, isAuthenticated } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -22,8 +23,11 @@ const Login = () => {
     password: '',
   });
 
-  // Where to redirect after login (defaults to /dashboard)
-  const from = (location.state as { from?: string })?.from || '/dashboard';
+  // Where to redirect after login — check state, then query param, then default
+  const from =
+    (location.state as { from?: string })?.from ||
+    searchParams.get('redirect') ||
+    '/dashboard';
 
   // If already logged in, redirect
   if (isAuthenticated) {
@@ -163,7 +167,7 @@ const Login = () => {
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
                   Don't have an account?{' '}
-                  <Link to="/register" className="text-primary hover:underline">
+                  <Link to="/register" state={{ from }} className="text-primary hover:underline">
                     Create Account
                   </Link>
                 </p>

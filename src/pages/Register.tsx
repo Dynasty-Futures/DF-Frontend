@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +12,15 @@ import { ApiError } from '@/types/api';
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { register, googleLogin, isAuthenticated } = useAuth();
+
+  // Where to redirect after registration — check state, then query param, then default
+  const redirectTo =
+    (location.state as { from?: string })?.from ||
+    searchParams.get('redirect') ||
+    '/dashboard';
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -25,9 +33,9 @@ const Register = () => {
     confirmPassword: '',
   });
 
-  // If already logged in, redirect to dashboard
+  // If already logged in, redirect
   if (isAuthenticated) {
-    navigate('/dashboard', { replace: true });
+    navigate(redirectTo, { replace: true });
     return null;
   }
 
@@ -61,7 +69,7 @@ const Register = () => {
       });
 
       toast.success('Account created successfully!');
-      navigate('/dashboard', { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       if (error instanceof ApiError) {
         toast.error(error.message);
@@ -78,7 +86,7 @@ const Register = () => {
     try {
       await googleLogin(idToken);
       toast.success('Welcome to Dynasty Futures!');
-      navigate('/dashboard', { replace: true });
+      navigate(redirectTo, { replace: true });
     } catch (error) {
       if (error instanceof ApiError) {
         toast.error(error.message);
@@ -231,7 +239,7 @@ const Register = () => {
               <div className="mt-6 text-center">
                 <p className="text-sm text-muted-foreground">
                   Already have an account?{' '}
-                  <Link to="/login" className="text-primary hover:underline">
+                  <Link to="/login" state={{ from: redirectTo }} className="text-primary hover:underline">
                     Sign In
                   </Link>
                 </p>

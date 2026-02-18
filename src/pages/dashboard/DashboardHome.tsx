@@ -1,6 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Wallet, TrendingUp, ShieldAlert, ChevronDown, BarChart3, Map, Calendar } from 'lucide-react';
 import { format, isToday } from 'date-fns';
+import { toast } from 'sonner';
 import AccountSelector from '@/components/dashboard/AccountSelector';
 import MetricCard from '@/components/dashboard/MetricCard';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
@@ -14,6 +16,16 @@ import { mockAccounts, getAccountById, generateChartData } from '@/data/mockDash
 // In production, replace mock datasets with live data from PropTradeTech / broker APIs.
 
 const DashboardHome = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('checkout') === 'success') {
+      toast.success('Payment successful! Your account is being provisioned and will appear shortly.');
+      searchParams.delete('checkout');
+      searchParams.delete('session_id');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const [selectedAccount, setSelectedAccount] = useState('2'); // Default to 50K Advanced
   const [dateRange, setDateRange] = useState('30');
   const [chartType, setChartType] = useState<'equity' | 'pnl'>('equity');
