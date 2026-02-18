@@ -2,104 +2,172 @@ import { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { AdminDataTable, Column } from '../AdminDataTable';
 import { AdminQuickFilters } from '../AdminQuickFilters';
-import { AdminStatusBadge, AdminPlanBadge } from '../AdminStatusBadge';
+import { AdminStatusBadge } from '../AdminStatusBadge';
 import { AdminDrawer } from '../AdminDrawer';
 import { AdminNotesThread } from '../AdminNotesThread';
 import { AdminCalendarMini, generateMockCalendarData } from '../AdminCalendarMini';
-import { mockAccounts, mockTrades, mockNotes, type MockAccount } from '@/data/mockAdminData';
+import { useAdminAccounts } from '@/hooks/useAccounts';
 import { useAdminFilters } from '@/contexts/AdminFiltersContext';
-import { isWithinDateRange, filterByPlan, filterByStatus } from '@/lib/dateFilterUtils';
-import { Pause, Play, XCircle, RotateCcw, Clock, CheckCircle } from 'lucide-react';
+import type { AdminAccount } from '@/types/account';
+import { Pause, Play, XCircle, RotateCcw, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const statusLabel: Record<string, string> = {
+  EVALUATION: 'Evaluation',
+  PHASE_2: 'Phase 2',
+  PASSED: 'Passed',
+  FUNDED: 'Funded',
+  SUSPENDED: 'Suspended',
+  FAILED: 'Failed',
+  CLOSED: 'Closed',
+};
+
+const formatStatus = (status: string): string => statusLabel[status] ?? status;
+
+const toNumber = (val: string | number): number => Number(val) || 0;
+
+const formatCurrency = (val: string | number): string =>
+  `$${toNumber(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+const fullName = (acc: AdminAccount): string =>
+  `${acc.user.firstName} ${acc.user.lastName}`;
+
+const isWithinDays = (dateString: string, days: number): boolean => {
+  const date = new Date(dateString);
+  const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  return date >= cutoff;
+};
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export function AdminAccounts() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState<MockAccount | null>(null);
-  
+  const [selectedAccount, setSelectedAccount] = useState<AdminAccount | null>(null);
+
   const { filters } = useAdminFilters();
 
-  // Apply global filters first
+  const statusParam =
+    filters.statusFilter !== 'all' ? filters.statusFilter.toUpperCase() : undefined;
+
+  const { data: response, isLoading, isError } = useAdminAccounts({
+    limit: 100,
+    status: statusParam as AdminAccount['status'] | undefined,
+  });
+
+  const accounts = response?.data ?? [];
+
   const globalFilteredAccounts = useMemo(() => {
-    let result = mockAccounts;
-    
-    // Apply date range filter based on lastTradeTime
-    result = result.filter(acc => isWithinDateRange(acc.lastTradeTime, filters.dateRange));
-    
-    // Apply plan filter
-    result = filterByPlan(result, filters.planFilter);
-    
-    // Apply status filter
-    result = filterByStatus(result, filters.statusFilter);
-    
+    let result = accounts;
+
+    if (filters.dateRange !== 'all') {
+      const daysMap: Record<string, number> = { today: 1, '7d': 7, '30d': 30, '90d': 90 };
+      const days = daysMap[filters.dateRange];
+      if (days) {
+        result = result.filter((acc) => isWithinDays(acc.createdAt, days));
+      }
+    }
+
+    if (filters.planFilter !== 'all') {
+      result = result.filter(
+        (acc) => acc.accountType.name.toLowerCase() === filters.planFilter.toLowerCase()
+      );
+    }
+
     return result;
-  }, [filters.dateRange, filters.planFilter, filters.statusFilter]);
+  }, [accounts, filters.dateRange, filters.planFilter]);
 
-  // Calculate dynamic filter counts based on globally filtered data
   const quickFilters = useMemo(() => {
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-
     return [
-      { id: 'high-dd', label: 'High DD (>80%)', count: globalFilteredAccounts.filter(a => a.drawdownUsed > 80).length },
-      { id: 'high-dll', label: 'High DLL (>80%)', count: globalFilteredAccounts.filter(a => a.dailyLossUsed > 80).length },
-      { id: 'no-trades', label: 'No trades 7D', count: globalFilteredAccounts.filter(a => new Date(a.lastTradeTime) < sevenDaysAgo).length },
-      { id: 'newly-funded', label: 'Newly funded', count: globalFilteredAccounts.filter(a => a.status === 'Funded' && new Date(a.createdAt) > thirtyDaysAgo).length },
-      { id: 'recently-failed', label: 'Recently failed', count: globalFilteredAccounts.filter(a => a.status === 'Failed').length },
+      {
+        id: 'high-dd',
+        label: 'High DD (>80%)',
+        count: globalFilteredAccounts.filter((a) => toNumber(a.currentDrawdown) > 80).length,
+      },
+      {
+        id: 'newly-funded',
+        label: 'Newly funded',
+        count: globalFilteredAccounts.filter(
+          (a) => a.status === 'FUNDED' && isWithinDays(a.createdAt, 30)
+        ).length,
+      },
+      {
+        id: 'recently-failed',
+        label: 'Recently failed',
+        count: globalFilteredAccounts.filter((a) => a.status === 'FAILED').length,
+      },
     ];
   }, [globalFilteredAccounts]);
 
-  // Apply quick filter on top of global filters
   const filteredAccounts = useMemo(() => {
     if (!activeFilter) return globalFilteredAccounts;
 
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-
     switch (activeFilter) {
       case 'high-dd':
-        return globalFilteredAccounts.filter(acc => acc.drawdownUsed > 80);
-      case 'high-dll':
-        return globalFilteredAccounts.filter(acc => acc.dailyLossUsed > 80);
-      case 'no-trades':
-        return globalFilteredAccounts.filter(acc => new Date(acc.lastTradeTime) < sevenDaysAgo);
+        return globalFilteredAccounts.filter((acc) => toNumber(acc.currentDrawdown) > 80);
       case 'newly-funded':
-        return globalFilteredAccounts.filter(acc => acc.status === 'Funded' && new Date(acc.createdAt) > thirtyDaysAgo);
+        return globalFilteredAccounts.filter(
+          (acc) => acc.status === 'FUNDED' && isWithinDays(acc.createdAt, 30)
+        );
       case 'recently-failed':
-        return globalFilteredAccounts.filter(acc => acc.status === 'Failed');
+        return globalFilteredAccounts.filter((acc) => acc.status === 'FAILED');
       default:
         return globalFilteredAccounts;
     }
   }, [activeFilter, globalFilteredAccounts]);
 
-  const columns: Column<MockAccount>[] = [
-    { key: 'id', header: 'Account ID', sortable: true, width: '120px' },
-    { key: 'userName', header: 'User', sortable: true },
-    { key: 'email', header: 'Email', sortable: true },
-    { key: 'plan', header: 'Plan', render: (item) => <AdminPlanBadge plan={item.plan} /> },
-    { key: 'status', header: 'Status', render: (item) => <AdminStatusBadge status={item.status} /> },
-    { key: 'equity', header: 'Equity', sortable: true, render: (item) => `$${item.equity.toLocaleString()}` },
-    { key: 'drawdownUsed', header: 'DD Used', sortable: true, render: (item) => (
-      <span className={item.drawdownUsed > 80 ? 'text-destructive font-medium' : ''}>{item.drawdownUsed}%</span>
-    )},
-    { key: 'dailyLossUsed', header: 'DLL Used', sortable: true, render: (item) => (
-      <span className={item.dailyLossUsed > 80 ? 'text-destructive font-medium' : ''}>{item.dailyLossUsed}%</span>
-    )},
-    { key: 'tradesToday', header: 'Trades Today', sortable: true },
-    { key: 'lastTradeTime', header: 'Last Trade', sortable: true },
-    { key: 'flagsCount', header: 'Flags', sortable: true, render: (item) => (
-      item.flagsCount > 0 ? <span className="text-yellow-400">{item.flagsCount}</span> : <span className="text-muted-foreground">0</span>
-    )},
+  const columns: Column<AdminAccount>[] = [
+    { key: 'id', header: 'Account ID', sortable: true, width: '120px',
+      render: (item) => <span className="font-mono text-xs">{item.id.slice(0, 8)}...</span> },
+    { key: 'userName', header: 'User', sortable: true,
+      render: (item) => fullName(item) },
+    { key: 'email', header: 'Email', sortable: true,
+      render: (item) => item.user.email },
+    { key: 'plan', header: 'Plan',
+      render: (item) => (
+        <span className="text-sm font-medium">{item.accountType.displayName}</span>
+      ) },
+    { key: 'status', header: 'Status',
+      render: (item) => <AdminStatusBadge status={formatStatus(item.status)} /> },
+    { key: 'currentBalance', header: 'Balance', sortable: true,
+      render: (item) => formatCurrency(item.currentBalance) },
+    { key: 'currentDrawdown', header: 'Drawdown', sortable: true,
+      render: (item) => {
+        const dd = toNumber(item.currentDrawdown);
+        return <span className={dd > 80 ? 'text-destructive font-medium' : ''}>{dd.toFixed(1)}%</span>;
+      } },
+    { key: 'totalPnl', header: 'Total P&L', sortable: true,
+      render: (item) => {
+        const pnl = toNumber(item.totalPnl);
+        return <span className={pnl >= 0 ? 'text-primary' : 'text-destructive'}>{formatCurrency(pnl)}</span>;
+      } },
+    { key: 'tradingDays', header: 'Trading Days', sortable: true },
+    { key: 'createdAt', header: 'Created', sortable: true,
+      render: (item) => new Date(item.createdAt).toLocaleDateString() },
   ];
 
-  const handleRowClick = (account: MockAccount) => {
+  const handleRowClick = (account: AdminAccount) => {
     setSelectedAccount(account);
     setDrawerOpen(true);
   };
 
   const calendarDays = generateMockCalendarData();
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted-foreground">
+        <AlertTriangle className="h-10 w-10 text-destructive" />
+        <p className="text-lg font-medium text-foreground">Failed to load accounts</p>
+        <p className="text-sm">Please check your connection and try again.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -128,40 +196,47 @@ export function AdminAccounts() {
         selectedRows={selectedRows}
         onSelectionChange={setSelectedRows}
         onRowClick={handleRowClick}
+        loading={isLoading}
       />
 
       {/* Account Detail Drawer */}
-      <AdminDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} title={selectedAccount?.id || ''} subtitle={`${selectedAccount?.userName} • ${selectedAccount?.plan}`} width="xl">
+      <AdminDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title={selectedAccount ? selectedAccount.id.slice(0, 8) + '...' : ''}
+        subtitle={selectedAccount ? `${fullName(selectedAccount)} • ${selectedAccount.accountType.displayName}` : ''}
+        width="xl"
+      >
         {selectedAccount && (
           <div className="space-y-6">
             {/* Status */}
             <div className="flex items-center gap-2">
-              <AdminStatusBadge status={selectedAccount.status} />
-              <AdminPlanBadge plan={selectedAccount.plan} />
+              <AdminStatusBadge status={formatStatus(selectedAccount.status)} />
+              <span className="text-sm font-medium">{selectedAccount.accountType.displayName}</span>
             </div>
 
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg border border-border/30 bg-muted/10 p-4">
-                <p className="text-sm text-muted-foreground">Equity</p>
-                <p className="text-2xl font-bold text-foreground">${selectedAccount.equity.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">Balance</p>
+                <p className="text-2xl font-bold text-foreground">{formatCurrency(selectedAccount.currentBalance)}</p>
               </div>
               <div className="rounded-lg border border-border/30 bg-muted/10 p-4">
-                <p className="text-sm text-muted-foreground">Closed P&L</p>
-                <p className={`text-2xl font-bold ${selectedAccount.closedPnL >= 0 ? 'text-primary' : 'text-destructive'}`}>
-                  ${selectedAccount.closedPnL.toLocaleString()}
+                <p className="text-sm text-muted-foreground">Total P&L</p>
+                <p className={`text-2xl font-bold ${toNumber(selectedAccount.totalPnl) >= 0 ? 'text-primary' : 'text-destructive'}`}>
+                  {formatCurrency(selectedAccount.totalPnl)}
                 </p>
               </div>
               <div className="rounded-lg border border-border/30 bg-muted/10 p-4">
-                <p className="text-sm text-muted-foreground">Drawdown Used</p>
-                <p className={`text-2xl font-bold ${selectedAccount.drawdownUsed > 80 ? 'text-destructive' : 'text-foreground'}`}>
-                  {selectedAccount.drawdownUsed}%
+                <p className="text-sm text-muted-foreground">Drawdown</p>
+                <p className={`text-2xl font-bold ${toNumber(selectedAccount.currentDrawdown) > 80 ? 'text-destructive' : 'text-foreground'}`}>
+                  {toNumber(selectedAccount.currentDrawdown).toFixed(1)}%
                 </p>
               </div>
               <div className="rounded-lg border border-border/30 bg-muted/10 p-4">
-                <p className="text-sm text-muted-foreground">Daily Loss Used</p>
-                <p className={`text-2xl font-bold ${selectedAccount.dailyLossUsed > 80 ? 'text-destructive' : 'text-foreground'}`}>
-                  {selectedAccount.dailyLossUsed}%
+                <p className="text-sm text-muted-foreground">Daily P&L</p>
+                <p className={`text-2xl font-bold ${toNumber(selectedAccount.dailyPnl) >= 0 ? 'text-primary' : 'text-destructive'}`}>
+                  {formatCurrency(selectedAccount.dailyPnl)}
                 </p>
               </div>
             </div>
@@ -171,37 +246,8 @@ export function AdminAccounts() {
               <AdminCalendarMini days={calendarDays} />
             </div>
 
-            {/* Recent Trades */}
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-3">Recent Trades</h4>
-              <div className="rounded-lg border border-border/30 overflow-hidden">
-                <table className="w-full text-sm">
-                  <thead className="bg-muted/20">
-                    <tr>
-                      <th className="text-left p-2">Time</th>
-                      <th className="text-left p-2">Symbol</th>
-                      <th className="text-left p-2">Side</th>
-                      <th className="text-right p-2">P&L</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {mockTrades.slice(0, 5).map((trade) => (
-                      <tr key={trade.id} className="border-t border-border/30">
-                        <td className="p-2 text-muted-foreground">{trade.timestamp}</td>
-                        <td className="p-2">{trade.symbol}</td>
-                        <td className="p-2">{trade.side}</td>
-                        <td className={`p-2 text-right ${trade.pnl >= 0 ? 'text-primary' : 'text-destructive'}`}>
-                          ${trade.pnl.toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Notes */}
-            <AdminNotesThread notes={mockNotes} onAddNote={() => {}} />
+            {/* Notes placeholder */}
+            <AdminNotesThread notes={[]} onAddNote={() => {}} />
 
             {/* Actions */}
             <div className="flex flex-wrap gap-2 pt-4 border-t border-border/30">

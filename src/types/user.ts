@@ -24,6 +24,30 @@ export type KycStatus =
   | 'REJECTED';
 
 // ---------------------------------------------------------------------------
+// User Filters (for admin list queries)
+// ---------------------------------------------------------------------------
+
+export interface UserFilters {
+  role?: UserRole;
+  status?: UserStatus;
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'createdAt' | 'updatedAt' | 'email' | 'lastName' | 'role' | 'status';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// ---------------------------------------------------------------------------
+// User Stats (for admin dashboard)
+// ---------------------------------------------------------------------------
+
+export interface UserStats {
+  total: number;
+  byRole: Record<string, number>;
+  byStatus: Record<string, number>;
+}
+
+// ---------------------------------------------------------------------------
 // User (public-facing fields -- never includes credentials)
 // ---------------------------------------------------------------------------
 
@@ -41,4 +65,5 @@ export interface User {
   lastLoginAt: string | null;
   createdAt: string;
   updatedAt: string;
+  _count?: { accounts: number };
 }

@@ -71,6 +71,53 @@ export interface Account {
 }
 
 // ---------------------------------------------------------------------------
+// Admin Account (account with included user & account type relations)
+// ---------------------------------------------------------------------------
+
+export interface AdminAccountUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface AdminAccountType {
+  id: string;
+  name: string;
+  displayName: string;
+  accountSize: string;
+}
+
+export interface AdminAccount extends Account {
+  user: AdminAccountUser;
+  accountType: AdminAccountType;
+}
+
+// ---------------------------------------------------------------------------
+// Account Filters (for admin list queries)
+// ---------------------------------------------------------------------------
+
+export interface AccountFilters {
+  status?: AccountStatus;
+  accountTypeId?: string;
+  userId?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+  sortBy?: 'createdAt' | 'updatedAt' | 'currentBalance' | 'status' | 'totalPnl' | 'currentDrawdown';
+  sortOrder?: 'asc' | 'desc';
+}
+
+// ---------------------------------------------------------------------------
+// Account Stats (for admin dashboard)
+// ---------------------------------------------------------------------------
+
+export interface AccountStats {
+  total: number;
+  byStatus: Record<string, number>;
+}
+
+// ---------------------------------------------------------------------------
 // Challenge (a phase within an account's progression)
 // ---------------------------------------------------------------------------
 

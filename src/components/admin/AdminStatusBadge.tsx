@@ -8,17 +8,37 @@ interface AdminStatusBadgeProps {
 }
 
 const statusStyles: Record<string, string> = {
-  // Account statuses
+  // Account statuses (mock / display)
   'Evaluation': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   'Funded': 'bg-primary/20 text-primary border-primary/30',
   'Paused': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
   'Failed': 'bg-destructive/20 text-destructive border-destructive/30',
+
+  // Account statuses (API enum values)
+  'EVALUATION': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  'PHASE_2': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+  'PASSED': 'bg-primary/20 text-primary border-primary/30',
+  'FUNDED': 'bg-primary/20 text-primary border-primary/30',
+  'SUSPENDED': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  'FAILED': 'bg-destructive/20 text-destructive border-destructive/30',
+  'CLOSED': 'bg-muted/50 text-muted-foreground border-border/50',
   
-  // KYC statuses
+  // KYC statuses (mock / display)
   'Not Started': 'bg-muted/50 text-muted-foreground border-border/50',
   'In Progress': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   'Verified': 'bg-primary/20 text-primary border-primary/30',
-  
+
+  // KYC statuses (API enum values)
+  'NOT_STARTED': 'bg-muted/50 text-muted-foreground border-border/50',
+  'PENDING': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  'APPROVED': 'bg-primary/20 text-primary border-primary/30',
+  'REJECTED': 'bg-destructive/20 text-destructive border-destructive/30',
+
+  // User statuses (API enum values)
+  'PENDING_VERIFICATION': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+  'ACTIVE': 'bg-primary/20 text-primary border-primary/30',
+  'BANNED': 'bg-destructive/20 text-destructive border-destructive/30',
+
   // Tax form statuses
   'Missing': 'bg-destructive/20 text-destructive border-destructive/30',
   'Submitted': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
