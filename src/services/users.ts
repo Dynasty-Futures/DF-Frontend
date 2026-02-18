@@ -7,7 +7,7 @@
 
 import { apiClient } from '@/services/api';
 import type { ApiResponse, PaginatedResponse } from '@/types/api';
-import type { User, UserFilters, UserStats } from '@/types/user';
+import type { User, UserRole, UserFilters, UserStats } from '@/types/user';
 
 export const userService = {
   // ---------------------------------------------------------------------------
@@ -36,4 +36,15 @@ export const userService = {
    */
   getStats: (): Promise<ApiResponse<UserStats>> =>
     apiClient.get<ApiResponse<UserStats>>('/users/stats'),
+
+  // ---------------------------------------------------------------------------
+  // Mutations
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Change a user's role (admin only).
+   * PATCH /v1/users/:id/role
+   */
+  changeRole: (id: string, role: UserRole): Promise<ApiResponse<User>> =>
+    apiClient.patch<ApiResponse<User>>(`/users/${id}/role`, { role }),
 } as const;

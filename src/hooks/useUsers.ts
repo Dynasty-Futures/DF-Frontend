@@ -10,11 +10,13 @@
 
 import {
   useQuery,
+  useMutation,
+  useQueryClient,
   type UseQueryOptions,
 } from '@tanstack/react-query';
 import { userService } from '@/services/users';
 import type { ApiResponse, PaginatedResponse, ApiError } from '@/types/api';
-import type { User, UserFilters, UserStats } from '@/types/user';
+import type { User, UserRole, UserFilters, UserStats } from '@/types/user';
 
 // =============================================================================
 // Query key factory
@@ -71,3 +73,28 @@ export const useUserStats = (
     queryFn: () => userService.getStats(),
     ...options,
   });
+
+// =============================================================================
+// Mutation hooks
+// =============================================================================
+
+/**
+ * Change a user's role (admin only).
+ * On success: invalidates user lists and the specific user detail.
+ */
+export const useChangeUserRole = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<
+    ApiResponse<User>,
+    ApiError,
+    { id: string; role: UserRole }
+  >({
+    mutationFn: ({ id, role }) => userService.changeRole(id, role),
+    onSuccess: (_response, { id }) => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: userKeys.detail(id) });
+      queryClient.invalidateQueries({ queryKey: userKeys.stats() });
+    },
+  });
+};

@@ -4,10 +4,11 @@ import { AdminDataTable, Column } from '../AdminDataTable';
 import { AdminStatusBadge } from '../AdminStatusBadge';
 import { AdminDrawer } from '../AdminDrawer';
 import { AdminNotesThread } from '../AdminNotesThread';
-import { useAdminUsers } from '@/hooks/useUsers';
+import { useAdminUsers, useChangeUserRole } from '@/hooks/useUsers';
 import { useAdminAccounts } from '@/hooks/useAccounts';
-import type { User } from '@/types/user';
-import { RefreshCw, StickyNote, Eye, AlertTriangle } from 'lucide-react';
+import type { User, UserRole } from '@/types/user';
+import { AlertTriangle, ShieldCheck, Headset, UserIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -60,6 +61,22 @@ export function AdminUsersKYC() {
 
   const { data: response, isLoading, isError } = useAdminUsers({ limit: 100 });
   const users = response?.data ?? [];
+  const changeRole = useChangeUserRole();
+
+  const handleChangeRole = (userId: string, role: UserRole, label: string) => {
+    changeRole.mutate(
+      { id: userId, role },
+      {
+        onSuccess: (res) => {
+          toast.success(`Role changed to ${label}`);
+          setSelectedUser(res.data);
+        },
+        onError: (err) => {
+          toast.error(err.message || 'Failed to change role');
+        },
+      },
+    );
+  };
 
   const { data: accountsResponse } = useAdminAccounts(
     { userId: selectedUser?.id, limit: 100 },
@@ -89,13 +106,6 @@ export function AdminUsersKYC() {
       render: (item) => formatDate(item.createdAt) },
     { key: 'lastLoginAt', header: 'Last Login', sortable: true,
       render: (item) => formatDateTime(item.lastLoginAt) },
-    { key: 'actions', header: 'Actions', render: () => (
-      <div className="flex gap-1">
-        <Button size="sm" variant="ghost" className="h-7 px-2"><Eye className="h-3 w-3" /></Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2"><RefreshCw className="h-3 w-3" /></Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2"><StickyNote className="h-3 w-3" /></Button>
-      </div>
-    )},
   ];
 
   const handleRowClick = (user: User) => {
@@ -178,6 +188,49 @@ export function AdminUsersKYC() {
                         ? 'Verification rejected'
                         : 'Not yet submitted'}
                 </span>
+              </div>
+            </div>
+
+            {/* Role Management */}
+            <div className="rounded-lg border border-border/30 bg-muted/10 p-4 space-y-3">
+              <h4 className="text-sm font-medium text-foreground">Role Management</h4>
+              <p className="text-sm text-muted-foreground">
+                Current role: <span className="font-medium text-foreground">{formatLabel(selectedUser.role, roleLabel)}</span>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {selectedUser.role !== 'ADMIN' && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={changeRole.isPending}
+                    onClick={() => handleChangeRole(selectedUser.id, 'ADMIN', 'Admin')}
+                  >
+                    <ShieldCheck className="h-4 w-4 mr-1" />
+                    Promote to Admin
+                  </Button>
+                )}
+                {selectedUser.role !== 'SUPPORT' && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={changeRole.isPending}
+                    onClick={() => handleChangeRole(selectedUser.id, 'SUPPORT', 'Support')}
+                  >
+                    <Headset className="h-4 w-4 mr-1" />
+                    {selectedUser.role === 'ADMIN' ? 'Demote to Support' : 'Promote to Support'}
+                  </Button>
+                )}
+                {selectedUser.role !== 'TRADER' && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={changeRole.isPending}
+                    onClick={() => handleChangeRole(selectedUser.id, 'TRADER', 'Trader')}
+                  >
+                    <UserIcon className="h-4 w-4 mr-1" />
+                    Demote to Trader
+                  </Button>
+                )}
               </div>
             </div>
 
