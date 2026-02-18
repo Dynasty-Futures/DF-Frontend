@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @layer base {
   :root {
@@ -45,10 +45,26 @@
     --charcoal-light: 220 18% 14%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--teal)) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(220 20% 6%) 0%, hsl(220 20% 12%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(220 20% 14%) 0%, hsl(220 20% 10%) 100%);
-    --gradient-glow: radial-gradient(ellipse at center, hsl(142 76% 45% / 0.15) 0%, transparent 70%);
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--teal)) 100%
+    );
+    --gradient-hero: linear-gradient(
+      180deg,
+      hsl(220 20% 6%) 0%,
+      hsl(220 20% 12%) 100%
+    );
+    --gradient-card: linear-gradient(
+      145deg,
+      hsl(220 20% 14%) 0%,
+      hsl(220 20% 10%) 100%
+    );
+    --gradient-glow: radial-gradient(
+      ellipse at center,
+      hsl(142 76% 45% / 0.15) 0%,
+      transparent 70%
+    );
 
     /* Shadows */
     --shadow-glow: 0 0 40px hsl(142 76% 45% / 0.3);
@@ -73,11 +89,16 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Outfit', sans-serif;
+    font-family: "Outfit", sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Space Grotesk", sans-serif;
   }
 }
 
@@ -85,18 +106,24 @@
   /* Animated gradient text */
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(142 76% 50%) 0%, hsl(175 70% 50%) 50%, hsl(195 85% 55%) 100%);
+    background-image: linear-gradient(
+      135deg,
+      hsl(142 76% 50%) 0%,
+      hsl(175 70% 50%) 50%,
+      hsl(195 85% 55%) 100%
+    );
     background-size: 200% 200%;
     animation: gradientShift 4s ease-in-out infinite;
   }
 
   .text-gradient-animated {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(90deg, 
-      hsl(142 76% 50%) 0%, 
-      hsl(175 70% 50%) 25%, 
-      hsl(195 85% 60%) 50%, 
-      hsl(175 70% 50%) 75%, 
+    background-image: linear-gradient(
+      90deg,
+      hsl(142 76% 50%) 0%,
+      hsl(175 70% 50%) 25%,
+      hsl(195 85% 60%) 50%,
+      hsl(175 70% 50%) 75%,
       hsl(142 76% 50%) 100%
     );
     background-size: 300% 100%;
@@ -104,22 +131,41 @@
   }
 
   @keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
 
   @keyframes textGradientFlow {
-    0% { background-position: 100% 0%; }
-    50% { background-position: 0% 0%; }
-    100% { background-position: 100% 0%; }
+    0% {
+      background-position: 100% 0%;
+    }
+    50% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 0%;
+    }
   }
 
   .bg-gradient-hero {
-    background: linear-gradient(180deg, hsl(220 20% 6%) 0%, hsl(220 20% 12%) 100%);
+    background: linear-gradient(
+      180deg,
+      hsl(220 20% 6%) 0%,
+      hsl(220 20% 12%) 100%
+    );
   }
 
   .bg-gradient-card {
-    background: linear-gradient(145deg, hsl(220 18% 14%) 0%, hsl(220 20% 10%) 100%);
+    background: linear-gradient(
+      145deg,
+      hsl(220 18% 14%) 0%,
+      hsl(220 20% 10%) 100%
+    );
   }
 
   .glow-green {
@@ -127,7 +173,7 @@
   }
 
   .glow-text {
-    text-shadow: 
+    text-shadow:
       0 0 8px hsl(142 76% 50% / 0.6),
       0 0 15px hsl(175 70% 50% / 0.4);
   }
@@ -168,9 +214,14 @@
   }
 
   .link-transition::after {
-    content: '';
+    content: "";
     @apply absolute bottom-0 left-0 w-full h-0.5 transform scale-x-0 origin-left transition-transform duration-300;
-    background: linear-gradient(90deg, hsl(142 76% 50%), hsl(175 70% 50%), hsl(195 85% 55%));
+    background: linear-gradient(
+      90deg,
+      hsl(142 76% 50%),
+      hsl(175 70% 50%),
+      hsl(195 85% 55%)
+    );
   }
 
   .link-transition:hover::after {
@@ -183,9 +234,13 @@
   }
 
   .btn-glow::before {
-    content: '';
+    content: "";
     @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: radial-gradient(circle at center, hsl(142 76% 45% / 0.4) 0%, transparent 70%);
+    background: radial-gradient(
+      circle at center,
+      hsl(142 76% 45% / 0.4) 0%,
+      transparent 70%
+    );
   }
 
   .btn-glow:hover::before {
@@ -194,11 +249,12 @@
 
   /* Animated gradient button */
   .btn-gradient-animated {
-    background: linear-gradient(90deg, 
-      hsl(142 76% 45%) 0%, 
-      hsl(175 70% 45%) 25%, 
-      hsl(195 85% 55%) 50%, 
-      hsl(175 70% 45%) 75%, 
+    background: linear-gradient(
+      90deg,
+      hsl(142 76% 45%) 0%,
+      hsl(175 70% 45%) 25%,
+      hsl(195 85% 55%) 50%,
+      hsl(175 70% 45%) 75%,
       hsl(142 76% 45%) 100%
     );
     background-size: 300% 100%;
@@ -206,9 +262,15 @@
   }
 
   @keyframes btnGradientFlow {
-    0% { background-position: 100% 0%; }
-    50% { background-position: 0% 0%; }
-    100% { background-position: 100% 0%; }
+    0% {
+      background-position: 100% 0%;
+    }
+    50% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 0%;
+    }
   }
 
   /* Enhanced breathing animation */
@@ -226,23 +288,25 @@
   }
 
   @keyframes breathe {
-    0%, 100% { 
-      transform: scale(1); 
+    0%,
+    100% {
+      transform: scale(1);
       opacity: 0.15;
     }
-    50% { 
-      transform: scale(1.4); 
+    50% {
+      transform: scale(1.4);
       opacity: 0.35;
     }
   }
 
   @keyframes breatheSlow {
-    0%, 100% { 
-      transform: scale(1) rotate(0deg); 
+    0%,
+    100% {
+      transform: scale(1) rotate(0deg);
       opacity: 0.1;
     }
-    50% { 
-      transform: scale(1.3) rotate(10deg); 
+    50% {
+      transform: scale(1.3) rotate(10deg);
       opacity: 0.25;
     }
   }
@@ -253,8 +317,13 @@
   }
 
   @keyframes iconGlowPulse {
-    0%, 100% { filter: drop-shadow(0 0 8px hsl(142 76% 50% / 0.5)); }
-    50% { filter: drop-shadow(0 0 20px hsl(175 70% 50% / 0.8)); }
+    0%,
+    100% {
+      filter: drop-shadow(0 0 8px hsl(142 76% 50% / 0.5));
+    }
+    50% {
+      filter: drop-shadow(0 0 20px hsl(175 70% 50% / 0.8));
+    }
   }
 
   /* Float animation enhanced */
@@ -263,17 +332,18 @@
   }
 
   @keyframes floatEnhanced {
-    0%, 100% { 
-      transform: translateY(0) rotate(0deg); 
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
     }
-    25% { 
-      transform: translateY(-8px) rotate(2deg); 
+    25% {
+      transform: translateY(-8px) rotate(2deg);
     }
-    50% { 
-      transform: translateY(-15px) rotate(0deg); 
+    50% {
+      transform: translateY(-15px) rotate(0deg);
     }
-    75% { 
-      transform: translateY(-8px) rotate(-2deg); 
+    75% {
+      transform: translateY(-8px) rotate(-2deg);
     }
   }
 
@@ -330,11 +400,21 @@
   }
 
   /* Stagger animation delays */
-  .stagger-1 { animation-delay: 0.1s; }
-  .stagger-2 { animation-delay: 0.2s; }
-  .stagger-3 { animation-delay: 0.3s; }
-  .stagger-4 { animation-delay: 0.4s; }
-  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-1 {
+    animation-delay: 0.1s;
+  }
+  .stagger-2 {
+    animation-delay: 0.2s;
+  }
+  .stagger-3 {
+    animation-delay: 0.3s;
+  }
+  .stagger-4 {
+    animation-delay: 0.4s;
+  }
+  .stagger-5 {
+    animation-delay: 0.5s;
+  }
 
   /* Achievement Rarity Colors - subtle intensity */
   .rarity-common {
@@ -375,7 +455,9 @@
 
   /* Achievement card hover lift - subtle effect */
   .achievement-card-hover {
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition:
+      transform 0.2s ease-out,
+      box-shadow 0.2s ease-out;
   }
   .achievement-card-hover:hover {
     transform: translateY(-2px) scale(1.01);
@@ -412,7 +494,8 @@
   }
 
   @keyframes new-pulse {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
       box-shadow: 0 0 8px hsl(var(--primary) / 0.5);
     }
@@ -428,10 +511,10 @@
   }
 
   .pricing-bg::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background-image: url('@/assets/pricing-background.png');
+    background-image: url("@/assets/pricing-background.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -440,7 +523,7 @@
   }
 
   .pricing-bg::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
@@ -493,11 +576,7 @@
     left: 0;
     right: 0;
     height: 150px;
-    background: linear-gradient(
-      to top,
-      hsl(220 20% 10%) 0%,
-      transparent 100%
-    );
+    background: linear-gradient(to top, hsl(220 20% 10%) 0%, transparent 100%);
     z-index: 2;
     pointer-events: none;
   }
