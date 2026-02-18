@@ -8,7 +8,7 @@ const AdminPage = () => {
 
   return (
     <AdminFiltersProvider>
-      <Layout>
+      <Layout hideFooter>
         <div className="pt-24">
           <AdminLayout isAdmin={isAdmin} />
         </div>
