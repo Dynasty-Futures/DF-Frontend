@@ -49,7 +49,7 @@ const Navbar = () => {
             <img 
               src={logo} 
               alt="Dynasty Futures" 
-              className="h-44 md:h-60 w-auto max-h-full transition-transform duration-300 group-hover:scale-105 logo-blend"
+              className="h-10 md:h-12 w-auto max-h-full transition-transform duration-300 group-hover:scale-105 logo-blend"
             />
           </Link>
 
