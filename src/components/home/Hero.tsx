@@ -143,33 +143,33 @@ const Hero = () => {
 
           {/* Right content - Trading Dashboard Mock */}
           <div className="relative animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <div className="relative bg-gradient-card rounded-2xl border border-border/50 p-6 shadow-2xl overflow-hidden">
+            <div className="relative bg-gradient-card rounded-2xl border border-border/50 p-4 md:p-6 shadow-2xl overflow-hidden">
               {/* Glow effect */}
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl breathe" />
               <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-teal/15 rounded-full blur-2xl breathe-delayed" />
               
               {/* Header with Logo */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
+                <div className="flex items-center gap-2 md:gap-4">
                   {/* Logo positioned to the left of account balance */}
-                  <div className="w-20 h-20 bg-gradient-to-br from-primary/20 via-teal/20 to-soft-blue/20 rounded-xl flex items-center justify-center border border-primary/20 animate-gradient-shift">
-                    <img src={logo} alt="DF" className="h-16 w-auto logo-blend" />
+                  <div className="w-12 h-12 md:w-16 md:w-20 bg-gradient-to-br from-primary/20 via-teal/20 to-soft-blue/20 rounded-xl flex items-center justify-center border border-primary/20 animate-gradient-shift">
+                    <img src={logo} alt="DF" className="h-8 w-auto md:h-12 lg:h-16 logo-blend" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Account Balance</p>
-                    <p className={`font-display text-3xl font-bold text-foreground transition-all duration-500 ${isBalanceIncreasing ? 'animate-number-glow' : ''}`}>
+                    <p className="text-xs md:text-sm text-muted-foreground">Account Balance</p>
+                    <p className={`font-display text-xl md:text-2xl lg:text-3xl font-bold text-foreground transition-all duration-500 ${isBalanceIncreasing ? 'animate-number-glow' : ''}`}>
                       ${displayBalance.toLocaleString()}.00
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                  <TrendingUp className="w-4 h-4 animate-icon-breathe" />
+                <div className="flex items-center gap-2 px-2 md:px-3 py-1 rounded-full bg-primary/10 text-primary text-xs md:text-sm font-medium">
+                  <TrendingUp className="w-3 h-4 md:w-4 h-4 animate-icon-breathe" />
                   <span className="transition-all duration-500">+{displayPercentage.toFixed(2)}%</span>
                 </div>
               </div>
 
               {/* Equity Curve with animations */}
-              <div className="relative h-40 mb-6 rounded-xl bg-muted/30 overflow-hidden">
+              <div className="relative h-24 md:h-32 lg:h-40 mb-4 md:mb-6 rounded-xl bg-muted/30 overflow-hidden">
                 <svg className="w-full h-full" viewBox="0 0 400 160" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -228,21 +228,21 @@ const Hero = () => {
               </div>
 
               {/* Stats Grid with pulse animations */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
-                  <DollarSign className="w-5 h-5 text-primary mx-auto mb-1" />
-                  <p className="text-xs text-muted-foreground">Open P/L</p>
-                  <p className="font-semibold text-primary animate-stat-pulse">+${Math.round(displayOpenPL).toLocaleString()}</p>
+              <div className="grid grid-cols-3 gap-2 md:gap-4">
+                <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
+                  <DollarSign className="w-4 h-4 md:w-5 md:h-5 text-primary mx-auto mb-1" />
+                  <p className="text-[10px] md:text-xs text-muted-foreground">Open P/L</p>
+                  <p className="text-xs md:text-sm font-semibold text-primary animate-stat-pulse">+${Math.round(displayOpenPL).toLocaleString()}</p>
                 </div>
-                <div className="text-center p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
-                  <BarChart3 className="w-5 h-5 text-teal mx-auto mb-1" />
-                  <p className="text-xs text-muted-foreground">Win Rate</p>
-                  <p className="font-semibold text-foreground animate-stat-pulse">{displayWinRate.toFixed(1)}%</p>
+                <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
+                  <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-teal mx-auto mb-1" />
+                  <p className="text-[10px] md:text-xs text-muted-foreground">Win Rate</p>
+                  <p className="text-xs md:text-sm font-semibold text-foreground animate-stat-pulse">{displayWinRate.toFixed(1)}%</p>
                 </div>
-                <div className="text-center p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
-                  <TrendingUp className="w-5 h-5 text-soft-blue mx-auto mb-1" />
-                  <p className="text-xs text-muted-foreground">Trades</p>
-                  <p className="font-semibold text-foreground animate-stat-pulse">{displayTrades}</p>
+                <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
+                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-soft-blue mx-auto mb-1" />
+                  <p className="text-[10px] md:text-xs text-muted-foreground">Trades</p>
+                  <p className="text-xs md:text-sm font-semibold text-foreground animate-stat-pulse">{displayTrades}</p>
                 </div>
               </div>
             </div>
