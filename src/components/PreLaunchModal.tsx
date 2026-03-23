@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-const STORAGE_KEY = 'dynasty-prelaunch-seen';
+const STORAGE_KEY = 'prelaunch-seen';
 
 interface PreLaunchModalProps {
   externalOpen?: boolean;

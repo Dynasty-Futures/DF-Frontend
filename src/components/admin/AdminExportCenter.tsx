@@ -15,12 +15,12 @@ interface Export {
 }
 
 const mockExports: Export[] = [
-  { id: 'EXP-001', type: 'payouts', date: '2024-01-15 14:30', createdBy: 'admin@dynasty.com', status: 'Completed', fileName: 'payouts_2024-01-15.csv' },
-  { id: 'EXP-002', type: 'accounts', date: '2024-01-14 10:00', createdBy: 'ops@dynasty.com', status: 'Completed', fileName: 'accounts_2024-01-14.csv' },
-  { id: 'EXP-003', type: 'audit', date: '2024-01-13 16:45', createdBy: 'admin@dynasty.com', status: 'Completed', fileName: 'audit_2024-01-13.csv' },
-  { id: 'EXP-004', type: 'users', date: '2024-01-12 09:15', createdBy: 'ops@dynasty.com', status: 'Failed', fileName: 'users_2024-01-12.csv' },
-  { id: 'EXP-005', type: 'transactions', date: '2024-01-11 11:00', createdBy: 'admin@dynasty.com', status: 'Completed', fileName: 'transactions_2024-01-11.csv' },
-  { id: 'EXP-006', type: 'payouts', date: '2024-01-10 15:30', createdBy: 'ops@dynasty.com', status: 'Processing', fileName: 'payouts_2024-01-10.csv' },
+  { id: 'EXP-001', type: 'payouts', date: '2024-01-15 14:30', createdBy: 'admin@df.local', status: 'Completed', fileName: 'payouts_2024-01-15.csv' },
+  { id: 'EXP-002', type: 'accounts', date: '2024-01-14 10:00', createdBy: 'ops@df.local', status: 'Completed', fileName: 'accounts_2024-01-14.csv' },
+  { id: 'EXP-003', type: 'audit', date: '2024-01-13 16:45', createdBy: 'admin@df.local', status: 'Completed', fileName: 'audit_2024-01-13.csv' },
+  { id: 'EXP-004', type: 'users', date: '2024-01-12 09:15', createdBy: 'ops@df.local', status: 'Failed', fileName: 'users_2024-01-12.csv' },
+  { id: 'EXP-005', type: 'transactions', date: '2024-01-11 11:00', createdBy: 'admin@df.local', status: 'Completed', fileName: 'transactions_2024-01-11.csv' },
+  { id: 'EXP-006', type: 'payouts', date: '2024-01-10 15:30', createdBy: 'ops@df.local', status: 'Processing', fileName: 'payouts_2024-01-10.csv' },
 ];
 
 export function AdminExportCenter() {

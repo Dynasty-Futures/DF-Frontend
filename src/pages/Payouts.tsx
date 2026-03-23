@@ -7,7 +7,7 @@ const mockData = {
   currentBalance: 108450.00,
   withdrawableAmount: 6340.00,
   nextPayoutWindow: '3 days',
-  planType: 'Dynasty Plan',
+  planType: 'Builder Plan',
   accountSize: '$100,000',
   payoutHistory: [
     { id: 1, date: '2025-01-15', amount: 2500.00, status: 'Completed' },

@@ -154,8 +154,8 @@ const achievements: Achievement[] = [
     state: "locked",
   },
   {
-    id: "dynasty-elite",
-    title: "Dynasty Elite",
+    id: "builder-elite",
+    title: "Builder Elite",
     description: "Maintain funded status for 6 months",
     icon: <Crown size={24} className="text-primary" />,
     category: "progression",

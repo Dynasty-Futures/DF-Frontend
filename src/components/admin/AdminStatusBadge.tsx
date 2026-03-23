@@ -113,14 +113,14 @@ export function AdminSeverityBadge({ severity, className }: AdminSeverityBadgePr
 }
 
 interface AdminPlanBadgeProps {
-  plan: 'Standard' | 'Advanced' | 'Dynasty';
+  plan: 'Standard' | 'Advanced' | 'Builder';
   className?: string;
 }
 
 const planStyles = {
   'Standard': 'bg-muted/50 text-muted-foreground border-border/50',
   'Advanced': 'bg-secondary/20 text-secondary border-secondary/30',
-  'Dynasty': 'bg-primary/20 text-primary border-primary/30',
+  'Builder': 'bg-primary/20 text-primary border-primary/30',
 };
 
 export function AdminPlanBadge({ plan, className }: AdminPlanBadgeProps) {

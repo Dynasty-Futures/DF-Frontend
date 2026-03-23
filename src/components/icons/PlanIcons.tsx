@@ -136,8 +136,8 @@ export const AdvancedIcon = ({ className, size = 24 }: IconProps) => (
   </svg>
 );
 
-// Dynasty Plan Icon - Sharp geometric crown with angular facets
-export const DynastyIcon = ({ className, size = 24 }: IconProps) => (
+// Builder Plan Icon - Structured geometric build mark
+export const BuilderIcon = ({ className, size = 24 }: IconProps) => (
   <svg
     width={size}
     height={size}
@@ -146,7 +146,7 @@ export const DynastyIcon = ({ className, size = 24 }: IconProps) => (
     className={cn("transition-all duration-300", className)}
   >
     <defs>
-      <linearGradient id="dynastyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="builderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="hsl(45 90% 55%)" />
         <stop offset="30%" stopColor="hsl(142 76% 50%)" />
         <stop offset="60%" stopColor="hsl(175 70% 50%)" />
@@ -168,7 +168,7 @@ export const DynastyIcon = ({ className, size = 24 }: IconProps) => (
     {/* Crown base - sharp angular design */}
     <path
       d="M3 19L5 9L9 13L12 6L15 13L19 9L21 19H3Z"
-      fill="url(#dynastyGrad)"
+      fill="url(#builderGrad)"
     />
     {/* Crown band - sharp */}
     <rect x="3" y="19" width="18" height="3" fill="hsl(45 90% 40%)" />

@@ -7,10 +7,10 @@ import { Search, CheckCircle, XCircle, UserCog, DollarSign } from 'lucide-react'
 
 // Mock data - would come from backend
 const mockUsers = [
-  { id: 'DF-001', name: 'John Smith', email: 'john@example.com', planType: 'Dynasty', accountSize: '$100,000', status: 'Active' },
+  { id: 'DF-001', name: 'John Smith', email: 'john@example.com', planType: 'Builder', accountSize: '$100,000', status: 'Active' },
   { id: 'DF-002', name: 'Sarah Johnson', email: 'sarah@example.com', planType: 'Advanced', accountSize: '$50,000', status: 'Pending' },
   { id: 'DF-003', name: 'Mike Davis', email: 'mike@example.com', planType: 'Standard', accountSize: '$25,000', status: 'Under Review' },
-  { id: 'DF-004', name: 'Emily Brown', email: 'emily@example.com', planType: 'Dynasty', accountSize: '$150,000', status: 'Active' },
+  { id: 'DF-004', name: 'Emily Brown', email: 'emily@example.com', planType: 'Builder', accountSize: '$150,000', status: 'Active' },
   { id: 'DF-005', name: 'Chris Wilson', email: 'chris@example.com', planType: 'Standard', accountSize: '$100,000', status: 'Violated' },
   { id: 'DF-006', name: 'Amanda Lee', email: 'amanda@example.com', planType: 'Advanced', accountSize: '$50,000', status: 'Active' },
 ];
@@ -46,7 +46,7 @@ const Admin = () => {
                 <UserCog className="w-5 h-5 text-primary" />
               </div>
               <h1 className="font-display text-3xl md:text-4xl font-bold">
-                Dynasty <span className="text-gradient">Admin Panel</span>
+                <span className="text-gradient">Admin Panel</span>
               </h1>
             </div>
             <p className="text-muted-foreground">

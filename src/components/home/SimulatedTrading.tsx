@@ -9,7 +9,7 @@ const features = [
   {
     icon: Zap,
     title: 'Platform Connections',
-    description: 'Connect through supported platforms like Tradovate with Rithmic data feed integration.',
+    description: 'Connect through supported platforms like Volumetrica with DeepCharts data feed integration.',
   },
   {
     icon: Shield,
@@ -75,7 +75,7 @@ const SimulatedTrading = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-foreground">Your Trading Platform</p>
-                    <p className="text-xs text-muted-foreground">Tradovate & Compatible Platforms</p>
+                    <p className="text-xs text-muted-foreground">Volumetrica DeepCharts Platform</p>
                   </div>
                 </div>
 
@@ -90,8 +90,8 @@ const SimulatedTrading = () => {
                     <Zap className="w-5 h-5 text-foreground" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">Data Feed Connection</p>
-                    <p className="text-xs text-muted-foreground">Rithmic Integration</p>
+                    <p className="font-semibold text-foreground">Market Data Connection</p>
+                    <p className="text-xs text-muted-foreground">Professional futures market data feed</p>
                   </div>
                 </div>
 

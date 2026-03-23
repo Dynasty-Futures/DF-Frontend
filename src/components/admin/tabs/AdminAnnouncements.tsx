@@ -149,7 +149,7 @@ export function AdminAnnouncements() {
                       <SelectItem value="all">All Users</SelectItem>
                       <SelectItem value="standard">Standard Plan</SelectItem>
                       <SelectItem value="advanced">Advanced Plan</SelectItem>
-                      <SelectItem value="dynasty">Dynasty Plan</SelectItem>
+                      <SelectItem value="builder">Builder Plan</SelectItem>
                       <SelectItem value="funded">Funded Only</SelectItem>
                       <SelectItem value="evaluation">Evaluation Only</SelectItem>
                     </SelectContent>
