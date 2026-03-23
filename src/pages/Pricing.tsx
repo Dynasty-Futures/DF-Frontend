@@ -38,21 +38,24 @@ const accountRules = {
   '$150,000': { profitTarget: '$8,000', maxDrawdown: '$4,500', dailyLoss: '$3,000' },
 };
 
-const tradableMarkets = [
-  { product: 'Micro E-mini Nasdaq-100', symbol: 'MNQ' },
-  { product: 'Micro E-mini S&P 500', symbol: 'MES' },
-  { product: 'E-mini Nasdaq-100', symbol: 'NQ' },
-  { product: 'E-mini S&P 500', symbol: 'ES' },
-  { product: 'Crude Oil', symbol: 'CL' },
-  { product: 'Gold', symbol: 'GC' },
+const positionSizingGuidance = [
+  {
+    accountSize: '25K Account',
+    description: 'Designed for smaller position sizing with controlled contract exposure.',
+  },
+  {
+    accountSize: '50K Account',
+    description: 'Allows increased contract capacity while maintaining structured risk limits.',
+  },
+  {
+    accountSize: '100K Account',
+    description: 'Supports larger trade sizes suitable for more experienced traders.',
+  },
+  {
+    accountSize: '150K Account',
+    description: 'Maximum contract capacity designed for advanced strategy deployment.',
+  },
 ];
-
-const contractLimits = {
-  '25K': { MNQ: 4, MES: 6, NQ: 1, ES: 1, CL: 1, GC: 1 },
-  '50K': { MNQ: 8, MES: 12, NQ: 2, ES: 2, CL: 2, GC: 2 },
-  '100K': { MNQ: 16, MES: 20, NQ: 4, ES: 4, CL: 3, GC: 3 },
-  '150K': { MNQ: 24, MES: 30, NQ: 6, ES: 6, CL: 4, GC: 4 },
-};
 
 const Pricing = () => {
   const location = useLocation();
@@ -366,66 +369,34 @@ const Pricing = () => {
             {/* Tradable Markets Section */}
             <section className="mb-12">
               <div className="text-center mb-8">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Tradable Futures Markets <span className="text-gradient">(Tradovate)</span></h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">All Dynasty Futures accounts trade via Tradovate. Product availability is consistent across all plans.</p>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Tradable Futures Markets</h2>
               </div>
               <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border/30 bg-muted/10">
-                      <th className="text-left py-4 px-6 text-foreground font-semibold">Product</th>
-                      <th className="text-left py-4 px-6 text-foreground font-semibold">Symbol</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tradableMarkets.map((market) => (
-                      <tr key={market.symbol} className="border-b border-border/20 hover:bg-primary/5 transition-colors">
-                        <td className="py-3 px-6 text-foreground">{market.product}</td>
-                        <td className="py-3 px-6 text-primary font-semibold">{market.symbol}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <div className="p-6 md:p-8">
+                  <p className="text-muted-foreground max-w-3xl mx-auto text-center">
+                    Dynasty Futures traders can trade a wide range of globally recognized futures markets through our professional trading infrastructure. Available instruments include major equity index futures, energy markets, metals, and other commonly traded futures contracts.
+                  </p>
+                </div>
               </div>
             </section>
 
-            {/* Contract Limits by Account Size */}
+            {/* Position Sizing by Account Size */}
             <section className="mb-20">
               <div className="text-center mb-8">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Contract Limits <span className="text-gradient">by Account Size</span></h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">Contract limits apply universally across all plans and depend only on account size.</p>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Position Sizing <span className="text-gradient">by Account Size</span></h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">Position sizing limits are determined by account size to promote responsible risk management. Larger account sizes allow for increased contract capacity while maintaining structured exposure limits.</p>
               </div>
               <Accordion type="single" collapsible className="space-y-4">
-                {Object.entries(contractLimits).map(([size, limits]) => (
-                  <AccordionItem key={size} value={size} className="glass-card rounded-xl border border-border/50 px-6">
-                    <AccordionTrigger className="text-lg font-semibold text-foreground hover:no-underline py-5">{size} Account – Contract Limits</AccordionTrigger>
+                {positionSizingGuidance.map((item) => (
+                  <AccordionItem key={item.accountSize} value={item.accountSize} className="glass-card rounded-xl border border-border/50 px-6">
+                    <AccordionTrigger className="text-lg font-semibold text-foreground hover:no-underline py-5">{item.accountSize}</AccordionTrigger>
                     <AccordionContent>
-                      <div className="overflow-x-auto pb-4">
-                        <table className="w-full">
-                          <thead>
-                            <tr className="border-b border-border/30">
-                              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Product</th>
-                              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Symbol</th>
-                              <th className="text-left py-3 px-4 text-muted-foreground font-medium">Max Contracts</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {tradableMarkets.map((market) => (
-                              <tr key={market.symbol} className="border-b border-border/20">
-                                <td className="py-3 px-4 text-foreground">{market.product}</td>
-                                <td className="py-3 px-4 text-muted-foreground">{market.symbol}</td>
-                                <td className="py-3 px-4 text-primary font-semibold">{limits[market.symbol as keyof typeof limits]}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        <p className="text-xs text-muted-foreground mt-3">Limits represent maximum simultaneous open contracts per product.</p>
-                      </div>
+                      <p className="text-muted-foreground pb-4">{item.description}</p>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
-              <p className="text-sm text-muted-foreground text-center mt-6">Contract limits control risk exposure and are enforced automatically. Attempting to exceed limits will result in order rejection.</p>
+              <p className="text-sm text-muted-foreground text-center mt-6">Position sizing controls risk exposure and is enforced automatically.</p>
             </section>
           </div>
         </div>
