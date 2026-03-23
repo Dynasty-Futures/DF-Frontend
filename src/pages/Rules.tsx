@@ -2,7 +2,6 @@ import { useState, useMemo } from "react";
 import Layout from "@/components/layout/Layout";
 import {
   CheckIcon,
-  CrossIcon,
   ShieldIcon,
   ClockIcon,
   DollarIcon,
@@ -37,7 +36,7 @@ const universalRules = [
     icon: ShieldIcon,
     title: "Static Drawdown (No Trailing)",
     description:
-      "All accounts use a static Max Loss Limit that does not trail equity. Drawdown level is fixed at the amount listed for each account size.",
+      "All accounts use a static Max Loss Limit that does not trail equity. Drawdown level is fixed at the amount listed for each plan and account size.",
     allowed: true,
   },
   {
@@ -149,25 +148,29 @@ const accountRules = [
   {
     size: "25K Account",
     profitTarget: "$1,500",
-    maxDrawdown: "$1,500",
+    standardAdvancedMaxDrawdown: "$1,000",
+    builderMaxDrawdown: "$1,500",
     dailyLoss: "$750",
   },
   {
     size: "50K Account",
     profitTarget: "$3,000",
-    maxDrawdown: "$2,500",
+    standardAdvancedMaxDrawdown: "$2,000",
+    builderMaxDrawdown: "$2,500",
     dailyLoss: "$1,500",
   },
   {
     size: "100K Account",
     profitTarget: "$6,000",
-    maxDrawdown: "$3,000",
+    standardAdvancedMaxDrawdown: "$2,500",
+    builderMaxDrawdown: "$3,000",
     dailyLoss: "$2,000",
   },
   {
     size: "150K Account",
     profitTarget: "$8,000",
-    maxDrawdown: "$4,500",
+    standardAdvancedMaxDrawdown: "$4,000",
+    builderMaxDrawdown: "$4,500",
     dailyLoss: "$3,000",
   },
 ];
@@ -202,23 +205,19 @@ const planRules = [
       "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more.",
   },
   {
-    name: "Dynasty Plan",
-    tagline: "Instant Funding + Daily Payouts",
+    name: "Builder Plan",
+    tagline: "More Room to Execute",
     features: [
-      "Instant funding once purchased",
-      "Build $3,000 buffer → unlock daily payouts",
-      "Optional: $1,400/day payout cap or take full 5-day payout",
-      "No consistency rule",
+      "Higher max loss limit than Standard",
+      "50% consistency rule (evaluation phase)",
+      "2 minimum trading days to pass",
+      "No activation fee",
+      "5-day payout cycles",
       "Static drawdown",
       "Copy trading allowed",
     ],
-    eligibility: null,
-    dynastyEligibility: {
-      fiveDay:
-        "Payout Eligibility (5-Day Method): If you choose the 5-Day Payout Method for the month, you must have at least 5 Winning Days, each with a profit of $500 or more, to be eligible for a payout.",
-      daily:
-        "Payout Eligibility (Daily Method): If you choose the Daily Payout Method, the 5 Winning Days rule does not apply. To be eligible for a daily payout, you must: • Have a fully built $3,000 buffer, and • Have a daily profit of at least $500 on the day of your payout request, and • Place at least one trade on that same day.",
-    },
+    eligibility:
+      "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more.",
   },
 ];
 
@@ -501,7 +500,7 @@ const Rules = () => {
               </span>
             </h2>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {accountRules.map((account) => (
                 <div
                   key={account.size}
@@ -521,10 +520,26 @@ const Rules = () => {
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-border/30">
                       <span className="text-sm text-muted-foreground">
-                        Max Loss Limit
+                        Standard/Advanced Max Loss
                       </span>
                       <span className="font-semibold text-foreground">
-                        {account.maxDrawdown}
+                        {account.standardAdvancedMaxDrawdown}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">
+                        Builder Max Loss
+                      </span>
+                      <span className="font-semibold text-foreground">
+                        {account.builderMaxDrawdown}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                      <span className="text-sm text-muted-foreground">
+                        Daily Loss Limit
+                      </span>
+                      <span className="font-semibold text-foreground">
+                        {account.dailyLoss}
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-2">
@@ -566,7 +581,7 @@ const Rules = () => {
                           ? "standard"
                           : index === 1
                           ? "advanced"
-                          : "dynasty"
+                          : "builder"
                       }`}
                       className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 hover:scale-105 transition-transform ${
                         index === 0
@@ -600,16 +615,6 @@ const Rules = () => {
                       </p>
                     </div>
                   )}
-                  {plan.dynastyEligibility && (
-                    <div className="mt-4 pt-4 border-t border-border/30 space-y-3">
-                      <p className="text-sm text-primary font-medium">
-                        {plan.dynastyEligibility.fiveDay}
-                      </p>
-                      <p className="text-sm text-primary font-medium">
-                        {plan.dynastyEligibility.daily}
-                      </p>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -631,9 +636,9 @@ const Rules = () => {
                   constant.
                 </p>
                 <p className="text-muted-foreground mb-4">
-                  For example, if you have a $100,000 account with a $3,000
+                  For example, if you have a $100,000 account with a $2,500
                   static drawdown, your account will be violated if your balance
-                  drops below $97,000 at any point. This level does not change
+                  drops below $97,500 at any point. This level does not change
                   regardless of how much profit you make.
                 </p>
                 <p className="text-muted-foreground">
@@ -644,11 +649,11 @@ const Rules = () => {
             </div>
           </section>
 
-          {/* Dynasty Plan Payout Rules */}
+          {/* Builder Plan Rules Summary */}
           <section className="mb-20">
             <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
               <span className="text-gradient-animated">
-                Dynasty Plan Payout Rules
+                Builder Plan Rules Summary
               </span>
             </h2>
 
@@ -668,73 +673,50 @@ const Rules = () => {
                   <tbody>
                     <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Monthly "Flush" on Dynasty
+                        Consistency Rule
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        Any profits above $10,000 in a calendar week are carried
-                        forward to the next week.
+                        50% consistency rule applies during the evaluation phase.
                       </td>
                     </tr>
                     <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Payout Eligibility – Dynasty (5-Day Payout Method)
+                        Minimum Trading Days
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        If you choose the 5-Day Payout Method for the month, you
-                        must have at least 5 Winning Days, each with a profit of
-                        $500 or more, to be eligible for a payout. Weekly cap:
-                        $7,000. Monthly cap: $28,000.
+                        2 minimum trading days are required to pass evaluation.
                       </td>
                     </tr>
                     <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Payout Eligibility – Dynasty (Daily Payout Method)
+                        Activation Fee
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        If you choose the Daily Payout Method, the 5 Winning
-                        Days rule does not apply. To be eligible for a daily
-                        payout, you must: • Have a fully built $3,000 buffer,
-                        and • Have a daily profit of at least $500 on the day of
-                        your payout request, and • Place at least one trade on
-                        that same day. Minimum payout: $500. Maximum daily
-                        payout: $1,400. Monthly cap: $28,000.
+                        No activation fee is required after passing.
                       </td>
                     </tr>
                     <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Daily Payout Method
+                        Payout Cycle
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        Dynasty traders may request one payout per day, with a
-                        maximum of $1,400 per day, once the required $3,000
-                        buffer is fully built.
+                        Builder uses the 5-day payout cycle.
                       </td>
                     </tr>
                     <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Payout Method Lock-In
+                        Max Loss Limit
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        Dynasty traders may choose either the Daily Payout
-                        Method or the 5-Day Payout Method. Once selected, the
-                        payout method is locked in for the remainder of the
-                        calendar month. Switching payout methods is only allowed
-                        on the 1st day of the next month. This prevents
-                        overlapping payout cycles and ensures consistent
-                        scheduling.
+                        Builder max loss limits are $500 higher than Standard for each account size.
                       </td>
                     </tr>
                     <tr className="hover:bg-muted/10 transition-colors">
                       <td className="py-4 px-6 text-primary font-medium">
-                        Payout Notes
+                        Positioning
                       </td>
                       <td className="py-4 px-6 text-muted-foreground">
-                        All payouts require full compliance with plan rules and
-                        verification requirements. Additional review time may be
-                        required for large withdrawals, unusual trading
-                        activity, or incomplete account documentation. Payout
-                        timelines may vary on weekends, U.S. bank holidays, or
-                        during periods of high volume.
+                        Builder is designed for traders who want more room to execute with structured risk controls.
                       </td>
                     </tr>
                   </tbody>

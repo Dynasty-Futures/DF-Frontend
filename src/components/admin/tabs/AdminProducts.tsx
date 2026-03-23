@@ -41,11 +41,11 @@ export function AdminProducts() {
   const [editPlan, setEditPlan] = useState<MockPlan | null>(null);
   const [createPromo, setCreatePromo] = useState(false);
   const [featureToggles, setFeatureToggles] = useState({
-    dailyPayouts: true,
+    payoutRequests: true,
     fiveDayPayouts: true,
     standardEval: true,
     advancedEval: true,
-    dynastyEval: true,
+    builderEval: true,
   });
 
   const formatCurrency = (value: number | null) =>
@@ -236,17 +236,17 @@ export function AdminProducts() {
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 rounded-lg bg-muted/10 border border-border/30">
                 <div>
-                  <p className="font-medium">Daily Payouts</p>
+                  <p className="font-medium">Payout Requests</p>
                   <p className="text-sm text-muted-foreground">
-                    Allow traders to request daily payouts
+                    Allow traders to submit payout requests
                   </p>
                 </div>
                 <Switch
-                  checked={featureToggles.dailyPayouts}
+                  checked={featureToggles.payoutRequests}
                   onCheckedChange={(checked) =>
                     setFeatureToggles({
                       ...featureToggles,
-                      dailyPayouts: checked,
+                      payoutRequests: checked,
                     })
                   }
                 />
@@ -304,17 +304,17 @@ export function AdminProducts() {
               </div>
               <div className="flex items-center justify-between p-4 rounded-lg bg-muted/10 border border-border/30">
                 <div>
-                  <p className="font-medium">Dynasty Plan Evaluations</p>
+                  <p className="font-medium">Builder Plan Evaluations</p>
                   <p className="text-sm text-muted-foreground">
-                    Accept new Dynasty plan signups
+                    Accept new Builder plan signups
                   </p>
                 </div>
                 <Switch
-                  checked={featureToggles.dynastyEval}
+                  checked={featureToggles.builderEval}
                   onCheckedChange={(checked) =>
                     setFeatureToggles({
                       ...featureToggles,
-                      dynastyEval: checked,
+                      builderEval: checked,
                     })
                   }
                 />
@@ -385,7 +385,7 @@ export function AdminProducts() {
                     type="number"
                     defaultValue={editPlan.profitTarget ?? ""}
                     className="mt-1"
-                    placeholder="N/A for Dynasty"
+                    placeholder="Required for evaluation plans"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">

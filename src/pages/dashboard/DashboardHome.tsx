@@ -7,7 +7,7 @@ import AccountSelector from '@/components/dashboard/AccountSelector';
 import MetricCard from '@/components/dashboard/MetricCard';
 import PerformanceChart from '@/components/dashboard/PerformanceChart';
 import SummaryPanel from '@/components/dashboard/SummaryPanel';
-import DynastyPanel from '@/components/dashboard/DynastyPanel';
+import BuilderPanel from '@/components/dashboard/BuilderPanel';
 import AccountMetrics from '@/components/dashboard/AccountMetrics';
 import DailyAnalytics from '@/components/dashboard/DailyAnalytics';
 import { Button } from '@/components/ui/button';
@@ -36,8 +36,8 @@ const DashboardHome = () => {
     return getAccountById(selectedAccount) || mockAccounts[1];
   }, [selectedAccount]);
 
-  // Determine if this is a Dynasty account
-  const isDynastyAccount = accountData.planType === 'Dynasty';
+  // Determine if this is a Builder account
+  const isBuilderAccount = accountData.planType === 'Builder';
 
   // Generate chart data based on selected account and timeframe
   const chartData = useMemo(() => {
@@ -63,7 +63,7 @@ const DashboardHome = () => {
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
         <div>
           <h1 className="text-xl font-bold text-foreground">Dashboard</h1>
-          <p className="text-muted-foreground text-sm">Overview of your Dynasty Futures performance</p>
+          <p className="text-muted-foreground text-sm">Overview of your funded trading performance</p>
         </div>
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
           {/* Date Range Selector */}
@@ -156,11 +156,11 @@ const DashboardHome = () => {
             <div className="flex items-center gap-2">
               <Map size={14} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                {isDynastyAccount ? 'Payout Tracker' : 'Account Roadmap'}
+                {isBuilderAccount ? 'Payout Tracker' : 'Account Roadmap'}
               </span>
             </div>
-            {isDynastyAccount ? (
-              <DynastyPanel 
+            {isBuilderAccount ? (
+              <BuilderPanel 
                 accountId={selectedAccount}
                 selectedDate={selectedDate}
                 onDateChange={setSelectedDate}

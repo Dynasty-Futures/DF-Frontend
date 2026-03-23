@@ -12,7 +12,7 @@ import {
 
 const eligibleAccounts = [
   { id: '1', account: '100K Standard', balance: '$104,800', eligible: '$4,800' },
-  { id: '2', account: '150K Dynasty', balance: '$158,500', eligible: '$8,500' },
+  { id: '2', account: '150K Builder', balance: '$158,500', eligible: '$8,500' },
 ];
 
 const payoutHistory = [

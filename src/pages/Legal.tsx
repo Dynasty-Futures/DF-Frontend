@@ -19,17 +19,17 @@ const Legal = () => {
           {/* Tabs */}
           <div className="max-w-4xl mx-auto">
             <Tabs defaultValue="risk" className="w-full">
-            <TabsList className="w-full grid grid-cols-4 bg-muted/30 p-1 rounded-xl mb-8">
-                <TabsTrigger value="risk" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+            <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-4 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
+                <TabsTrigger value="risk" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0">
                   Risk Disclosure
                 </TabsTrigger>
-                <TabsTrigger value="terms" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <TabsTrigger value="terms" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0">
                   Terms of Use
                 </TabsTrigger>
-                <TabsTrigger value="privacy" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <TabsTrigger value="privacy" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0">
                   Privacy Policy
                 </TabsTrigger>
-                <TabsTrigger value="refund" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                <TabsTrigger value="refund" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0">
                   Refund & Cancellation
                 </TabsTrigger>
               </TabsList>

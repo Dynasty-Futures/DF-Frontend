@@ -59,7 +59,7 @@ const allowedItems = [
 ];
 
 const notAllowedItems = [
-  'Sharing Dynasty confidential information',
+  'Sharing confidential internal information',
   'Leaking payout rules, risk engine logic, or backend systems',
   'False earnings claims',
   'Encouraging rule-breaking',
@@ -84,7 +84,7 @@ const DashboardAffiliate = () => {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-foreground">Affiliate Program</h1>
-        <p className="text-muted-foreground mt-1">Earn commissions while helping traders build their dynasty.</p>
+        <p className="text-muted-foreground mt-1">Earn commissions while helping traders discover Dynasty Futures.</p>
       </div>
 
       {/* Referral Link & Discount Code */}
@@ -232,8 +232,8 @@ const DashboardAffiliate = () => {
           <h3 className="text-lg font-semibold text-foreground">Affiliate Freedom Policy</h3>
         </div>
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Dynasty Futures supports creators who partner with multiple prop firms. Affiliates may promote other firms, 
-          as long as confidential Dynasty information is not shared and comparisons do not use private internal data.
+          Dynasty Futures supports creators who partner with multiple prop firms. Affiliates may promote other firms,
+          as long as confidential internal information is not shared and comparisons do not use private data.
         </p>
       </div>
 

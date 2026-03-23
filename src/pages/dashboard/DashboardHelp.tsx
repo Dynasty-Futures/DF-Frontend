@@ -134,14 +134,14 @@ const DashboardHelp = () => {
           
           <HelpCard
             title="Getting Started Guide"
-            description="New to Dynasty Futures? Learn how to get started with your trading journey."
+            description="New here? Learn how to get started with your trading journey."
             icon={<BookOpen size={28} className="text-primary" />}
             to="/faq#getting-started"
           />
           
           <HelpCard
             title="Pre-Launch Announcement"
-            description="View the Dynasty Futures pre-launch announcement and launch timeline."
+            description="View the pre-launch announcement and launch timeline."
             icon={<Rocket size={28} className="text-primary" />}
             onClick={() => setShowAnnouncement(true)}
           />

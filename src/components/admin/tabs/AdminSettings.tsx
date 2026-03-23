@@ -19,7 +19,7 @@ export function AdminSettings() {
         <CardHeader><CardTitle className="text-base">Payout Rules Configuration</CardTitle></CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><Label>Max Daily Payout</Label><Input placeholder="$50,000" className="mt-1 bg-muted/20 border-border/30" /></div>
+            <div><Label>Max Weekly Payout</Label><Input placeholder="$7,000" className="mt-1 bg-muted/20 border-border/30" /></div>
             <div><Label>Payout Window (days)</Label><Input placeholder="14" className="mt-1 bg-muted/20 border-border/30" /></div>
             <div><Label>Min Trading Days</Label><Input placeholder="5" className="mt-1 bg-muted/20 border-border/30" /></div>
             <div><Label>Max Single Payout</Label><Input placeholder="$25,000" className="mt-1 bg-muted/20 border-border/30" /></div>

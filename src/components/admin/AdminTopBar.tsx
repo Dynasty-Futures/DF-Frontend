@@ -98,7 +98,7 @@ export function AdminTopBar() {
               <SelectItem value="all">All Plans</SelectItem>
               <SelectItem value="standard">Standard</SelectItem>
               <SelectItem value="advanced">Advanced</SelectItem>
-              <SelectItem value="dynasty">Dynasty</SelectItem>
+              <SelectItem value="builder">Builder</SelectItem>
             </SelectContent>
           </Select>
 

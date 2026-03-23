@@ -34,7 +34,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface DynastyPanelProps {
+interface BuilderPanelProps {
   accountId: string;
   selectedDate: Date;
   onDateChange: (date: Date) => void;
@@ -72,12 +72,12 @@ const DetailRow = ({ label, value, icon }: DetailRowProps) => (
   </Tooltip>
 );
 
-const DynastyPanel = ({
+const BuilderPanel = ({
   accountId,
   selectedDate,
   onDateChange,
-}: DynastyPanelProps) => {
-  const [payoutType, setPayoutType] = useState<"daily" | "5day">("daily");
+}: BuilderPanelProps) => {
+  const [payoutType, setPayoutType] = useState<"5day">("5day");
   const [viewedMonth, setViewedMonth] = useState(new Date());
   const navigate = useNavigate();
   const account = getAccountById(accountId) || mockAccounts[2];
@@ -162,7 +162,7 @@ const DynastyPanel = ({
         <div className="flex flex-col gap-3 mb-4">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-semibold text-foreground">
-              Dynasty Payout Roadmap
+              Builder Payout Roadmap
             </h3>
             <div className="flex items-center gap-2">
               <Badge
@@ -185,30 +185,10 @@ const DynastyPanel = ({
             </div>
           </div>
 
-          {/* Payout Type Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/20 border border-border/30 self-start">
-            <button
-              className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300",
-                payoutType === "daily"
-                  ? "bg-primary/20 text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-              onClick={() => setPayoutType("daily")}
-            >
-              Daily Payout
-            </button>
-            <button
-              className={cn(
-                "px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300",
-                payoutType === "5day"
-                  ? "bg-primary/20 text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              )}
-              onClick={() => setPayoutType("5day")}
-            >
+            <span className="px-3 py-1.5 rounded-md text-xs font-medium bg-primary/20 text-primary">
               5-Day Payout
-            </button>
+            </span>
           </div>
         </div>
 
@@ -218,53 +198,28 @@ const DynastyPanel = ({
             Payout Details
           </span>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2">
-            {payoutType === "daily" ? (
-              <>
-                <DetailRow
-                  label="Payout Type"
-                  value="Daily Payout"
-                  icon={<DollarSign size={14} className="text-primary" />}
-                />
-                <DetailRow
-                  label="Eligibility"
-                  value="Daily criteria"
-                  icon={<Zap size={14} className="text-primary" />}
-                />
-                <DetailRow
-                  label="Payout Window"
-                  value="Next business day"
-                  icon={<Clock size={14} className="text-teal" />}
-                />
-                <DetailRow
-                  label="Max Daily"
-                  value="$1,400"
-                  icon={<ArrowUpRight size={14} className="text-primary" />}
-                />
-              </>
-            ) : (
-              <>
-                <DetailRow
-                  label="Payout Type"
-                  value="5-Day Cycle"
-                  icon={<DollarSign size={14} className="text-primary" />}
-                />
-                <DetailRow
-                  label="Eligibility"
-                  value="Cycle requirements"
-                  icon={<Zap size={14} className="text-primary" />}
-                />
-                <DetailRow
-                  label="Payout Window"
-                  value="Every 5 trading days"
-                  icon={<Calendar size={14} className="text-teal" />}
-                />
-                <DetailRow
-                  label="Weekly Max"
-                  value="$7,000"
-                  icon={<ArrowUpRight size={14} className="text-primary" />}
-                />
-              </>
-            )}
+            <>
+              <DetailRow
+                label="Payout Type"
+                value="5-Day Cycle"
+                icon={<DollarSign size={14} className="text-primary" />}
+              />
+              <DetailRow
+                label="Eligibility"
+                value="Cycle requirements"
+                icon={<Zap size={14} className="text-primary" />}
+              />
+              <DetailRow
+                label="Payout Window"
+                value="Every 5 trading days"
+                icon={<Calendar size={14} className="text-teal" />}
+              />
+              <DetailRow
+                label="Weekly Max"
+                value="$7,000"
+                icon={<ArrowUpRight size={14} className="text-primary" />}
+              />
+            </>
           </div>
         </div>
 
@@ -598,4 +553,4 @@ const DynastyPanel = ({
   );
 };
 
-export default DynastyPanel;
+export default BuilderPanel;

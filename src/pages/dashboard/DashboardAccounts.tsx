@@ -32,7 +32,7 @@ const mockAccounts = [
   {
     id: '3',
     startDate: '2024-12-10',
-    planType: 'Dynasty',
+    planType: 'Builder',
     accountSize: '$150K',
     stage: 'Funded',
     status: 'Active',
@@ -67,7 +67,7 @@ const getStageBadge = (stage: string) => {
 };
 
 type FilterStatus = 'All' | 'Active' | 'Violated' | 'Closed';
-type FilterPlan = 'All' | 'Standard' | 'Advanced' | 'Dynasty';
+type FilterPlan = 'All' | 'Standard' | 'Advanced' | 'Builder';
 
 const DashboardAccounts = () => {
   const [statusFilter, setStatusFilter] = useState<FilterStatus>('All');
@@ -93,7 +93,7 @@ const DashboardAccounts = () => {
         <div className="space-y-2">
           <span className="text-sm text-muted-foreground">Plan Type</span>
           <div className="flex items-center gap-2">
-            {(['All', 'Standard', 'Advanced', 'Dynasty'] as FilterPlan[]).map((plan) => (
+            {(['All', 'Standard', 'Advanced', 'Builder'] as FilterPlan[]).map((plan) => (
               <Button
                 key={plan}
                 variant="ghost"

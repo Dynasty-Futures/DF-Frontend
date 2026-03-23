@@ -12,21 +12,21 @@ const faqs = [
   {
     id: "plans-difference",
     question:
-      "What's the difference between Standard, Advanced, and Dynasty plans?",
+      "What's the difference between Standard, Advanced, and Builder plans?",
     answer:
-      "Standard Plan has a low evaluation fee with an $80 activation fee after passing. Advanced Plan has a slightly higher evaluation fee but no activation fee—you're activated immediately upon passing. Dynasty Plan offers instant funding with no evaluation needed, plus the ability to unlock daily payouts once you build a $3,000 profit buffer.",
+      "Standard Plan has a lower evaluation fee with an $80 activation fee after passing. Advanced Plan has a higher evaluation fee with no activation fee. Builder Plan is designed for traders who want more room to execute with a higher max loss limit than Standard and no activation fee.",
   },
   {
     id: "simulated-trading",
     question: "How does simulated trading work?",
     answer:
-      "During the challenge phase, you trade in a simulated environment that mirrors real futures markets. Price data is real-time or near real-time, and orders are routed through supported platforms like Tradovate with Rithmic data feed integration. You never trade live capital—simulated trading is used in both the evaluation and funded phases.",
+      "During the challenge phase, you trade in a simulated environment that mirrors real futures markets. Price data is real-time or near real-time, and orders are routed through supported platforms like Volumetrica with DeepCharts data feed integration. You never trade live capital—simulated trading is used in both the evaluation and funded phases.",
   },
   {
     id: "payouts",
     question: "When do payouts happen?",
     answer:
-      "For Standard and Advanced plans, payouts occur on 5-day cycles once you're funded. For Dynasty Plan, you can unlock daily payouts after building a $3,000 profit buffer, with a $1,400/day maximum or you can use the 5-day payout method with a $7,000 weekly cap. All plans have a $28,000 monthly cap (except Standard at $20,000/month).",
+      "For Standard, Advanced, and Builder plans, payouts occur on 5-day cycles once you're funded. Monthly caps remain structured by plan and account type.",
   },
   {
     id: "static-drawdown",
@@ -41,12 +41,6 @@ const faqs = [
       "After a payout, your Maximum Loss Limit (MLL) is reset to $0.00. Your remaining account balance becomes your entire loss buffer. If losses reduce your account balance to $0.00 or below, the account is failed.",
   },
   {
-    id: "profit-buffer",
-    question: "What is a Profit Buffer?",
-    answer:
-      "A profit buffer is a threshold amount you must earn before unlocking certain payout options. For example, on the Dynasty Plan, traders must build a $3,000 profit buffer before they can request daily payouts. The buffer protects against account drawdown and ensures sustainable trading before withdrawals begin.",
-  },
-  {
     id: "copy-trading",
     question: "Can I use copy trading or bots?",
     answer:
@@ -56,7 +50,7 @@ const faqs = [
     id: "platforms",
     question: "What platforms do you support?",
     answer:
-      "We support connections to platforms like Tradovate with Rithmic data feed integration. These are third-party platforms and feeds—Dynasty Futures is a proprietary trading firm, not a brokerage.",
+      "We support connections to platforms like Volumetrica with DeepCharts data feed integration. These are third-party platforms and feeds—Dynasty Futures is a proprietary trading firm, not a brokerage.",
   },
   {
     id: "rule-violation",
@@ -80,13 +74,13 @@ const faqs = [
     id: "consistency",
     question: "Is there a consistency rule?",
     answer:
-      "Yes — but only on the Standard Plan evaluation.\n\nThe Standard Plan includes a 50% consistency rule during the evaluation phase only, meaning no single trading day may account for more than 50% of the total profit target.\n\nOnce the evaluation is passed and the account is approved for funding, the consistency rule is removed.\n\nNo other plans include a consistency rule, and no funded accounts are subject to a consistency rule.",
+      "Yes — on Standard and Builder during evaluation.\n\nBoth Standard and Builder include a 50% consistency rule during the evaluation phase, meaning no single trading day may account for more than 50% of the total profit target.\n\nOnce the evaluation is passed and the account is approved for funding, the consistency rule is removed.\n\nAdvanced does not include a consistency rule, and no funded accounts are subject to a consistency rule.",
   },
   {
     id: "getting-started",
     question: "How do I get started?",
     answer:
-      "Simply visit our Pricing page, choose your preferred plan and account size, and complete the checkout process. For Standard and Advanced plans, you'll begin your evaluation challenge. For Dynasty Plan, you'll start trading immediately after purchase.",
+      "Simply visit our Pricing page, choose your preferred plan and account size, and complete the checkout process. For Standard, Advanced, and Builder plans, you'll begin your evaluation challenge.",
   },
   {
     id: "profit-target",

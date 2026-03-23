@@ -27,8 +27,8 @@ export interface AccountData {
   id: string;
   name: string;
   size: number;
-  plan: 'Standard' | 'Advanced' | 'Dynasty';
-  planType: 'Standard' | 'Advanced' | 'Dynasty';
+  plan: 'Standard' | 'Advanced' | 'Builder';
+  planType: 'Standard' | 'Advanced' | 'Builder';
   stage: 'Evaluation' | 'Funded';
   status: 'Active' | 'Violated' | 'Closed';
   startingBalance: number;
@@ -91,7 +91,7 @@ const pnl25K = generateDailyPnL(equity25K);
 const equity50K = generateEquityHistory(50000, 90, 500, 50);
 const pnl50K = generateDailyPnL(equity50K);
 
-// 100K Dynasty - Funded - Strong growth
+// 100K Builder - Funded - Strong growth
 const equity100K = generateEquityHistory(100000, 90, 800, 80);
 const pnl100K = generateDailyPnL(equity100K);
 
@@ -194,10 +194,10 @@ export const mockAccounts: AccountData[] = [
   },
   {
     id: '3',
-    name: '100K Dynasty',
+    name: '100K Builder',
     size: 100000,
-    plan: 'Dynasty',
-    planType: 'Dynasty',
+    plan: 'Builder',
+    planType: 'Builder',
     stage: 'Funded',
     status: 'Active',
     startingBalance: 100000,

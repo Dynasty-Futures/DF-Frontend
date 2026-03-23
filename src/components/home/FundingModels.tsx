@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import {
   StandardIcon,
   AdvancedIcon,
-  DynastyIcon,
+  BuilderIcon,
 } from "@/components/icons/PlanIcons";
 import pricingBg from "@/assets/pricing-background.png";
 
@@ -32,18 +32,18 @@ const plans = [
     features: ["No activation fee", "Priority support", "Immediate activation"],
   },
   {
-    id: "dynasty",
-    name: "Dynasty Plan",
-    tagline: "Instant Funding + Daily Payouts",
+    id: "builder",
+    name: "Builder Plan",
+    tagline: "More Room to Execute",
     description:
-      "Start trading right away. Build a $3,000 buffer and unlock daily payouts for maximum flexibility.",
-    icon: DynastyIcon,
+      "Designed for traders who want more room to execute with a higher max loss limit than Standard while maintaining a structured evaluation model.",
+    icon: BuilderIcon,
     color: "from-primary via-teal to-soft-blue",
     bgGlow: "bg-soft-blue/20",
     features: [
-      "Instant funding",
-      "Daily payouts available",
-      "Maximum flexibility",
+      "Higher max loss limit",
+      "No activation fee",
+      "Built for serious traders",
     ],
   },
 ];
@@ -81,8 +81,8 @@ const FundingModels = () => {
             Our <span className="text-gradient">Funding Models</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Dynasty Futures offers three ways to take on the markets, each with
-            its own structure and benefits.
+            Dynasty Futures offers three plan structures to fit different trading
+            styles and risk preferences.
           </p>
         </div>
 
