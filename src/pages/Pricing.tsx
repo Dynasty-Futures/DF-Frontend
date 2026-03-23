@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import Layout from '@/components/layout/Layout';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Layout from "@/components/layout/Layout";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 import {
   StandardIcon,
   AdvancedIcon,
@@ -16,139 +16,172 @@ import {
   ClockIcon,
   DollarIcon,
   ShieldIcon,
-} from '@/components/icons/PlanIcons';
-import pricingBg from '@/assets/pricing-background.png';
-import { useAuth } from '@/hooks/useAuth';
-import { checkoutApi } from '@/services/checkout';
-import { ApiError } from '@/types/api';
-import { toast } from 'sonner';
+} from "@/components/icons/PlanIcons";
+import pricingBg from "@/assets/pricing-background.png";
+import { useAuth } from "@/hooks/useAuth";
+import { checkoutApi } from "@/services/checkout";
+import { ApiError } from "@/types/api";
+import { toast } from "sonner";
 
 const standardPricing = [
   {
-    size: '$25,000',
-    evalFee: '$49',
-    activationFee: '$80',
-    evalReset: '$35',
-    fundedReset: '$150',
+    size: "$25,000",
+    evalFee: "$49",
+    activationFee: "$80",
+    evalReset: "$35",
+    fundedReset: "$150",
   },
   {
-    size: '$50,000',
-    evalFee: '$69',
-    activationFee: '$80',
-    evalReset: '$45',
-    fundedReset: '$200',
+    size: "$50,000",
+    evalFee: "$69",
+    activationFee: "$80",
+    evalReset: "$45",
+    fundedReset: "$200",
   },
   {
-    size: '$100,000',
-    evalFee: '$119',
-    activationFee: '$80',
-    evalReset: '$65',
-    fundedReset: '$250',
+    size: "$100,000",
+    evalFee: "$119",
+    activationFee: "$80",
+    evalReset: "$65",
+    fundedReset: "$250",
   },
   {
-    size: '$150,000',
-    evalFee: '$149',
-    activationFee: '$80',
-    evalReset: '$75',
-    fundedReset: '$300',
+    size: "$150,000",
+    evalFee: "$149",
+    activationFee: "$80",
+    evalReset: "$75",
+    fundedReset: "$300",
   },
 ];
 
 const advancedPricing = [
   {
-    size: '$25,000',
-    evalFee: '$79',
-    activationFee: '$0',
-    evalReset: '$35',
-    fundedReset: '$175',
+    size: "$25,000",
+    evalFee: "$79",
+    activationFee: "$0",
+    evalReset: "$35",
+    fundedReset: "$175",
   },
   {
-    size: '$50,000',
-    evalFee: '$109',
-    activationFee: '$0',
-    evalReset: '$45',
-    fundedReset: '$225',
+    size: "$50,000",
+    evalFee: "$109",
+    activationFee: "$0",
+    evalReset: "$45",
+    fundedReset: "$225",
   },
   {
-    size: '$100,000',
-    evalFee: '$179',
-    activationFee: '$0',
-    evalReset: '$65',
-    fundedReset: '$275',
+    size: "$100,000",
+    evalFee: "$179",
+    activationFee: "$0",
+    evalReset: "$65",
+    fundedReset: "$275",
   },
   {
-    size: '$150,000',
-    evalFee: '$229',
-    activationFee: '$0',
-    evalReset: '$75',
-    fundedReset: '$325',
+    size: "$150,000",
+    evalFee: "$229",
+    activationFee: "$0",
+    evalReset: "$75",
+    fundedReset: "$325",
   },
 ];
 
 const builderPricing = [
   {
-    size: '$25,000',
-    evalFee: '$109',
-    activationFee: '$0',
-    evalReset: '$35',
-    fundedReset: '$200',
+    size: "$25,000",
+    evalFee: "$109",
+    activationFee: "$0",
+    evalReset: "$35",
+    fundedReset: "$200",
   },
   {
-    size: '$50,000',
-    evalFee: '$149',
-    activationFee: '$0',
-    evalReset: '$45',
-    fundedReset: '$275',
+    size: "$50,000",
+    evalFee: "$149",
+    activationFee: "$0",
+    evalReset: "$45",
+    fundedReset: "$275",
   },
   {
-    size: '$100,000',
-    evalFee: '$239',
-    activationFee: '$0',
-    evalReset: '$65',
-    fundedReset: '$325',
+    size: "$100,000",
+    evalFee: "$239",
+    activationFee: "$0",
+    evalReset: "$65",
+    fundedReset: "$325",
   },
   {
-    size: '$150,000',
-    evalFee: '$299',
-    activationFee: '$0',
-    evalReset: '$75',
-    fundedReset: '$375',
+    size: "$150,000",
+    evalFee: "$299",
+    activationFee: "$0",
+    evalReset: "$75",
+    fundedReset: "$375",
   },
 ];
 
 const standardAdvancedRules = {
-  '$25,000': { profitTarget: '$1,500', maxDrawdown: '$1,000', dailyLoss: '$750' },
-  '$50,000': { profitTarget: '$3,000', maxDrawdown: '$2,000', dailyLoss: '$1,500' },
-  '$100,000': { profitTarget: '$6,000', maxDrawdown: '$2,500', dailyLoss: '$2,000' },
-  '$150,000': { profitTarget: '$8,000', maxDrawdown: '$4,000', dailyLoss: '$3,000' },
+  "$25,000": {
+    profitTarget: "$1,500",
+    maxDrawdown: "$1,000",
+    dailyLoss: "$750",
+  },
+  "$50,000": {
+    profitTarget: "$3,000",
+    maxDrawdown: "$2,000",
+    dailyLoss: "$1,500",
+  },
+  "$100,000": {
+    profitTarget: "$6,000",
+    maxDrawdown: "$2,500",
+    dailyLoss: "$2,000",
+  },
+  "$150,000": {
+    profitTarget: "$8,000",
+    maxDrawdown: "$4,000",
+    dailyLoss: "$3,000",
+  },
 };
 
 const builderRules = {
-  '$25,000': { profitTarget: '$1,500', maxDrawdown: '$1,500', dailyLoss: '$750' },
-  '$50,000': { profitTarget: '$3,000', maxDrawdown: '$2,500', dailyLoss: '$1,500' },
-  '$100,000': { profitTarget: '$6,000', maxDrawdown: '$3,000', dailyLoss: '$2,000' },
-  '$150,000': { profitTarget: '$8,000', maxDrawdown: '$4,500', dailyLoss: '$3,000' },
+  "$25,000": {
+    profitTarget: "$1,500",
+    maxDrawdown: "$1,500",
+    dailyLoss: "$750",
+  },
+  "$50,000": {
+    profitTarget: "$3,000",
+    maxDrawdown: "$2,500",
+    dailyLoss: "$1,500",
+  },
+  "$100,000": {
+    profitTarget: "$6,000",
+    maxDrawdown: "$3,000",
+    dailyLoss: "$2,000",
+  },
+  "$150,000": {
+    profitTarget: "$8,000",
+    maxDrawdown: "$4,500",
+    dailyLoss: "$3,000",
+  },
 };
 
 const positionSizingGuidance = [
   {
-    accountSize: '25K Account',
+    accountSize: "25K Account",
     description:
-      'Designed for smaller position sizing with controlled contract exposure.',
+      "Designed for smaller position sizing with controlled contract exposure.",
   },
   {
-    accountSize: '50K Account',
+    accountSize: "50K Account",
     description:
-      'Allows increased contract capacity while maintaining structured risk limits.',
+      "Allows increased contract capacity while maintaining structured risk limits.",
   },
   {
-    accountSize: '100K Account',
-    description: 'Supports larger trade sizes suitable for more experienced traders.',
+    accountSize: "100K Account",
+    description:
+      "Supports larger trade sizes suitable for more experienced traders.",
   },
   {
-    accountSize: '150K Account',
+    accountSize: "150K Account",
     description:
-      'Maximum contract capacity designed for advanced strategy deployment.',
+      "Maximum contract capacity designed for advanced strategy deployment.",
   },
 ];
 
@@ -164,16 +197,18 @@ const Pricing = () => {
       const element = document.getElementById(location.hash.slice(1));
       if (element) {
         setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
       }
     }
   }, [location]);
 
   useEffect(() => {
-    if (searchParams.get('checkout') === 'cancelled') {
-      toast.info("Checkout was cancelled. You can select a plan whenever you're ready.");
-      searchParams.delete('checkout');
+    if (searchParams.get("checkout") === "cancelled") {
+      toast.info(
+        "Checkout was cancelled. You can select a plan whenever you're ready.",
+      );
+      searchParams.delete("checkout");
       setSearchParams(searchParams, { replace: true });
     }
   }, [searchParams, setSearchParams]);
@@ -182,7 +217,7 @@ const Pricing = () => {
     const key = `${planType}-${accountSize}`;
 
     if (!isAuthenticated) {
-      navigate('/login', { state: { from: '/pricing' } });
+      navigate("/login", { state: { from: "/pricing" } });
       return;
     }
 
@@ -194,7 +229,7 @@ const Pricing = () => {
       if (error instanceof ApiError) {
         toast.error(error.message);
       } else {
-        toast.error('Unable to start checkout. Please try again.');
+        toast.error("Unable to start checkout. Please try again.");
       }
       setLoadingKey(null);
     }
@@ -207,9 +242,9 @@ const Pricing = () => {
           className="fixed inset-0 z-0"
           style={{
             backgroundImage: `url(${pricingBg})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundAttachment: 'fixed',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed",
           }}
         />
         <div className="fixed inset-0 z-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60" />
@@ -221,7 +256,8 @@ const Pricing = () => {
                 Pricing & <span className="text-gradient">Plans</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                Choose the plan that fits your trading style. Plans include static drawdown with plan-specific consistency requirements.
+                Choose the plan that fits your trading style. Plans include
+                static drawdown with plan-specific consistency requirements.
               </p>
             </div>
 
@@ -235,9 +271,17 @@ const Pricing = () => {
                       </div>
                     </div>
                     <div>
-                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">Standard Plan</h2>
-                      <p className="text-xl text-primary font-medium mb-2">"Pass First, Activate Later"</p>
-                      <p className="text-muted-foreground max-w-xl">Lower evaluation fee up front. If passed, a one-time $80 activation fee is required to activate your funded account.</p>
+                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+                        Standard Plan
+                      </h2>
+                      <p className="text-xl text-primary font-medium mb-2">
+                        "Pass First, Activate Later"
+                      </p>
+                      <p className="text-muted-foreground max-w-xl">
+                        Lower evaluation fee up front. If passed, a one-time $80
+                        activation fee is required to activate your funded
+                        account.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -246,14 +290,30 @@ const Pricing = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border/30">
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Account Size</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Evaluation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Activation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Eval Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Funded Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Profit Target</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Max Loss Limit</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Daily Loss Limit</th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Account Size
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Evaluation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Activation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Eval Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Funded Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Profit Target
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Max Loss Limit
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Daily Loss Limit
+                          </th>
                           <th className="py-4 px-4"></th>
                         </tr>
                       </thead>
@@ -268,14 +328,30 @@ const Pricing = () => {
                               key={row.size}
                               className="border-b border-border/20 hover:bg-primary/5 transition-colors"
                             >
-                              <td className="py-4 px-4 font-semibold text-foreground">{row.size}</td>
-                              <td className="py-4 px-4 text-primary font-bold">{row.evalFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.activationFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.evalReset}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.fundedReset}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.profitTarget}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.dailyLoss}</td>
+                              <td className="py-4 px-4 font-semibold text-foreground">
+                                {row.size}
+                              </td>
+                              <td className="py-4 px-4 text-primary font-bold">
+                                {row.evalFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.activationFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.evalReset}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.fundedReset}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.profitTarget}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.maxDrawdown}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.dailyLoss}
+                              </td>
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
@@ -283,20 +359,20 @@ const Pricing = () => {
                                   disabled={
                                     loadingKey ===
                                     `standard-${parseInt(
-                                      row.size.replace(/[$,]/g, '')
+                                      row.size.replace(/[$,]/g, ""),
                                     )}`
                                   }
                                   onClick={() =>
                                     handleSelect(
-                                      'standard',
-                                      parseInt(row.size.replace(/[$,]/g, ''))
+                                      "standard",
+                                      parseInt(row.size.replace(/[$,]/g, "")),
                                     )
                                   }
                                 >
                                   {loadingKey ===
-                                  `standard-${parseInt(row.size.replace(/[$,]/g, ''))}`
-                                    ? 'Loading...'
-                                    : 'Select'}
+                                  `standard-${parseInt(row.size.replace(/[$,]/g, ""))}`
+                                    ? "Loading..."
+                                    : "Select"}
                                 </Button>
                               </td>
                             </tr>
@@ -314,31 +390,39 @@ const Pricing = () => {
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ClockIcon size={20} />
-                      <span className="text-sm text-foreground">5-day payout cycles</span>
+                      <span className="text-sm text-foreground">
+                        5-day payout cycles
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Copy trading allowed</span>
+                      <span className="text-sm text-foreground">
+                        Copy trading allowed
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <DollarIcon size={20} />
-                      <span className="text-sm text-foreground">Low activation fee</span>
+                      <span className="text-sm text-foreground">
+                        Low activation fee
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Overnight trading allowed</span>
+                      <span className="text-sm text-foreground">
+                        Overnight trading allowed
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ShieldIcon size={20} />
                       <span className="text-sm text-foreground">
-                        Evaluations use a trailing end-of-day drawdown. Funded accounts
-                        use a static drawdown.
+                        Evaluations use a trailing end-of-day drawdown. Funded
+                        accounts use a static drawdown.
                       </span>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-6 text-center">
-                    All plans renew monthly. Cancel anytime. Reset fees are one-time and
-                    never billed monthly.
+                    All plans renew monthly. Cancel anytime. Reset fees are
+                    one-time and never billed monthly.
                   </p>
                 </div>
               </div>
@@ -354,7 +438,9 @@ const Pricing = () => {
                       </div>
                     </div>
                     <div>
-                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">Advanced Plan</h2>
+                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+                        Advanced Plan
+                      </h2>
                       <p className="text-xl text-teal font-medium mb-2">
                         "Instant Activation, No Activation Fee"
                       </p>
@@ -370,13 +456,27 @@ const Pricing = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border/30">
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Account Size</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Evaluation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Activation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Eval Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Funded Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Profit Target</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Max Loss Limit</th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Account Size
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Evaluation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Activation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Eval Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Funded Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Profit Target
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Max Loss Limit
+                          </th>
                           <th className="py-4 px-4"></th>
                         </tr>
                       </thead>
@@ -391,13 +491,27 @@ const Pricing = () => {
                               key={row.size}
                               className="border-b border-border/20 hover:bg-teal/5 transition-colors"
                             >
-                              <td className="py-4 px-4 font-semibold text-foreground">{row.size}</td>
-                              <td className="py-4 px-4 text-teal font-bold">{row.evalFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.activationFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.evalReset}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.fundedReset}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.profitTarget}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
+                              <td className="py-4 px-4 font-semibold text-foreground">
+                                {row.size}
+                              </td>
+                              <td className="py-4 px-4 text-teal font-bold">
+                                {row.evalFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.activationFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.evalReset}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.fundedReset}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.profitTarget}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.maxDrawdown}
+                              </td>
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
@@ -405,20 +519,20 @@ const Pricing = () => {
                                   disabled={
                                     loadingKey ===
                                     `advanced-${parseInt(
-                                      row.size.replace(/[$,]/g, '')
+                                      row.size.replace(/[$,]/g, ""),
                                     )}`
                                   }
                                   onClick={() =>
                                     handleSelect(
-                                      'advanced',
-                                      parseInt(row.size.replace(/[$,]/g, ''))
+                                      "advanced",
+                                      parseInt(row.size.replace(/[$,]/g, "")),
                                     )
                                   }
                                 >
                                   {loadingKey ===
-                                  `advanced-${parseInt(row.size.replace(/[$,]/g, ''))}`
-                                    ? 'Loading...'
-                                    : 'Select'}
+                                  `advanced-${parseInt(row.size.replace(/[$,]/g, ""))}`
+                                    ? "Loading..."
+                                    : "Select"}
                                 </Button>
                               </td>
                             </tr>
@@ -430,29 +544,39 @@ const Pricing = () => {
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">No consistency rule</span>
+                      <span className="text-sm text-foreground">
+                        No consistency rule
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Immediate activation</span>
+                      <span className="text-sm text-foreground">
+                        Immediate activation
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ClockIcon size={20} />
-                      <span className="text-sm text-foreground">5-day payout cycles</span>
+                      <span className="text-sm text-foreground">
+                        5-day payout cycles
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Priority support</span>
+                      <span className="text-sm text-foreground">
+                        Priority support
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Copy trading allowed</span>
+                      <span className="text-sm text-foreground">
+                        Copy trading allowed
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ShieldIcon size={20} />
                       <span className="text-sm text-foreground">
-                        Evaluations use a trailing end-of-day drawdown. Funded accounts
-                        use a static drawdown.
+                        Evaluations use a trailing end-of-day drawdown. Funded
+                        accounts use a static drawdown.
                       </span>
                     </div>
                   </div>
@@ -477,13 +601,18 @@ const Pricing = () => {
                       </div>
                     </div>
                     <div>
-                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">Builder Plan</h2>
-                      <p className="text-xl text-primary font-medium mb-2">"More Room to Execute"</p>
+                      <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
+                        Builder Plan
+                      </h2>
+                      <p className="text-xl text-primary font-medium mb-2">
+                        "More Room to Execute"
+                      </p>
                       <p className="text-muted-foreground max-w-xl">
-                        Builder Plan is designed for traders who want more room to
-                        execute their strategy. With a higher max loss limit than the
-                        Standard Plan, it provides additional flexibility while
-                        maintaining a structured evaluation model.
+                        Builder Plan is designed for traders who want more room
+                        to execute their strategy. With a higher max loss limit
+                        than the Standard Plan, it provides additional
+                        flexibility while maintaining a structured evaluation
+                        model.
                       </p>
                     </div>
                   </div>
@@ -493,13 +622,27 @@ const Pricing = () => {
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border/30">
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Account Size</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Evaluation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Activation Fee</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Eval Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Funded Reset</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Profit Target</th>
-                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">Max Loss Limit</th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Account Size
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Evaluation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Activation Fee
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Eval Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Funded Reset
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Profit Target
+                          </th>
+                          <th className="text-left py-4 px-4 text-muted-foreground font-medium">
+                            Max Loss Limit
+                          </th>
                           <th className="py-4 px-4"></th>
                         </tr>
                       </thead>
@@ -512,13 +655,27 @@ const Pricing = () => {
                               key={row.size}
                               className="border-b border-border/20 hover:bg-primary/5 transition-colors"
                             >
-                              <td className="py-4 px-4 font-semibold text-foreground">{row.size}</td>
-                              <td className="py-4 px-4 text-primary font-bold">{row.evalFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.activationFee}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.evalReset}</td>
-                              <td className="py-4 px-4 text-muted-foreground">{row.fundedReset}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.profitTarget}</td>
-                              <td className="py-4 px-4 text-foreground">{rules.maxDrawdown}</td>
+                              <td className="py-4 px-4 font-semibold text-foreground">
+                                {row.size}
+                              </td>
+                              <td className="py-4 px-4 text-primary font-bold">
+                                {row.evalFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.activationFee}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.evalReset}
+                              </td>
+                              <td className="py-4 px-4 text-muted-foreground">
+                                {row.fundedReset}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.profitTarget}
+                              </td>
+                              <td className="py-4 px-4 text-foreground">
+                                {rules.maxDrawdown}
+                              </td>
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
@@ -526,20 +683,20 @@ const Pricing = () => {
                                   disabled={
                                     loadingKey ===
                                     `builder-${parseInt(
-                                      row.size.replace(/[$,]/g, '')
+                                      row.size.replace(/[$,]/g, ""),
                                     )}`
                                   }
                                   onClick={() =>
                                     handleSelect(
-                                      'builder',
-                                      parseInt(row.size.replace(/[$,]/g, ''))
+                                      "builder",
+                                      parseInt(row.size.replace(/[$,]/g, "")),
                                     )
                                   }
                                 >
                                   {loadingKey ===
-                                  `builder-${parseInt(row.size.replace(/[$,]/g, ''))}`
-                                    ? 'Loading...'
-                                    : 'Select'}
+                                  `builder-${parseInt(row.size.replace(/[$,]/g, ""))}`
+                                    ? "Loading..."
+                                    : "Select"}
                                 </Button>
                               </td>
                             </tr>
@@ -551,27 +708,40 @@ const Pricing = () => {
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/15 backdrop-blur-sm border border-primary/25">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">More room to execute</span>
+                      <span className="text-sm text-foreground">
+                        Evaluations use a trailing end-of-day drawdown. Funded
+                        accounts use a static drawdown.
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/15 backdrop-blur-sm border border-primary/25">
                       <ShieldIcon size={20} />
-                      <span className="text-sm text-foreground">Higher max loss limit</span>
+                      <span className="text-sm text-foreground">
+                        Higher max loss limit
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <DollarIcon size={20} />
-                      <span className="text-sm text-foreground">No activation fee</span>
+                      <span className="text-sm text-foreground">
+                        No activation fee
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">50% consistency rule (evaluation only)</span>
+                      <span className="text-sm text-foreground">
+                        50% consistency rule (evaluation only)
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ClockIcon size={20} />
-                      <span className="text-sm text-foreground">2 minimum trading days to pass</span>
+                      <span className="text-sm text-foreground">
+                        2 minimum trading days to pass
+                      </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">Built for serious traders</span>
+                      <span className="text-sm text-foreground">
+                        Built for serious traders
+                      </span>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-6 text-center">
@@ -584,7 +754,8 @@ const Pricing = () => {
             <section className="mb-20">
               <div className="text-center max-w-3xl mx-auto mb-10">
                 <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">
-                  Weekly <span className="text-gradient-animated">Payout Limits</span>
+                  Weekly{" "}
+                  <span className="text-gradient-animated">Payout Limits</span>
                 </h2>
                 <p className="text-muted-foreground">
                   Plan comparison for the currently available offerings.
@@ -595,9 +766,15 @@ const Pricing = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-border/30 bg-muted/10">
-                        <th className="text-left py-5 px-6 text-foreground font-semibold">Plan</th>
-                        <th className="text-left py-5 px-6 text-foreground font-semibold">Weekly Minimum</th>
-                        <th className="text-left py-5 px-6 text-foreground font-semibold">Weekly Maximum</th>
+                        <th className="text-left py-5 px-6 text-foreground font-semibold">
+                          Plan
+                        </th>
+                        <th className="text-left py-5 px-6 text-foreground font-semibold">
+                          Weekly Minimum
+                        </th>
+                        <th className="text-left py-5 px-6 text-foreground font-semibold">
+                          Weekly Maximum
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -610,15 +787,21 @@ const Pricing = () => {
                               </div>
                             </div>
                             <div>
-                              <span className="font-semibold text-foreground">Standard</span>
+                              <span className="font-semibold text-foreground">
+                                Standard
+                              </span>
                               <p className="text-xs text-muted-foreground">
                                 Monthly subscription, activation fee after pass
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-5 px-6 text-primary font-bold text-lg">$500</td>
-                        <td className="py-5 px-6 text-foreground font-semibold">$5,000/week</td>
+                        <td className="py-5 px-6 text-primary font-bold text-lg">
+                          $500
+                        </td>
+                        <td className="py-5 px-6 text-foreground font-semibold">
+                          $5,000/week
+                        </td>
                       </tr>
                       <tr className="border-b border-border/20 hover:bg-teal/5 transition-colors">
                         <td className="py-5 px-6">
@@ -629,15 +812,21 @@ const Pricing = () => {
                               </div>
                             </div>
                             <div>
-                              <span className="font-semibold text-foreground">Advanced</span>
+                              <span className="font-semibold text-foreground">
+                                Advanced
+                              </span>
                               <p className="text-xs text-muted-foreground">
                                 Monthly subscription, no activation fee
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-5 px-6 text-teal font-bold text-lg">$500</td>
-                        <td className="py-5 px-6 text-foreground font-semibold">$7,000/week</td>
+                        <td className="py-5 px-6 text-teal font-bold text-lg">
+                          $500
+                        </td>
+                        <td className="py-5 px-6 text-foreground font-semibold">
+                          $7,000/week
+                        </td>
                       </tr>
                       <tr className="hover:bg-primary/5 transition-colors">
                         <td className="py-5 px-6">
@@ -648,33 +837,53 @@ const Pricing = () => {
                               </div>
                             </div>
                             <div>
-                              <span className="font-semibold text-foreground">Builder</span>
+                              <span className="font-semibold text-foreground">
+                                Builder
+                              </span>
                               <p className="text-xs text-muted-foreground">
                                 Higher max loss limit, no activation fee
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="py-5 px-6 text-primary font-bold text-lg">$500</td>
-                        <td className="py-5 px-6 text-foreground font-semibold">$7,000/week</td>
+                        <td className="py-5 px-6 text-primary font-bold text-lg">
+                          $500
+                        </td>
+                        <td className="py-5 px-6 text-foreground font-semibold">
+                          $7,000/week
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="mt-8 p-6 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/30">
-                  <h4 className="font-display font-semibold text-foreground mb-4">Monthly Maximum Payout Caps</h4>
+                  <h4 className="font-display font-semibold text-foreground mb-4">
+                    Monthly Maximum Payout Caps
+                  </h4>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">Standard Plan</span>
-                      <span className="font-semibold text-primary">$20,000/month</span>
+                      <span className="text-sm text-muted-foreground">
+                        Standard Plan
+                      </span>
+                      <span className="font-semibold text-primary">
+                        $20,000/month
+                      </span>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">Advanced Plan</span>
-                      <span className="font-semibold text-teal">$28,000/month</span>
+                      <span className="text-sm text-muted-foreground">
+                        Advanced Plan
+                      </span>
+                      <span className="font-semibold text-teal">
+                        $28,000/month
+                      </span>
                     </div>
                     <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">Builder Plan</span>
-                      <span className="font-semibold text-primary">$28,000/month</span>
+                      <span className="text-sm text-muted-foreground">
+                        Builder Plan
+                      </span>
+                      <span className="font-semibold text-primary">
+                        $28,000/month
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -683,16 +892,18 @@ const Pricing = () => {
 
             <section className="mb-12">
               <div className="text-center mb-8">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">Tradable Futures Markets</h2>
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  Tradable Futures Markets
+                </h2>
               </div>
               <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
                 <div className="p-6 md:p-8">
                   <p className="text-muted-foreground max-w-3xl mx-auto text-center">
                     Dynasty Futures traders can trade a wide range of globally
                     recognized futures markets through our professional trading
-                    infrastructure. Available instruments include major equity index
-                    futures, energy markets, metals, and other commonly traded futures
-                    contracts.
+                    infrastructure. Available instruments include major equity
+                    index futures, energy markets, metals, and other commonly
+                    traded futures contracts.
                   </p>
                 </div>
               </div>
@@ -701,12 +912,14 @@ const Pricing = () => {
             <section className="mb-20">
               <div className="text-center mb-8">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
-                  Position Sizing <span className="text-gradient">by Account Size</span>
+                  Position Sizing{" "}
+                  <span className="text-gradient">by Account Size</span>
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Position sizing limits are determined by account size to promote
-                  responsible risk management. Larger account sizes allow for increased
-                  contract capacity while maintaining structured exposure limits.
+                  Position sizing limits are determined by account size to
+                  promote responsible risk management. Larger account sizes
+                  allow for increased contract capacity while maintaining
+                  structured exposure limits.
                 </p>
               </div>
               <Accordion type="single" collapsible className="space-y-4">
@@ -720,13 +933,16 @@ const Pricing = () => {
                       {item.accountSize}
                     </AccordionTrigger>
                     <AccordionContent>
-                      <p className="text-muted-foreground pb-4">{item.description}</p>
+                      <p className="text-muted-foreground pb-4">
+                        {item.description}
+                      </p>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
               <p className="text-sm text-muted-foreground text-center mt-6">
-                Position sizing controls risk exposure and is enforced automatically.
+                Position sizing controls risk exposure and is enforced
+                automatically.
               </p>
             </section>
           </div>

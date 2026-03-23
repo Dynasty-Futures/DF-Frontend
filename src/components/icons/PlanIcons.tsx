@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface IconProps {
   className?: string;
@@ -57,10 +57,38 @@ export const StandardIcon = ({ className, size = 24 }: IconProps) => (
       opacity="0.5"
     />
     {/* Corner nodes */}
-    <rect x="4" y="7" width="1.5" height="1.5" fill="hsl(142 76% 55%)" opacity="0.6" />
-    <rect x="18.5" y="7" width="1.5" height="1.5" fill="hsl(175 70% 55%)" opacity="0.6" />
-    <rect x="4" y="15.5" width="1.5" height="1.5" fill="hsl(195 85% 55%)" opacity="0.5" />
-    <rect x="18.5" y="15.5" width="1.5" height="1.5" fill="hsl(142 76% 55%)" opacity="0.5" />
+    <rect
+      x="4"
+      y="7"
+      width="1.5"
+      height="1.5"
+      fill="hsl(142 76% 55%)"
+      opacity="0.6"
+    />
+    <rect
+      x="18.5"
+      y="7"
+      width="1.5"
+      height="1.5"
+      fill="hsl(175 70% 55%)"
+      opacity="0.6"
+    />
+    <rect
+      x="4"
+      y="15.5"
+      width="1.5"
+      height="1.5"
+      fill="hsl(195 85% 55%)"
+      opacity="0.5"
+    />
+    <rect
+      x="18.5"
+      y="15.5"
+      width="1.5"
+      height="1.5"
+      fill="hsl(142 76% 55%)"
+      opacity="0.5"
+    />
   </svg>
 );
 
@@ -97,29 +125,13 @@ export const AdvancedIcon = ({ className, size = 24 }: IconProps) => (
       fill="url(#advancedGrad)"
     />
     {/* Cockpit window - sharp diamond */}
-    <path
-      d="M12 5L10.5 8L12 9L13.5 8L12 5Z"
-      fill="hsl(195 85% 75%)"
-    />
-    <path
-      d="M12 6L11.2 7.5L12 8L12.8 7.5L12 6Z"
-      fill="white"
-      opacity="0.8"
-    />
+    <path d="M12 5L10.5 8L12 9L13.5 8L12 5Z" fill="hsl(195 85% 75%)" />
+    <path d="M12 6L11.2 7.5L12 8L12.8 7.5L12 6Z" fill="white" opacity="0.8" />
     {/* Angular fins */}
-    <path
-      d="M9 14L6 18L8 16L9 16.5L9 14Z"
-      fill="hsl(175 70% 45%)"
-    />
-    <path
-      d="M15 14L18 18L16 16L15 16.5L15 14Z"
-      fill="hsl(175 70% 45%)"
-    />
+    <path d="M9 14L6 18L8 16L9 16.5L9 14Z" fill="hsl(175 70% 45%)" />
+    <path d="M15 14L18 18L16 16L15 16.5L15 14Z" fill="hsl(175 70% 45%)" />
     {/* Thrust flame - sharp geometric */}
-    <path
-      d="M10 16L12 22L14 16L12 18L10 16Z"
-      fill="url(#thrustGrad)"
-    />
+    <path d="M10 16L12 22L14 16L12 18L10 16Z" fill="url(#thrustGrad)" />
     <path
       d="M11 17L12 20L13 17L12 18L11 17Z"
       fill="hsl(175 70% 65%)"
@@ -172,26 +184,20 @@ export const BuilderIcon = ({ className, size = 24 }: IconProps) => (
     />
     {/* Crown band - sharp */}
     <rect x="3" y="19" width="18" height="3" fill="hsl(45 90% 40%)" />
-    <rect x="4" y="19.5" width="16" height="2" fill="hsl(45 90% 50%)" opacity="0.3" />
+    <rect
+      x="4"
+      y="19.5"
+      width="16"
+      height="2"
+      fill="hsl(45 90% 50%)"
+      opacity="0.3"
+    />
     {/* Center gem - sharp diamond */}
-    <path
-      d="M12 10L14 14H10L12 10Z"
-      fill="url(#gemGrad2)"
-    />
-    <path
-      d="M12 11L13 13H11L12 11Z"
-      fill="hsl(175 70% 75%)"
-      opacity="0.7"
-    />
+    <path d="M12 10L14 14H10L12 10Z" fill="url(#gemGrad2)" />
+    <path d="M12 11L13 13H11L12 11Z" fill="hsl(175 70% 75%)" opacity="0.7" />
     {/* Side gems - angular */}
-    <path
-      d="M7 15L8.5 17H5.5L7 15Z"
-      fill="hsl(142 76% 55%)"
-    />
-    <path
-      d="M17 15L18.5 17H15.5L17 15Z"
-      fill="hsl(195 85% 55%)"
-    />
+    <path d="M7 15L8.5 17H5.5L7 15Z" fill="hsl(142 76% 55%)" />
+    <path d="M17 15L18.5 17H15.5L17 15Z" fill="hsl(195 85% 55%)" />
     {/* Top spikes with gems */}
     <circle cx="5" cy="9" r="1" fill="hsl(45 90% 60%)" />
     <circle cx="5" cy="9" r="0.4" fill="white" opacity="0.7" />
@@ -289,7 +295,14 @@ export const ClockIcon = ({ className, size = 20 }: IconProps) => (
         <stop offset="100%" stopColor="hsl(195 85% 55%)" />
       </linearGradient>
     </defs>
-    <circle cx="10" cy="10" r="8" stroke="url(#clockGrad)" strokeWidth="1.5" fill="none" />
+    <circle
+      cx="10"
+      cy="10"
+      r="8"
+      stroke="url(#clockGrad)"
+      strokeWidth="1.5"
+      fill="none"
+    />
     <path
       d="M10 5v5l3 3"
       stroke="url(#clockGrad)"
@@ -330,7 +343,7 @@ export const ShieldIcon = ({ className, size = 20 }: IconProps) => (
   </svg>
 );
 
-// Dollar icon for payouts - FIXED proper dollar sign
+// Dollar icon for payouts
 export const DollarIcon = ({ className, size = 20 }: IconProps) => (
   <svg
     width={size}
@@ -346,17 +359,21 @@ export const DollarIcon = ({ className, size = 20 }: IconProps) => (
         <stop offset="100%" stopColor="hsl(195 85% 55%)" />
       </linearGradient>
     </defs>
-    <circle cx="10" cy="10" r="8" fill="hsl(142 76% 45% / 0.15)" />
-    <path
-      d="M10 4v12"
-      stroke="url(#dollarGrad)"
-      strokeWidth="1.5"
-      strokeLinecap="round"
+    <circle cx="10" cy="10" r="9" fill="hsl(142 76% 45% / 0.15)" />
+    {/* Vertical bar */}
+    <rect
+      x="9"
+      y="2.5"
+      width="2"
+      height="15"
+      rx="1"
+      fill="url(#dollarGrad)"
     />
+    {/* S-curve */}
     <path
-      d="M13 7c0-1.1-1.3-2-3-2s-3 .9-3 2c0 1.1 1.3 2 3 2s3 .9 3 2c0 1.1-1.3 2-3 2s-3-.9-3-2"
+      d="M13.5 7c0-1.3-1.5-2.2-3.5-2.2S6.5 5.7 6.5 7c0 1.3 1.5 2.1 3.5 2.5 2 .4 3.5 1.2 3.5 2.5s-1.5 2.3-3.5 2.3-3.5-1-3.5-2.3"
       stroke="url(#dollarGrad)"
-      strokeWidth="1.5"
+      strokeWidth="1.8"
       strokeLinecap="round"
     />
   </svg>
