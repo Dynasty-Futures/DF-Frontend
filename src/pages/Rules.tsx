@@ -534,7 +534,7 @@ const Rules = () => {
                         {account.builderMaxDrawdown}
                       </span>
                     </div>
-                    <div className="flex justify-between items-start py-2 border-b border-border/30">
+                    <div className="flex justify-between items-start gap-3 py-2 border-b border-border/30">
                       <span className="flex flex-col leading-tight">
                         <span className="text-sm text-muted-foreground">
                           Daily Loss Limit
