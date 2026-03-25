@@ -534,12 +534,17 @@ const Rules = () => {
                         {account.builderMaxDrawdown}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
+                    <div className="flex justify-between items-start py-2 border-b border-border/30">
                       <span className="text-sm text-muted-foreground">
                         Daily Loss Limit
                       </span>
-                      <span className="font-semibold text-foreground">
-                        {account.dailyLoss}
+                      <span className="flex flex-col items-end leading-tight">
+                        <span className="font-semibold text-foreground">
+                          {account.dailyLoss}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          Standard Plan Only
+                        </span>
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-2">
