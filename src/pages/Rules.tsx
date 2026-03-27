@@ -535,8 +535,11 @@ const Rules = () => {
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">
-                        Daily Loss Limit
+                      <span className="text-sm text-muted-foreground flex items-baseline gap-1">
+                        <span>Daily Loss Limit</span>
+                        <span className="font-sans text-xs">
+                          (Standard Plans only)
+                        </span>
                       </span>
                       <span className="font-semibold text-foreground">
                         {account.dailyLoss}
