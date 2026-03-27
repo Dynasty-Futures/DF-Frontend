@@ -52,7 +52,7 @@ const PreLaunchModal = ({ externalOpen, onExternalClose }: PreLaunchModalProps) 
         
         <div className="space-y-4 text-sm md:text-base text-muted-foreground">
           <p>
-            Dynasty Futures is currently preparing for launch in Q1 2026.
+            Dynasty Futures is currently preparing for launch in Early Q2 2026.
           </p>
           <p>
             We are focused on building a stable, transparent, and trader-first proprietary futures firm. During this pre-launch period, certain features and dashboards may be unavailable as we finalize infrastructure and operations.
