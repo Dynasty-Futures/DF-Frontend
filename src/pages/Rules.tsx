@@ -29,6 +29,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { cn } from "@/lib/utils";
 
 const universalRules = [
@@ -238,17 +239,17 @@ const UniversalRulesSection = () => {
     return rules.filter(
       (rule) =>
         rule.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        rule.description.toLowerCase().includes(searchQuery.toLowerCase())
+        rule.description.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   };
 
   const filteredAllowedRules = useMemo(
     () => filterRules(allowedRules),
-    [searchQuery]
+    [searchQuery],
   );
   const filteredRestrictedRules = useMemo(
     () => filterRules(restrictedRules),
-    [searchQuery]
+    [searchQuery],
   );
 
   const visibleAllowedRules =
@@ -272,7 +273,7 @@ const UniversalRulesSection = () => {
 
   const toggleRule = (title: string) => {
     setExpandedRules((prev) =>
-      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title]
+      prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title],
     );
   };
 
@@ -302,7 +303,7 @@ const UniversalRulesSection = () => {
             size={16}
             className={cn(
               "text-muted-foreground flex-shrink-0 transition-transform duration-200",
-              isExpanded && "rotate-90"
+              isExpanded && "rotate-90",
             )}
           />
         </button>
@@ -366,7 +367,7 @@ const UniversalRulesSection = () => {
                       "px-3 py-1 rounded-md text-xs font-medium transition-all capitalize",
                       activeFilter === filter
                         ? "bg-card text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground"
+                        : "text-muted-foreground hover:text-foreground",
                     )}
                   >
                     {filter}
@@ -402,60 +403,68 @@ const UniversalRulesSection = () => {
           >
             {/* Allowed & Approved */}
             {visibleAllowedRules.length > 0 && (
-              <AccordionItem
-                value="allowed"
-                className="rounded-xl border border-border/30 bg-card/30 overflow-hidden"
-              >
-                <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/10">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-md flex items-center justify-center bg-muted/30">
-                      <Check size={12} className="text-muted-foreground" />
+              <ScrollReveal delay={0}>
+                <AccordionItem
+                  value="allowed"
+                  className="rounded-xl border border-border/30 bg-card/30 overflow-hidden"
+                >
+                  <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-md flex items-center justify-center bg-muted/30">
+                        <Check size={12} className="text-muted-foreground" />
+                      </div>
+                      <span className="text-sm font-semibold text-foreground">
+                        Allowed & Approved
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        ({visibleAllowedRules.length})
+                      </span>
                     </div>
-                    <span className="text-sm font-semibold text-foreground">
-                      Allowed & Approved
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      ({visibleAllowedRules.length})
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-0 pb-0">
-                  <div className="border-t border-border/20">
-                    {visibleAllowedRules.map((rule) => (
-                      <RuleRow key={rule.title} rule={rule} />
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-0 pb-0">
+                    <div className="border-t border-border/20">
+                      {visibleAllowedRules.map((rule, index) => (
+                        <ScrollReveal key={rule.title} delay={index * 100}>
+                          <RuleRow rule={rule} />
+                        </ScrollReveal>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </ScrollReveal>
             )}
 
             {/* Restricted & Prohibited */}
             {visibleRestrictedRules.length > 0 && (
-              <AccordionItem
-                value="restricted"
-                className="rounded-xl border border-border/30 bg-card/30 overflow-hidden"
-              >
-                <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/10">
-                  <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded-md flex items-center justify-center bg-muted/30">
-                      <X size={12} className="text-muted-foreground" />
+              <ScrollReveal delay={150}>
+                <AccordionItem
+                  value="restricted"
+                  className="rounded-xl border border-border/30 bg-card/30 overflow-hidden"
+                >
+                  <AccordionTrigger className="px-4 py-3 hover:no-underline hover:bg-muted/10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 rounded-md flex items-center justify-center bg-muted/30">
+                        <X size={12} className="text-muted-foreground" />
+                      </div>
+                      <span className="text-sm font-semibold text-foreground">
+                        Restricted & Prohibited
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        ({visibleRestrictedRules.length})
+                      </span>
                     </div>
-                    <span className="text-sm font-semibold text-foreground">
-                      Restricted & Prohibited
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      ({visibleRestrictedRules.length})
-                    </span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="px-0 pb-0">
-                  <div className="border-t border-border/20">
-                    {visibleRestrictedRules.map((rule) => (
-                      <RuleRow key={rule.title} rule={rule} />
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
+                  </AccordionTrigger>
+                  <AccordionContent className="px-0 pb-0">
+                    <div className="border-t border-border/20">
+                      {visibleRestrictedRules.map((rule, index) => (
+                        <ScrollReveal key={rule.title} delay={index * 100}>
+                          <RuleRow rule={rule} />
+                        </ScrollReveal>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </ScrollReveal>
             )}
           </Accordion>
 
@@ -476,289 +485,306 @@ const Rules = () => {
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Rules &{" "}
-              <span className="text-gradient-animated">Definitions</span>
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Dynasty Futures — Official Trading Rules. Applies to ALL plans
-              unless otherwise stated.
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                Rules &{" "}
+                <span className="text-gradient-animated">Definitions</span>
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Dynasty Futures — Official Trading Rules. Applies to ALL plans
+                unless otherwise stated.
+              </p>
+            </div>
+          </ScrollReveal>
 
           {/* Universal Rules */}
-          <section>
+          <ScrollReveal as="section">
             <UniversalRulesSection />
-          </section>
+          </ScrollReveal>
 
           {/* Account-Specific Rules */}
           <section id="account-rules" className="mb-20 scroll-mt-24">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <span className="text-gradient-animated">
-                Account-Specific Rules
-              </span>
-            </h2>
+            <ScrollReveal>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+                <span className="text-gradient-animated">
+                  Account-Specific Rules
+                </span>
+              </h2>
+            </ScrollReveal>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {accountRules.map((account) => (
-                <div
-                  key={account.size}
-                  className="bg-gradient-card rounded-2xl border border-border/50 p-6 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02]"
-                >
-                  <h3 className="font-display text-xl font-bold text-gradient-animated mb-4">
-                    {account.size}
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">
-                        Profit Target
-                      </span>
-                      <span className="font-semibold text-foreground">
-                        {account.profitTarget}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">
-                        Standard/Advanced Max Loss
-                      </span>
-                      <span className="font-semibold text-foreground">
-                        {account.standardAdvancedMaxDrawdown}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground">
-                        Builder Max Loss
-                      </span>
-                      <span className="font-semibold text-foreground">
-                        {account.builderMaxDrawdown}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-2 border-b border-border/30">
-                      <span className="text-sm text-muted-foreground flex items-baseline gap-1">
-                        <span>Daily Loss Limit</span>
-                        <span className="font-sans text-xs">
-                          (Standard Plans only)
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {accountRules.map((account, index) => (
+                <ScrollReveal key={account.size} delay={index * 100}>
+                  <div className="bg-gradient-card rounded-2xl border border-border/50 p-6 hover:border-primary/30 transition-all duration-300 hover:scale-[1.02]">
+                    <h3 className="font-display text-xl font-bold text-gradient-animated mb-4">
+                      {account.size}
+                    </h3>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center py-2 border-b border-border/30">
+                        <span className="text-sm text-muted-foreground">
+                          Profit Target
                         </span>
-                      </span>
-                      <span className="font-semibold text-foreground">
-                        {account.dailyLoss}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-sm text-muted-foreground">
-                        Overnight
-                      </span>
-                      <span className="text-primary text-sm">Allowed</span>
-                    </div>
-                    <div className="flex justify-between items-center py-2">
-                      <span className="text-sm text-muted-foreground">
-                        Weekend Holds
-                      </span>
-                      <span className="text-destructive text-sm">
-                        Not Allowed
-                      </span>
+                        <span className="font-semibold text-foreground">
+                          {account.profitTarget}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/30">
+                        <span className="text-sm text-muted-foreground">
+                          Standard/Advanced Max Loss
+                        </span>
+                        <span className="font-semibold text-foreground">
+                          {account.standardAdvancedMaxDrawdown}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/30">
+                        <span className="text-sm text-muted-foreground">
+                          Builder Max Loss
+                        </span>
+                        <span className="font-semibold text-foreground">
+                          {account.builderMaxDrawdown}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2 border-b border-border/30">
+                        <span className="text-sm text-muted-foreground">
+                          Daily Loss Limit
+                        </span>
+                        <span className="font-semibold text-foreground">
+                          {account.dailyLoss}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="text-sm text-muted-foreground">
+                          Overnight
+                        </span>
+                        <span className="text-primary text-sm">Allowed</span>
+                      </div>
+                      <div className="flex justify-between items-center py-2">
+                        <span className="text-sm text-muted-foreground">
+                          Weekend Holds
+                        </span>
+                        <span className="text-destructive text-sm">
+                          Not Allowed
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
           </section>
 
           {/* Plan Rules */}
           <section id="plan-rules" className="mb-20 scroll-mt-24">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <span className="text-gradient-animated">Plan Rules</span>
-            </h2>
+            <ScrollReveal>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+                <span className="text-gradient-animated">Plan Rules</span>
+              </h2>
+            </ScrollReveal>
 
             <div className="grid lg:grid-cols-3 gap-6">
               {planRules.map((plan, index) => (
-                <div
-                  key={plan.name}
-                  className="bg-gradient-card rounded-2xl border border-border/50 p-6 transition-all duration-300 hover:border-primary/30 hover:scale-[1.02]"
-                >
-                  <div className="mb-4">
-                    <Link
-                      to={`/pricing#${
-                        index === 0
-                          ? "standard"
-                          : index === 1
-                          ? "advanced"
-                          : "builder"
-                      }`}
-                      className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 hover:scale-105 transition-transform ${
-                        index === 0
-                          ? "bg-primary/20 text-primary hover:bg-primary/30"
-                          : index === 1
-                          ? "bg-teal/20 text-teal hover:bg-teal/30"
-                          : "bg-soft-blue/20 text-soft-blue hover:bg-soft-blue/30"
-                      }`}
-                    >
-                      {String.fromCharCode(65 + index)}. {plan.name}
-                    </Link>
-                    <h3 className="font-display text-xl font-bold text-foreground">
-                      "{plan.tagline}"
-                    </h3>
-                  </div>
-                  <ul className="space-y-3">
-                    {plan.features.map((feature, i) => (
-                      <li
-                        key={i}
-                        className="flex items-start gap-2 text-sm text-muted-foreground"
+                <ScrollReveal key={plan.name} delay={index * 100}>
+                  <div className="bg-gradient-card rounded-2xl border border-border/50 p-6 transition-all duration-300 hover:border-primary/30 hover:scale-[1.02]">
+                    <div className="mb-4">
+                      <Link
+                        to={`/pricing#${
+                          index === 0
+                            ? "standard"
+                            : index === 1
+                              ? "advanced"
+                              : "builder"
+                        }`}
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 hover:scale-105 transition-transform ${
+                          index === 0
+                            ? "bg-primary/20 text-primary hover:bg-primary/30"
+                            : index === 1
+                              ? "bg-gold-dark/20 text-gold-dark hover:bg-gold-dark/30"
+                              : "bg-gold-light/20 text-gold-light hover:bg-gold-light/30"
+                        }`}
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-primary to-teal mt-2 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  {plan.eligibility && (
-                    <div className="mt-4 pt-4 border-t border-border/30">
-                      <p className="text-sm text-primary font-medium">
-                        {plan.eligibility}
-                      </p>
+                        {String.fromCharCode(65 + index)}. {plan.name}
+                      </Link>
+                      <h3 className="font-display text-xl font-bold text-foreground">
+                        "{plan.tagline}"
+                      </h3>
                     </div>
-                  )}
-                </div>
+                    <ul className="space-y-3">
+                      {plan.features.map((feature, i) => (
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-primary to-primary mt-2 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    {plan.eligibility && (
+                      <div className="mt-4 pt-4 border-t border-border/30">
+                        <p className="text-sm text-primary font-medium">
+                          {plan.eligibility}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </ScrollReveal>
               ))}
             </div>
           </section>
 
           {/* Static Drawdown Explanation */}
           <section className="mb-20">
-            <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-12">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
-                What is{" "}
-                <span className="text-gradient-animated">Static Drawdown</span>?
-              </h2>
-              <div className="prose prose-invert max-w-none">
-                <p className="text-muted-foreground mb-4">
-                  Static drawdown is a fixed maximum loss limit that does not
-                  change based on your account's highest equity. Unlike trailing
-                  drawdown, which follows your peak equity and reduces your
-                  available drawdown as profits grow, static drawdown remains
-                  constant.
-                </p>
-                <p className="text-muted-foreground mb-4">
-                  For example, if you have a $100,000 account with a $2,500
-                  static drawdown, your account will be violated if your balance
-                  drops below $97,500 at any point. This level does not change
-                  regardless of how much profit you make.
-                </p>
-                <p className="text-muted-foreground">
-                  This provides traders with more flexibility and reduces the
-                  pressure that comes with trailing drawdown systems.
-                </p>
+            <ScrollReveal>
+              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-12">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                  What is{" "}
+                  <span className="text-gradient-animated">
+                    Static Drawdown
+                  </span>
+                  ?
+                </h2>
+                <div className="prose prose-invert max-w-none">
+                  <p className="text-muted-foreground mb-4">
+                    Static drawdown is a fixed maximum loss limit that does not
+                    change based on your account's highest equity. Unlike
+                    trailing drawdown, which follows your peak equity and
+                    reduces your available drawdown as profits grow, static
+                    drawdown remains constant.
+                  </p>
+                  <p className="text-muted-foreground mb-4">
+                    For example, if you have a $100,000 account with a $2,500
+                    static drawdown, your account will be violated if your
+                    balance drops below $97,500 at any point. This level does
+                    not change regardless of how much profit you make.
+                  </p>
+                  <p className="text-muted-foreground">
+                    This provides traders with more flexibility and reduces the
+                    pressure that comes with trailing drawdown systems.
+                  </p>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           </section>
 
           {/* Builder Plan Rules Summary */}
           <section className="mb-20">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
-              <span className="text-gradient-animated">
-                Builder Plan Rules Summary
-              </span>
-            </h2>
+            <ScrollReveal delay={0}>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
+                <span className="text-gradient-animated">
+                  Builder Plan Rules Summary
+                </span>
+              </h2>
+            </ScrollReveal>
 
-            <div className="bg-gradient-card rounded-2xl border border-border/50 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-border/30 bg-muted/10">
-                      <th className="text-left py-4 px-6 text-foreground font-semibold">
-                        Rule
-                      </th>
-                      <th className="text-left py-4 px-6 text-foreground font-semibold">
-                        Details
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Consistency Rule
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        50% consistency rule applies during the evaluation phase.
-                      </td>
-                    </tr>
-                    <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Minimum Trading Days
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        2 minimum trading days are required to pass evaluation.
-                      </td>
-                    </tr>
-                    <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Activation Fee
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        No activation fee is required after passing.
-                      </td>
-                    </tr>
-                    <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Payout Cycle
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        Builder uses the 5-day payout cycle.
-                      </td>
-                    </tr>
-                    <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Max Loss Limit
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        Builder max loss limits are $500 higher than Standard for each account size.
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-muted/10 transition-colors">
-                      <td className="py-4 px-6 text-primary font-medium">
-                        Positioning
-                      </td>
-                      <td className="py-4 px-6 text-muted-foreground">
-                        Builder is designed for traders who want more room to execute with structured risk controls.
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+            <ScrollReveal delay={150}>
+              <div className="bg-gradient-card rounded-2xl border border-border/50 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b border-border/30 bg-muted/10">
+                        <th className="text-left py-4 px-6 text-foreground font-semibold">
+                          Rule
+                        </th>
+                        <th className="text-left py-4 px-6 text-foreground font-semibold">
+                          Details
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Consistency Rule
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          50% consistency rule applies during the evaluation
+                          phase.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Minimum Trading Days
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          2 minimum trading days are required to pass
+                          evaluation.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Activation Fee
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          No activation fee is required after passing.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Payout Cycle
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          Builder uses the 5-day payout cycle.
+                        </td>
+                      </tr>
+                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Max Loss Limit
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          Builder max loss limits are $500 higher than Standard
+                          for each account size.
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-muted/10 transition-colors">
+                        <td className="py-4 px-6 text-primary font-medium">
+                          Positioning
+                        </td>
+                        <td className="py-4 px-6 text-muted-foreground">
+                          Builder is designed for traders who want more room to
+                          execute with structured risk controls.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
+            </ScrollReveal>
           </section>
 
           {/* Simulated vs Funded */}
           <section id="funded-trading" className="mb-20 scroll-mt-24">
-            <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-12">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
-                Simulated Trading vs{" "}
-                <span className="text-gradient-animated">Funded Trading</span>
-              </h2>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="font-display font-semibold text-xl text-foreground mb-4">
-                    Challenge Phase (Simulated)
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    You trade in a simulated environment with real-time or near
-                    real-time price data. All orders are simulated. This phase
-                    evaluates your trading discipline and strategy execution.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-xl text-foreground mb-4">
-                    Funded Phase (Simulated Payout Account)
-                  </h3>
-                  <p className="text-muted-foreground text-sm">
-                    After passing your challenge, you continue trading in a
-                    simulated environment. You never trade live capital.
-                    Instead, payouts are based on your simulated performance
-                    according to your plan's payout schedule.
-                  </p>
+            <ScrollReveal>
+              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-12">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+                  Simulated Trading vs{" "}
+                  <span className="text-gradient-animated">Funded Trading</span>
+                </h2>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="font-display font-semibold text-xl text-foreground mb-4">
+                      Challenge Phase (Simulated)
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      You trade in a simulated environment with real-time or
+                      near real-time price data. All orders are simulated. This
+                      phase evaluates your trading discipline and strategy
+                      execution.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="font-display font-semibold text-xl text-foreground mb-4">
+                      Funded Phase (Simulated Payout Account)
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      After passing your challenge, you continue trading in a
+                      simulated environment. You never trade live capital.
+                      Instead, payouts are based on your simulated performance
+                      according to your plan's payout schedule.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           </section>
         </div>
       </div>

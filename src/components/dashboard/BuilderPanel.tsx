@@ -128,7 +128,7 @@ const BuilderPanel = ({
       date.setDate(i + 1);
 
       const daysFromToday = Math.floor(
-        (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+        (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
       );
       const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
       const pnl =
@@ -171,7 +171,7 @@ const BuilderPanel = ({
                   "text-[10px] px-2 py-0.5 flex items-center gap-1",
                   payoutStatus === "Eligible"
                     ? "border-primary/30 text-primary bg-primary/5"
-                    : "border-destructive/30 text-destructive bg-destructive/5"
+                    : "border-destructive/30 text-destructive bg-destructive/5",
                 )}
               >
                 <CheckCircle2 size={10} />
@@ -212,7 +212,7 @@ const BuilderPanel = ({
               <DetailRow
                 label="Payout Window"
                 value="Every 5 trading days"
-                icon={<Calendar size={14} className="text-teal" />}
+                icon={<Calendar size={14} className="text-gold-dark" />}
               />
               <DetailRow
                 label="Weekly Max"
@@ -244,7 +244,7 @@ const BuilderPanel = ({
             <DetailRow
               label="Trading Days"
               value={`${account.metrics.tradingDays} / ${account.metrics.totalDays}`}
-              icon={<Calendar size={14} className="text-teal" />}
+              icon={<Calendar size={14} className="text-gold-dark" />}
             />
             <DetailRow
               label="Profit Streak"
@@ -307,7 +307,7 @@ const BuilderPanel = ({
                     if (day.isCurrentMonth) {
                       onDateChange(day.date);
                       navigate(
-                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`
+                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`,
                       );
                     }
                   }}
@@ -319,14 +319,14 @@ const BuilderPanel = ({
                       : "opacity-30 cursor-default",
                     day.isSelected &&
                       "ring-1 ring-primary bg-primary/20 shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
-                    day.isToday && !day.isSelected && "ring-1 ring-border"
+                    day.isToday && !day.isSelected && "ring-1 ring-border",
                   )}
                 >
                   <span
                     className={cn(
                       "font-medium",
                       day.isSelected && "text-primary",
-                      !day.isCurrentMonth && "text-muted-foreground/50"
+                      !day.isCurrentMonth && "text-muted-foreground/50",
                     )}
                   >
                     {day.dayNumber}
@@ -335,7 +335,7 @@ const BuilderPanel = ({
                     <div
                       className={cn(
                         "w-1 h-1 rounded-full mt-0.5",
-                        day.pnl > 0 ? "bg-primary" : "bg-destructive"
+                        day.pnl > 0 ? "bg-primary" : "bg-destructive",
                       )}
                     />
                   )}
@@ -423,8 +423,8 @@ const BuilderPanel = ({
                 account.streaks.currentStreak > 0
                   ? "bg-primary/10 border-primary/30"
                   : account.streaks.currentStreak < 0
-                  ? "bg-destructive/10 border-destructive/30"
-                  : "bg-muted/10 border-border/20"
+                    ? "bg-destructive/10 border-destructive/30"
+                    : "bg-muted/10 border-border/20",
               )}
             >
               <div className="flex items-center justify-center gap-1.5 mb-2">
@@ -434,8 +434,8 @@ const BuilderPanel = ({
                     account.streaks.currentStreak > 0
                       ? "text-primary"
                       : account.streaks.currentStreak < 0
-                      ? "text-destructive"
-                      : "text-muted-foreground"
+                        ? "text-destructive"
+                        : "text-muted-foreground"
                   }
                 />
                 <span className="text-[10px] text-muted-foreground">
@@ -448,8 +448,8 @@ const BuilderPanel = ({
                   account.streaks.currentStreak > 0
                     ? "text-primary"
                     : account.streaks.currentStreak < 0
-                    ? "text-destructive"
-                    : "text-muted-foreground"
+                      ? "text-destructive"
+                      : "text-muted-foreground",
                 )}
               >
                 {Math.abs(account.streaks.currentStreak)}
@@ -460,15 +460,15 @@ const BuilderPanel = ({
                   account.streaks.currentStreak > 0
                     ? "text-primary"
                     : account.streaks.currentStreak < 0
-                    ? "text-destructive"
-                    : "text-muted-foreground"
+                      ? "text-destructive"
+                      : "text-muted-foreground",
                 )}
               >
                 {account.streaks.currentStreak > 0
                   ? "wins"
                   : account.streaks.currentStreak < 0
-                  ? "losses"
-                  : "neutral"}
+                    ? "losses"
+                    : "neutral"}
               </span>
             </div>
           </div>
@@ -487,8 +487,8 @@ const BuilderPanel = ({
                 ([day, value]) => {
                   const maxValue = Math.max(
                     ...Object.values(account.dayOfWeekPerformance).map((v) =>
-                      Math.abs(v)
-                    )
+                      Math.abs(v),
+                    ),
                   );
                   const intensity =
                     maxValue > 0 ? Math.abs(value) / maxValue : 0;
@@ -514,7 +514,7 @@ const BuilderPanel = ({
                       <div
                         className={`h-10 rounded-lg ${getHeatmapColor()} transition-all duration-300 hover:scale-105 flex items-center justify-center`}
                         title={`${day}: ${value >= 0 ? "+" : ""}$${Math.abs(
-                          value
+                          value,
                         ).toLocaleString()}`}
                       >
                         <span className="text-[10px] font-medium text-foreground/80 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -527,7 +527,7 @@ const BuilderPanel = ({
                       </span>
                     </div>
                   );
-                }
+                },
               )}
             </div>
             <div className="flex items-center justify-center gap-4 mt-3 pt-2 border-t border-border/20">

@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const faqs = [
   {
@@ -120,50 +121,56 @@ const FAQ = () => {
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Frequently Asked <span className="text-gradient">Questions</span>
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Find answers to common questions about Dynasty Futures and our
-              trading challenges.
-            </p>
-          </div>
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                Frequently Asked{" "}
+                <span className="text-gradient">Questions</span>
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Find answers to common questions about Dynasty Futures and our
+                trading challenges.
+              </p>
+            </div>
+          </ScrollReveal>
 
           {/* FAQ Accordion */}
           <div className="max-w-3xl mx-auto">
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
-                <AccordionItem
-                  key={index}
-                  value={`item-${index}`}
-                  id={faq.id}
-                  className="bg-gradient-card rounded-2xl border border-border/50 px-6 overflow-hidden data-[state=open]:border-primary/30 transition-colors duration-300 scroll-mt-24"
-                >
-                  <AccordionTrigger className="text-left font-display font-semibold text-foreground hover:text-primary transition-colors py-6 [&[data-state=open]]:text-primary">
-                    {faq.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-6">
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
+                <ScrollReveal key={index} delay={index * 100}>
+                  <AccordionItem
+                    value={`item-${index}`}
+                    id={faq.id}
+                    className="bg-gradient-card rounded-2xl border border-border/50 px-6 overflow-hidden data-[state=open]:border-primary/30 transition-colors duration-300 scroll-mt-24"
+                  >
+                    <AccordionTrigger className="text-left font-display font-semibold text-foreground hover:text-primary transition-colors py-6 [&[data-state=open]]:text-primary">
+                      {faq.question}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground pb-6">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                </ScrollReveal>
               ))}
             </Accordion>
           </div>
 
           {/* Contact CTA */}
-          <div className="text-center mt-16">
-            <p className="text-muted-foreground mb-4">
-              Still have questions? We're here to help.
-            </p>
-            <Link
-              to="/support"
-              onClick={handleLinkClick}
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors"
-            >
-              Contact Support →
-            </Link>
-          </div>
+          <ScrollReveal delay={150}>
+            <div className="text-center mt-16">
+              <p className="text-muted-foreground mb-4">
+                Still have questions? We're here to help.
+              </p>
+              <Link
+                to="/support"
+                onClick={handleLinkClick}
+                className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-semibold transition-colors"
+              >
+                Contact Support →
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     </Layout>

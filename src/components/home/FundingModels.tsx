@@ -6,7 +6,7 @@ import {
   AdvancedIcon,
   BuilderIcon,
 } from "@/components/icons/PlanIcons";
-import pricingBg from "@/assets/pricing-background.png";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const plans = [
   {
@@ -16,7 +16,7 @@ const plans = [
     description:
       "Start with a low evaluation fee. Pay the activation fee only after you pass and get funded.",
     icon: StandardIcon,
-    color: "from-primary to-teal",
+    color: "from-primary to-primary",
     bgGlow: "bg-primary/20",
     features: ["Low upfront cost", "Static drawdown", "5-day payout cycles"],
   },
@@ -27,8 +27,8 @@ const plans = [
     description:
       "One fee covers everything. When you pass, you're activated immediately with no extra costs.",
     icon: AdvancedIcon,
-    color: "from-teal to-soft-blue",
-    bgGlow: "bg-teal/20",
+    color: "from-gold-dark to-gold-light",
+    bgGlow: "bg-gold-dark/20",
     features: ["No activation fee", "Priority support", "Immediate activation"],
   },
   {
@@ -38,8 +38,8 @@ const plans = [
     description:
       "Designed for traders who want more room to execute with a higher max loss limit than Standard while maintaining a structured evaluation model.",
     icon: BuilderIcon,
-    color: "from-primary via-teal to-soft-blue",
-    bgGlow: "bg-soft-blue/20",
+    color: "from-primary via-primary to-gold-light",
+    bgGlow: "bg-gold-light/20",
     features: [
       "Higher max loss limit",
       "No activation fee",
@@ -55,46 +55,29 @@ const FundingModels = () => {
 
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
-      {/* Atmospheric Background */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: `url(${pricingBg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      />
-
-      {/* Dark overlay for blending */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-background via-background/50 to-background" />
-
-      {/* Top fade for smooth transition */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background to-transparent z-[1]" />
-
-      {/* Bottom fade for smooth transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent z-[1]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/20 to-transparent" />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
             Our <span className="text-gradient">Funding Models</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            Dynasty Futures offers three plan structures to fit different trading
-            styles and risk preferences.
+            Dynasty Futures offers three plan structures to fit different
+            trading styles and risk preferences.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Plans Grid */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             return (
-              <div
+              <ScrollReveal
                 key={plan.id}
+                delay={index * 150}
                 className="group relative glass-card-strong rounded-2xl border border-border/50 p-6 lg:p-8 feature-card overflow-hidden"
-                style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Glow effect */}
                 <div
@@ -149,7 +132,7 @@ const FundingModels = () => {
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
                   </Link>
                 </Button>
-              </div>
+              </ScrollReveal>
             );
           })}
         </div>

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, User as UserIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/useAuth';
-import logo from '@/assets/Dynasty_Futures.png';
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, LogOut, User as UserIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import logo from "@/assets/Dynasty_Futures.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,26 +14,28 @@ const Navbar = () => {
 
   const handleLinkClick = () => {
     setIsOpen(false);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   const handleLogout = async () => {
     setIsOpen(false);
     await logout();
-    navigate('/');
+    navigate("/");
   };
 
   // Build navigation links dynamically based on auth state
   const navLinks = [
-    { name: 'Home', path: '/' },
+    { name: "Home", path: "/" },
     // Only show Dashboard when logged in
-    ...(isAuthenticated ? [{ name: 'Dashboard', path: '/dashboard' }] : []),
+    ...(isAuthenticated ? [{ name: "Dashboard", path: "/dashboard" }] : []),
     // Only show Admin when user is an admin
-    ...(isAuthenticated && user?.role === 'ADMIN' ? [{ name: 'Admin', path: '/admin' }] : []),
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'Rules', path: '/rules' },
-    { name: 'FAQ', path: '/faq' },
-    { name: 'Support', path: '/support' },
+    ...(isAuthenticated && user?.role === "ADMIN"
+      ? [{ name: "Admin", path: "/admin" }]
+      : []),
+    { name: "Pricing", path: "/pricing" },
+    { name: "Rules", path: "/rules" },
+    { name: "FAQ", path: "/faq" },
+    { name: "Support", path: "/support" },
   ];
 
   return (
@@ -41,14 +43,14 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-28 md:h-40">
           {/* Logo */}
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             onClick={handleLinkClick}
             className="flex items-center gap-2 group"
           >
-            <img 
-              src={logo} 
-              alt="Dynasty Futures" 
+            <img
+              src={logo}
+              alt="Dynasty Futures"
               className="h-10 md:h-12 w-auto max-h-full transition-transform duration-300 group-hover:scale-105 logo-blend"
             />
           </Link>
@@ -62,18 +64,21 @@ const Navbar = () => {
                 onClick={handleLinkClick}
                 className={cn(
                   "relative font-medium text-sm transition-all duration-300 hover:text-primary link-transition",
-                  location.pathname === link.path || location.pathname.startsWith(link.path + '/')
-                    ? "text-primary" 
-                    : "text-muted-foreground"
+                  location.pathname === link.path ||
+                    location.pathname.startsWith(link.path + "/")
+                    ? "text-primary"
+                    : "text-muted-foreground",
                 )}
               >
                 {link.name}
-                <span 
+                <span
                   className={cn(
                     "absolute -bottom-1 left-0 h-0.5 transition-all duration-300",
-                    "bg-gradient-to-r from-primary via-teal to-soft-blue",
-                    location.pathname === link.path || location.pathname.startsWith(link.path + '/')
-                      ? "w-full" : "w-0"
+                    "bg-gradient-to-r from-gold-dark via-primary to-gold-light",
+                    location.pathname === link.path ||
+                      location.pathname.startsWith(link.path + "/")
+                      ? "w-full"
+                      : "w-0",
                   )}
                 />
               </Link>
@@ -107,18 +112,22 @@ const Navbar = () => {
             ) : (
               // Logged-out state
               <>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   className="text-muted-foreground hover:text-foreground transition-colors duration-300"
                   asChild
                 >
-                  <Link to="/login" onClick={handleLinkClick}>Trader Login</Link>
+                  <Link to="/login" onClick={handleLinkClick}>
+                    Trader Login
+                  </Link>
                 </Button>
-                <Button 
+                <Button
                   className="btn-gradient-animated text-primary-foreground font-semibold px-6 btn-glow transition-all duration-300 hover:shadow-lg hover:shadow-primary/30"
                   asChild
                 >
-                  <Link to="/pricing" onClick={handleLinkClick}>Start Challenge</Link>
+                  <Link to="/pricing" onClick={handleLinkClick}>
+                    Start Challenge
+                  </Link>
                 </Button>
               </>
             )}
@@ -135,10 +144,10 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div 
+      <div
         className={cn(
           "md:hidden absolute top-full left-0 right-0 glass border-b border-border/30 transition-all duration-300 overflow-hidden",
-          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
         )}
       >
         <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
@@ -149,9 +158,10 @@ const Navbar = () => {
               onClick={handleLinkClick}
               className={cn(
                 "py-3 px-4 rounded-lg font-medium transition-all duration-300",
-                location.pathname === link.path || location.pathname.startsWith(link.path + '/')
-                  ? "bg-primary/10 text-primary" 
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                location.pathname === link.path ||
+                  location.pathname.startsWith(link.path + "/")
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
               )}
             >
               {link.name}
@@ -163,7 +173,9 @@ const Navbar = () => {
               <>
                 <div className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground">
                   <UserIcon className="h-4 w-4" />
-                  <span>{user.firstName} {user.lastName}</span>
+                  <span>
+                    {user.firstName} {user.lastName}
+                  </span>
                   <span className="ml-auto text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                     {user.role}
                   </span>
@@ -180,18 +192,22 @@ const Navbar = () => {
             ) : (
               // Logged-out mobile
               <>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full border-border/50"
                   asChild
                 >
-                  <Link to="/login" onClick={handleLinkClick}>Trader Login</Link>
+                  <Link to="/login" onClick={handleLinkClick}>
+                    Trader Login
+                  </Link>
                 </Button>
-                <Button 
+                <Button
                   className="w-full btn-gradient-animated text-primary-foreground font-semibold"
                   asChild
                 >
-                  <Link to="/pricing" onClick={handleLinkClick}>Start Challenge</Link>
+                  <Link to="/pricing" onClick={handleLinkClick}>
+                    Start Challenge
+                  </Link>
                 </Button>
               </>
             )}

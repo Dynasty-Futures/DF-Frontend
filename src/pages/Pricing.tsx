@@ -17,9 +17,9 @@ import {
   DollarIcon,
   ShieldIcon,
 } from "@/components/icons/PlanIcons";
-import pricingBg from "@/assets/pricing-background.png";
 import { useAuth } from "@/hooks/useAuth";
 import { checkoutApi } from "@/services/checkout";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { ApiError } from "@/types/api";
 import { toast } from "sonner";
 
@@ -238,20 +238,12 @@ const Pricing = () => {
   return (
     <Layout>
       <div className="relative min-h-screen">
-        <div
-          className="fixed inset-0 z-0"
-          style={{
-            backgroundImage: `url(${pricingBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-          }}
-        />
+        <div className="fixed inset-0 z-0 pricing-bg" />
         <div className="fixed inset-0 z-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60" />
 
         <div className="page-transition py-12 md:py-20 relative z-10">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                 Pricing & <span className="text-gradient">Plans</span>
               </h1>
@@ -259,13 +251,13 @@ const Pricing = () => {
                 Choose the plan that fits your trading style. Plans include
                 static drawdown with plan-specific consistency requirements.
               </p>
-            </div>
+            </ScrollReveal>
 
             <section id="standard" className="mb-20 scroll-mt-24">
-              <div className="glass-card-strong rounded-3xl border border-border/50 overflow-hidden">
+              <ScrollReveal className="glass-card-strong rounded-3xl border border-border/50 overflow-hidden">
                 <div className="p-8 md:p-12 border-b border-border/30">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-teal p-0.5">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                         <StandardIcon size={40} />
                       </div>
@@ -355,7 +347,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-primary to-teal text-primary-foreground"
+                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
                                   disabled={
                                     loadingKey ===
                                     `standard-${parseInt(
@@ -425,14 +417,14 @@ const Pricing = () => {
                     one-time and never billed monthly.
                   </p>
                 </div>
-              </div>
+              </ScrollReveal>
             </section>
 
             <section id="advanced" className="mb-20 scroll-mt-24">
-              <div className="glass-card-strong rounded-3xl border border-teal/40 overflow-hidden relative">
+              <ScrollReveal className="glass-card-strong rounded-3xl border border-primary/40 overflow-hidden relative">
                 <div className="p-8 md:p-12 border-b border-border/30">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-teal to-soft-blue p-0.5">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-gold-light p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                         <AdvancedIcon size={40} />
                       </div>
@@ -441,7 +433,7 @@ const Pricing = () => {
                       <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-2">
                         Advanced Plan
                       </h2>
-                      <p className="text-xl text-teal font-medium mb-2">
+                      <p className="text-xl text-gold-light font-medium mb-2">
                         "Instant Activation, No Activation Fee"
                       </p>
                       <p className="text-muted-foreground max-w-xl">
@@ -489,12 +481,12 @@ const Pricing = () => {
                           return (
                             <tr
                               key={row.size}
-                              className="border-b border-border/20 hover:bg-teal/5 transition-colors"
+                              className="border-b border-border/20 hover:bg-primary/5 transition-colors"
                             >
                               <td className="py-4 px-4 font-semibold text-foreground">
                                 {row.size}
                               </td>
-                              <td className="py-4 px-4 text-teal font-bold">
+                              <td className="py-4 px-4 text-gold-light font-bold">
                                 {row.evalFee}
                               </td>
                               <td className="py-4 px-4 text-muted-foreground">
@@ -515,7 +507,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-teal to-soft-blue text-foreground"
+                                  className="bg-gradient-to-r from-primary to-gold-light text-foreground"
                                   disabled={
                                     loadingKey ===
                                     `advanced-${parseInt(
@@ -584,18 +576,18 @@ const Pricing = () => {
                     All plans renew monthly. Cancel anytime.
                   </p>
                 </div>
-              </div>
+              </ScrollReveal>
             </section>
 
             <section id="builder" className="mb-20 scroll-mt-24">
-              <div className="glass-card-strong rounded-3xl border border-primary/40 overflow-hidden relative">
+              <ScrollReveal className="glass-card-strong rounded-3xl border border-primary/40 overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
-                <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-primary/40 to-teal/40 backdrop-blur-sm text-primary text-xs font-semibold rounded-full border border-primary/40">
+                <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-primary/40 to-gold-light/40 backdrop-blur-sm text-primary text-xs font-semibold rounded-full border border-primary/40">
                   NEW
                 </div>
                 <div className="p-8 md:p-12 border-b border-border/30 relative">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
-                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary via-teal to-soft-blue p-0.5">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                         <BuilderIcon size={40} />
                       </div>
@@ -679,7 +671,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-primary to-teal text-primary-foreground"
+                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
                                   disabled={
                                     loadingKey ===
                                     `builder-${parseInt(
@@ -748,11 +740,11 @@ const Pricing = () => {
                     All plans renew monthly. Cancel anytime.
                   </p>
                 </div>
-              </div>
+              </ScrollReveal>
             </section>
 
             <section className="mb-20">
-              <div className="text-center max-w-3xl mx-auto mb-10">
+              <ScrollReveal className="text-center max-w-3xl mx-auto mb-10">
                 <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">
                   Weekly{" "}
                   <span className="text-gradient-animated">Payout Limits</span>
@@ -760,8 +752,11 @@ const Pricing = () => {
                 <p className="text-muted-foreground">
                   Plan comparison for the currently available offerings.
                 </p>
-              </div>
-              <div className="glass-card rounded-2xl border border-border/50 overflow-hidden">
+              </ScrollReveal>
+              <ScrollReveal
+                className="glass-card rounded-2xl border border-border/50 overflow-hidden"
+                delay={150}
+              >
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
@@ -781,7 +776,7 @@ const Pricing = () => {
                       <tr className="border-b border-border/20 hover:bg-primary/5 transition-colors">
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-teal p-0.5">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                                 <StandardIcon size={20} />
                               </div>
@@ -803,10 +798,10 @@ const Pricing = () => {
                           $5,000/week
                         </td>
                       </tr>
-                      <tr className="border-b border-border/20 hover:bg-teal/5 transition-colors">
+                      <tr className="border-b border-border/20 hover:bg-primary/5 transition-colors">
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal to-soft-blue p-0.5">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-gold-light p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                                 <AdvancedIcon size={20} />
                               </div>
@@ -821,7 +816,7 @@ const Pricing = () => {
                             </div>
                           </div>
                         </td>
-                        <td className="py-5 px-6 text-teal font-bold text-lg">
+                        <td className="py-5 px-6 text-gold-light font-bold text-lg">
                           $500
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
@@ -831,7 +826,7 @@ const Pricing = () => {
                       <tr className="hover:bg-primary/5 transition-colors">
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-teal to-soft-blue p-0.5">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
                                 <BuilderIcon size={20} />
                               </div>
@@ -873,7 +868,7 @@ const Pricing = () => {
                       <span className="text-sm text-muted-foreground">
                         Advanced Plan
                       </span>
-                      <span className="font-semibold text-teal">
+                      <span className="font-semibold text-gold-light">
                         $28,000/month
                       </span>
                     </div>
@@ -887,10 +882,10 @@ const Pricing = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </ScrollReveal>
             </section>
 
-            <section className="mb-12">
+            <ScrollReveal as="section" className="mb-12">
               <div className="text-center mb-8">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
                   Tradable Futures Markets
@@ -907,10 +902,10 @@ const Pricing = () => {
                   </p>
                 </div>
               </div>
-            </section>
+            </ScrollReveal>
 
             <section className="mb-20">
-              <div className="text-center mb-8">
+              <ScrollReveal className="text-center mb-8">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
                   Position Sizing{" "}
                   <span className="text-gradient">by Account Size</span>
@@ -921,25 +916,27 @@ const Pricing = () => {
                   allow for increased contract capacity while maintaining
                   structured exposure limits.
                 </p>
-              </div>
-              <Accordion type="single" collapsible className="space-y-4">
-                {positionSizingGuidance.map((item) => (
-                  <AccordionItem
-                    key={item.accountSize}
-                    value={item.accountSize}
-                    className="glass-card rounded-xl border border-border/50 px-6"
-                  >
-                    <AccordionTrigger className="text-lg font-semibold text-foreground hover:no-underline py-5">
-                      {item.accountSize}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p className="text-muted-foreground pb-4">
-                        {item.description}
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              </ScrollReveal>
+              <ScrollReveal delay={150}>
+                <Accordion type="single" collapsible className="space-y-4">
+                  {positionSizingGuidance.map((item) => (
+                    <AccordionItem
+                      key={item.accountSize}
+                      value={item.accountSize}
+                      className="glass-card rounded-xl border border-border/50 px-6"
+                    >
+                      <AccordionTrigger className="text-lg font-semibold text-foreground hover:no-underline py-5">
+                        {item.accountSize}
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <p className="text-muted-foreground pb-4">
+                          {item.description}
+                        </p>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </ScrollReveal>
               <p className="text-sm text-muted-foreground text-center mt-6">
                 Position sizing controls risk exposure and is enforced
                 automatically.

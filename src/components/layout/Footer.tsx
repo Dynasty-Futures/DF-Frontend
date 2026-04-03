@@ -20,7 +20,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-gradient-to-t from-background via-card to-background border-t border-border/30">
+    <footer className="relative bg-gradient-to-t from-background via-card/50 to-transparent">
       {/* Glow effect */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
@@ -92,7 +92,7 @@ const Footer = () => {
           <Link
             to="/legal"
             onClick={handleLinkClick}
-            className="block bg-gradient-to-r from-primary/10 via-teal/10 to-soft-blue/10 rounded-xl border border-primary/30 p-4 hover:border-primary/50 transition-all duration-300 group"
+            className="block bg-gradient-to-r from-gold-dark/10 via-primary/10 to-gold-light/10 rounded-xl border border-primary/30 p-4 hover:border-primary/50 transition-all duration-300 group"
           >
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -106,7 +106,7 @@ const Footer = () => {
                   >
                     <path
                       d="M10 2l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V5l7-3z"
-                      fill="hsl(142 76% 45% / 0.2)"
+                      fill="hsl(43 74% 49% / 0.2)"
                       stroke="currentColor"
                       strokeWidth="1.5"
                     />

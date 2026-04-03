@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import logo from "@/assets/DF_Logo.png";
+
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
+import { useScrollProgress } from "@/hooks/useScrollProgress";
 
 const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { progress } = useScrollProgress(sectionRef);
+
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
-  // Animated values state
   const [balance, setBalance] = useState(108450);
   const [openPL, setOpenPL] = useState(2340);
   const [winRate, setWinRate] = useState(68.5);
@@ -18,14 +22,12 @@ const Hero = () => {
   const [percentage, setPercentage] = useState(8.45);
   const [isBalanceIncreasing, setIsBalanceIncreasing] = useState(false);
 
-  // Animated display values with smooth transitions
   const displayBalance = useAnimatedNumber(balance, 2000);
   const displayOpenPL = useAnimatedNumber(openPL, 1500);
   const displayWinRate = useAnimatedNumber(winRate, 1500, 1);
   const displayTrades = useAnimatedNumber(trades, 800);
   const displayPercentage = useAnimatedNumber(percentage, 1500, 2);
 
-  // Animate balance: $98,000 - $118,000
   useEffect(() => {
     const interval = setInterval(() => {
       setBalance((prev) => {
@@ -37,7 +39,6 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Animate Open P/L: $1,200 - $4,500
   useEffect(() => {
     const interval = setInterval(() => {
       setOpenPL(1200 + Math.random() * 3300);
@@ -45,7 +46,6 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Animate Win Rate: 64% - 72%
   useEffect(() => {
     const interval = setInterval(() => {
       setWinRate(64 + Math.random() * 8);
@@ -53,21 +53,17 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Animate Trades: increment every 4-6 seconds
   useEffect(() => {
     const getRandomInterval = () => 4000 + Math.random() * 2000;
     let timeout: NodeJS.Timeout;
-
     const incrementTrades = () => {
       setTrades((prev) => prev + 1);
       timeout = setTimeout(incrementTrades, getRandomInterval());
     };
-
     timeout = setTimeout(incrementTrades, getRandomInterval());
     return () => clearTimeout(timeout);
   }, []);
 
-  // Animate Percentage: +5.5% to +12.8%
   useEffect(() => {
     const interval = setInterval(() => {
       setPercentage(5.5 + Math.random() * 7.3);
@@ -75,36 +71,103 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const scrollStyles = useMemo(
+    () => ({
+      contentOpacity: 1 - progress * 1.5,
+      cloudOffset1: progress * -60,
+      cloudOffset2: progress * -30,
+      overlayOpacity: 0.3 + progress * 0.5,
+    }),
+    [progress],
+  );
+
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-hero" />
-
-      {/* Enhanced breathing orbs - more dramatic */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/20 rounded-full blur-3xl breathe" />
-      <div className="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] bg-teal/25 rounded-full blur-3xl breathe-delayed" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-soft-blue/15 rounded-full blur-3xl breathe-slow" />
-
-      {/* Secondary breathing accents */}
+    <section
+      ref={sectionRef}
+      className="relative min-h-[100vh] flex items-center overflow-hidden"
+    >
+      {/* Sky base layer */}
       <div
-        className="absolute top-1/3 right-1/3 w-[300px] h-[300px] bg-primary/10 rounded-full blur-2xl breathe"
-        style={{ animationDelay: "2s" }}
-      />
-      <div
-        className="absolute bottom-1/3 left-1/3 w-[350px] h-[350px] bg-teal/10 rounded-full blur-2xl breathe-slow"
-        style={{ animationDelay: "1s" }}
-      />
-
-      {/* Grid pattern overlay with pulse */}
-      <div
-        className="absolute inset-0 opacity-[0.04]"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `linear-gradient(hsl(142 76% 50%) 1px, transparent 1px), linear-gradient(90deg, hsl(175 70% 50%) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
+          background:
+            "linear-gradient(180deg, hsl(220 15% 3%) 0%, hsl(220 12% 6%) 40%, hsl(220 10% 10%) 100%)",
         }}
       />
 
-      <div className="container mx-auto px-4 relative z-10">
+      {/* Cloud layer 1 - slow drift */}
+      <div
+        className="absolute inset-0 opacity-[0.07] cloud-drift-slow"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 600px 200px at 20% 25%, hsl(220 10% 40%) 0%, transparent 70%),
+            radial-gradient(ellipse 500px 150px at 70% 15%, hsl(220 8% 35%) 0%, transparent 70%),
+            radial-gradient(ellipse 400px 120px at 45% 35%, hsl(220 10% 30%) 0%, transparent 70%)
+          `,
+          transform: `translateX(${scrollStyles.cloudOffset1}px)`,
+          willChange: "transform",
+        }}
+      />
+
+      {/* Cloud layer 2 - medium drift */}
+      <div
+        className="absolute inset-0 opacity-[0.05] cloud-drift-medium"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 700px 180px at 60% 20%, hsl(220 8% 45%) 0%, transparent 70%),
+            radial-gradient(ellipse 450px 140px at 25% 30%, hsl(220 10% 35%) 0%, transparent 70%)
+          `,
+          transform: `translateX(${scrollStyles.cloudOffset2}px)`,
+          willChange: "transform",
+        }}
+      />
+
+      {/* Video background layer */}
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center"
+        >
+          <source src="/dynastyfutures.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Cinematic vignette overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(ellipse 80% 70% at 50% 55%, transparent 30%, hsl(220 15% 4% / 0.7) 100%),
+            linear-gradient(180deg, hsl(220 15% 4% / 0.4) 0%, transparent 30%, transparent 60%, hsl(220 15% 4% / ${scrollStyles.overlayOpacity}) 100%)
+          `,
+        }}
+      />
+
+      {/* Warm gold ambient glow from temple interior */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 40% 50% at 50% 60%, hsl(43 74% 49% / 0.08) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Lightning overlay */}
+      <div className="absolute inset-0 pointer-events-none lightning-flash" />
+      <div className="absolute inset-0 pointer-events-none lightning-flash-delayed" />
+
+      {/* Content overlay with scroll-fade */}
+      <div
+        className="container mx-auto px-4 relative z-10"
+        style={{
+          opacity: scrollStyles.contentOpacity,
+          transform: `translateY(${progress * -40}px)`,
+          willChange: "opacity, transform",
+        }}
+      >
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left content */}
           <div className="text-center lg:text-left">
@@ -116,7 +179,7 @@ const Hero = () => {
             </div>
 
             <h1
-              className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 animate-fade-in"
+              className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 animate-fade-in tracking-wide"
               style={{ animationDelay: "0.1s" }}
             >
               Build Your{" "}
@@ -150,7 +213,7 @@ const Hero = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-border/50 bg-card/50 backdrop-blur-sm px-8 py-6 text-lg hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
+                className="border-primary/30 bg-card/40 backdrop-blur-sm px-8 py-6 text-lg hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
                 asChild
               >
                 <Link to="/pricing" onClick={handleClick}>
@@ -166,15 +229,12 @@ const Hero = () => {
             style={{ animationDelay: "0.4s" }}
           >
             <div className="relative bg-gradient-card rounded-2xl border border-border/50 p-4 md:p-6 shadow-2xl overflow-hidden">
-              {/* Glow effect */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl breathe" />
-              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-teal/15 rounded-full blur-2xl breathe-delayed" />
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/15 rounded-full blur-3xl breathe" />
+              <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-gold-dark/15 rounded-full blur-2xl breathe-delayed" />
 
-              {/* Header with Logo */}
               <div className="flex items-center justify-between mb-4 md:mb-6">
                 <div className="flex items-center gap-2 md:gap-4">
-                  {/* Logo positioned to the left of account balance */}
-                  <div className="w-12 h-auto md:w-16 md:w-20 bg-gradient-to-br from-primary/20 via-teal/20 to-soft-blue/20 rounded-xl flex items-center justify-center border border-primary/20 animate-gradient-shift">
+                  <div className="w-12 h-auto md:w-16 bg-gradient-to-br from-primary/20 via-gold-dark/20 to-gold-light/20 rounded-xl flex items-center justify-center border border-primary/20">
                     <img
                       src={logo}
                       alt="DF"
@@ -200,7 +260,6 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Equity Curve with animations */}
               <div className="relative h-24 md:h-32 lg:h-40 mb-4 md:mb-6 rounded-xl bg-muted/30 overflow-hidden">
                 <svg
                   className="w-full h-full"
@@ -217,17 +276,17 @@ const Hero = () => {
                     >
                       <stop
                         offset="0%"
-                        stopColor="hsl(142 76% 50%)"
+                        stopColor="hsl(35 55% 38%)"
                         stopOpacity="0.3"
                       />
                       <stop
                         offset="50%"
-                        stopColor="hsl(175 70% 50%)"
+                        stopColor="hsl(43 74% 49%)"
                         stopOpacity="0.3"
                       />
                       <stop
                         offset="100%"
-                        stopColor="hsl(195 85% 55%)"
+                        stopColor="hsl(43 80% 65%)"
                         stopOpacity="0.3"
                       />
                     </linearGradient>
@@ -238,9 +297,9 @@ const Hero = () => {
                       x2="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" stopColor="hsl(142 76% 50%)" />
-                      <stop offset="50%" stopColor="hsl(175 70% 50%)" />
-                      <stop offset="100%" stopColor="hsl(195 85% 55%)" />
+                      <stop offset="0%" stopColor="hsl(35 55% 38%)" />
+                      <stop offset="50%" stopColor="hsl(43 74% 49%)" />
+                      <stop offset="100%" stopColor="hsl(43 80% 65%)" />
                     </linearGradient>
                     <filter
                       id="glow"
@@ -257,33 +316,22 @@ const Hero = () => {
                     </filter>
                   </defs>
 
-                  {/* Animated fill area */}
                   <path
                     d="M0,120 Q50,110 100,80 T200,60 T300,40 T400,20 L400,160 L0,160 Z"
                     fill="url(#curveGradient)"
                     className="animate-curve-wave"
                   />
 
-                  {/* Main curve line with draw animation */}
                   <path
                     d="M0,120 Q50,110 100,80 T200,60 T300,40 T400,20"
                     fill="none"
                     stroke="url(#lineGradient)"
                     strokeWidth="3"
                     className="animate-curve-draw"
-                    style={{
-                      strokeDasharray: 600,
-                      strokeDashoffset: 0,
-                    }}
+                    style={{ strokeDasharray: 600, strokeDashoffset: 0 }}
                   />
 
-                  {/* Traveling glow dot */}
-                  <circle
-                    r="6"
-                    fill="hsl(175 70% 50%)"
-                    filter="url(#glow)"
-                    className="animate-dot-travel"
-                  >
+                  <circle r="6" fill="hsl(43 74% 55%)" filter="url(#glow)">
                     <animateMotion
                       dur="8s"
                       repeatCount="indefinite"
@@ -293,7 +341,6 @@ const Hero = () => {
                 </svg>
               </div>
 
-              {/* Stats Grid with pulse animations */}
               <div className="grid grid-cols-3 gap-2 md:gap-4">
                 <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
                   <DollarSign className="w-4 h-4 md:w-5 md:h-5 text-primary mx-auto mb-1" />
@@ -305,7 +352,7 @@ const Hero = () => {
                   </p>
                 </div>
                 <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
-                  <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-teal mx-auto mb-1" />
+                  <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-gold-dark mx-auto mb-1" />
                   <p className="text-[10px] md:text-xs text-muted-foreground">
                     Win Rate
                   </p>
@@ -314,7 +361,7 @@ const Hero = () => {
                   </p>
                 </div>
                 <div className="text-center p-2 md:p-3 rounded-xl bg-muted/30 transition-transform duration-300 hover:scale-105">
-                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-soft-blue mx-auto mb-1" />
+                  <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-gold-light mx-auto mb-1" />
                   <p className="text-[10px] md:text-xs text-muted-foreground">
                     Trades
                   </p>
@@ -327,6 +374,56 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Bottom gradient fade into next section */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-20"
+        style={{
+          background:
+            "linear-gradient(to top, hsl(220 15% 6% / 0.8) 0%, transparent 100%)",
+        }}
+      />
+
+      <style>{`
+        .cloud-drift-slow {
+          animation: cloudDriftSlow 45s linear infinite;
+        }
+        .cloud-drift-medium {
+          animation: cloudDriftMedium 30s linear infinite;
+        }
+        .lightning-flash {
+          animation: lightningFlash 8s ease-out infinite;
+          background: hsl(220 20% 80% / 0);
+        }
+        .lightning-flash-delayed {
+          animation: lightningFlash 13s ease-out infinite;
+          animation-delay: 5s;
+          background: hsl(220 20% 80% / 0);
+        }
+        @keyframes cloudDriftSlow {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-80px); }
+        }
+        @keyframes cloudDriftMedium {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(60px); }
+        }
+        @keyframes lightningFlash {
+          0%, 94%, 100% { background: transparent; }
+          95% { background: hsl(220 20% 90% / 0.08); }
+          95.5% { background: transparent; }
+          96% { background: hsl(43 40% 85% / 0.05); }
+          97% { background: transparent; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .cloud-drift-slow,
+          .cloud-drift-medium,
+          .lightning-flash,
+          .lightning-flash-delayed {
+            animation: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

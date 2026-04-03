@@ -33,6 +33,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 
 type Rarity = "common" | "rare" | "epic" | "legendary";
 type AchievementState = "locked" | "in-progress" | "unlocked";
@@ -86,7 +87,7 @@ const isRecentlyUnlocked = (dateStr?: string): boolean => {
   const unlockDate = new Date(dateStr + ", 2025");
   const now = new Date();
   const diffDays = Math.floor(
-    (now.getTime() - unlockDate.getTime()) / (1000 * 60 * 60 * 24)
+    (now.getTime() - unlockDate.getTime()) / (1000 * 60 * 60 * 24),
   );
   return diffDays <= 7;
 };
@@ -298,7 +299,7 @@ const RarityTag = ({
       className={cn(
         "px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full border",
         config.className,
-        muted && "opacity-50"
+        muted && "opacity-50",
       )}
     >
       {config.label}
@@ -324,7 +325,7 @@ const ProgressBar = ({
       </div>
       <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-primary to-teal rounded-full transition-all duration-500"
+          className="h-full bg-gradient-to-r from-primary to-primary rounded-full transition-all duration-500"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -366,7 +367,7 @@ const AchievementCard = ({ achievement, index }: AchievementCardProps) => {
             ],
             isLocked && [
               "bg-muted/10 border-border/20 opacity-40 cursor-not-allowed",
-            ]
+            ],
           )}
           style={{ animationDelay: `${index * 50}ms` }}
         >
@@ -377,7 +378,7 @@ const AchievementCard = ({ achievement, index }: AchievementCardProps) => {
 
           {/* Gradient overlay for unlocked */}
           {isUnlocked && (
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-teal/5 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/5 pointer-events-none" />
           )}
 
           {/* NEW badge for recently unlocked */}
@@ -402,7 +403,7 @@ const AchievementCard = ({ achievement, index }: AchievementCardProps) => {
                 isUnlocked &&
                   "bg-primary/15 border-primary/30 animate-icon-3d-float",
                 isInProgress && "bg-primary/10 border-primary/20",
-                isLocked && "bg-muted/20 border-border/30"
+                isLocked && "bg-muted/20 border-border/30",
               )}
             >
               {isLocked ? (
@@ -417,7 +418,7 @@ const AchievementCard = ({ achievement, index }: AchievementCardProps) => {
               <h4
                 className={cn(
                   "font-semibold text-lg",
-                  isLocked ? "text-muted-foreground" : "text-foreground"
+                  isLocked ? "text-muted-foreground" : "text-foreground",
                 )}
               >
                 {title}
@@ -505,45 +506,47 @@ const CategorySection = ({
 
 const DashboardAchievements = () => {
   const unlockedCount = achievements.filter(
-    (a) => a.state === "unlocked"
+    (a) => a.state === "unlocked",
   ).length;
   const totalCount = achievements.length;
 
   const progressionAchievements = achievements.filter(
-    (a) => a.category === "progression"
+    (a) => a.category === "progression",
   );
   const performanceAchievements = achievements.filter(
-    (a) => a.category === "performance"
+    (a) => a.category === "performance",
   );
   const payoutAchievements = achievements.filter(
-    (a) => a.category === "payout"
+    (a) => a.category === "payout",
   );
 
   return (
     <div className="space-y-8 pt-16 lg:pt-0">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Achievements</h1>
-          <p className="text-muted-foreground mt-1">
-            Track your trading milestones and unlock rewards
-          </p>
+      <ScrollReveal>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Achievements</h1>
+            <p className="text-muted-foreground mt-1">
+              Track your trading milestones and unlock rewards
+            </p>
+          </div>
+          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-primary/10 border border-primary/30">
+            <Award size={24} className="text-primary" />
+            <span className="text-xl font-bold text-foreground">
+              {unlockedCount}
+            </span>
+            <span className="text-muted-foreground">of</span>
+            <span className="text-xl font-bold text-foreground">
+              {totalCount}
+            </span>
+            <span className="text-muted-foreground text-sm">Unlocked</span>
+          </div>
         </div>
-        <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-primary/10 border border-primary/30">
-          <Award size={24} className="text-primary" />
-          <span className="text-xl font-bold text-foreground">
-            {unlockedCount}
-          </span>
-          <span className="text-muted-foreground">of</span>
-          <span className="text-xl font-bold text-foreground">
-            {totalCount}
-          </span>
-          <span className="text-muted-foreground text-sm">Unlocked</span>
-        </div>
-      </div>
+      </ScrollReveal>
 
       {/* Categories */}
-      <div className="space-y-10">
+      <ScrollReveal delay={150} className="space-y-10">
         <CategorySection
           title="Progression"
           achievements={progressionAchievements}
@@ -556,7 +559,7 @@ const DashboardAchievements = () => {
           title="Payout & Profit"
           achievements={payoutAchievements}
         />
-      </div>
+      </ScrollReveal>
     </div>
   );
 };

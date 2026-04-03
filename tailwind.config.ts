@@ -2,7 +2,12 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -20,8 +25,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Outfit', 'sans-serif'],
-        display: ['Space Grotesk', 'sans-serif'],
+        sans: ["Inter", "sans-serif"],
+        display: ["Cinzel", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -67,12 +72,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        neon: {
-          green: "hsl(var(--neon-green))",
-          glow: "hsl(var(--neon-green-glow))",
+        gold: {
+          DEFAULT: "hsl(var(--gold))",
+          light: "hsl(var(--gold-light))",
+          dark: "hsl(var(--gold-dark))",
         },
-        teal: "hsl(var(--teal))",
-        "soft-blue": "hsl(var(--soft-blue))",
+        stone: "hsl(var(--stone))",
         charcoal: {
           DEFAULT: "hsl(var(--charcoal))",
           light: "hsl(var(--charcoal-light))",
@@ -112,7 +117,7 @@ export default {
           "0%, 100%": { opacity: "0.5" },
           "50%": { opacity: "1" },
         },
-        "float": {
+        float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
@@ -122,11 +127,11 @@ export default {
           "50%": { transform: "translateY(-15px) rotate(0deg)" },
           "75%": { transform: "translateY(-8px) rotate(-2deg)" },
         },
-        "shimmer": {
+        shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
-        "breathe": {
+        breathe: {
           "0%, 100%": { transform: "scale(1)", opacity: "0.15" },
           "50%": { transform: "scale(1.4)", opacity: "0.35" },
         },
@@ -152,7 +157,7 @@ export default {
         },
         "number-glow": {
           "0%": { textShadow: "0 0 0 transparent" },
-          "50%": { textShadow: "0 0 20px hsl(142 76% 50% / 0.5)" },
+          "50%": { textShadow: "0 0 20px hsl(43 74% 55% / 0.5)" },
           "100%": { textShadow: "0 0 0 transparent" },
         },
         "icon-breathe": {
@@ -160,18 +165,20 @@ export default {
           "50%": { transform: "scale(1.1)", opacity: "0.8" },
         },
         "icon-3d-float": {
-          "0%, 100%": { 
-            transform: "perspective(500px) translateZ(0) translateY(0) rotateX(0deg)",
+          "0%, 100%": {
+            transform:
+              "perspective(500px) translateZ(0) translateY(0) rotateX(0deg)",
           },
-          "50%": { 
-            transform: "perspective(500px) translateZ(8px) translateY(-2px) rotateX(4deg)",
+          "50%": {
+            transform:
+              "perspective(500px) translateZ(8px) translateY(-2px) rotateX(4deg)",
           },
         },
         "icon-3d-pulse": {
-          "0%, 100%": { 
+          "0%, 100%": {
             transform: "perspective(400px) scale(1) rotateY(0deg)",
           },
-          "50%": { 
+          "50%": {
             transform: "perspective(400px) scale(1.08) rotateY(6deg)",
           },
         },
@@ -182,12 +189,21 @@ export default {
         },
         "achievement-glow-pulse": {
           "0%": { boxShadow: "0 0 0 0 transparent" },
-          "50%": { boxShadow: "0 0 12px 2px var(--glow-color, hsl(var(--primary) / 0.15))" },
-          "100%": { boxShadow: "0 0 6px 1px var(--glow-color, hsl(var(--primary) / 0.1))" },
+          "50%": {
+            boxShadow:
+              "0 0 12px 2px var(--glow-color, hsl(var(--primary) / 0.15))",
+          },
+          "100%": {
+            boxShadow:
+              "0 0 6px 1px var(--glow-color, hsl(var(--primary) / 0.1))",
+          },
         },
         "confetti-fall": {
           "0%": { transform: "translateY(-10px) rotate(0deg)", opacity: "1" },
-          "100%": { transform: "translateY(20px) rotate(180deg)", opacity: "0" },
+          "100%": {
+            transform: "translateY(20px) rotate(180deg)",
+            opacity: "0",
+          },
         },
       },
       animation: {
@@ -198,10 +214,10 @@ export default {
         "scale-in": "scale-in 0.5s ease-out forwards",
         "slide-in-right": "slide-in-right 0.6s ease-out forwards",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
-        "float": "float 3s ease-in-out infinite",
+        float: "float 3s ease-in-out infinite",
         "float-enhanced": "float-enhanced 4s ease-in-out infinite",
-        "shimmer": "shimmer 2s linear infinite",
-        "breathe": "breathe 4s ease-in-out infinite",
+        shimmer: "shimmer 2s linear infinite",
+        breathe: "breathe 4s ease-in-out infinite",
         "breathe-slow": "breathe-slow 6s ease-in-out infinite",
         "color-shift": "color-shift 4s ease-in-out infinite",
         "curve-draw": "curve-draw 2s ease-out forwards",
@@ -213,7 +229,7 @@ export default {
         "icon-3d-pulse": "icon-3d-pulse 2s ease-in-out infinite",
         "achievement-unlock": "achievement-unlock 0.4s ease-out forwards",
         "achievement-glow": "achievement-glow-pulse 1s ease-out forwards",
-        "confetti": "confetti-fall 0.8s ease-out forwards",
+        confetti: "confetti-fall 0.8s ease-out forwards",
       },
     },
   },

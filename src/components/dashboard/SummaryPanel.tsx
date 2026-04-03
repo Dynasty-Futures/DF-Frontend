@@ -60,7 +60,7 @@ const SummaryItem = ({
         <div
           className={cn(
             "flex items-center justify-between p-2.5 rounded-lg border transition-all duration-300 gap-2 min-w-0 cursor-help",
-            variantStyles[variant]
+            variantStyles[variant],
           )}
         >
           <div className="flex items-center gap-2 min-w-0 flex-shrink">
@@ -144,7 +144,7 @@ const SummaryPanel = ({
 
       // Get P&L for this day from dailyPnL array (index from end)
       const daysFromToday = Math.floor(
-        (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+        (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
       );
       const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
       const pnl =
@@ -169,7 +169,7 @@ const SummaryPanel = ({
   // Calculate progress percentage
   const profitProgress = Math.min(
     100,
-    Math.max(0, (account.closedPnL / account.profitTarget) * 100)
+    Math.max(0, (account.closedPnL / account.profitTarget) * 100),
   );
 
   // Format currency
@@ -263,7 +263,7 @@ const SummaryPanel = ({
             <SummaryItem
               label="Trading Days"
               value={`${account.metrics.tradingDays} / ${account.metrics.totalDays}`}
-              icon={<Calendar size={14} className="text-teal" />}
+              icon={<Calendar size={14} className="text-gold-dark" />}
             />
 
             <SummaryItem
@@ -322,7 +322,7 @@ const SummaryPanel = ({
                     if (day.isCurrentMonth) {
                       onDateChange(day.date);
                       navigate(
-                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`
+                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`,
                       );
                     }
                   }}
@@ -337,14 +337,14 @@ const SummaryPanel = ({
                     day.isSelected &&
                       "ring-1 ring-primary bg-primary/20 shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
                     // Today marker (if not selected)
-                    day.isToday && !day.isSelected && "ring-1 ring-border"
+                    day.isToday && !day.isSelected && "ring-1 ring-border",
                   )}
                 >
                   <span
                     className={cn(
                       "font-medium",
                       day.isSelected && "text-primary",
-                      !day.isCurrentMonth && "text-muted-foreground/50"
+                      !day.isCurrentMonth && "text-muted-foreground/50",
                     )}
                   >
                     {day.dayNumber}
@@ -354,7 +354,7 @@ const SummaryPanel = ({
                     <div
                       className={cn(
                         "w-1 h-1 rounded-full mt-0.5",
-                        day.pnl > 0 ? "bg-primary" : "bg-destructive"
+                        day.pnl > 0 ? "bg-primary" : "bg-destructive",
                       )}
                     />
                   )}
@@ -442,8 +442,8 @@ const SummaryPanel = ({
                 account.streaks.currentStreak > 0
                   ? "bg-primary/10 border-primary/30"
                   : account.streaks.currentStreak < 0
-                  ? "bg-destructive/10 border-destructive/30"
-                  : "bg-muted/10 border-border/20"
+                    ? "bg-destructive/10 border-destructive/30"
+                    : "bg-muted/10 border-border/20",
               )}
             >
               <div className="flex items-center justify-center gap-1.5 mb-2">
@@ -453,8 +453,8 @@ const SummaryPanel = ({
                     account.streaks.currentStreak > 0
                       ? "text-primary"
                       : account.streaks.currentStreak < 0
-                      ? "text-destructive"
-                      : "text-muted-foreground"
+                        ? "text-destructive"
+                        : "text-muted-foreground"
                   }
                 />
                 <span className="text-[10px] text-muted-foreground">
@@ -467,8 +467,8 @@ const SummaryPanel = ({
                   account.streaks.currentStreak > 0
                     ? "text-primary"
                     : account.streaks.currentStreak < 0
-                    ? "text-destructive"
-                    : "text-muted-foreground"
+                      ? "text-destructive"
+                      : "text-muted-foreground",
                 )}
               >
                 {Math.abs(account.streaks.currentStreak)}
@@ -479,15 +479,15 @@ const SummaryPanel = ({
                   account.streaks.currentStreak > 0
                     ? "text-primary"
                     : account.streaks.currentStreak < 0
-                    ? "text-destructive"
-                    : "text-muted-foreground"
+                      ? "text-destructive"
+                      : "text-muted-foreground",
                 )}
               >
                 {account.streaks.currentStreak > 0
                   ? "wins"
                   : account.streaks.currentStreak < 0
-                  ? "losses"
-                  : "neutral"}
+                    ? "losses"
+                    : "neutral"}
               </span>
             </div>
           </div>
@@ -506,8 +506,8 @@ const SummaryPanel = ({
                 ([day, value]) => {
                   const maxValue = Math.max(
                     ...Object.values(account.dayOfWeekPerformance).map((v) =>
-                      Math.abs(v)
-                    )
+                      Math.abs(v),
+                    ),
                   );
                   const intensity =
                     maxValue > 0 ? Math.abs(value) / maxValue : 0;
@@ -533,7 +533,7 @@ const SummaryPanel = ({
                       <div
                         className={`h-10 rounded-lg ${getHeatmapColor()} transition-all duration-300 hover:scale-105 flex items-center justify-center`}
                         title={`${day}: ${value >= 0 ? "+" : ""}$${Math.abs(
-                          value
+                          value,
                         ).toLocaleString()}`}
                       >
                         <span className="text-[10px] font-medium text-foreground/80 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -546,7 +546,7 @@ const SummaryPanel = ({
                       </span>
                     </div>
                   );
-                }
+                },
               )}
             </div>
             <div className="flex items-center justify-center gap-4 mt-3 pt-2 border-t border-border/20">
