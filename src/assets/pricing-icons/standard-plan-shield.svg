@@ -1,0 +1,32 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="shield-gold" x1="32" y1="16" x2="224" y2="240" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F9E48A" />
+      <stop offset="0.5" stop-color="#EAB308" />
+      <stop offset="1" stop-color="#8B5E1A" />
+    </linearGradient>
+    <linearGradient id="shield-gold-soft" x1="48" y1="24" x2="208" y2="232" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDE68A" />
+      <stop offset="0.55" stop-color="#FBBF24" />
+      <stop offset="1" stop-color="#B45309" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M128 20L214 54V118C214 177 176 224 128 238C80 224 42 177 42 118V54L128 20Z"
+    stroke="url(#shield-gold)"
+    stroke-width="12"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M128 46L188 70V118C188 161 162 194 128 207C94 194 68 161 68 118V70L128 46Z"
+    stroke="url(#shield-gold-soft)"
+    stroke-width="10"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M128 71L160 84V119C160 144 147 162 128 172C109 162 96 144 96 119V84L128 71Z"
+    stroke="url(#shield-gold-soft)"
+    stroke-width="9"
+    stroke-linejoin="round"
+  />
+</svg>

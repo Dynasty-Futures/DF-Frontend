@@ -9,14 +9,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  StandardIcon,
-  AdvancedIcon,
-  BuilderIcon,
   CheckIcon,
   ClockIcon,
   DollarIcon,
   ShieldIcon,
 } from "@/components/icons/PlanIcons";
+import standardPlanShieldIcon from "@/assets/pricing-icons/standard-plan-shield.svg";
+import advancedPlanSpartanHelmetIcon from "@/assets/pricing-icons/advanced-plan-spartan-helmet.svg";
+import builderPlanWorldHolderIcon from "@/assets/pricing-icons/builder-plan-world-holder.svg";
 import { useAuth } from "@/hooks/useAuth";
 import { checkoutApi } from "@/services/checkout";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -185,6 +185,44 @@ const positionSizingGuidance = [
   },
 ];
 
+type PricingPlanIconType = "standard" | "advanced" | "builder";
+
+const pricingPlanIconAssets: Record<
+  PricingPlanIconType,
+  { src: string; alt: string; fitClassName: string }
+> = {
+  standard: {
+    src: standardPlanShieldIcon,
+    alt: "Standard Plan Shield Icon",
+    fitClassName: "p-1",
+  },
+  advanced: {
+    src: advancedPlanSpartanHelmetIcon,
+    alt: "Advanced Plan Spartan Helmet Icon",
+    fitClassName: "p-0.5",
+  },
+  builder: {
+    src: builderPlanWorldHolderIcon,
+    alt: "Builder Plan World Holder Icon",
+    fitClassName: "p-0.5",
+  },
+};
+
+const PricingPlanIcon = ({ plan }: { plan: PricingPlanIconType }) => {
+  const { src, alt, fitClassName } = pricingPlanIconAssets[plan];
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={`w-full h-full object-contain object-center ${fitClassName}`}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+    />
+  );
+};
+
 const Pricing = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -259,7 +297,7 @@ const Pricing = () => {
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <StandardIcon size={40} />
+                        <PricingPlanIcon plan="standard" />
                       </div>
                     </div>
                     <div>
@@ -426,7 +464,7 @@ const Pricing = () => {
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-gold-light p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <AdvancedIcon size={40} />
+                        <PricingPlanIcon plan="advanced" />
                       </div>
                     </div>
                     <div>
@@ -589,7 +627,7 @@ const Pricing = () => {
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
                       <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <BuilderIcon size={40} />
+                        <PricingPlanIcon plan="builder" />
                       </div>
                     </div>
                     <div>
@@ -778,7 +816,7 @@ const Pricing = () => {
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <StandardIcon size={20} />
+                                <PricingPlanIcon plan="standard" />
                               </div>
                             </div>
                             <div>
@@ -803,7 +841,7 @@ const Pricing = () => {
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-gold-light p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <AdvancedIcon size={20} />
+                                <PricingPlanIcon plan="advanced" />
                               </div>
                             </div>
                             <div>
@@ -828,7 +866,7 @@ const Pricing = () => {
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
                               <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <BuilderIcon size={20} />
+                                <PricingPlanIcon plan="builder" />
                               </div>
                             </div>
                             <div>

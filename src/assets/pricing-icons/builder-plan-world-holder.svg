@@ -1,0 +1,32 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="atlas-gold" x1="28" y1="18" x2="226" y2="238" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FEF3C7" />
+      <stop offset="0.52" stop-color="#F59E0B" />
+      <stop offset="1" stop-color="#854D0E" />
+    </linearGradient>
+    <linearGradient id="atlas-gold-soft" x1="38" y1="34" x2="212" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FDE68A" />
+      <stop offset="0.5" stop-color="#FBBF24" />
+      <stop offset="1" stop-color="#A16207" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="136" cy="74" r="58" stroke="url(#atlas-gold)" stroke-width="10" />
+  <path d="M78 74H194M83 53H189M83 95H189" stroke="url(#atlas-gold-soft)" stroke-width="6" stroke-linecap="round" />
+  <path d="M136 16V132M112 20C122 36 128 54 128 74C128 94 122 112 112 128" stroke="url(#atlas-gold-soft)" stroke-width="6" stroke-linecap="round" />
+  <path d="M160 20C150 36 144 54 144 74C144 94 150 112 160 128" stroke="url(#atlas-gold-soft)" stroke-width="6" stroke-linecap="round" />
+  <path d="M94 32C110 44 124 58 136 74C148 90 162 104 178 116" stroke="url(#atlas-gold-soft)" stroke-width="5" stroke-linecap="round" />
+  <path d="M178 32C162 44 148 58 136 74C124 90 110 104 94 116" stroke="url(#atlas-gold-soft)" stroke-width="5" stroke-linecap="round" />
+
+  <circle cx="126" cy="116" r="10" stroke="url(#atlas-gold)" stroke-width="6" />
+  <path d="M82 141C95 125 111 117 126 116" stroke="url(#atlas-gold)" stroke-width="8" stroke-linecap="round" />
+  <path d="M170 143C155 125 141 117 126 116" stroke="url(#atlas-gold)" stroke-width="8" stroke-linecap="round" />
+  <path d="M126 126L126 175" stroke="url(#atlas-gold)" stroke-width="8" stroke-linecap="round" />
+  <path d="M126 150L104 166" stroke="url(#atlas-gold-soft)" stroke-width="7" stroke-linecap="round" />
+  <path d="M126 150L146 168" stroke="url(#atlas-gold-soft)" stroke-width="7" stroke-linecap="round" />
+  <path d="M103 166L88 206" stroke="url(#atlas-gold)" stroke-width="8" stroke-linecap="round" />
+  <path d="M146 168L166 206" stroke="url(#atlas-gold)" stroke-width="8" stroke-linecap="round" />
+  <path d="M88 206H72M166 206H182" stroke="url(#atlas-gold-soft)" stroke-width="8" stroke-linecap="round" />
+  <path d="M66 214H192" stroke="url(#atlas-gold)" stroke-width="6" stroke-linecap="round" opacity="0.8" />
+</svg>
