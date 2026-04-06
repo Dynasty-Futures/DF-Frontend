@@ -4,7 +4,6 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const steps = [
   {
-    number: "01",
     icon: Target,
     title: "Pick Your Plan",
     description:
@@ -20,7 +19,6 @@ const steps = [
     link: "/rules#plan-rules",
   },
   {
-    number: "02",
     icon: LineChart,
     title: "Trade",
     description:
@@ -39,7 +37,6 @@ const steps = [
     link: "/rules#account-rules",
   },
   {
-    number: "03",
     icon: Wallet,
     title: "Request Payouts",
     description:
@@ -85,7 +82,7 @@ const HowItWorks = () => {
             const Icon = step.icon;
             return (
               <ScrollReveal
-                key={step.number}
+                key={step.title}
                 delay={index * 150}
                 className="relative group"
               >
@@ -95,11 +92,6 @@ const HowItWorks = () => {
                 )}
 
                 <div className="relative text-center glass-card rounded-2xl p-6 border border-border/30">
-                  {/* Step number */}
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 font-display text-7xl font-bold text-muted/10 select-none">
-                    {step.number}
-                  </div>
-
                   {/* Icon - Clickable */}
                   <Link
                     to={step.link}

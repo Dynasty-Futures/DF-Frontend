@@ -236,9 +236,6 @@ const Pricing = () => {
   return (
     <Layout>
       <div className="relative min-h-screen">
-        <div className="fixed inset-0 z-0 pricing-bg" />
-        <div className="fixed inset-0 z-0 bg-gradient-to-b from-background/60 via-background/40 to-background/60" />
-
         <div className="page-transition py-12 md:py-20 relative z-10">
           <div className="container mx-auto px-4">
             <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
