@@ -10,7 +10,6 @@ import {
   Headphones 
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import logo from '@/assets/Dashboard_Logo.png';
 import {
   Tooltip,
   TooltipContent,
@@ -18,6 +17,9 @@ import {
   TooltipTrigger,
   TooltipPortal,
 } from '@/components/ui/tooltip';
+
+/** Same asset as <link rel="icon"> in index.html */
+const siteIconSrc = '/favicon.png?v=20260406';
 
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: Activity },
@@ -46,10 +48,10 @@ const DashboardSidebar = () => {
         {/* Logo */}
         <div className="p-3 flex justify-center bg-transparent">
           <Link to="/" className="group">
-            <img 
-              src={logo} 
-              alt="Dynasty Futures" 
-              className="h-10 w-auto transition-transform duration-300 group-hover:scale-105 logo-blend"
+            <img
+              src={siteIconSrc}
+              alt="Dynasty Futures"
+              className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-105 logo-blend"
             />
           </Link>
         </div>

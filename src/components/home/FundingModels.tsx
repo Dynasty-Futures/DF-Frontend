@@ -1,43 +1,36 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import {
-  StandardIcon,
-  AdvancedIcon,
-  BuilderIcon,
-} from "@/components/icons/PlanIcons";
+import { PlanImage } from "@/components/icons/PlanIcons";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 const plans = [
   {
-    id: "standard",
+    id: "standard" as const,
     name: "Standard Plan",
     tagline: "Pass First, Activate Later",
     description:
       "Start with a low evaluation fee. Pay the activation fee only after you pass and get funded.",
-    icon: StandardIcon,
     color: "from-primary to-primary",
     bgGlow: "bg-primary/20",
     features: ["Low upfront cost", "Static drawdown", "5-day payout cycles"],
   },
   {
-    id: "advanced",
+    id: "advanced" as const,
     name: "Advanced Plan",
     tagline: "Instant Activation, No Activation Fee",
     description:
       "One fee covers everything. When you pass, you're activated immediately with no extra costs.",
-    icon: AdvancedIcon,
     color: "from-gold-dark to-gold-light",
     bgGlow: "bg-gold-dark/20",
     features: ["No activation fee", "Priority support", "Immediate activation"],
   },
   {
-    id: "builder",
+    id: "builder" as const,
     name: "Builder Plan",
     tagline: "More Room to Execute",
     description:
       "Designed for traders who want more room to execute with a higher max loss limit than Standard while maintaining a structured evaluation model.",
-    icon: BuilderIcon,
     color: "from-primary via-primary to-gold-light",
     bgGlow: "bg-gold-light/20",
     features: [
@@ -72,7 +65,6 @@ const FundingModels = () => {
         {/* Plans Grid */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
           {plans.map((plan, index) => {
-            const Icon = plan.icon;
             return (
               <ScrollReveal
                 key={plan.id}
@@ -89,8 +81,8 @@ const FundingModels = () => {
                   <div
                     className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.color} p-0.5`}
                   >
-                    <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                      <Icon size={32} />
+                    <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-1">
+                      <PlanImage plan={plan.id} size={48} />
                     </div>
                   </div>
                 </div>

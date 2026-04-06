@@ -6,7 +6,7 @@ const features = [
     icon: Monitor,
     title: "Real-Time Market Data",
     description:
-      "Trade with live or near real-time price feeds from actual futures markets.",
+      "Trade with live real time price feeds from actual futures markets.",
   },
   {
     icon: Zap,

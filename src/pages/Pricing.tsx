@@ -9,9 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  StandardIcon,
-  AdvancedIcon,
-  BuilderIcon,
+  PlanImage,
   CheckIcon,
   ClockIcon,
   DollarIcon,
@@ -258,8 +256,8 @@ const Pricing = () => {
                 <div className="p-8 md:p-12 border-b border-border/30">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
-                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <StandardIcon size={40} />
+                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-1">
+                        <PlanImage plan="standard" size={64} />
                       </div>
                     </div>
                     <div>
@@ -425,8 +423,8 @@ const Pricing = () => {
                 <div className="p-8 md:p-12 border-b border-border/30">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-gold-light p-0.5">
-                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <AdvancedIcon size={40} />
+                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-1">
+                        <PlanImage plan="advanced" size={64} />
                       </div>
                     </div>
                     <div>
@@ -588,8 +586,8 @@ const Pricing = () => {
                 <div className="p-8 md:p-12 border-b border-border/30 relative">
                   <div className="flex flex-col md:flex-row md:items-center gap-6">
                     <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
-                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                        <BuilderIcon size={40} />
+                      <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-1">
+                        <PlanImage plan="builder" size={64} />
                       </div>
                     </div>
                     <div>
@@ -777,8 +775,8 @@ const Pricing = () => {
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark to-primary p-0.5">
-                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <StandardIcon size={20} />
+                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-0.5">
+                                <PlanImage plan="standard" size={32} />
                               </div>
                             </div>
                             <div>
@@ -802,8 +800,8 @@ const Pricing = () => {
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-gold-light p-0.5">
-                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <AdvancedIcon size={20} />
+                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-0.5">
+                                <PlanImage plan="advanced" size={32} />
                               </div>
                             </div>
                             <div>
@@ -827,8 +825,8 @@ const Pricing = () => {
                         <td className="py-5 px-6">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-dark via-primary to-gold-light p-0.5">
-                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center">
-                                <BuilderIcon size={20} />
+                              <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-0.5">
+                                <PlanImage plan="builder" size={32} />
                               </div>
                             </div>
                             <div>

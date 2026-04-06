@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LayoutDashboard, Wallet, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import logo from '@/assets/Dashboard_Logo.png';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+/** Same asset as <link rel="icon"> in index.html */
+const siteIconSrc = '/favicon.png?v=20260406';
 
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -31,7 +33,7 @@ const DashboardMobileNav = () => {
     <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border/30">
       <div className="flex items-center justify-between p-4">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo} alt="Dynasty Futures" className="h-10 w-auto logo-blend" />
+          <img src={siteIconSrc} alt="Dynasty Futures" className="h-10 w-10 object-contain logo-blend" />
         </Link>
 
         <Sheet open={open} onOpenChange={setOpen}>
@@ -42,7 +44,7 @@ const DashboardMobileNav = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-72 bg-card/95 backdrop-blur-xl border-border/30 p-0">
             <div className="p-6 border-b border-border/30">
-              <img src={logo} alt="Dynasty Futures" className="h-10 w-auto logo-blend" />
+              <img src={siteIconSrc} alt="Dynasty Futures" className="h-10 w-10 object-contain logo-blend" />
             </div>
             <nav className="p-4 space-y-2">
               {sidebarLinks.map((link) => {

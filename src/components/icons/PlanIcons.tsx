@@ -184,6 +184,38 @@ export const BuilderIcon = ({ className, size = 24 }: IconProps) => (
   </svg>
 );
 
+const PLAN_IMAGES = {
+  standard: "/standardplan.png",
+  advanced: "/advancedplan.png",
+  builder: "/builderplan.png",
+} as const;
+
+export type PlanImageKey = keyof typeof PLAN_IMAGES;
+
+interface PlanImageProps {
+  plan: PlanImageKey;
+  className?: string;
+  size?: number;
+}
+
+const PLAN_IMAGE_LABELS: Record<PlanImageKey, string> = {
+  standard: "Standard Plan",
+  advanced: "Advanced Plan",
+  builder: "Builder Plan",
+};
+
+export function PlanImage({ plan, className, size = 40 }: PlanImageProps) {
+  return (
+    <img
+      src={PLAN_IMAGES[plan]}
+      alt={PLAN_IMAGE_LABELS[plan]}
+      width={size}
+      height={size}
+      className={cn("object-contain", className)}
+    />
+  );
+}
+
 export const CheckIcon = ({ className, size = 20 }: IconProps) => (
   <svg
     width={size}
