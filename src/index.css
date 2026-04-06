@@ -185,6 +185,14 @@
     @apply backdrop-blur-xl bg-card/80 border border-border/50;
   }
 
+  html.perf-no-blur .glass,
+  html.perf-no-blur .glass-card,
+  html.perf-no-blur .glass-card-strong {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: hsl(220 12% 10% / 0.96) !important;
+  }
+
   .card-hover {
     @apply transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-2xl;
   }

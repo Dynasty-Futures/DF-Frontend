@@ -3,54 +3,113 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense, ReactNode } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { env } from "@/config/env";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import RoleGuard from "@/components/auth/RoleGuard";
+import { getPerfFlags } from "@/lib/perfFlags";
 
-// Pages
+// Keep home route eagerly loaded; lazy-load the rest.
 import Index from "./pages/Index";
-import Pricing from "./pages/Pricing";
-import Rules from "./pages/Rules";
-import FAQ from "./pages/FAQ";
-import Support from "./pages/Support";
-import Legal from "./pages/Legal";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Payouts from "./pages/Payouts";
-import AdminPage from "./pages/admin/AdminPage";
-import NotFound from "./pages/NotFound";
+const Pricing = lazy(() => import("./pages/Pricing"));
+const Rules = lazy(() => import("./pages/Rules"));
+const FAQ = lazy(() => import("./pages/FAQ"));
+const Support = lazy(() => import("./pages/Support"));
+const Legal = lazy(() => import("./pages/Legal"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Payouts = lazy(() => import("./pages/Payouts"));
+const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
-// Admin tab imports
-import { AdminOverview } from "./components/admin/tabs/AdminOverview";
-import { AdminAccounts } from "./components/admin/tabs/AdminAccounts";
-import { AdminRiskFlags } from "./components/admin/tabs/AdminRiskFlags";
-import { AdminPayouts } from "./components/admin/tabs/AdminPayouts";
-import { AdminUsersKYC } from "./components/admin/tabs/AdminUsersKYC";
-import { AdminCompliance } from "./components/admin/tabs/AdminCompliance";
-import { AdminBilling } from "./components/admin/tabs/AdminBilling";
-import { AdminAuditLog } from "./components/admin/tabs/AdminAuditLog";
-import { AdminSystemHealth } from "./components/admin/tabs/AdminSystemHealth";
-import { AdminSettings } from "./components/admin/tabs/AdminSettings";
-import { AdminSupport } from "./components/admin/tabs/AdminSupport";
-import { AdminAnnouncements } from "./components/admin/tabs/AdminAnnouncements";
-import { AdminProducts } from "./components/admin/tabs/AdminProducts";
-import { AdminIntegrations } from "./components/admin/tabs/AdminIntegrations";
-import { AdminSecurity } from "./components/admin/tabs/AdminSecurity";
+const AdminOverview = lazy(() =>
+  import("./components/admin/tabs/AdminOverview").then((module) => ({
+    default: module.AdminOverview,
+  })),
+);
+const AdminAccounts = lazy(() =>
+  import("./components/admin/tabs/AdminAccounts").then((module) => ({
+    default: module.AdminAccounts,
+  })),
+);
+const AdminRiskFlags = lazy(() =>
+  import("./components/admin/tabs/AdminRiskFlags").then((module) => ({
+    default: module.AdminRiskFlags,
+  })),
+);
+const AdminPayouts = lazy(() =>
+  import("./components/admin/tabs/AdminPayouts").then((module) => ({
+    default: module.AdminPayouts,
+  })),
+);
+const AdminUsersKYC = lazy(() =>
+  import("./components/admin/tabs/AdminUsersKYC").then((module) => ({
+    default: module.AdminUsersKYC,
+  })),
+);
+const AdminCompliance = lazy(() =>
+  import("./components/admin/tabs/AdminCompliance").then((module) => ({
+    default: module.AdminCompliance,
+  })),
+);
+const AdminBilling = lazy(() =>
+  import("./components/admin/tabs/AdminBilling").then((module) => ({
+    default: module.AdminBilling,
+  })),
+);
+const AdminAuditLog = lazy(() =>
+  import("./components/admin/tabs/AdminAuditLog").then((module) => ({
+    default: module.AdminAuditLog,
+  })),
+);
+const AdminSystemHealth = lazy(() =>
+  import("./components/admin/tabs/AdminSystemHealth").then((module) => ({
+    default: module.AdminSystemHealth,
+  })),
+);
+const AdminSettings = lazy(() =>
+  import("./components/admin/tabs/AdminSettings").then((module) => ({
+    default: module.AdminSettings,
+  })),
+);
+const AdminSupport = lazy(() =>
+  import("./components/admin/tabs/AdminSupport").then((module) => ({
+    default: module.AdminSupport,
+  })),
+);
+const AdminAnnouncements = lazy(() =>
+  import("./components/admin/tabs/AdminAnnouncements").then((module) => ({
+    default: module.AdminAnnouncements,
+  })),
+);
+const AdminProducts = lazy(() =>
+  import("./components/admin/tabs/AdminProducts").then((module) => ({
+    default: module.AdminProducts,
+  })),
+);
+const AdminIntegrations = lazy(() =>
+  import("./components/admin/tabs/AdminIntegrations").then((module) => ({
+    default: module.AdminIntegrations,
+  })),
+);
+const AdminSecurity = lazy(() =>
+  import("./components/admin/tabs/AdminSecurity").then((module) => ({
+    default: module.AdminSecurity,
+  })),
+);
 
-// Dashboard imports
-import DashboardLayout from "./components/dashboard/DashboardLayout";
-import DashboardHome from "./pages/dashboard/DashboardHome";
-import DashboardAccounts from "./pages/dashboard/DashboardAccounts";
-import DashboardBilling from "./pages/dashboard/DashboardBilling";
-import DashboardPayouts from "./pages/dashboard/DashboardPayouts";
-import DashboardProfile from "./pages/dashboard/DashboardProfile";
-import DashboardAchievements from "./pages/dashboard/DashboardAchievements";
-import DashboardHelp from "./pages/dashboard/DashboardHelp";
-import DashboardAffiliate from "./pages/dashboard/DashboardAffiliate";
-import DashboardJournal from "./pages/dashboard/DashboardJournal";
+const DashboardLayout = lazy(() => import("./components/dashboard/DashboardLayout"));
+const DashboardHome = lazy(() => import("./pages/dashboard/DashboardHome"));
+const DashboardAccounts = lazy(() => import("./pages/dashboard/DashboardAccounts"));
+const DashboardBilling = lazy(() => import("./pages/dashboard/DashboardBilling"));
+const DashboardPayouts = lazy(() => import("./pages/dashboard/DashboardPayouts"));
+const DashboardProfile = lazy(() => import("./pages/dashboard/DashboardProfile"));
+const DashboardAchievements = lazy(() => import("./pages/dashboard/DashboardAchievements"));
+const DashboardHelp = lazy(() => import("./pages/dashboard/DashboardHelp"));
+const DashboardAffiliate = lazy(() => import("./pages/dashboard/DashboardAffiliate"));
+const DashboardJournal = lazy(() => import("./pages/dashboard/DashboardJournal"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,75 +135,94 @@ const ScrollToTop = () => {
   return null;
 };
 
-const App = () => (
-  <GoogleOAuthProvider clientId={env.googleClientId}>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Routes>
+const LazyRoute = ({ children }: { children: ReactNode }) => (
+  <Suspense fallback={null}>{children}</Suspense>
+);
+
+const App = () => {
+  const { noBlur } = getPerfFlags();
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("perf-no-blur", noBlur);
+    return () => {
+      document.documentElement.classList.remove("perf-no-blur");
+    };
+  }, [noBlur]);
+
+  return (
+    <GoogleOAuthProvider clientId={env.googleClientId}>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Index />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="/rules" element={<Rules />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/legal" element={<Legal />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/payouts" element={<Payouts />} />
+              <Route path="/pricing" element={<LazyRoute><Pricing /></LazyRoute>} />
+              <Route path="/rules" element={<LazyRoute><Rules /></LazyRoute>} />
+              <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
+              <Route path="/support" element={<LazyRoute><Support /></LazyRoute>} />
+              <Route path="/legal" element={<LazyRoute><Legal /></LazyRoute>} />
+              <Route path="/login" element={<LazyRoute><Login /></LazyRoute>} />
+              <Route path="/register" element={<LazyRoute><Register /></LazyRoute>} />
+              <Route path="/payouts" element={<LazyRoute><Payouts /></LazyRoute>} />
               
               {/* Admin Routes — requires ADMIN role */}
               <Route path="/admin" element={
                 <RoleGuard roles={['ADMIN']}>
-                  <AdminPage />
+                  <LazyRoute>
+                    <AdminPage />
+                  </LazyRoute>
                 </RoleGuard>
               }>
-                <Route index element={<AdminOverview />} />
-                <Route path="accounts" element={<AdminAccounts />} />
-                <Route path="risk" element={<AdminRiskFlags />} />
-                <Route path="payouts" element={<AdminPayouts />} />
-                <Route path="users" element={<AdminUsersKYC />} />
-                <Route path="compliance" element={<AdminCompliance />} />
-                <Route path="billing" element={<AdminBilling />} />
-                <Route path="audit" element={<AdminAuditLog />} />
-                <Route path="health" element={<AdminSystemHealth />} />
-                <Route path="settings" element={<AdminSettings />} />
-                <Route path="support" element={<AdminSupport />} />
-                <Route path="announcements" element={<AdminAnnouncements />} />
-                <Route path="products" element={<AdminProducts />} />
-                <Route path="integrations" element={<AdminIntegrations />} />
-                <Route path="security" element={<AdminSecurity />} />
+                <Route index element={<LazyRoute><AdminOverview /></LazyRoute>} />
+                <Route path="accounts" element={<LazyRoute><AdminAccounts /></LazyRoute>} />
+                <Route path="risk" element={<LazyRoute><AdminRiskFlags /></LazyRoute>} />
+                <Route path="payouts" element={<LazyRoute><AdminPayouts /></LazyRoute>} />
+                <Route path="users" element={<LazyRoute><AdminUsersKYC /></LazyRoute>} />
+                <Route path="compliance" element={<LazyRoute><AdminCompliance /></LazyRoute>} />
+                <Route path="billing" element={<LazyRoute><AdminBilling /></LazyRoute>} />
+                <Route path="audit" element={<LazyRoute><AdminAuditLog /></LazyRoute>} />
+                <Route path="health" element={<LazyRoute><AdminSystemHealth /></LazyRoute>} />
+                <Route path="settings" element={<LazyRoute><AdminSettings /></LazyRoute>} />
+                <Route path="support" element={<LazyRoute><AdminSupport /></LazyRoute>} />
+                <Route path="announcements" element={<LazyRoute><AdminAnnouncements /></LazyRoute>} />
+                <Route path="products" element={<LazyRoute><AdminProducts /></LazyRoute>} />
+                <Route path="integrations" element={<LazyRoute><AdminIntegrations /></LazyRoute>} />
+                <Route path="security" element={<LazyRoute><AdminSecurity /></LazyRoute>} />
               </Route>
               
               {/* Dashboard Routes — requires authentication */}
               <Route path="/dashboard" element={
                 <ProtectedRoute>
-                  <DashboardLayout />
+                  <LazyRoute>
+                    <DashboardLayout />
+                  </LazyRoute>
                 </ProtectedRoute>
               }>
-                <Route index element={<DashboardHome />} />
-                <Route path="accounts" element={<DashboardAccounts />} />
-                <Route path="billing" element={<DashboardBilling />} />
-                <Route path="payouts" element={<DashboardPayouts />} />
-                <Route path="affiliate" element={<DashboardAffiliate />} />
-                <Route path="profile" element={<DashboardProfile />} />
-                <Route path="achievements" element={<DashboardAchievements />} />
-                <Route path="help" element={<DashboardHelp />} />
-                <Route path="journal/:date" element={<DashboardJournal />} />
+                <Route index element={<LazyRoute><DashboardHome /></LazyRoute>} />
+                <Route path="accounts" element={<LazyRoute><DashboardAccounts /></LazyRoute>} />
+                <Route path="billing" element={<LazyRoute><DashboardBilling /></LazyRoute>} />
+                <Route path="payouts" element={<LazyRoute><DashboardPayouts /></LazyRoute>} />
+                <Route path="affiliate" element={<LazyRoute><DashboardAffiliate /></LazyRoute>} />
+                <Route path="profile" element={<LazyRoute><DashboardProfile /></LazyRoute>} />
+                <Route path="achievements" element={<LazyRoute><DashboardAchievements /></LazyRoute>} />
+                <Route path="help" element={<LazyRoute><DashboardHelp /></LazyRoute>} />
+                <Route path="journal/:date" element={<LazyRoute><DashboardJournal /></LazyRoute>} />
               </Route>
               
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
-  </GoogleOAuthProvider>
-);
+              <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
+      </QueryClientProvider>
+    </GoogleOAuthProvider>
+  );
+};
 
 export default App;

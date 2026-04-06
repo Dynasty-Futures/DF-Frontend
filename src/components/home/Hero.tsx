@@ -3,13 +3,37 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import logo from "@/assets/DF_Logo.png";
+import heroPoster from "@/assets/hero-temple.png";
 
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
+import { getPerfFlags } from "@/lib/perfFlags";
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { progress } = useScrollProgress(sectionRef);
+  const { noHeroVideo } = getPerfFlags();
+
+  const [isNarrowViewport, setIsNarrowViewport] = useState(() =>
+    window.matchMedia("(max-width: 767px)").matches,
+  );
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const viewportQuery = window.matchMedia("(max-width: 767px)");
+    const syncViewport = () => setIsNarrowViewport(viewportQuery.matches);
+    syncViewport();
+    viewportQuery.addEventListener("change", syncViewport);
+
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setPrefersReducedMotion(mediaQuery.matches);
+    sync();
+    mediaQuery.addEventListener("change", sync);
+    return () => {
+      viewportQuery.removeEventListener("change", syncViewport);
+      mediaQuery.removeEventListener("change", sync);
+    };
+  }, []);
 
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -81,6 +105,9 @@ const Hero = () => {
     [progress],
   );
 
+  const usePosterInsteadOfVideo =
+    noHeroVideo || isNarrowViewport || prefersReducedMotion;
+
   return (
     <section
       ref={sectionRef}
@@ -122,17 +149,28 @@ const Hero = () => {
         }}
       />
 
-      {/* Video background layer */}
+      {/* Hero background media layer */}
       <div className="absolute inset-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover object-center"
-        >
-          <source src="/dynastyfutures.mp4" type="video/mp4" />
-        </video>
+        {usePosterInsteadOfVideo ? (
+          <img
+            src={heroPoster}
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            className="w-full h-full object-cover object-center"
+          />
+        ) : (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="none"
+            className="w-full h-full object-cover object-center"
+          >
+            <source src="/dynastyfutures.mp4" type="video/mp4" />
+          </video>
+        )}
       </div>
 
       {/* Cinematic vignette overlay */}
@@ -154,10 +192,6 @@ const Hero = () => {
             "radial-gradient(ellipse 40% 50% at 50% 60%, hsl(43 74% 49% / 0.08) 0%, transparent 70%)",
         }}
       />
-
-      {/* Lightning overlay */}
-      <div className="absolute inset-0 pointer-events-none lightning-flash" />
-      <div className="absolute inset-0 pointer-events-none lightning-flash-delayed" />
 
       {/* Content overlay with scroll-fade */}
       <div
@@ -391,15 +425,6 @@ const Hero = () => {
         .cloud-drift-medium {
           animation: cloudDriftMedium 30s linear infinite;
         }
-        .lightning-flash {
-          animation: lightningFlash 8s ease-out infinite;
-          background: hsl(220 20% 80% / 0);
-        }
-        .lightning-flash-delayed {
-          animation: lightningFlash 13s ease-out infinite;
-          animation-delay: 5s;
-          background: hsl(220 20% 80% / 0);
-        }
         @keyframes cloudDriftSlow {
           0% { transform: translateX(0); }
           100% { transform: translateX(-80px); }
@@ -408,18 +433,9 @@ const Hero = () => {
           0% { transform: translateX(0); }
           100% { transform: translateX(60px); }
         }
-        @keyframes lightningFlash {
-          0%, 94%, 100% { background: transparent; }
-          95% { background: hsl(220 20% 90% / 0.08); }
-          95.5% { background: transparent; }
-          96% { background: hsl(43 40% 85% / 0.05); }
-          97% { background: transparent; }
-        }
         @media (prefers-reduced-motion: reduce) {
           .cloud-drift-slow,
-          .cloud-drift-medium,
-          .lightning-flash,
-          .lightning-flash-delayed {
+          .cloud-drift-medium {
             animation: none !important;
           }
         }
