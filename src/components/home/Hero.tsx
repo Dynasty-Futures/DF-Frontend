@@ -154,8 +154,7 @@ const Hero = () => {
         {usePosterInsteadOfVideo ? (
           <img
             src={heroPoster}
-            alt=""
-            aria-hidden="true"
+            alt="Dynasty Futures trading platform hero background"
             decoding="async"
             className="w-full h-full object-cover object-center"
           />
@@ -218,6 +217,7 @@ const Hero = () => {
             >
               Build Your{" "}
               <span className="text-gradient-animated glow-text">Dynasty.</span>
+              <span className="sr-only"> — Simulated Funded Futures Trading</span>
             </h1>
 
             <p
@@ -271,7 +271,7 @@ const Hero = () => {
                   <div className="w-12 h-auto md:w-16 bg-gradient-to-br from-primary/20 via-gold-dark/20 to-gold-light/20 rounded-xl flex items-center justify-center border border-primary/20">
                     <img
                       src={logo}
-                      alt="DF"
+                      alt="Dynasty Futures logo"
                       className="h-8 w-auto md:h-12 lg:h-16 logo-blend"
                     />
                   </div>

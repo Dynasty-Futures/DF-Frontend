@@ -89,7 +89,28 @@ async function prerender() {
       console.log(`  -> ${path.relative(root, filePath)}`);
     }
 
-    console.log(`\nPrerendered ${PUBLIC_ROUTES.length} routes successfully.`);
+    // Prerender 404 page — Vercel auto-serves 404.html with status 404
+    console.log('Prerendering /404...');
+    const { html: notFoundHtml, helmet: notFoundHelmet } = render('/not-found-page');
+    let notFoundFinal = template.replace(
+      '<div id="root"></div>',
+      `<div id="root">${notFoundHtml}</div>`,
+    );
+    const nfTitle = notFoundHelmet.title?.toString() || '';
+    if (nfTitle) {
+      notFoundFinal = notFoundFinal.replace(/<title>Dynasty Futures<\/title>/, nfTitle);
+    }
+    const nfTags = [
+      notFoundHelmet.meta?.toString() || '',
+      notFoundHelmet.link?.toString() || '',
+    ].filter(Boolean).join('\n    ');
+    if (nfTags) {
+      notFoundFinal = notFoundFinal.replace('</head>', `    ${nfTags}\n  </head>`);
+    }
+    fs.writeFileSync(path.resolve(distDir, '404.html'), notFoundFinal);
+    console.log('  -> dist/404.html');
+
+    console.log(`\nPrerendered ${PUBLIC_ROUTES.length + 1} routes successfully.`);
   } finally {
     await vite.close();
     // Force exit since Vite's dev server may leave lingering handles
