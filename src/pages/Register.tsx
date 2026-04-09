@@ -113,6 +113,7 @@ const Register = () => {
         title="Create Account"
         description="Register for a Dynasty Futures account to start your funded futures trading evaluation. Sign up with email or Google."
         path="/register"
+        noIndex
       />
       <div className="page-transition py-12 md:py-20 min-h-[80vh] flex items-center">
         <div className="container mx-auto px-4">

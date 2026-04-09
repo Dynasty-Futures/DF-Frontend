@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import logo from "@/assets/DF_Logo.png";
-import heroPoster from "@/assets/hero-temple.png";
+import heroPoster from "@/assets/hero-temple.webp";
 
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
@@ -155,7 +155,9 @@ const Hero = () => {
           <img
             src={heroPoster}
             alt="Dynasty Futures trading platform hero background"
-            decoding="async"
+            fetchPriority="high"
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center"
           />
         ) : (
@@ -272,6 +274,9 @@ const Hero = () => {
                     <img
                       src={logo}
                       alt="Dynasty Futures logo"
+                      width={64}
+                      height={64}
+                      loading="lazy"
                       className="h-8 w-auto md:h-12 lg:h-16 logo-blend"
                     />
                   </div>

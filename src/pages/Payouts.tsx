@@ -32,6 +32,7 @@ const Payouts = () => {
         title="Payouts"
         description="Dynasty Futures payout structure and process. View payout windows, profit splits, and withdrawal methods for funded traders."
         path="/payouts"
+        noIndex
       />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">

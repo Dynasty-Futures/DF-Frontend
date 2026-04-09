@@ -4,7 +4,35 @@
       "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
       "Bash(xargs grep:*)",
       "Bash(grep -E \"\\(\\\\.md|\\\\.json\\)$\")",
-      "Bash(grep -E \"\\\\.\\(md|json\\)$\")"
+      "Bash(grep -E \"\\\\.\\(md|json\\)$\")",
+      "Bash(gh pr:*)",
+      "Bash(winget install:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(export PATH=\"/c/Users/justi/gh-cli/bin:$PATH\")",
+      "Bash(gh --version)",
+      "Bash(gh auth:*)",
+      "WebFetch(domain:www.dynastyfuturesdyn.com)",
+      "Bash(npm run:*)",
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(grep -o '\\\\$25,000\\\\|\\\\$50,000\\\\|\\\\$100,000\\\\|\\\\$150,000' dist/pricing/index.html)",
+      "Bash(xargs cat:*)",
+      "Bash(gh api:*)",
+      "Bash(grep -c \"sr-only\" dist/assets/index-*.css)",
+      "Read(//c/Users/justi/.claude/plugins/cache/agricidaniel-seo/claude-seo/1.8.1/**)",
+      "Bash(python scripts/google_auth.py --check)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npx cwebp:*)",
+      "Bash(npx sharp-cli:*)",
+      "Bash(python -c \"from PIL import Image; print\\('pillow'\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\justi\\\\OneDrive\\\\Documents\\\\DynastyFutures\\\\DF-Frontend\\\\public/\"*.png)",
+      "Bash(ls -la \"C:\\\\Users\\\\justi\\\\OneDrive\\\\Documents\\\\DynastyFutures\\\\DF-Frontend\\\\src\\\\assets/\"*.png)",
+      "Bash(node -e ':*)",
+      "Bash(ls -la src/assets/hero-temple.webp public/*.webp)"
     ]
+  },
+  "enabledPlugins": {
+    "github@claude-plugins-official": false
   }
 }

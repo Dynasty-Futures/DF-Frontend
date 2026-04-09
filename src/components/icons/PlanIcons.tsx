@@ -185,9 +185,9 @@ export const BuilderIcon = ({ className, size = 24 }: IconProps) => (
 );
 
 const PLAN_IMAGES = {
-  standard: "/standardplan.png",
-  advanced: "/advancedplan.png",
-  builder: "/builderplan.png",
+  standard: "/standardplan.webp",
+  advanced: "/advancedplan.webp",
+  builder: "/builderplan.webp",
 } as const;
 
 export type PlanImageKey = keyof typeof PLAN_IMAGES;
@@ -211,6 +211,7 @@ export function PlanImage({ plan, className, size = 40 }: PlanImageProps) {
       alt={PLAN_IMAGE_LABELS[plan]}
       width={size}
       height={size}
+      loading="lazy"
       className={cn("object-contain", className)}
     />
   );

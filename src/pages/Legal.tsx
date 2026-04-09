@@ -1,5 +1,6 @@
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
+import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -10,6 +11,12 @@ const Legal = () => {
         title="Legal & Risk Disclosure"
         description="Dynasty Futures legal documents including risk disclosure, terms of service, privacy policy, and refund policy."
         path="/legal"
+      />
+      <JsonLd
+        data={breadcrumb([
+          { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
+          { name: 'Legal & Risk Disclosure', url: 'https://www.dynastyfuturesdyn.com/legal' },
+        ])}
       />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">

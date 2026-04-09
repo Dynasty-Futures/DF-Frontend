@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
+import JsonLd, { faqPageSchema, breadcrumb } from "@/components/seo/JsonLd";
 import {
   Accordion,
   AccordionContent,
@@ -124,6 +125,13 @@ const FAQ = () => {
         description="Frequently asked questions about Dynasty Futures evaluation plans, trading rules, payouts, and account management."
         path="/faq"
       />
+      <JsonLd data={faqPageSchema(faqs)} />
+      <JsonLd
+        data={breadcrumb([
+          { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
+          { name: 'FAQ', url: 'https://www.dynastyfuturesdyn.com/faq' },
+        ])}
+      />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}
@@ -160,6 +168,16 @@ const FAQ = () => {
                 </ScrollReveal>
               ))}
             </Accordion>
+          </div>
+
+          {/* SEO: Always-rendered FAQ content for crawlers (accordion content may be hidden) */}
+          <div className="sr-only" aria-hidden="true">
+            {faqs.map((faq) => (
+              <div key={`seo-${faq.id}`}>
+                <h3>{faq.question}</h3>
+                <p>{faq.answer}</p>
+              </div>
+            ))}
           </div>
 
           {/* Contact CTA */}
