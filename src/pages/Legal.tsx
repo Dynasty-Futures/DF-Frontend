@@ -1,10 +1,16 @@
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Legal = () => {
   return (
     <Layout>
+      <PageMeta
+        title="Legal & Risk Disclosure"
+        description="Dynasty Futures legal documents including risk disclosure, terms of service, privacy policy, and refund policy."
+        path="/legal"
+      />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}

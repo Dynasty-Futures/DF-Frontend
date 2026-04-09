@@ -15,7 +15,7 @@ const Hero = () => {
   const { noHeroVideo } = getPerfFlags();
 
   const [isNarrowViewport, setIsNarrowViewport] = useState(() =>
-    window.matchMedia("(max-width: 767px)").matches,
+    typeof window !== 'undefined' ? window.matchMedia("(max-width: 767px)").matches : false,
   );
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 

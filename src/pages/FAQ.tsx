@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
 import {
   Accordion,
   AccordionContent,
@@ -118,6 +119,11 @@ const FAQ = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="FAQ"
+        description="Frequently asked questions about Dynasty Futures evaluation plans, trading rules, payouts, and account management."
+        path="/faq"
+      />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}

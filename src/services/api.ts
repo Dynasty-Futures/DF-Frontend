@@ -203,7 +203,7 @@ const request = async <T>(
       throw new ApiError(0, 'NETWORK_ERROR', 'Unable to connect to the server. Please check your connection.');
     }
 
-    if (error instanceof DOMException && error.name === 'AbortError') {
+    if (error instanceof Error && error.name === 'AbortError') {
       throw new ApiError(0, 'REQUEST_ABORTED', 'Request was cancelled.');
     }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -78,6 +79,11 @@ const Support = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="Support"
+        description="Contact Dynasty Futures support team. Submit a ticket for account issues, billing questions, or general inquiries."
+        path="/support"
+      />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}

@@ -95,13 +95,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const saveTokens = useCallback((accessToken: string, refreshToken: string) => {
     accessTokenRef.current = accessToken;
     refreshTokenRef.current = refreshToken;
-    localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+    if (typeof window !== 'undefined') localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   }, []);
 
   const clearTokens = useCallback(() => {
     accessTokenRef.current = null;
     refreshTokenRef.current = null;
-    localStorage.removeItem(REFRESH_TOKEN_KEY);
+    if (typeof window !== 'undefined') localStorage.removeItem(REFRESH_TOKEN_KEY);
   }, []);
 
   // -----------------------------------------------------------------------
@@ -118,6 +118,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   // -----------------------------------------------------------------------
 
   useEffect(() => {
+    if (typeof window === 'undefined') { setIsLoading(false); return; }
+
     const restoreSession = async () => {
       const savedRefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
 

@@ -6,6 +6,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -79,6 +80,11 @@ const Login = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="Log In"
+        description="Log in to your Dynasty Futures trading dashboard to manage your evaluation accounts, track performance, and request payouts."
+        path="/login"
+      />
       <div className="page-transition py-12 md:py-20 min-h-[80vh] flex items-center">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
