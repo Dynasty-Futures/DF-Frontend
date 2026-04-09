@@ -60,7 +60,7 @@ const PreLaunchModal = ({
         </DialogHeader>
 
         <div className="space-y-4 text-sm md:text-base text-muted-foreground">
-          <p>Dynasty Futures is currently preparing for launch in Q2 2026.</p>
+          <p>Dynasty Futures is currently preparing for launch in Q3 2026.</p>
           <p>
             We are focused on building a stable, transparent, and trader-first
             proprietary futures firm. During this pre-launch period, certain
