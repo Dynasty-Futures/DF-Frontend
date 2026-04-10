@@ -143,10 +143,15 @@ const Footer = () => {
             <p className="text-xs text-muted-foreground text-center md:text-left">
               © {new Date().getFullYear()} Dynasty Futures LLC. All rights reserved.
             </p>
-            <span className="text-xs text-muted-foreground">
-              All trading on Dynasty Futures is simulated. Payouts are based on
-              simulated trading performance. This is not real trading, and no
-              real capital is ever at risk.
+            <span className="text-xs text-muted-foreground max-w-2xl text-center md:text-right">
+              Dynasty Futures LLC offers simulated trading evaluation programs.
+              All trading activity, account metrics, performance results, and
+              payout determinations are based on simulated trading performance
+              within a simulated environment. Participants do not deposit or
+              risk personal trading capital in a live brokerage account. Any
+              payouts issued by Dynasty Futures are derived from the terms of
+              the applicable simulated program and are not returns on personal
+              investment activity.
             </span>
           </div>
         </div>
