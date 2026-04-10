@@ -395,13 +395,8 @@ const Pricing = () => {
                       </tbody>
                     </table>
                   </div>
+                  {/* Universal rules — same across all plans */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        50% consistency rule (evaluation only)
-                      </span>
-                    </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ClockIcon size={20} />
                       <span className="text-sm text-foreground">
@@ -415,6 +410,20 @@ const Pricing = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ShieldIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        Evaluations use a trailing end-of-day drawdown. Funded
+                        accounts use a static drawdown.
+                      </span>
+                    </div>
+                    {/* Plan-specific rules */}
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <CheckIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        50% consistency rule (evaluation only)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <DollarIcon size={20} />
                       <span className="text-sm text-foreground">
                         Low activation fee
@@ -424,13 +433,6 @@ const Pricing = () => {
                       <CheckIcon size={20} />
                       <span className="text-sm text-foreground">
                         Overnight trading allowed
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <ShieldIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        Evaluations use a trailing end-of-day drawdown. Funded
-                        accounts use a static drawdown.
                       </span>
                     </div>
                   </div>
@@ -555,29 +557,12 @@ const Pricing = () => {
                       </tbody>
                     </table>
                   </div>
+                  {/* Universal rules — same across all plans */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        No consistency rule
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        Immediate activation
-                      </span>
-                    </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <ClockIcon size={20} />
                       <span className="text-sm text-foreground">
                         5-day payout cycles
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <CheckIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        Priority support
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
@@ -591,6 +576,25 @@ const Pricing = () => {
                       <span className="text-sm text-foreground">
                         Evaluations use a trailing end-of-day drawdown. Funded
                         accounts use a static drawdown.
+                      </span>
+                    </div>
+                    {/* Plan-specific rules */}
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <CheckIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        No consistency rule
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <CheckIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        Immediate activation
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <CheckIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        Priority support
                       </span>
                     </div>
                   </div>
@@ -719,26 +723,28 @@ const Pricing = () => {
                       </tbody>
                     </table>
                   </div>
+                  {/* Universal rules — same across all plans */}
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/15 backdrop-blur-sm border border-primary/25">
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ClockIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        5-day payout cycles
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        Copy trading allowed
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ShieldIcon size={20} />
                       <span className="text-sm text-foreground">
                         Evaluations use a trailing end-of-day drawdown. Funded
                         accounts use a static drawdown.
                       </span>
                     </div>
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-primary/15 backdrop-blur-sm border border-primary/25">
-                      <ShieldIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        Higher max loss limit
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <DollarIcon size={20} />
-                      <span className="text-sm text-foreground">
-                        No activation fee
-                      </span>
-                    </div>
+                    {/* Plan-specific rules */}
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
                       <span className="text-sm text-foreground">
@@ -746,15 +752,15 @@ const Pricing = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <ClockIcon size={20} />
+                      <ShieldIcon size={20} />
                       <span className="text-sm text-foreground">
-                        2 minimum trading days to pass
+                        Largest MLL limits in the industry
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <CheckIcon size={20} />
+                      <DollarIcon size={20} />
                       <span className="text-sm text-foreground">
-                        Built for serious traders
+                        No activation fee
                       </span>
                     </div>
                   </div>
