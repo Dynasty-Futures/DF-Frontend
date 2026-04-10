@@ -30,6 +30,7 @@ Dynasty Futures provides evaluation programs where traders demonstrate their ski
 - [FAQ](https://www.dynastyfuturesdyn.com/faq): 14 frequently asked questions covering plans, payouts, drawdown, platforms, and getting started
 - [Payouts](https://www.dynastyfuturesdyn.com/payouts): Payout structure and withdrawal information
 - [Support](https://www.dynastyfuturesdyn.com/support): Contact support team, submit tickets
+- [About Us](https://www.dynastyfuturesdyn.com/about): Company story, mission & vision, founder background, and what sets Dynasty Futures apart
 - [Legal & Risk Disclosure](https://www.dynastyfuturesdyn.com/legal): Risk disclosure, terms of service, privacy policy, refund policy
 
 ## Contact

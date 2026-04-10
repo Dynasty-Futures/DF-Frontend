@@ -9,4 +9,5 @@ export const PUBLIC_ROUTES = [
   '/faq',
   '/support',
   '/legal',
+  '/about',
 ] as const;
