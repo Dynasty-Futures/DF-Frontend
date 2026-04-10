@@ -1,5 +1,7 @@
 import { useState, useMemo } from "react";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
+import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import {
   CheckIcon,
   ShieldIcon,
@@ -482,6 +484,17 @@ const UniversalRulesSection = () => {
 const Rules = () => {
   return (
     <Layout>
+      <PageMeta
+        title="Trading Rules"
+        description="Dynasty Futures trading rules and objectives for Standard, Advanced, and Builder evaluation plans. Daily loss limits, trailing drawdowns, profit targets, and more."
+        path="/rules"
+      />
+      <JsonLd
+        data={breadcrumb([
+          { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
+          { name: 'Trading Rules', url: 'https://www.dynastyfuturesdyn.com/rules' },
+        ])}
+      />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
           {/* Header */}

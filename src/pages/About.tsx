@@ -1,4 +1,6 @@
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
+import JsonLd, { breadcrumb, organizationSchema } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -34,6 +36,23 @@ const differentiators = [
 const About = () => {
   return (
     <Layout>
+      <PageMeta
+        title="About Us"
+        description="Dynasty Futures is a proprietary trading firm built on fair pricing, higher max loss flexibility, and transparent payout structures for futures traders."
+        path="/about"
+      />
+      <JsonLd data={breadcrumb([
+        { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
+        { name: 'About', url: 'https://www.dynastyfuturesdyn.com/about' },
+      ])} />
+      <JsonLd data={{
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        name: 'About Dynasty Futures',
+        description: 'Dynasty Futures is a proprietary trading firm built on fair pricing, higher max loss flexibility, and transparent payout structures for futures traders.',
+        url: 'https://www.dynastyfuturesdyn.com/about',
+        mainEntity: { '@id': 'https://www.dynastyfuturesdyn.com/#organization' },
+      }} />
       <div className="page-transition py-12 md:py-20">
         <div className="container mx-auto px-4">
 

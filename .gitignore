@@ -16,6 +16,7 @@ dist-ssr
 # .env.development and .env.production are committed (non-secret URLs)
 # .env.local and .env.*.local are gitignored (personal overrides)
 *.local
+.claude/settings.local.json
 
 # Editor directories and files
 .vscode/*

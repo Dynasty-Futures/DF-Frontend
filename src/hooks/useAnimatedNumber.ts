@@ -11,6 +11,8 @@ export const useAnimatedNumber = (
   const startTimeRef = useRef<number>();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     startValueRef.current = displayValue;
     startTimeRef.current = performance.now();
 

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
+import JsonLd, {
+  productSchemas,
+  advancedProductSchemas,
+  builderProductSchemas,
+  breadcrumb,
+} from "@/components/seo/JsonLd";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -235,6 +242,26 @@ const Pricing = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="Pricing & Plans"
+        description="Compare Dynasty Futures evaluation plans — Standard, Advanced, and Builder. Account sizes from $25K to $150K with competitive evaluation fees and payout structures."
+        path="/pricing"
+      />
+      {productSchemas.map((schema, i) => (
+        <JsonLd key={`std-${i}`} data={schema} />
+      ))}
+      {advancedProductSchemas.map((schema, i) => (
+        <JsonLd key={`adv-${i}`} data={schema} />
+      ))}
+      {builderProductSchemas.map((schema, i) => (
+        <JsonLd key={`bld-${i}`} data={schema} />
+      ))}
+      <JsonLd
+        data={breadcrumb([
+          { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
+          { name: 'Pricing & Plans', url: 'https://www.dynastyfuturesdyn.com/pricing' },
+        ])}
+      />
       <div className="relative min-h-screen">
         <div className="page-transition py-12 md:py-20 relative z-10">
           <div className="container mx-auto px-4">
@@ -342,7 +369,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
+                                  variant="gradient-outline"
                                   disabled={
                                     loadingKey ===
                                     `standard-${parseInt(
@@ -502,7 +529,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-primary to-gold-light text-foreground"
+                                  variant="gradient"
                                   disabled={
                                     loadingKey ===
                                     `advanced-${parseInt(
@@ -666,7 +693,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
+                                  variant="gradient-outline"
                                   disabled={
                                     loadingKey ===
                                     `builder-${parseInt(

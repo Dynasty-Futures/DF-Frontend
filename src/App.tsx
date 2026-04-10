@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, ReactNode } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { HelmetProvider } from "react-helmet-async";
 import { env } from "@/config/env";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
@@ -140,6 +141,73 @@ const LazyRoute = ({ children }: { children: ReactNode }) => (
   <Suspense fallback={null}>{children}</Suspense>
 );
 
+/**
+ * AppRoutes contains all route definitions. Exported separately so the
+ * prerender script can wrap it in StaticRouter instead of BrowserRouter.
+ */
+export const AppRoutes = () => (
+  <Routes>
+    {/* Public Routes */}
+    <Route path="/" element={<Index />} />
+    <Route path="/pricing" element={<LazyRoute><Pricing /></LazyRoute>} />
+    <Route path="/rules" element={<LazyRoute><Rules /></LazyRoute>} />
+    <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
+    <Route path="/support" element={<LazyRoute><Support /></LazyRoute>} />
+    <Route path="/legal" element={<LazyRoute><Legal /></LazyRoute>} />
+    <Route path="/login" element={<LazyRoute><Login /></LazyRoute>} />
+    <Route path="/register" element={<LazyRoute><Register /></LazyRoute>} />
+    <Route path="/about" element={<LazyRoute><About /></LazyRoute>} />
+    <Route path="/payouts" element={<LazyRoute><Payouts /></LazyRoute>} />
+
+    {/* Admin Routes — requires ADMIN role */}
+    <Route path="/admin" element={
+      <RoleGuard roles={['ADMIN']}>
+        <LazyRoute>
+          <AdminPage />
+        </LazyRoute>
+      </RoleGuard>
+    }>
+      <Route index element={<LazyRoute><AdminOverview /></LazyRoute>} />
+      <Route path="accounts" element={<LazyRoute><AdminAccounts /></LazyRoute>} />
+      <Route path="risk" element={<LazyRoute><AdminRiskFlags /></LazyRoute>} />
+      <Route path="payouts" element={<LazyRoute><AdminPayouts /></LazyRoute>} />
+      <Route path="users" element={<LazyRoute><AdminUsersKYC /></LazyRoute>} />
+      <Route path="compliance" element={<LazyRoute><AdminCompliance /></LazyRoute>} />
+      <Route path="billing" element={<LazyRoute><AdminBilling /></LazyRoute>} />
+      <Route path="audit" element={<LazyRoute><AdminAuditLog /></LazyRoute>} />
+      <Route path="health" element={<LazyRoute><AdminSystemHealth /></LazyRoute>} />
+      <Route path="settings" element={<LazyRoute><AdminSettings /></LazyRoute>} />
+      <Route path="support" element={<LazyRoute><AdminSupport /></LazyRoute>} />
+      <Route path="announcements" element={<LazyRoute><AdminAnnouncements /></LazyRoute>} />
+      <Route path="products" element={<LazyRoute><AdminProducts /></LazyRoute>} />
+      <Route path="integrations" element={<LazyRoute><AdminIntegrations /></LazyRoute>} />
+      <Route path="security" element={<LazyRoute><AdminSecurity /></LazyRoute>} />
+    </Route>
+
+    {/* Dashboard Routes — requires authentication */}
+    <Route path="/dashboard" element={
+      <ProtectedRoute>
+        <LazyRoute>
+          <DashboardLayout />
+        </LazyRoute>
+      </ProtectedRoute>
+    }>
+      <Route index element={<LazyRoute><DashboardHome /></LazyRoute>} />
+      <Route path="accounts" element={<LazyRoute><DashboardAccounts /></LazyRoute>} />
+      <Route path="billing" element={<LazyRoute><DashboardBilling /></LazyRoute>} />
+      <Route path="payouts" element={<LazyRoute><DashboardPayouts /></LazyRoute>} />
+      <Route path="affiliate" element={<LazyRoute><DashboardAffiliate /></LazyRoute>} />
+      <Route path="profile" element={<LazyRoute><DashboardProfile /></LazyRoute>} />
+      <Route path="achievements" element={<LazyRoute><DashboardAchievements /></LazyRoute>} />
+      <Route path="help" element={<LazyRoute><DashboardHelp /></LazyRoute>} />
+      <Route path="journal/:date" element={<LazyRoute><DashboardJournal /></LazyRoute>} />
+    </Route>
+
+    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+    <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
+  </Routes>
+);
+
 const App = () => {
   const { noBlur } = getPerfFlags();
 
@@ -151,79 +219,22 @@ const App = () => {
   }, [noBlur]);
 
   return (
-    <GoogleOAuthProvider clientId={env.googleClientId}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/pricing" element={<LazyRoute><Pricing /></LazyRoute>} />
-              <Route path="/rules" element={<LazyRoute><Rules /></LazyRoute>} />
-              <Route path="/faq" element={<LazyRoute><FAQ /></LazyRoute>} />
-              <Route path="/support" element={<LazyRoute><Support /></LazyRoute>} />
-              <Route path="/legal" element={<LazyRoute><Legal /></LazyRoute>} />
-              <Route path="/login" element={<LazyRoute><Login /></LazyRoute>} />
-              <Route path="/register" element={<LazyRoute><Register /></LazyRoute>} />
-              <Route path="/about" element={<LazyRoute><About /></LazyRoute>} />
-              <Route path="/payouts" element={<LazyRoute><Payouts /></LazyRoute>} />
-              
-              {/* Admin Routes — requires ADMIN role */}
-              <Route path="/admin" element={
-                <RoleGuard roles={['ADMIN']}>
-                  <LazyRoute>
-                    <AdminPage />
-                  </LazyRoute>
-                </RoleGuard>
-              }>
-                <Route index element={<LazyRoute><AdminOverview /></LazyRoute>} />
-                <Route path="accounts" element={<LazyRoute><AdminAccounts /></LazyRoute>} />
-                <Route path="risk" element={<LazyRoute><AdminRiskFlags /></LazyRoute>} />
-                <Route path="payouts" element={<LazyRoute><AdminPayouts /></LazyRoute>} />
-                <Route path="users" element={<LazyRoute><AdminUsersKYC /></LazyRoute>} />
-                <Route path="compliance" element={<LazyRoute><AdminCompliance /></LazyRoute>} />
-                <Route path="billing" element={<LazyRoute><AdminBilling /></LazyRoute>} />
-                <Route path="audit" element={<LazyRoute><AdminAuditLog /></LazyRoute>} />
-                <Route path="health" element={<LazyRoute><AdminSystemHealth /></LazyRoute>} />
-                <Route path="settings" element={<LazyRoute><AdminSettings /></LazyRoute>} />
-                <Route path="support" element={<LazyRoute><AdminSupport /></LazyRoute>} />
-                <Route path="announcements" element={<LazyRoute><AdminAnnouncements /></LazyRoute>} />
-                <Route path="products" element={<LazyRoute><AdminProducts /></LazyRoute>} />
-                <Route path="integrations" element={<LazyRoute><AdminIntegrations /></LazyRoute>} />
-                <Route path="security" element={<LazyRoute><AdminSecurity /></LazyRoute>} />
-              </Route>
-              
-              {/* Dashboard Routes — requires authentication */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <LazyRoute>
-                    <DashboardLayout />
-                  </LazyRoute>
-                </ProtectedRoute>
-              }>
-                <Route index element={<LazyRoute><DashboardHome /></LazyRoute>} />
-                <Route path="accounts" element={<LazyRoute><DashboardAccounts /></LazyRoute>} />
-                <Route path="billing" element={<LazyRoute><DashboardBilling /></LazyRoute>} />
-                <Route path="payouts" element={<LazyRoute><DashboardPayouts /></LazyRoute>} />
-                <Route path="affiliate" element={<LazyRoute><DashboardAffiliate /></LazyRoute>} />
-                <Route path="profile" element={<LazyRoute><DashboardProfile /></LazyRoute>} />
-                <Route path="achievements" element={<LazyRoute><DashboardAchievements /></LazyRoute>} />
-                <Route path="help" element={<LazyRoute><DashboardHelp /></LazyRoute>} />
-                <Route path="journal/:date" element={<LazyRoute><DashboardJournal /></LazyRoute>} />
-              </Route>
-              
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<LazyRoute><NotFound /></LazyRoute>} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </GoogleOAuthProvider>
+    <HelmetProvider>
+      <GoogleOAuthProvider clientId={env.googleClientId}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <ScrollToTop />
+                <AppRoutes />
+              </BrowserRouter>
+            </TooltipProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </GoogleOAuthProvider>
+    </HelmetProvider>
   );
 };
 

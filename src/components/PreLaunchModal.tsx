@@ -24,6 +24,7 @@ const PreLaunchModal = ({
 
   useEffect(() => {
     // Only auto-open on first visit if not externally controlled
+    if (typeof window === 'undefined') return;
     if (externalOpen === undefined) {
       const hasSeen = localStorage.getItem(STORAGE_KEY);
       if (!hasSeen) {
@@ -39,7 +40,7 @@ const PreLaunchModal = ({
     if (externalOpen !== undefined && onExternalClose) {
       onExternalClose();
     } else {
-      localStorage.setItem(STORAGE_KEY, "true");
+      if (typeof window !== 'undefined') localStorage.setItem(STORAGE_KEY, "true");
       setIsOpen(false);
     }
   };

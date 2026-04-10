@@ -6,6 +6,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
+import PageMeta from "@/components/seo/PageMeta";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -108,6 +109,12 @@ const Register = () => {
 
   return (
     <Layout>
+      <PageMeta
+        title="Create Account"
+        description="Register for a Dynasty Futures account to start your funded futures trading evaluation. Sign up with email or Google."
+        path="/register"
+        noIndex
+      />
       <div className="page-transition py-12 md:py-20 min-h-[80vh] flex items-center">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
@@ -121,7 +128,11 @@ const Register = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={150}>
-              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8">
+              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 relative overflow-hidden">
+                {/* Background glow effects */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-gold-dark/5 rounded-full blur-2xl pointer-events-none" />
+                
                 {/* Google SSO */}
                 <GoogleSignInButton
                   onSuccess={handleGoogleSuccess}
@@ -144,59 +155,65 @@ const Register = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        type="text"
-                        placeholder="John"
-                        value={formData.firstName}
-                        onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            firstName: e.target.value,
-                          })
-                        }
-                        required
-                        disabled={isSubmitting}
-                        className="bg-muted/30 border-border/50 focus:border-primary"
-                      />
+                      <Label htmlFor="firstName" className="form-label-glow text-sm font-medium">First Name</Label>
+                      <div className="form-input-wrapper">
+                        <Input
+                          id="firstName"
+                          type="text"
+                          placeholder="John"
+                          value={formData.firstName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              firstName: e.target.value,
+                            })
+                          }
+                          required
+                          disabled={isSubmitting}
+                          className="bg-muted/30 border-border/50"
+                        />
+                      </div>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastName" className="form-label-glow text-sm font-medium">Last Name</Label>
+                      <div className="form-input-wrapper">
+                        <Input
+                          id="lastName"
+                          type="text"
+                          placeholder="Doe"
+                          value={formData.lastName}
+                          onChange={(e) =>
+                            setFormData({ ...formData, lastName: e.target.value })
+                          }
+                          required
+                          disabled={isSubmitting}
+                          className="bg-muted/30 border-border/50"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="form-label-glow text-sm font-medium">Email</Label>
+                    <div className="form-input-wrapper">
                       <Input
-                        id="lastName"
-                        type="text"
-                        placeholder="Doe"
-                        value={formData.lastName}
+                        id="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={formData.email}
                         onChange={(e) =>
-                          setFormData({ ...formData, lastName: e.target.value })
+                          setFormData({ ...formData, email: e.target.value })
                         }
                         required
                         disabled={isSubmitting}
-                        className="bg-muted/30 border-border/50 focus:border-primary"
+                        className="bg-muted/30 border-border/50"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                      disabled={isSubmitting}
-                      className="bg-muted/30 border-border/50 focus:border-primary"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
+                    <Label htmlFor="password" className="form-label-glow text-sm font-medium">Password</Label>
+                    <div className="relative form-input-wrapper">
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
@@ -207,12 +224,12 @@ const Register = () => {
                         }
                         required
                         disabled={isSubmitting}
-                        className="bg-muted/30 border-border/50 focus:border-primary pr-10"
+                        className="bg-muted/30 border-border/50 pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                       >
                         {showPassword ? (
                           <EyeOff size={18} />
@@ -228,8 +245,8 @@ const Register = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <div className="relative">
+                    <Label htmlFor="confirmPassword" className="form-label-glow text-sm font-medium">Confirm Password</Label>
+                    <div className="relative form-input-wrapper">
                       <Input
                         id="confirmPassword"
                         type={showConfirm ? "text" : "password"}
@@ -243,12 +260,12 @@ const Register = () => {
                         }
                         required
                         disabled={isSubmitting}
-                        className="bg-muted/30 border-border/50 focus:border-primary pr-10"
+                        className="bg-muted/30 border-border/50 pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                       >
                         {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
                       </button>
@@ -258,8 +275,9 @@ const Register = () => {
                   <Button
                     type="submit"
                     size="lg"
+                    variant="gradient"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-primary to-primary text-primary-foreground font-semibold btn-glow"
+                    className="w-full btn-shimmer"
                   >
                     <UserPlus className="w-4 h-4 mr-2" />
                     {isSubmitting ? "Creating Account..." : "Create Account"}
@@ -272,7 +290,7 @@ const Register = () => {
                     <Link
                       to="/login"
                       state={{ from: redirectTo }}
-                      className="text-primary hover:underline"
+                      className="text-primary hover:text-gold-light font-medium transition-colors"
                     >
                       Sign In
                     </Link>

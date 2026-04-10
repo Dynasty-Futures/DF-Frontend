@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import logo from "@/assets/DF_Logo.png";
-import heroPoster from "@/assets/hero-temple.png";
+import heroPoster from "@/assets/hero-temple.webp";
 
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
@@ -15,7 +15,7 @@ const Hero = () => {
   const { noHeroVideo } = getPerfFlags();
 
   const [isNarrowViewport, setIsNarrowViewport] = useState(() =>
-    window.matchMedia("(max-width: 767px)").matches,
+    typeof window !== 'undefined' ? window.matchMedia("(max-width: 767px)").matches : false,
   );
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
@@ -154,9 +154,10 @@ const Hero = () => {
         {usePosterInsteadOfVideo ? (
           <img
             src={heroPoster}
-            alt=""
-            aria-hidden="true"
-            decoding="async"
+            alt="Dynasty Futures trading platform hero background"
+            fetchPriority="high"
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center"
           />
         ) : (
@@ -218,6 +219,7 @@ const Hero = () => {
             >
               Build Your{" "}
               <span className="text-gradient-animated glow-text">Dynasty.</span>
+              <span className="sr-only"> — Simulated Funded Futures Trading</span>
             </h1>
 
             <p
@@ -271,7 +273,10 @@ const Hero = () => {
                   <div className="w-12 h-auto md:w-16 bg-gradient-to-br from-primary/20 via-gold-dark/20 to-gold-light/20 rounded-xl flex items-center justify-center border border-primary/20">
                     <img
                       src={logo}
-                      alt="DF"
+                      alt="Dynasty Futures logo"
+                      width={64}
+                      height={64}
+                      loading="lazy"
                       className="h-8 w-auto md:h-12 lg:h-16 logo-blend"
                     />
                   </div>

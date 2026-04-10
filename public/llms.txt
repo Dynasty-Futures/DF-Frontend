@@ -1,0 +1,39 @@
+# Dynasty Futures
+
+> Dynasty Futures is a proprietary trading firm offering simulated funded accounts to qualified futures traders. Traders complete an evaluation challenge on a simulated account, and successful traders receive funded accounts with profit-sharing arrangements.
+
+## What Dynasty Futures Does
+
+Dynasty Futures provides evaluation programs where traders demonstrate their skills on simulated futures accounts. All trading is simulated — traders never trade live capital. The firm offers three plan tiers (Standard, Advanced, Builder) with account sizes of $25,000, $50,000, $100,000, and $150,000.
+
+## Key Facts
+
+- All trading is 100% simulated — no live capital is ever at risk
+- Static drawdown model (fixed loss limit, does not trail equity)
+- 5-day payout cycles once funded
+- Supported platform: Volumetrica with DeepCharts data feed integration
+- Copy trading allowed; automated bots are NOT allowed
+- No consistency rule on funded accounts
+- After 5 payouts: 80/20 profit split (80% to trader)
+
+## Plan Tiers
+
+- **Standard Plan**: Lowest evaluation fee ($49–$149), $80 activation fee after passing, 50% consistency rule during evaluation
+- **Advanced Plan**: Higher evaluation fee ($79–$229), no activation fee, no consistency rule
+- **Builder Plan**: Highest evaluation fee ($109–$299), no activation fee, higher max loss limit than Standard, 50% consistency rule during evaluation
+
+## Pages
+
+- [Homepage](https://www.dynastyfuturesdyn.com/): Overview of Dynasty Futures and how it works
+- [Pricing & Plans](https://www.dynastyfuturesdyn.com/pricing): All plan tiers, account sizes, evaluation fees, and activation fees
+- [Trading Rules](https://www.dynastyfuturesdyn.com/rules): Complete trading rules including drawdown limits, daily loss limits, weekend holds, news trading restrictions
+- [FAQ](https://www.dynastyfuturesdyn.com/faq): 14 frequently asked questions covering plans, payouts, drawdown, platforms, and getting started
+- [Payouts](https://www.dynastyfuturesdyn.com/payouts): Payout structure and withdrawal information
+- [Support](https://www.dynastyfuturesdyn.com/support): Contact support team, submit tickets
+- [About Us](https://www.dynastyfuturesdyn.com/about): Company story, mission & vision, founder background, and what sets Dynasty Futures apart
+- [Legal & Risk Disclosure](https://www.dynastyfuturesdyn.com/legal): Risk disclosure, terms of service, privacy policy, refund policy
+
+## Contact
+
+- Email: support@dynastyfuturesdyn.com
+- Website: https://www.dynastyfuturesdyn.com

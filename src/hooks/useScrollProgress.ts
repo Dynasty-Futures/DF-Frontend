@@ -24,6 +24,8 @@ export function useScrollProgress(
   }, [elementRef]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
