@@ -134,12 +134,12 @@ const standardAdvancedRules = {
   },
   "$100,000": {
     profitTarget: "$6,000",
-    maxDrawdown: "$2,500",
+    maxDrawdown: "$3,000",
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$8,000",
-    maxDrawdown: "$4,000",
+    profitTarget: "$9,000",
+    maxDrawdown: "$4,500",
     dailyLoss: "$3,000",
   },
 };
@@ -157,12 +157,12 @@ const builderRules = {
   },
   "$100,000": {
     profitTarget: "$6,000",
-    maxDrawdown: "$3,000",
+    maxDrawdown: "$3,500",
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$8,000",
-    maxDrawdown: "$4,500",
+    profitTarget: "$9,000",
+    maxDrawdown: "$5,000",
     dailyLoss: "$3,000",
   },
 };

@@ -165,15 +165,15 @@ const accountRules = [
   {
     size: "100K Account",
     profitTarget: "$6,000",
-    standardAdvancedMaxDrawdown: "$2,500",
-    builderMaxDrawdown: "$3,000",
+    standardAdvancedMaxDrawdown: "$3,000",
+    builderMaxDrawdown: "$3,500",
     dailyLoss: "$2,000",
   },
   {
     size: "150K Account",
-    profitTarget: "$8,000",
-    standardAdvancedMaxDrawdown: "$4,000",
-    builderMaxDrawdown: "$4,500",
+    profitTarget: "$9,000",
+    standardAdvancedMaxDrawdown: "$4,500",
+    builderMaxDrawdown: "$5,000",
     dailyLoss: "$3,000",
   },
 ];
@@ -666,9 +666,9 @@ const Rules = () => {
                     drawdown remains constant.
                   </p>
                   <p className="text-muted-foreground mb-4">
-                    For example, if you have a $100,000 account with a $2,500
+                    For example, if you have a $100,000 account with a $3,000
                     static drawdown, your account will be violated if your
-                    balance drops below $97,500 at any point. This level does
+                    balance drops below $97,000 at any point. This level does
                     not change regardless of how much profit you make.
                   </p>
                   <p className="text-muted-foreground">
