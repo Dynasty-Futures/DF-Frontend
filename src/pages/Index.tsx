@@ -6,6 +6,8 @@ import FundingModels from '@/components/home/FundingModels';
 import HowItWorks from '@/components/home/HowItWorks';
 import SimulatedTrading from '@/components/home/SimulatedTrading';
 import PreLaunchModal from '@/components/PreLaunchModal';
+import SponsorTicker, { DefaultSponsors } from '@/components/ui/SponsorTicker';
+import ScrollReveal from '@/components/ui/ScrollReveal';
 
 const Index = () => {
   return (
@@ -34,6 +36,20 @@ const Index = () => {
           never trade live capital.
         </p>
         <Hero />
+        
+        {/* Sponsor Ticker */}
+        <section className="py-16 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/30 to-transparent" />
+          <ScrollReveal className="text-center mb-6 relative z-10">
+            <p className="text-xs uppercase tracking-widest text-muted-foreground mb-4">
+              Powered by leading trading infrastructure
+            </p>
+          </ScrollReveal>
+          <div className="relative z-10">
+            <SponsorTicker sponsors={DefaultSponsors} speed={40} />
+          </div>
+        </section>
+        
         <FundingModels />
         <HowItWorks />
         <SimulatedTrading />

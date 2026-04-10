@@ -565,6 +565,88 @@
     pointer-events: none;
   }
 
+  .form-input-glow {
+    @apply transition-all duration-300;
+  }
+
+  .form-input-glow:focus {
+    @apply border-primary/50;
+    box-shadow: 0 0 0 3px hsl(43 74% 49% / 0.1), 0 0 20px hsl(43 74% 49% / 0.08);
+  }
+
+  .form-input-glow:hover:not(:focus) {
+    @apply border-primary/30;
+  }
+
+  .form-label-glow {
+    @apply transition-colors duration-200;
+  }
+
+  .form-input-wrapper {
+    @apply relative;
+  }
+
+  .form-input-wrapper::after {
+    content: '';
+    @apply absolute inset-0 rounded-md opacity-0 transition-opacity duration-300;
+    background: radial-gradient(circle at center, hsl(43 74% 49% / 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .form-input-wrapper:focus-within::after {
+    @apply opacity-100;
+  }
+
+  .checkbox-glow {
+    @apply transition-all duration-200;
+  }
+
+  .checkbox-glow:checked {
+    @apply bg-primary border-primary;
+    box-shadow: 0 0 10px hsl(43 74% 49% / 0.3);
+  }
+
+  .checkbox-glow:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  .animate-gradient-flow {
+    animation: gradientFlow 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .btn-shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-shimmer::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(
+      105deg,
+      transparent 20%,
+      hsl(43 74% 49% / 0.15) 40%,
+      hsl(43 80% 65% / 0.2) 50%,
+      hsl(43 74% 49% / 0.15) 60%,
+      transparent 80%
+    );
+    background-size: 200% 100%;
+  }
+
+  .btn-shimmer:hover::before {
+    @apply opacity-100;
+    animation: btnShimmer 0.8s ease-out;
+  }
+
+  @keyframes btnShimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .text-gradient,
     .text-gradient-animated,

@@ -99,7 +99,11 @@ const Login = () => {
             </ScrollReveal>
 
             <ScrollReveal delay={150}>
-              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8">
+              <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 relative overflow-hidden">
+                {/* Background glow effect */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-gold-dark/5 rounded-full blur-2xl pointer-events-none" />
+                
                 {/* Google SSO */}
                 <GoogleSignInButton
                   onSuccess={handleGoogleSuccess}
@@ -119,26 +123,28 @@ const Login = () => {
                 </div>
 
                 {/* Email/Password Form */}
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="your@email.com"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                      disabled={isSubmitting}
-                      className="bg-muted/30 border-border/50 focus:border-primary"
-                    />
+                    <Label htmlFor="email" className="form-label-glow text-sm font-medium">Email</Label>
+                    <div className="form-input-wrapper">
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        required
+                        disabled={isSubmitting}
+                        className="bg-muted/30 border-border/50"
+                      />
+                    </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
+                    <Label htmlFor="password" className="form-label-glow text-sm font-medium">Password</Label>
+                    <div className="relative form-input-wrapper">
                       <Input
                         id="password"
                         type={showPassword ? "text" : "password"}
@@ -149,12 +155,12 @@ const Login = () => {
                         }
                         required
                         disabled={isSubmitting}
-                        className="bg-muted/30 border-border/50 focus:border-primary pr-10"
+                        className="bg-muted/30 border-border/50 pr-10"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors z-10"
                       >
                         {showPassword ? (
                           <EyeOff size={18} />
@@ -166,14 +172,14 @@ const Login = () => {
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-2 cursor-pointer group">
                       <input
                         type="checkbox"
-                        className="rounded border-border bg-muted/30"
+                        className="rounded border-border bg-muted/30 checkbox-glow w-4 h-4"
                       />
-                      <span className="text-muted-foreground">Remember me</span>
+                      <span className="text-muted-foreground group-hover:text-foreground transition-colors">Remember me</span>
                     </label>
-                    <a href="#" className="text-primary hover:underline">
+                    <a href="#" className="text-primary hover:text-gold-light transition-colors">
                       Forgot password?
                     </a>
                   </div>
@@ -181,8 +187,9 @@ const Login = () => {
                   <Button
                     type="submit"
                     size="lg"
+                    variant="gradient"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-primary to-primary text-primary-foreground font-semibold btn-glow"
+                    className="w-full btn-shimmer"
                   >
                     <LogIn className="w-4 h-4 mr-2" />
                     {isSubmitting ? "Signing In..." : "Sign In"}
@@ -195,7 +202,7 @@ const Login = () => {
                     <Link
                       to="/register"
                       state={{ from }}
-                      className="text-primary hover:underline"
+                      className="text-primary hover:text-gold-light font-medium transition-colors"
                     >
                       Create Account
                     </Link>
