@@ -5,6 +5,7 @@ import PreLaunchModal from "@/components/PreLaunchModal";
 
 const quickLinks = [
   { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
   { name: "Pricing", path: "/pricing" },
   { name: "Rules", path: "/rules" },
   { name: "FAQ", path: "/faq" },
@@ -42,8 +43,9 @@ const Footer = () => {
               </Link>
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Dynasty Futures is a proprietary trading firm offering simulated
-              funded accounts to qualified futures traders.
+              Dynasty Futures LLC is a proprietary trading firm registered in
+              Wyoming, offering simulated funded accounts to qualified futures
+              traders.
             </p>
           </div>
 
@@ -139,7 +141,7 @@ const Footer = () => {
         <div className="pt-8 border-t border-border/30">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} Dynasty Futures. All rights reserved.
+              © {new Date().getFullYear()} Dynasty Futures LLC. All rights reserved.
             </p>
             <span className="text-xs text-muted-foreground">
               All trading on Dynasty Futures is simulated. Payouts are based on
