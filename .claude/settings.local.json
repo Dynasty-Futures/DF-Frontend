@@ -29,7 +29,8 @@
       "Bash(ls \"C:\\\\Users\\\\justi\\\\OneDrive\\\\Documents\\\\DynastyFutures\\\\DF-Frontend\\\\public/\"*.png)",
       "Bash(ls -la \"C:\\\\Users\\\\justi\\\\OneDrive\\\\Documents\\\\DynastyFutures\\\\DF-Frontend\\\\src\\\\assets/\"*.png)",
       "Bash(node -e ':*)",
-      "Bash(ls -la src/assets/hero-temple.webp public/*.webp)"
+      "Bash(ls -la src/assets/hero-temple.webp public/*.webp)",
+      "WebFetch(domain:pagespeed.web.dev)"
     ]
   },
   "enabledPlugins": {
