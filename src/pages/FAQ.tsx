@@ -89,7 +89,7 @@ const faqs = [
     id: "profit-target",
     question: "What is the profit target?",
     answer:
-      "The profit target varies by account size. For $25K accounts it's $1,500, for $50K accounts it's $3,000, for $100K accounts it's $6,000, and for $150K accounts it's $8,000. Once you reach your profit target while following all rules, you pass the challenge.",
+      "The profit target varies by account size. For $25K accounts it's $1,500, for $50K accounts it's $3,000, for $100K accounts it's $6,000, and for $150K accounts it's $9,000. Once you reach your profit target while following all rules, you pass the challenge.",
   },
   {
     id: "five-payouts",
