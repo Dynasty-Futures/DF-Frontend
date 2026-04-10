@@ -369,7 +369,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
+                                  variant="gradient-outline"
                                   disabled={
                                     loadingKey ===
                                     `standard-${parseInt(
@@ -529,7 +529,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-primary to-gold-light text-foreground"
+                                  variant="gradient"
                                   disabled={
                                     loadingKey ===
                                     `advanced-${parseInt(
@@ -693,7 +693,7 @@ const Pricing = () => {
                               <td className="py-4 px-4">
                                 <Button
                                   size="sm"
-                                  className="bg-gradient-to-r from-gold-dark to-primary text-primary-foreground"
+                                  variant="gradient-outline"
                                   disabled={
                                     loadingKey ===
                                     `builder-${parseInt(
