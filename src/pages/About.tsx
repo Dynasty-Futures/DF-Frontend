@@ -47,7 +47,7 @@ const About = () => {
     document.title = "About Us | Dynasty Futures";
     const meta = document.querySelector('meta[name="description"]');
     const content =
-      "Learn about Dynasty Futures LLC, a Wyoming-registered proprietary trading firm built on fair pricing, higher max loss flexibility, and honest payout transparency.";
+      "Dynasty Futures LLC is a Wyoming-registered proprietary trading firm built for traders who value clarity, discipline, and opportunity. Fair pricing, higher max loss flexibility, and honest payout transparency.";
     if (meta) {
       meta.setAttribute("content", content);
     } else {
@@ -87,13 +87,14 @@ const About = () => {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-20 md:mb-28">
               <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                About{" "}
-                <span className="text-gradient-animated">Dynasty Futures</span>
+                Built for Traders Who Value{" "}
+                <span className="text-gradient-animated">Clarity, Discipline, and Opportunity</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Dynasty Futures LLC was built because traders deserved better.
-                Clearer rules. Fairer pricing. Higher max loss flexibility. And
-                a company that actually communicates.
+                Dynasty Futures LLC was built to offer something the prop firm
+                space was missing: fair pricing, higher max loss flexibility,
+                honest payout transparency, and a firm focused on long-term
+                trust.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -143,9 +144,11 @@ const About = () => {
                   doesn't leave people guessing.
                 </p>
                 <p>
-                  As the idea became real, the right people, systems, and
-                  partnerships came together. What started as a simple
-                  frustration became a company.
+                  The bigger vision was to build something traders could grow
+                  with — a firm that scales as its traders scale. As that vision
+                  became real, the right people, systems, and partnerships came
+                  together. What started as a simple frustration became a
+                  company.
                 </p>
               </div>
             </div>
@@ -406,13 +409,13 @@ const About = () => {
           <ScrollReveal>
             <div className="text-center max-w-2xl mx-auto">
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-4">
-                Ready to{" "}
-                <span className="text-gradient-animated">Get Started?</span>
+                For Traders Who Want More Than{" "}
+                <span className="text-gradient-animated">Promises</span>
               </h2>
               <p className="text-muted-foreground mb-8 text-lg">
-                Dynasty Futures is for traders who want structure, clarity, and
-                a firm that communicates honestly. If that's you, you're in the
-                right place.
+                Dynasty Futures is for traders who value structure, opportunity,
+                professionalism, and transparency — not flashy promotions and
+                vague claims. If that's you, you're in the right place.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
