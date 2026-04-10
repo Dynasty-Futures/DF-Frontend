@@ -384,6 +384,15 @@ const About = () => {
                     <p className="text-primary text-sm font-medium">
                       Chief Financial Officer
                     </p>
+                    <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin className="w-3 h-3" />
+                        <span>Texas</span>
+                      </div>
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
+                        Co-Founder
+                      </span>
+                    </div>
                   </div>
                   <div className="space-y-4 text-muted-foreground leading-relaxed">
                     <p>
