@@ -36,9 +36,8 @@ const SimulatedTrading = () => {
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
               All trading at Dynasty Futures occurs on simulated accounts using
-              real-time or near real-time futures market data. This environment
-              mirrors live market conditions but does not involve live capital
-              at any stage.
+              real-time futures market data. This environment mirrors live
+              market conditions but does not involve live capital at any stage.
             </p>
 
             <div className="space-y-6">

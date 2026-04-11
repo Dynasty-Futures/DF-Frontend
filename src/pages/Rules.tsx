@@ -213,7 +213,6 @@ const planRules = [
     features: [
       "Higher max loss limit than Standard",
       "50% consistency rule (evaluation phase)",
-      "2 minimum trading days to pass",
       "No activation fee",
       "5-day payout cycles",
       "Static drawdown",
@@ -712,15 +711,6 @@ const Rules = () => {
                         <td className="py-4 px-6 text-muted-foreground">
                           50% consistency rule applies during the evaluation
                           phase.
-                        </td>
-                      </tr>
-                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Minimum Trading Days
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          2 minimum trading days are required to pass
-                          evaluation.
                         </td>
                       </tr>
                       <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">

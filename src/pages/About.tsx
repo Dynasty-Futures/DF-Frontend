@@ -130,8 +130,8 @@ const About = () => {
                 </p>
                 <p>
                   When Brock started looking seriously at the futures trading
-                  world — during his time studying finance at the University of
-                  Utah — he quickly became drawn to the markets: the structure,
+                  world, during his time studying finance at the University of
+                  Utah, he quickly became drawn to the markets: the structure,
                   the discipline, the opportunity. But the deeper he got into
                   the prop firm side of things, a pattern kept showing up:
                   confusing rules, gimmicky pricing, and payout structures
@@ -139,13 +139,13 @@ const About = () => {
                 </p>
                 <p>
                   Dynasty Futures LLC was incorporated in Wyoming with one
-                  clear goal — build the firm the space was missing. Fair
+                  clear goal: build the firm the space was missing. Fair
                   pricing, higher max loss limits, and a payout philosophy that
                   doesn't leave people guessing.
                 </p>
                 <p>
                   The bigger vision was to build something traders could grow
-                  with — a firm that scales as its traders scale. As that vision
+                  with, a firm that scales as its traders scale. As that vision
                   became real, the right people, systems, and partnerships came
                   together. What started as a simple frustration became a
                   company.
@@ -243,7 +243,7 @@ const About = () => {
                   what they signed up for.
                 </p>
                 <p>
-                  At Dynasty, we've tried to make everything clear — the rules,
+                  At Dynasty, we've tried to make everything clear: the rules,
                   the pricing, the payout structure, the expectations. We'd
                   rather tell you something upfront you don't want to hear than
                   leave you confused after the fact.
@@ -277,7 +277,7 @@ const About = () => {
               </h2>
               <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
                 Dynasty Futures is led by people with real backgrounds in
-                finance, strategy, and business — not a faceless operation.
+                finance, strategy, and business, not a faceless operation.
               </p>
             </ScrollReveal>
 
@@ -307,14 +307,14 @@ const About = () => {
                   <p>
                     Born and raised in Texas, Brock studied and graduated in
                     finance from the University of Utah, where he developed a
-                    genuine interest in the financial markets — particularly
+                    genuine interest in the financial markets, particularly
                     futures trading. He spent years learning how markets move,
                     what consistent trading actually looks like, and what it
                     takes to perform at a high level over time.
                   </p>
                   <p>
                     Before founding Dynasty Futures, Brock built experience in
-                    private equity, capital raising, and leadership — giving him
+                    private equity, capital raising, and leadership, giving him
                     a clear picture of what a well-run firm looks like and what
                     most firms in this space were missing.
                   </p>
@@ -367,7 +367,7 @@ const About = () => {
                     </p>
                     <p>
                       At Dynasty, Zachary brings a thoughtful, strategic
-                      perspective to every part of the business — from how the
+                      perspective to every part of the business, from how the
                       company positions itself to how it grows. His approach
                       helps keep the firm focused on what matters long term.
                     </p>
@@ -423,7 +423,7 @@ const About = () => {
               </h2>
               <p className="text-muted-foreground mb-8 text-lg">
                 Dynasty Futures is for traders who value structure, opportunity,
-                professionalism, and transparency — not flashy promotions and
+                professionalism, and transparency, not flashy promotions and
                 vague claims. If that's you, you're in the right place.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
