@@ -144,14 +144,12 @@ const Footer = () => {
               © {new Date().getFullYear()} Dynasty Futures LLC. All rights reserved.
             </p>
             <span className="text-xs text-muted-foreground max-w-2xl text-center md:text-right">
-              Dynasty Futures LLC offers simulated trading evaluation programs.
-              All trading activity, account metrics, performance results, and
-              payout determinations are based on simulated trading performance
-              within a simulated environment. Participants do not deposit or
-              risk personal trading capital in a live brokerage account. Any
-              payouts issued by Dynasty Futures are derived from the terms of
-              the applicable simulated program and are not returns on personal
-              investment activity.
+              All trading activity through Dynasty Futures LLC takes place in a
+              simulated environment. Evaluations, account performance, and
+              payout eligibility are based on simulated trading results.
+              Participants do not risk personal trading capital, and payouts, if
+              any, are made in accordance with the rules and terms of the
+              applicable program.
             </span>
           </div>
         </div>

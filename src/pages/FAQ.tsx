@@ -23,7 +23,7 @@ const faqs = [
     id: "simulated-trading",
     question: "How does simulated trading work?",
     answer:
-      "During the challenge phase, you trade in a simulated environment that mirrors real futures markets. Price data is real-time or near real-time, and orders are routed through supported platforms like Volumetrica with DeepCharts data feed integration. You never trade live capital—simulated trading is used in both the evaluation and funded phases.",
+      "During the challenge phase, you trade in a simulated environment that mirrors real futures markets. Price data is real-time, and orders are routed through supported platforms like Volumetrica with DeepCharts data feed integration. You never trade live capital; simulated trading is used in both the evaluation and funded phases.",
   },
   {
     id: "payouts",

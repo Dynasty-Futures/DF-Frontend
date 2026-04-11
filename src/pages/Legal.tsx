@@ -70,10 +70,13 @@ const Legal = () => {
                   <div className="prose prose-invert max-w-none space-y-4 text-muted-foreground">
                     <p>
                       <strong className="text-foreground">IMPORTANT:</strong>{" "}
-                      All trading on Dynasty Futures is simulated. Payouts are
-                      based on simulated trading performance. This is not real
-                      trading, and no real capital is ever at risk. Past
-                      simulated performance does not guarantee future results.
+                      All trading activity through Dynasty Futures LLC takes
+                      place in a simulated environment. Evaluations, account
+                      performance, and payout eligibility are based on
+                      simulated trading results. Participants do not risk
+                      personal trading capital, and payouts, if any, are made
+                      in accordance with the rules and terms of the applicable
+                      program.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
@@ -82,9 +85,9 @@ const Legal = () => {
                     <p>
                       All trading at Dynasty Futures takes place in a simulated
                       environment. No live capital is ever traded. You trade
-                      using real-time or near real-time market data, but all
-                      orders and executions are simulated. Payouts are based
-                      entirely on your simulated trading performance.
+                      using real-time market data, but all orders and
+                      executions are simulated. Payouts are based entirely on
+                      your simulated trading performance.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
