@@ -970,6 +970,21 @@ const Pricing = () => {
                 automatically.
               </p>
             </section>
+
+            <ScrollReveal as="section" className="mb-12">
+              <div className="glass-card rounded-2xl border border-border/50 p-6 md:p-8 text-center">
+                <h2 className="font-display text-xl font-semibold text-foreground mb-3">
+                  Long Term Payout Structure
+                </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
+                  After five approved payouts, traders move into an 80/20 profit
+                  split with eighty percent going to the trader. There is no
+                  forced transition to a live account at that stage. Many traders
+                  prefer staying in the environment they already know, and we
+                  built this structure to support that choice.
+                </p>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </div>
