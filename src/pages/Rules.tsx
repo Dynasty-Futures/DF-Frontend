@@ -140,9 +140,9 @@ const universalRules = [
   },
   {
     icon: DollarIcon,
-    title: "Post-5 Payout Profit Split Adjustment",
+    title: "Long Term Payout Structure: 80/20 Split After Five Payouts",
     description:
-      "After a trader has successfully completed five (5) payouts, all future payouts will be subject to an 80/20 profit split, with 80% paid to the trader and 20% retained by Dynasty Futures.",
+      "Once a trader reaches five approved payouts, the account moves into our long term payout structure with an 80/20 profit split. Eighty percent of all future profits goes to the trader. This is a milestone that reflects consistency and performance, and we designed the structure around it. Traders are not required to transition to a live account at that stage. Many prefer staying in the environment they already know and trust, and we want to preserve that continuity while supporting long term growth.",
     allowed: true,
   },
 ];
