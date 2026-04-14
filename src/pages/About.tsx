@@ -359,17 +359,27 @@ const About = () => {
                   </div>
                   <div className="space-y-4 text-muted-foreground leading-relaxed">
                     <p>
-                      Originally from Georgia, Zachary graduated from the
-                      University of Utah with a bachelor's degree in Business
-                      Administration. During that time, he developed a serious
-                      interest in the financial markets and spent considerable
-                      effort understanding how they work.
+                      Zachary grew up in Georgia and earned his BBA from the
+                      University of Utah, where he became deeply interested in
+                      how capital markets function — price discovery, how risk
+                      gets mispriced, and what separates traders with real
+                      staying power from those who do not. Futures became his
+                      focus because of the leverage, the structure, and what the
+                      market demands from you when you are wrong.
                     </p>
                     <p>
-                      At Dynasty, Zachary brings a thoughtful, strategic
-                      perspective to every part of the business, from how the
-                      company positions itself to how it grows. His approach
-                      helps keep the firm focused on what matters long term.
+                      At Dynasty Futures, Zachary works on the strategic side
+                      with one priority: building something that lasts. The prop
+                      firm space is full of companies that grow quickly and
+                      disappear just as fast, and that is exactly what Dynasty
+                      is working to avoid. He pushes for decisions that hold up
+                      across market conditions, systems that keep traders
+                      accountable, and a culture where risk is not just managed
+                      on paper.
+                    </p>
+                    <p>
+                      While many firms in this space optimize for the highlight
+                      reel, Dynasty is building for year ten.
                     </p>
                   </div>
                 </div>

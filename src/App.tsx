@@ -23,6 +23,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
 const About = lazy(() => import("./pages/About"));
 const Payouts = lazy(() => import("./pages/Payouts"));
+const Affiliates = lazy(() => import("./pages/Affiliates"));
 const AdminPage = lazy(() => import("./pages/admin/AdminPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
@@ -158,6 +159,7 @@ export const AppRoutes = () => (
     <Route path="/register" element={<LazyRoute><Register /></LazyRoute>} />
     <Route path="/about" element={<LazyRoute><About /></LazyRoute>} />
     <Route path="/payouts" element={<LazyRoute><Payouts /></LazyRoute>} />
+    <Route path="/affiliates" element={<LazyRoute><Affiliates /></LazyRoute>} />
 
     {/* Admin Routes — requires ADMIN role */}
     <Route path="/admin" element={
