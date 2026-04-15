@@ -3,37 +3,14 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, TrendingUp, DollarSign, BarChart3 } from "lucide-react";
 import logo from "@/assets/DF_Logo.png";
-import heroPoster from "@/assets/hero-temple.webp";
 
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-import { getPerfFlags } from "@/lib/perfFlags";
+import BackgroundScene from "@/components/ui/aurora-section-hero";
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { progress } = useScrollProgress(sectionRef);
-  const { noHeroVideo } = getPerfFlags();
-
-  const [isNarrowViewport, setIsNarrowViewport] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia("(max-width: 767px)").matches : false,
-  );
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const viewportQuery = window.matchMedia("(max-width: 767px)");
-    const syncViewport = () => setIsNarrowViewport(viewportQuery.matches);
-    syncViewport();
-    viewportQuery.addEventListener("change", syncViewport);
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setPrefersReducedMotion(mediaQuery.matches);
-    sync();
-    mediaQuery.addEventListener("change", sync);
-    return () => {
-      viewportQuery.removeEventListener("change", syncViewport);
-      mediaQuery.removeEventListener("change", sync);
-    };
-  }, []);
 
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -98,99 +75,48 @@ const Hero = () => {
   const scrollStyles = useMemo(
     () => ({
       contentOpacity: 1 - progress * 1.5,
-      cloudOffset1: progress * -60,
-      cloudOffset2: progress * -30,
-      overlayOpacity: 0.3 + progress * 0.5,
     }),
     [progress],
   );
-
-  const usePosterInsteadOfVideo =
-    noHeroVideo || isNarrowViewport || prefersReducedMotion;
 
   return (
     <section
       ref={sectionRef}
       className="relative min-h-[100vh] flex items-center overflow-hidden"
     >
-      {/* Sky base layer */}
+      {/* Deep charcoal base — the new site-wide foundation color */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, hsl(220 15% 3%) 0%, hsl(220 12% 6%) 40%, hsl(220 10% 10%) 100%)",
+            "linear-gradient(180deg, #050505 0%, #0d0d0d 45%, #111111 100%)",
         }}
       />
 
-      {/* Cloud layer 1 - slow drift */}
-      <div
-        className="absolute inset-0 opacity-[0.07] cloud-drift-slow"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 600px 200px at 20% 25%, hsl(220 10% 40%) 0%, transparent 70%),
-            radial-gradient(ellipse 500px 150px at 70% 15%, hsl(220 8% 35%) 0%, transparent 70%),
-            radial-gradient(ellipse 400px 120px at 45% 35%, hsl(220 10% 30%) 0%, transparent 70%)
-          `,
-          transform: `translateX(${scrollStyles.cloudOffset1}px)`,
-          willChange: "transform",
-        }}
-      />
-
-      {/* Cloud layer 2 - medium drift */}
-      <div
-        className="absolute inset-0 opacity-[0.05] cloud-drift-medium"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 700px 180px at 60% 20%, hsl(220 8% 45%) 0%, transparent 70%),
-            radial-gradient(ellipse 450px 140px at 25% 30%, hsl(220 10% 35%) 0%, transparent 70%)
-          `,
-          transform: `translateX(${scrollStyles.cloudOffset2}px)`,
-          willChange: "transform",
-        }}
-      />
-
-      {/* Hero background media layer */}
-      <div className="absolute inset-0">
-        {usePosterInsteadOfVideo ? (
-          <img
-            src={heroPoster}
-            alt="Dynasty Futures trading platform hero background"
-            fetchPriority="high"
-            width={1920}
-            height={1080}
-            className="w-full h-full object-cover object-center"
-          />
-        ) : (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="none"
-            className="w-full h-full object-cover object-center"
-          >
-            <source src="/dynastyfutures.mp4" type="video/mp4" />
-          </video>
-        )}
-      </div>
-
-      {/* Cinematic vignette overlay */}
+      {/* Subtle tonal depth layer — crisp, no blur, adds structural interest */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 80% 70% at 50% 55%, transparent 30%, hsl(220 15% 4% / 0.7) 100%),
-            linear-gradient(180deg, hsl(220 15% 4% / 0.4) 0%, transparent 30%, transparent 60%, hsl(220 15% 4% / ${scrollStyles.overlayOpacity}) 100%)
+            radial-gradient(ellipse 70% 50% at 15% 10%, rgba(42, 42, 42, 0.18) 0%, transparent 55%),
+            radial-gradient(ellipse 50% 60% at 85% 90%, rgba(26, 26, 26, 0.12) 0%, transparent 50%),
+            radial-gradient(ellipse 40% 30% at 50% 0%,  rgba(17, 17, 17, 0.10) 0%, transparent 45%)
           `,
         }}
       />
 
-      {/* Warm gold ambient glow from temple interior */}
+      {/* Gold beam animation — hero-only, layered on top of charcoal base */}
+      <BackgroundScene beamCount={18} />
+
+      {/* Readability overlay — subtle dark veil so hero text stays crisp */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 40% 50% at 50% 60%, hsl(43 74% 49% / 0.08) 0%, transparent 70%)",
+          background: `
+            radial-gradient(ellipse 75% 65% at 50% 50%, transparent 35%, rgba(5, 5, 5, 0.55) 100%),
+            linear-gradient(180deg, rgba(5, 5, 5, 0.30) 0%, transparent 25%, transparent 65%, rgba(5, 5, 5, 0.60) 100%)
+          `,
+          zIndex: 2,
         }}
       />
 
@@ -419,32 +345,9 @@ const Hero = () => {
         className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none z-20"
         style={{
           background:
-            "linear-gradient(to top, hsl(220 15% 6% / 0.8) 0%, transparent 100%)",
+            "linear-gradient(to top, rgba(10, 10, 10, 0.85) 0%, transparent 100%)",
         }}
       />
-
-      <style>{`
-        .cloud-drift-slow {
-          animation: cloudDriftSlow 45s linear infinite;
-        }
-        .cloud-drift-medium {
-          animation: cloudDriftMedium 30s linear infinite;
-        }
-        @keyframes cloudDriftSlow {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-80px); }
-        }
-        @keyframes cloudDriftMedium {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(60px); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .cloud-drift-slow,
-          .cloud-drift-medium {
-            animation: none !important;
-          }
-        }
-      `}</style>
     </section>
   );
 };
