@@ -227,6 +227,77 @@ const Legal = () => {
                       resulting from your use of our services or any related
                       matter.
                     </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Simulated Trading Disclosure
+                    </h3>
+                    <p>
+                      Any references on this website to trading, traders,
+                      accounts, performance, revenue, profits, or payouts refer
+                      to simulated or evaluation-based activity unless expressly
+                      stated otherwise. Dynasty Futures provides proprietary
+                      trading evaluation services and does not offer investment
+                      advice, brokerage services, or live client investment
+                      accounts.
+                    </p>
+
+                    <p>
+                      Futures trading involves substantial risk and is not
+                      appropriate for every person. Market conditions can change
+                      rapidly, and trading futures or futures-related products
+                      can result in significant losses. Only risk capital should
+                      ever be used in connection with trading activity. Past
+                      performance, whether actual, simulated, or advertised, is
+                      not indicative of future results.
+                    </p>
+
+                    <p>
+                      Any performance information, metrics, results, or examples
+                      shown on this website, in dashboards, on social media, in
+                      promotional content, or in other materials may be based on
+                      simulated, hypothetical, or evaluation account performance.
+                      Hypothetical or simulated results have important
+                      limitations. Unlike actual trading, simulated results do
+                      not reflect real market execution, liquidity constraints,
+                      slippage, emotional decision-making, or the impact of live
+                      market conditions. Because hypothetical results are often
+                      prepared with the benefit of hindsight, they may overstate
+                      or understate actual performance.
+                    </p>
+
+                    <p>
+                      No representation is being made that any user, trader, or
+                      account will achieve profits or losses similar to those
+                      referenced on this website or in any Dynasty Futures
+                      material. There is no guarantee that any participant will
+                      pass an evaluation, receive a funded account, earn profits,
+                      or receive payouts.
+                    </p>
+
+                    <p>
+                      Payout examples, testimonials, and user experiences shown
+                      on this website may not be representative of the experience
+                      of all users. Testimonials are not a guarantee of future
+                      success or performance. Individual results vary based on
+                      many factors, including skill, market conditions, risk
+                      management, and adherence to program rules.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      CFTC Rule 4.41 Disclosure
+                    </h3>
+                    <p>
+                      Hypothetical or simulated performance results have certain
+                      inherent limitations. Unlike an actual performance record,
+                      simulated results do not represent actual trading. Also,
+                      because the trades have not been executed, the results may
+                      have under- or over-compensated for the impact, if any, of
+                      certain market factors, including lack of liquidity.
+                      Simulated trading programs in general are also designed
+                      with the benefit of hindsight. No representation is being
+                      made that any account will or is likely to achieve profits
+                      or losses similar to those shown.
+                    </p>
                   </div>
                 </div>
               </TabsContent>

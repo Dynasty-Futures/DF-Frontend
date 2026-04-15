@@ -77,7 +77,7 @@ const faqs = [
     id: "consistency",
     question: "Is there a consistency rule?",
     answer:
-      "Yes — on Standard and Builder during evaluation.\n\nBoth Standard and Builder include a 50% consistency rule during the evaluation phase, meaning no single trading day may account for more than 50% of the total profit target.\n\nOnce the evaluation is passed and the account is approved for funding, the consistency rule is removed.\n\nAdvanced does not include a consistency rule, and no funded accounts are subject to a consistency rule.",
+      "Yes, on Standard and Builder during evaluation.\n\nBoth Standard and Builder include a 50% consistency rule during the evaluation phase, meaning no single trading day may account for more than 50% of the total profit target.\n\nOnce the evaluation is passed and the account is approved for funding, the consistency rule is removed.\n\nAdvanced does not include a consistency rule, and no funded accounts are subject to a consistency rule.",
   },
   {
     id: "getting-started",

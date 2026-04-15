@@ -263,7 +263,7 @@ const About = () => {
               </div>
               <div className="mt-6 pt-6 border-t border-border/30 flex items-center gap-2 text-xs text-muted-foreground">
                 <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Dynasty Futures LLC — Registered in Wyoming</span>
+                <span>Dynasty Futures LLC, registered in Wyoming</span>
               </div>
             </div>
           </ScrollReveal>

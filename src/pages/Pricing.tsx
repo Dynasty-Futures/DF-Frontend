@@ -410,7 +410,7 @@ const Pricing = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <ShieldIcon size={20} />
+                      <ShieldIcon size={28} />
                       <span className="text-sm text-foreground">
                         Evaluations use a trailing end-of-day drawdown. Funded
                         accounts use a static drawdown.
@@ -572,7 +572,7 @@ const Pricing = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <ShieldIcon size={20} />
+                      <ShieldIcon size={28} />
                       <span className="text-sm text-foreground">
                         Evaluations use a trailing end-of-day drawdown. Funded
                         accounts use a static drawdown.
@@ -738,7 +738,7 @@ const Pricing = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
-                      <ShieldIcon size={20} />
+                      <ShieldIcon size={28} />
                       <span className="text-sm text-foreground">
                         Evaluations use a trailing end-of-day drawdown. Funded
                         accounts use a static drawdown.

@@ -38,6 +38,12 @@ const SponsorTicker = ({
               -webkit-animation: scroll-sponsors 30s linear infinite;
               animation: scroll-sponsors 30s linear infinite;
             }
+            @media (max-width: 768px) {
+              .sponsor-track {
+                -webkit-animation-duration: 14s;
+                animation-duration: 14s;
+              }
+            }
             .sponsor-image-wrapper {
               display: flex;
               flex-shrink: 0;
