@@ -30,7 +30,7 @@ const tradeFirstCards = [
     icon: MessageSquare,
     title: "More Authentic Content",
     description:
-      "You write from experience, not from a brief. Your audience can feel the difference — and so can the results.",
+      "You write from experience, not from a brief. Your audience can feel the difference, and so can the results.",
   },
   {
     icon: Shield,
@@ -57,7 +57,7 @@ const affiliateBenefits = [
     icon: Shield,
     title: "A Brand Worth Standing Behind",
     description:
-      "Dynasty Futures is built on fair pricing, honest structure, and long-term trust — not gimmicks. Promoting it means standing behind something real.",
+      "Dynasty Futures is built on fair pricing, honest structure, and long-term trust, not gimmicks. Promoting it means standing behind something real.",
   },
   {
     icon: BarChart2,
@@ -162,12 +162,12 @@ const affiliateFaqs = [
   {
     question: "Do all affiliate tiers earn the same commission?",
     answer:
-      "Yes. Every affiliate tier earns the same 10% commission rate. The tier system is based on recognition, access, support level, and partnership opportunities — not commission percentage. We believe in a consistent, transparent rate for all partners.",
+      "Yes. Every affiliate tier earns the same 10% commission rate. The tier system is based on recognition, access, support level, and partnership opportunities, not commission percentage. We believe in a consistent, transparent rate for all partners.",
   },
   {
     question: "What is the Founding Affiliate perk?",
     answer:
-      "The first 10 approved Dynasty Futures affiliates receive a private 20% partner code — an exclusive offer they can share directly with their audience. This is a founding affiliate benefit available only to the first 10 approved partners. It is not available after those spots are filled.",
+      "The first 10 approved Dynasty Futures affiliates receive a private 20% partner code, an exclusive offer they can share directly with their audience. This is a founding affiliate benefit available only to the first 10 approved partners. It is not available after those spots are filled.",
   },
   {
     question: "Do I need to be a Dynasty Futures user first?",
@@ -235,7 +235,7 @@ const Affiliates = () => {
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
                 Dynasty Futures is looking for affiliates who've actually been
-                in the seat — traders, educators, and creators who know what
+                in the seat: traders, educators, and creators who know what
                 they're promoting because they've lived it. The strongest
                 recommendation doesn't come from a template. It comes from
                 someone who made the same decision they're asking their audience
@@ -279,21 +279,21 @@ const Affiliates = () => {
                     Dynasty Futures is built differently.
                   </p>
                   <p>
-                    We want affiliates who can speak to the experience honestly
-                    — people who understand what a futures evaluation involves,
+                    We want affiliates who can speak to the experience honestly:
+                    people who understand what a futures evaluation involves,
                     what the rules actually mean, and why transparent structure
                     matters. That kind of credibility can't be scripted. It has
                     to come from actually going through it.
                   </p>
                   <p>
                     That's why we ask affiliates to try the platform first. Not
-                    as a requirement designed to slow you down — but because
+                    as a requirement designed to slow you down, but because
                     traders and creators who know the product are the ones who
                     build the most lasting trust with their audience.
                   </p>
                   <p>
                     This program is selective, authentic, and built for
-                    long-term partnerships — not quick campaigns. If that's the
+                    long-term partnerships, not quick campaigns. If that's the
                     kind of affiliate relationship you're looking for, you're in
                     the right place.
                   </p>
@@ -312,8 +312,8 @@ const Affiliates = () => {
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto">
                   When you've been through the challenge yourself, your
-                  recommendation means something. You're not forwarding a link —
-                  you're telling people what you actually experienced. That
+                  recommendation means something. You're not forwarding a link.
+                  You're telling people what you actually experienced. That
                   changes everything.
                 </p>
               </div>
@@ -390,7 +390,7 @@ const Affiliates = () => {
                     10% commission
                   </span>{" "}
                   on every referred sale. Tiers reflect your level of
-                  partnership — recognition, access, and support that grows with
+                  partnership: recognition, access, and support that grows with
                   you.
                 </p>
               </div>
@@ -482,14 +482,14 @@ const Affiliates = () => {
                         will receive a{" "}
                         <span className="text-primary font-semibold">
                           private 20% partner code
-                        </span>{" "}
-                        — an exclusive offer they can share directly with their
+                        </span>,
+                        an exclusive offer they can share directly with their
                         audience.
                       </p>
                       <p className="text-muted-foreground text-base leading-relaxed mb-4">
                         This is a founding affiliate benefit. It's designed to
                         give early supporters something meaningful to bring to
-                        their communities at launch — something that adds real
+                        their communities at launch, something that adds real
                         value and signals that their recommendation comes with
                         substance.
                       </p>
