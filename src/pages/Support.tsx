@@ -180,6 +180,7 @@ const Support = () => {
                               Challenge Rules
                             </SelectItem>
                             <SelectItem value="payouts">Payouts</SelectItem>
+                            <SelectItem value="affiliate">Affiliate</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>

@@ -154,6 +154,42 @@ const Footer = () => {
             </span>
           </div>
         </div>
+
+        {/* Regulatory Disclaimer */}
+        <div className="mt-6 pt-6 border-t border-border/20">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
+            Any references on this website to trading, traders, accounts,
+            performance, revenue, profits, or payouts refer to simulated or
+            evaluation-based activity unless expressly stated otherwise.
+            Dynasty Futures provides proprietary trading evaluation services
+            and does not offer investment advice, brokerage services, or live
+            client investment accounts. Futures trading involves substantial
+            risk and is not appropriate for every person. Past performance,
+            whether actual, simulated, or advertised, is not indicative of
+            future results.
+          </p>
+          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
+            Any performance information, metrics, or examples shown on this
+            website may be based on simulated, hypothetical, or evaluation
+            account performance. Hypothetical results do not reflect real
+            market execution, liquidity constraints, or slippage, and may
+            overstate or understate actual performance. No representation is
+            made that any user will achieve profits or losses similar to those
+            referenced. Payout examples and testimonials are not a guarantee
+            of future success. Individual results vary.
+          </p>
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
+            <strong className="text-muted-foreground/90">CFTC Rule 4.41:</strong>{" "}
+            Hypothetical or simulated performance results have certain inherent
+            limitations. Unlike an actual performance record, simulated results
+            do not represent actual trading. Because trades have not been
+            executed, results may have under- or over-compensated for the
+            impact of certain market factors, including lack of liquidity.
+            Simulated trading programs are also designed with the benefit of
+            hindsight. No representation is made that any account will or is
+            likely to achieve profits or losses similar to those shown.
+          </p>
+        </div>
       </div>
 
       <PreLaunchModal

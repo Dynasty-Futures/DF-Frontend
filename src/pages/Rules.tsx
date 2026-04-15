@@ -504,7 +504,7 @@ const Rules = () => {
                 <span className="text-gradient-animated">Definitions</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                Dynasty Futures — Official Trading Rules. Applies to ALL plans
+                Official Trading Rules for Dynasty Futures. Applies to ALL plans
                 unless otherwise stated.
               </p>
             </div>
