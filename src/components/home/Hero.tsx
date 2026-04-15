@@ -6,7 +6,6 @@ import logo from "@/assets/DF_Logo.png";
 
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-import BackgroundScene from "@/components/ui/aurora-section-hero";
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -84,15 +83,6 @@ const Hero = () => {
       ref={sectionRef}
       className="relative min-h-[100vh] flex items-center overflow-hidden"
     >
-      {/* Deep charcoal base — the new site-wide foundation color */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, #050505 0%, #0d0d0d 45%, #111111 100%)",
-        }}
-      />
-
       {/* Subtle tonal depth layer — crisp, no blur, adds structural interest */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -104,9 +94,6 @@ const Hero = () => {
           `,
         }}
       />
-
-      {/* Gold beam animation — hero-only, layered on top of charcoal base */}
-      <BackgroundScene beamCount={18} />
 
       {/* Readability overlay — subtle dark veil so hero text stays crisp */}
       <div
