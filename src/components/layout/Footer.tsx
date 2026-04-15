@@ -91,7 +91,7 @@ const Footer = () => {
         </div>
 
         {/* Legal Disclosure Banner */}
-        <div className="mt-8 mb-8">
+        <div className="mt-8">
           <Link
             to="/legal"
             onClick={handleLinkClick}
@@ -138,26 +138,9 @@ const Footer = () => {
           </Link>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-border/30">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} Dynasty Futures LLC. All rights reserved.
-            </p>
-            <span className="text-xs text-muted-foreground max-w-2xl text-center md:text-right">
-              All trading activity through Dynasty Futures LLC takes place in a
-              simulated environment. Evaluations, account performance, and
-              payout eligibility are based on simulated trading results.
-              Participants do not risk personal trading capital, and payouts, if
-              any, are made in accordance with the rules and terms of the
-              applicable program.
-            </span>
-          </div>
-        </div>
-
-        {/* Regulatory Disclaimer */}
-        <div className="mt-6 pt-6 border-t border-border/20">
-          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
+        {/* Disclaimer Text */}
+        <div className="mt-4 mb-8 max-w-4xl space-y-3">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
             Any references on this website to trading, traders, accounts,
             performance, revenue, profits, or payouts refer to simulated or
             evaluation-based activity unless expressly stated otherwise.
@@ -168,7 +151,7 @@ const Footer = () => {
             whether actual, simulated, or advertised, is not indicative of
             future results.
           </p>
-          <p className="text-xs text-muted-foreground/70 leading-relaxed mb-3">
+          <p className="text-xs text-muted-foreground/70 leading-relaxed">
             Any performance information, metrics, or examples shown on this
             website may be based on simulated, hypothetical, or evaluation
             account performance. Hypothetical results do not reflect real
@@ -188,6 +171,13 @@ const Footer = () => {
             Simulated trading programs are also designed with the benefit of
             hindsight. No representation is made that any account will or is
             likely to achieve profits or losses similar to those shown.
+          </p>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="pt-6 border-t border-border/30">
+          <p className="text-xs text-muted-foreground text-center">
+            © {new Date().getFullYear()} Dynasty Futures LLC. All rights reserved.
           </p>
         </div>
       </div>
