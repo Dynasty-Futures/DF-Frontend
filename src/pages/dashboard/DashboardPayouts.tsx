@@ -3,7 +3,6 @@ import {
   Clock,
   CheckCircle,
   XCircle,
-  Landmark,
   Globe,
   CircleDollarSign,
   ArrowUpRight,
@@ -36,21 +35,21 @@ const payoutHistory = [
     id: "1",
     date: "2025-01-28",
     amount: "$3,500",
-    method: "Wise Transfer",
+    method: "Rise Works",
     status: "Completed",
   },
   {
     id: "2",
     date: "2025-01-15",
     amount: "$2,200",
-    method: "Bank Transfer",
+    method: "Rise Works",
     status: "Completed",
   },
   {
     id: "3",
     date: "2025-02-05",
     amount: "$4,800",
-    method: "Wise Transfer",
+    method: "Rise Works",
     status: "Processing",
   },
 ];
@@ -83,10 +82,8 @@ const getStatusStyle = (status: string) => {
 
 const getMethodIcon = (method: string) => {
   switch (method) {
-    case "Wise Transfer":
+    case "Rise Works":
       return <Globe size={16} className="text-gold-dark" />;
-    case "Bank Transfer":
-      return <Landmark size={16} className="text-gold-light" />;
     default:
       return <CircleDollarSign size={16} className="text-muted-foreground" />;
   }
@@ -146,24 +143,15 @@ const DashboardPayouts = () => {
                 </p>
               </div>
             </div>
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-3 col-span-2">
               <div className="w-8 h-8 rounded-lg bg-gold-light/10 flex items-center justify-center flex-shrink-0">
                 <Globe size={16} className="text-gold-light" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Wise Transfer</p>
+                <p className="text-xs text-muted-foreground">Payment Method</p>
                 <p className="text-sm font-medium text-foreground">
-                  Same day - 2 days
+                  Payments processed through Rise Works
                 </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-muted/20 flex items-center justify-center flex-shrink-0">
-                <Landmark size={16} className="text-muted-foreground" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Bank Transfer</p>
-                <p className="text-sm font-medium text-foreground">1-3 days</p>
               </div>
             </div>
           </div>
@@ -230,6 +218,27 @@ const DashboardPayouts = () => {
               ))}
             </TableBody>
           </Table>
+        </div>
+
+        {/* Rise Works Info */}
+        <div className="rounded-2xl bg-card/30 backdrop-blur-sm border border-border/30 p-5 space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Info size={16} className="text-primary" />
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Payouts at Dynasty Futures are processed through Rise Works, a third-party payment provider. Rise handles payment processing, compliance, and verification to ensure all payouts are secure and accurate.
+            </p>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Info size={16} className="text-primary" />
+            </div>
+            <div className="text-sm text-muted-foreground space-y-2">
+              <p>To receive a payout, traders may be required to complete identity and payment verification through Rise Works. This process helps protect both the trader and the platform.</p>
+              <p>Payouts are not arbitrarily denied. As long as your information is accurate and verification is completed successfully, your payout will be processed. Issues only arise in cases of incomplete verification or fraudulent information.</p>
+            </div>
+          </div>
         </div>
 
         {/* Payout History */}
