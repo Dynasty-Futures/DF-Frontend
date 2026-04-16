@@ -132,15 +132,6 @@ const HowItWorks = () => {
           })}
         </div>
 
-        {/* Disclaimer */}
-        <ScrollReveal className="max-w-3xl mx-auto text-center">
-          <p className="text-xs text-muted-foreground glass-card rounded-xl px-6 py-4 border border-border/30">
-            All trading on Dynasty Futures is simulated. Payouts are based on
-            simulated trading performance only. No real trading occurs and no
-            real capital is ever at risk. Past simulated performance does not
-            guarantee future results.
-          </p>
-        </ScrollReveal>
       </div>
     </section>
   );

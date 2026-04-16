@@ -166,14 +166,14 @@ const accountRules = [
     size: "100K Account",
     profitTarget: "$6,000",
     standardAdvancedMaxDrawdown: "$3,000",
-    builderMaxDrawdown: "$3,500",
+    builderMaxDrawdown: "$4,000",
     dailyLoss: "$2,000",
   },
   {
     size: "150K Account",
     profitTarget: "$9,000",
     standardAdvancedMaxDrawdown: "$4,500",
-    builderMaxDrawdown: "$5,000",
+    builderMaxDrawdown: "$5,500",
     dailyLoss: "$3,000",
   },
 ];
@@ -679,76 +679,25 @@ const Rules = () => {
             </ScrollReveal>
           </section>
 
-          {/* Builder Plan Rules Summary */}
+          {/* Builder Plan */}
           <section className="mb-20">
             <ScrollReveal delay={0}>
               <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 flex items-center gap-3">
                 <span className="text-gradient-animated">
-                  Builder Plan Rules Summary
+                  Builder Plan
                 </span>
               </h2>
             </ScrollReveal>
 
             <ScrollReveal delay={150}>
               <div className="bg-gradient-card rounded-2xl border border-border/50 overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-border/30 bg-muted/10">
-                        <th className="text-left py-4 px-6 text-foreground font-semibold">
-                          Rule
-                        </th>
-                        <th className="text-left py-4 px-6 text-foreground font-semibold">
-                          Details
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Consistency Rule
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          50% consistency rule applies during the evaluation
-                          phase.
-                        </td>
-                      </tr>
-                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Activation Fee
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          No activation fee is required after passing.
-                        </td>
-                      </tr>
-                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Payout Cycle
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          Builder uses the 5-day payout cycle.
-                        </td>
-                      </tr>
-                      <tr className="border-b border-border/20 hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Max Loss Limit
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          Builder max loss limits are $500 higher than Standard
-                          for each account size.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-muted/10 transition-colors">
-                        <td className="py-4 px-6 text-primary font-medium">
-                          Positioning
-                        </td>
-                        <td className="py-4 px-6 text-muted-foreground">
-                          Builder is designed for traders who want more room to
-                          execute with structured risk controls.
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div className="p-8 md:p-10 space-y-5">
+                  <p className="text-muted-foreground">
+                    Builder Plan is designed for traders who want more room to operate. With higher maximum loss limits, traders have increased flexibility to manage positions, navigate volatility, and avoid getting stopped out prematurely.
+                  </p>
+                  <p className="text-muted-foreground">
+                    At Dynasty Futures, we are focused on building structures that give traders a real opportunity to succeed. The Builder Plan reflects that philosophy by prioritizing sustainability, flexibility, and long-term consistency over restrictive conditions.
+                  </p>
                 </div>
               </div>
             </ScrollReveal>

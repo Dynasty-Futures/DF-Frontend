@@ -89,12 +89,12 @@ export const productSchemas = [
     '@type': 'Product',
     name: 'Dynasty Futures Standard Plan — $25K',
     description:
-      'Standard evaluation plan with a $25,000 simulated account. $49 evaluation fee, $80 activation fee.',
+      'Standard evaluation plan with a $25,000 simulated account. $59 evaluation fee, $80 activation fee.',
     brand: { '@type': 'Brand', name: 'Dynasty Futures' },
     image: `${BASE_URL}/standardplan.webp`,
     offers: {
       '@type': 'Offer',
-      price: '49',
+      price: '59',
       priceCurrency: 'USD',
       url: `${BASE_URL}/pricing#standard`,
       availability: 'https://schema.org/InStock',
