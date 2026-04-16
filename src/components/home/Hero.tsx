@@ -155,7 +155,7 @@ const Hero = () => {
                 asChild
               >
                 <Link to="/pricing" onClick={handleClick}>
-                  Start Challenge
+                  View Dynasty Plans
                   <ArrowRight className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -165,9 +165,9 @@ const Hero = () => {
                 className="border-primary/30 bg-card/40 backdrop-blur-sm px-8 py-6 text-lg hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
                 asChild
               >
-                <Link to="/pricing" onClick={handleClick}>
-                  View Pricing & Plans
-                </Link>
+                <a href="https://discord.gg/CMwf9Nsysq" target="_blank" rel="noopener noreferrer">
+                  Join Our Community
+                </a>
               </Button>
             </div>
           </div>
