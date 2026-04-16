@@ -13,6 +13,7 @@ import {
   Clock,
   MapPin,
   Building2,
+  Linkedin,
 } from "lucide-react";
 
 const differentiators = [
@@ -305,22 +306,46 @@ const About = () => {
                 </div>
                 <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
                   <p>
-                    Born and raised in Texas, Brock studied and graduated in
-                    finance from the University of Utah, where he developed a
-                    genuine interest in the financial markets, particularly
-                    futures trading. He spent years learning how markets move,
-                    what consistent trading actually looks like, and what it
-                    takes to perform at a high level over time.
+                    Born and raised in Texas, I've always been drawn to
+                    performance-driven environments, whether in sports or the
+                    financial markets. That interest evolved early into a focus
+                    on futures trading, where discipline, risk management, and
+                    consistency ultimately determine who lasts.
                   </p>
                   <p>
-                    Before founding Dynasty Futures, Brock built experience in
-                    private equity, capital raising, and leadership, giving him
-                    a clear picture of what a well-run firm looks like and what
-                    most firms in this space were missing.
+                    I'm the Founder and CEO of Dynasty Futures, a proprietary
+                    trading firm built to create a more sustainable and
+                    transparent path for futures traders. The firm is centered
+                    around one core belief: longevity matters more than
+                    short-term success. In an industry often driven by hype and
+                    rapid turnover, we are building infrastructure, systems, and
+                    standards designed to hold up over time.
                   </p>
                   <p>
-                    He founded Dynasty Futures LLC to build something centered
-                    on honesty, discipline, fairness, and long-term thinking.
+                    At Dynasty, I lead the strategic direction of the company
+                    across platform development, trader experience, and risk
+                    management. This includes building our proprietary
+                    dashboard, integrating real-time market data, and
+                    structuring payout systems that are competitive while still
+                    protecting the long-term health of the firm.
+                  </p>
+                  <p>
+                    I've also built meaningful experience within the private
+                    equity space, an area that continues to influence how I
+                    approach performance, psychology, and long-term
+                    sustainability in trading.
+                  </p>
+                  <p>
+                    I'm particularly interested in the intersection of trading,
+                    performance psychology, and risk discipline. The same
+                    principles that separate elite performers from the rest,
+                    resilience, consistency, and the ability to execute under
+                    pressure, are the same ones that define successful traders.
+                  </p>
+                  <p>
+                    Dynasty Futures is being built with a long-term vision in
+                    mind. Not for quick wins, but to create a firm that traders
+                    can rely on for years to come.
                   </p>
                 </div>
                 <blockquote className="border-l-2 border-primary pl-6">
@@ -333,6 +358,15 @@ const About = () => {
                     — Brock Adams
                   </footer>
                 </blockquote>
+                <a
+                  href="https://www.linkedin.com/in/brock-adams2002"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mt-6 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  <span>Connect with me on LinkedIn</span>
+                </a>
               </div>
             </ScrollReveal>
 
@@ -357,7 +391,7 @@ const About = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
                     <p>
                       Zachary grew up in Georgia and earned his BBA from the
                       University of Utah, where he became deeply interested in
@@ -377,11 +411,25 @@ const About = () => {
                       accountable, and a culture where risk is not just managed
                       on paper.
                     </p>
-                    <p>
-                      While many firms in this space optimize for the highlight
-                      reel, Dynasty is building for year ten.
-                    </p>
                   </div>
+                  <blockquote className="border-l-2 border-primary pl-6">
+                    <p className="text-foreground italic leading-relaxed">
+                      "While many firms in this space optimize for the highlight
+                      reel, Dynasty is building for year ten."
+                    </p>
+                    <footer className="mt-3 text-sm text-muted-foreground font-medium">
+                      — Zachary Perez
+                    </footer>
+                  </blockquote>
+                  <a
+                    href="https://www.linkedin.com/in/zachary-perez-1771zp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 mt-6 text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                    <span>Connect with me on LinkedIn</span>
+                  </a>
                 </div>
               </ScrollReveal>
 
@@ -404,7 +452,7 @@ const About = () => {
                       </span>
                     </div>
                   </div>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed">
+                  <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
                     <p>
                       Cliff brings more than four decades of experience in
                       mergers and acquisitions, investment banking, and
@@ -419,6 +467,15 @@ const About = () => {
                       trust the company wants to be known for.
                     </p>
                   </div>
+                  <a
+                    href="https://www.linkedin.com/in/cliff-adams-9b7b1180"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                    <span>Connect with me on LinkedIn</span>
+                  </a>
                 </div>
               </ScrollReveal>
             </div>
