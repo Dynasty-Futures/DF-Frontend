@@ -93,7 +93,7 @@ const universalRules = [
     icon: ClockIcon,
     title: "Payout Processing Window",
     description:
-      "Dynasty Futures processes payout requests on a daily basis. Most approved payouts are submitted for processing within 1–3 business days, though in some cases payouts may take up to 10 business days to fully reach your account.",
+      "Dynasty Futures reviews and approves payout requests on a daily basis. Once approved, payouts are submitted through Rise for processing and verification. Most approved payouts are submitted promptly, though timing may vary depending on verification status and processing requirements.",
     allowed: true,
   },
   {
@@ -107,7 +107,7 @@ const universalRules = [
     icon: DollarIcon,
     title: "Payout Delivery Time",
     description:
-      "After internal approval: Wise Transfer typically same day to 2 business days. Bank Transfer / ACH typically 1–3 business days after approval.",
+      "After Dynasty Futures approval, payouts are processed through Rise. Delivery timing depends on successful verification and Rise processing timelines. Most payouts are completed within a reasonable processing window once verification is complete.",
     allowed: true,
   },
   {
