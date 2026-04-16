@@ -26,10 +26,16 @@ const faqs = [
       "During the challenge phase, you trade in a simulated environment that mirrors real futures markets. Price data is real-time, and orders are routed through supported platforms like Volumetrica with DeepCharts data feed integration. You never trade live capital; simulated trading is used in both the evaluation and funded phases.",
   },
   {
+    id: "how-payouts-work",
+    question: "How do payouts work?",
+    answer:
+      "All payouts are processed through Rise Works, a trusted third-party payment provider. Rise manages payment processing, identity verification, and compliance to ensure payouts are handled securely and efficiently.\n\nOnce you are eligible for a payout, you will complete a verification process through Rise Works. This typically includes confirming your identity and payment details.\n\nPayouts are not denied without cause. As long as your information is accurate and verification is completed successfully, your payout will be processed. Issues only arise in cases of incomplete verification or fraudulent information.",
+  },
+  {
     id: "payouts",
     question: "When do payouts happen?",
     answer:
-      "For Standard, Advanced, and Builder plans, payouts occur on 5-day cycles once you're funded. Monthly caps remain structured by plan and account type.",
+      "For Standard, Advanced, and Builder plans, payouts occur on 5-day cycles once you're funded. Monthly caps remain structured by plan and account type. Payouts are processed through Rise Works after approval and may require standard verification before funds are released.",
   },
   {
     id: "static-drawdown",
