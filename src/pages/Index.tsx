@@ -4,6 +4,7 @@ import JsonLd, { organizationSchema, websiteSchema, breadcrumb } from '@/compone
 import Hero from '@/components/home/Hero';
 import FundingModels from '@/components/home/FundingModels';
 import HowItWorks from '@/components/home/HowItWorks';
+import DiscordCTA from '@/components/home/DiscordCTA';
 import SimulatedTrading from '@/components/home/SimulatedTrading';
 import PreLaunchModal from '@/components/PreLaunchModal';
 import SponsorTicker, { DefaultSponsors } from '@/components/ui/SponsorTicker';
@@ -52,6 +53,7 @@ const Index = () => {
         
         <FundingModels />
         <HowItWorks />
+        <DiscordCTA />
         <SimulatedTrading />
       </div>
     </Layout>

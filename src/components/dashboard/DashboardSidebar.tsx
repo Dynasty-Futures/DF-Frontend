@@ -96,7 +96,7 @@ const DashboardSidebar = () => {
         {/* Footer */}
         <div className="p-2 border-t border-border/30">
         <p className="text-[10px] text-muted-foreground text-center">
-          © 2025
+          © 2026
         </p>
         </div>
       </aside>
