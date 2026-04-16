@@ -31,7 +31,7 @@ import { toast } from "sonner";
 const standardPricing = [
   {
     size: "$25,000",
-    evalFee: "$49",
+    evalFee: "$59",
     activationFee: "$80",
     evalReset: "$25",
     fundedReset: "$359",
@@ -157,12 +157,12 @@ const builderRules = {
   },
   "$100,000": {
     profitTarget: "$6,000",
-    maxDrawdown: "$3,500",
+    maxDrawdown: "$4,000",
     dailyLoss: "$2,000",
   },
   "$150,000": {
     profitTarget: "$9,000",
-    maxDrawdown: "$5,000",
+    maxDrawdown: "$5,500",
     dailyLoss: "$3,000",
   },
 };
@@ -272,6 +272,9 @@ const Pricing = () => {
               <p className="text-lg text-muted-foreground">
                 Choose the plan that fits your trading style. Plans include
                 static drawdown with plan-specific consistency requirements.
+              </p>
+              <p className="text-sm text-muted-foreground/80 mt-3">
+                Max allocation is currently limited to 2 accounts per trader. This limit is expected to increase as the firm continues to grow.
               </p>
             </ScrollReveal>
 
