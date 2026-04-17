@@ -41,7 +41,7 @@ const faqs = [
     id: "static-drawdown",
     question: "What is a static drawdown?",
     answer:
-      "Static drawdown is a fixed maximum loss limit that doesn't trail your account's peak equity. For example, if you have a $100,000 account with a $3,000 static drawdown, your account will be violated if your balance drops below $97,000 at any point. This level stays constant regardless of profits made, giving you more flexibility than trailing drawdown systems.",
+      "Static drawdown is a fixed maximum loss limit that doesn't trail your account's peak equity. For example, if you have a $100,000 account with a $2,500 static drawdown, your account will be violated if your balance drops below $97,500 at any point. This level stays constant regardless of profits made, giving you more flexibility than trailing drawdown systems.",
   },
   {
     id: "post-payout-drawdown",
@@ -83,7 +83,7 @@ const faqs = [
     id: "consistency",
     question: "Is there a consistency rule?",
     answer:
-      "Yes, on Standard and Builder during evaluation.\n\nBoth Standard and Builder include a 50% consistency rule during the evaluation phase, meaning no single trading day may account for more than 50% of the total profit target.\n\nOnce the evaluation is passed and the account is approved for funding, the consistency rule is removed.\n\nAdvanced does not include a consistency rule, and no funded accounts are subject to a consistency rule.",
+      "Yes, on Standard and Builder, with different rules for each.\n\nStandard includes a 50% consistency rule during the evaluation phase only, meaning no single trading day may account for more than 50% of the total profit target. The consistency rule is removed once funded.\n\nBuilder includes a 40% consistency rule during both the evaluation phase and the funded stage, meaning no single trading day may account for more than 40% of the total profit target in either phase.\n\nAdvanced does not include a consistency rule.",
   },
   {
     id: "getting-started",
@@ -95,7 +95,7 @@ const faqs = [
     id: "profit-target",
     question: "What is the profit target?",
     answer:
-      "The profit target varies by account size. For $25K accounts it's $1,500, for $50K accounts it's $3,000, for $100K accounts it's $6,000, and for $150K accounts it's $9,000. Once you reach your profit target while following all rules, you pass the challenge.",
+      "The profit target varies by account size. For $25K accounts it's $1,500, for $50K accounts it's $3,000, for $100K accounts it's $6,000, and for $150K accounts it's $8,000. Once you reach your profit target while following all rules, you pass the challenge.",
   },
   {
     id: "five-payouts",
