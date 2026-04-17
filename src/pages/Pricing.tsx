@@ -33,29 +33,29 @@ const standardPricing = [
     size: "$25,000",
     evalFee: "$59",
     activationFee: "$80",
-    evalReset: "$25",
-    fundedReset: "$359",
+    evalReset: "$30",
+    fundedReset: "$119",
   },
   {
     size: "$50,000",
-    evalFee: "$69",
+    evalFee: "$79",
     activationFee: "$80",
-    evalReset: "$33",
-    fundedReset: "$509",
+    evalReset: "$40",
+    fundedReset: "$159",
   },
   {
     size: "$100,000",
-    evalFee: "$119",
+    evalFee: "$129",
     activationFee: "$80",
-    evalReset: "$54",
-    fundedReset: "$789",
+    evalReset: "$65",
+    fundedReset: "$259",
   },
   {
     size: "$150,000",
-    evalFee: "$149",
+    evalFee: "$159",
     activationFee: "$80",
-    evalReset: "$63",
-    fundedReset: "$1,079",
+    evalReset: "$80",
+    fundedReset: "$319",
   },
 ];
 
@@ -64,29 +64,29 @@ const advancedPricing = [
     size: "$25,000",
     evalFee: "$79",
     activationFee: "$0",
-    evalReset: "$49",
-    fundedReset: "$369",
+    evalReset: "$40",
+    fundedReset: "$159",
   },
   {
     size: "$50,000",
     evalFee: "$109",
     activationFee: "$0",
-    evalReset: "$65",
-    fundedReset: "$529",
+    evalReset: "$55",
+    fundedReset: "$219",
   },
   {
     size: "$100,000",
     evalFee: "$179",
     activationFee: "$0",
-    evalReset: "$103",
-    fundedReset: "$819",
+    evalReset: "$90",
+    fundedReset: "$359",
   },
   {
     size: "$150,000",
     evalFee: "$229",
     activationFee: "$0",
-    evalReset: "$126",
-    fundedReset: "$1,119",
+    evalReset: "$115",
+    fundedReset: "$459",
   },
 ];
 
@@ -95,29 +95,29 @@ const builderPricing = [
     size: "$25,000",
     evalFee: "$109",
     activationFee: "$0",
-    evalReset: "$60",
-    fundedReset: "$379",
+    evalReset: "$55",
+    fundedReset: "$219",
   },
   {
     size: "$50,000",
     evalFee: "$149",
     activationFee: "$0",
-    evalReset: "$78",
-    fundedReset: "$539",
+    evalReset: "$75",
+    fundedReset: "$299",
   },
   {
     size: "$100,000",
     evalFee: "$239",
     activationFee: "$0",
-    evalReset: "$119",
-    fundedReset: "$839",
+    evalReset: "$120",
+    fundedReset: "$479",
   },
   {
     size: "$150,000",
     evalFee: "$299",
     activationFee: "$0",
-    evalReset: "$142",
-    fundedReset: "$1,149",
+    evalReset: "$150",
+    fundedReset: "$599",
   },
 ];
 
@@ -134,12 +134,12 @@ const standardAdvancedRules = {
   },
   "$100,000": {
     profitTarget: "$6,000",
-    maxDrawdown: "$3,000",
+    maxDrawdown: "$2,500",
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$9,000",
-    maxDrawdown: "$4,500",
+    profitTarget: "$8,000",
+    maxDrawdown: "$4,000",
     dailyLoss: "$3,000",
   },
 };
@@ -157,12 +157,12 @@ const builderRules = {
   },
   "$100,000": {
     profitTarget: "$6,000",
-    maxDrawdown: "$4,000",
+    maxDrawdown: "$3,500",
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$9,000",
-    maxDrawdown: "$5,500",
+    profitTarget: "$8,000",
+    maxDrawdown: "$5,000",
     dailyLoss: "$3,000",
   },
 };
@@ -438,6 +438,12 @@ const Pricing = () => {
                         Overnight trading allowed
                       </span>
                     </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ShieldIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        One funded reset allowed per account
+                      </span>
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-6 text-center">
                     All plans renew monthly. Cancel anytime. Reset fees are
@@ -600,6 +606,12 @@ const Pricing = () => {
                         Priority support
                       </span>
                     </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ShieldIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        One funded reset allowed per account
+                      </span>
+                    </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-6 text-center">
                     All plans renew monthly. Cancel anytime.
@@ -751,7 +763,7 @@ const Pricing = () => {
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
                       <CheckIcon size={20} />
                       <span className="text-sm text-foreground">
-                        50% consistency rule (evaluation only)
+                        40% consistency rule (evaluation and funded)
                       </span>
                     </div>
                     <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
@@ -764,6 +776,12 @@ const Pricing = () => {
                       <DollarIcon size={20} />
                       <span className="text-sm text-foreground">
                         No activation fee
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/20">
+                      <ShieldIcon size={20} />
+                      <span className="text-sm text-foreground">
+                        One funded reset allowed per account
                       </span>
                     </div>
                   </div>

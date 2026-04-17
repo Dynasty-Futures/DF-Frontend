@@ -165,15 +165,15 @@ const accountRules = [
   {
     size: "100K Account",
     profitTarget: "$6,000",
-    standardAdvancedMaxDrawdown: "$3,000",
-    builderMaxDrawdown: "$4,000",
+    standardAdvancedMaxDrawdown: "$2,500",
+    builderMaxDrawdown: "$3,500",
     dailyLoss: "$2,000",
   },
   {
     size: "150K Account",
-    profitTarget: "$9,000",
-    standardAdvancedMaxDrawdown: "$4,500",
-    builderMaxDrawdown: "$5,500",
+    profitTarget: "$8,000",
+    standardAdvancedMaxDrawdown: "$4,000",
+    builderMaxDrawdown: "$5,000",
     dailyLoss: "$3,000",
   },
 ];
@@ -188,6 +188,7 @@ const planRules = [
       "50% consistency rule (evaluation only)",
       "5-day payout cycles",
       "Copy trading allowed",
+      "One funded reset allowed per account",
     ],
     eligibility:
       "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $150 or more.",
@@ -203,6 +204,7 @@ const planRules = [
       "5-day payout cycles",
       "Priority support",
       "Copy trading allowed",
+      "One funded reset allowed per account",
     ],
     eligibility:
       "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more.",
@@ -212,11 +214,12 @@ const planRules = [
     tagline: "More Room to Execute",
     features: [
       "Higher max loss limit than Standard",
-      "50% consistency rule (evaluation phase)",
+      "40% consistency rule (evaluation and funded)",
       "No activation fee",
       "5-day payout cycles",
       "Static drawdown",
       "Copy trading allowed",
+      "One funded reset allowed per account",
     ],
     eligibility:
       "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more.",
@@ -665,9 +668,9 @@ const Rules = () => {
                     drawdown remains constant.
                   </p>
                   <p className="text-muted-foreground mb-4">
-                    For example, if you have a $100,000 account with a $3,000
+                    For example, if you have a $100,000 account with a $2,500
                     static drawdown, your account will be violated if your
-                    balance drops below $97,000 at any point. This level does
+                    balance drops below $97,500 at any point. This level does
                     not change regardless of how much profit you make.
                   </p>
                   <p className="text-muted-foreground">
