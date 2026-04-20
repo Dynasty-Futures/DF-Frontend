@@ -214,7 +214,7 @@ const planRules = [
     tagline: "More Room to Execute",
     features: [
       "Higher max loss limit than Standard",
-      "40% consistency rule (evaluation and funded)",
+      "50% consistency rule (evaluation) / 40% consistency rule (funded)",
       "No activation fee",
       "5-day payout cycles",
       "Static drawdown",
