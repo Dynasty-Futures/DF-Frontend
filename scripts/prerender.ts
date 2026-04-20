@@ -22,7 +22,9 @@ const PUBLIC_ROUTES = [
   '/support',
   '/legal',
   '/login',
-  '/register'
+  '/register',
+  '/about',
+  '/affiliates',
 ];
 
 async function prerender() {

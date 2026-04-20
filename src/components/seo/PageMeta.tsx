@@ -11,10 +11,12 @@ interface PageMetaProps {
   path: string;
   ogImage?: string;
   noIndex?: boolean;
+  /** Provide a fully-formed title string to bypass the automatic "| Dynasty Futures" suffix */
+  rawTitle?: string;
 }
 
-const PageMeta = ({ title, description, path, ogImage, noIndex }: PageMetaProps) => {
-  const fullTitle = path === '/' ? title : `${title} | ${SITE_NAME}`;
+const PageMeta = ({ title, description, path, ogImage, noIndex, rawTitle }: PageMetaProps) => {
+  const fullTitle = rawTitle ?? (path === '/' ? title : `${title} | ${SITE_NAME}`);
   const canonicalUrl = `${BASE_URL}${path}`;
   const image = ogImage || DEFAULT_OG_IMAGE;
 

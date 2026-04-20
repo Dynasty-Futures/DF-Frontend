@@ -19,6 +19,8 @@ import Legal from './pages/Legal';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Payouts from './pages/Payouts';
+import About from './pages/About';
+import Affiliates from './pages/Affiliates';
 import NotFound from './pages/NotFound';
 
 const ServerRoutes = () => (
@@ -32,6 +34,8 @@ const ServerRoutes = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/register" element={<Register />} />
     <Route path="/payouts" element={<Payouts />} />
+    <Route path="/about" element={<About />} />
+    <Route path="/affiliates" element={<Affiliates />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );
