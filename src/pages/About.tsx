@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
 import JsonLd, { breadcrumb, organizationSchema } from "@/components/seo/JsonLd";
@@ -43,28 +42,11 @@ const differentiators = [
 ];
 
 const About = () => {
-  useEffect(() => {
-    document.title = "About Us | Dynasty Futures";
-    const meta = document.querySelector('meta[name="description"]');
-    const content =
-      "Dynasty Futures LLC is a Wyoming-registered proprietary trading firm built for traders who value clarity, discipline, and opportunity. Fair pricing, higher max loss flexibility, and honest payout transparency.";
-    if (meta) {
-      meta.setAttribute("content", content);
-    } else {
-      const tag = document.createElement("meta");
-      tag.name = "description";
-      tag.content = content;
-      document.head.appendChild(tag);
-    }
-    return () => {
-      document.title = "Dynasty Futures";
-    };
-  }, []);
-
   return (
     <Layout>
       <PageMeta
         title="About Us"
+        rawTitle="About Dynasty Futures | Our Mission & Leadership"
         description="Dynasty Futures is a proprietary trading firm built on fair pricing, higher max loss flexibility, and transparent payout structures for futures traders."
         path="/about"
       />

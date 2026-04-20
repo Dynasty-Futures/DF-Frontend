@@ -191,6 +191,7 @@ const Affiliates = () => {
     <Layout>
       <PageMeta
         title="Affiliate Program"
+        rawTitle="Dynasty Futures Affiliate Program"
         description="Join the Dynasty Futures affiliate program. Earn 10% commission on every referred sale. Trade first, partner second. Built for traders, creators, and educators who believe in the platform."
         path="/affiliates"
       />
