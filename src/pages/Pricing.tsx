@@ -327,25 +327,31 @@ const Pricing = () => {
   const currentRules =
     currentPlan.rules[selectedSize as keyof typeof currentPlan.rules];
   const currentMaxPosition =
-    currentPlan.maxPositionSize[selectedSize] ?? "—";
+    currentPlan.maxPositionSize[selectedSize] ?? "N/A";
   const sizeNum = parseInt(selectedSize.replace(/[$,]/g, ""));
   const isLoading = loadingKey === `${selectedPlan}-${sizeNum}`;
 
   const tableRows = [
     {
       label: "Profit Target",
-      evaluation: currentRules?.profitTarget ?? "—",
+      evaluation: currentRules?.profitTarget ?? "N/A",
       funded: "None",
     },
     {
       label: "Max Drawdown",
-      evaluation: currentRules?.maxDrawdown ?? "—",
-      funded: currentRules?.maxDrawdown ?? "—",
+      evaluation: currentRules?.maxDrawdown ?? "N/A",
+      funded: currentRules?.maxDrawdown ?? "N/A",
     },
     {
       label: "Daily Loss Limit",
-      evaluation: currentRules?.dailyLoss ?? "—",
-      funded: currentRules?.dailyLoss ?? "—",
+      evaluation:
+        selectedPlan === "standard"
+          ? (currentRules?.dailyLoss ?? "N/A")
+          : "N/A",
+      funded:
+        selectedPlan === "standard"
+          ? (currentRules?.dailyLoss ?? "N/A")
+          : "N/A",
     },
     {
       label: "Max Position Size",
@@ -359,23 +365,23 @@ const Pricing = () => {
     },
     {
       label: "Activation Fee",
-      evaluation: "—",
+      evaluation: "N/A",
       funded:
         currentPricing?.activationFee === "$0"
           ? "None"
-          : (currentPricing?.activationFee ?? "—"),
+          : (currentPricing?.activationFee ?? "N/A"),
     },
     {
       label: "Eval Reset",
-      evaluation: currentPricing?.evalReset ?? "—",
-      funded: "—",
+      evaluation: currentPricing?.evalReset ?? "N/A",
+      funded: "N/A",
     },
     {
       label: "Funded Reset",
-      evaluation: "—",
-      funded: currentPricing?.fundedReset ?? "—",
+      evaluation: "N/A",
+      funded: currentPricing?.fundedReset ?? "N/A",
     },
-    { label: "Payout Cycle", evaluation: "—", funded: "5-day cycles" },
+    { label: "Payout Cycle", evaluation: "N/A", funded: "5-day cycles" },
     { label: "Copy Trading", evaluation: "Allowed", funded: "Allowed" },
   ];
 
@@ -432,13 +438,24 @@ const Pricing = () => {
                       key={plan}
                       onClick={() => handlePlanChange(plan)}
                       className={cn(
-                        "px-6 py-3 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                        "px-6 py-4 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary flex flex-col items-center gap-1.5 min-w-[150px]",
                         selectedPlan === plan
                           ? "bg-gradient-to-r from-gold-dark via-primary to-gold-light text-white border border-primary/60 shadow-lg shadow-primary/20"
                           : "border border-border/50 text-muted-foreground hover:border-primary/40 hover:text-foreground bg-transparent",
                       )}
                     >
-                      {planConfig[plan].label}
+                      <PlanImage plan={plan} size={28} />
+                      <span>{planConfig[plan].label}</span>
+                      <span
+                        className={cn(
+                          "text-xs font-normal font-sans leading-tight text-center",
+                          selectedPlan === plan
+                            ? "text-white/80"
+                            : "text-muted-foreground/70",
+                        )}
+                      >
+                        {planConfig[plan].tagline}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -469,44 +486,18 @@ const Pricing = () => {
                   })}
                 </div>
 
-                {/* Plan Identity */}
-                <div className="flex items-center gap-3 mb-6 pb-5 border-b border-border/30">
-                  <div
-                    className={cn(
-                      "w-10 h-10 shrink-0 rounded-xl p-0.5",
-                      selectedPlan === "advanced"
-                        ? "bg-gradient-to-br from-primary to-gold-light"
-                        : selectedPlan === "builder"
-                          ? "bg-gradient-to-br from-gold-dark via-primary to-gold-light"
-                          : "bg-gradient-to-br from-gold-dark to-primary",
-                    )}
-                  >
-                    <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-0.5">
-                      <PlanImage plan={selectedPlan} size={26} />
-                    </div>
-                  </div>
-                  <div>
-                    <h2 className="font-display text-xl md:text-2xl font-bold text-foreground leading-tight">
-                      {currentPlan.label}
-                    </h2>
-                    <p className="text-sm text-primary font-medium italic">
-                      &ldquo;{currentPlan.tagline}&rdquo;
-                    </p>
-                  </div>
-                </div>
-
                 {/* Data Display Table */}
                 <div className="rounded-xl border border-border/30 overflow-hidden mb-8">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/30 bg-muted/20">
-                        <th className="text-left py-3 px-5 font-semibold text-foreground">
+                        <th className="text-left py-4 px-5 font-semibold text-foreground">
                           Rule
                         </th>
-                        <th className="text-center py-3 px-4 font-semibold text-foreground">
+                        <th className="text-center py-4 px-4 font-semibold text-foreground">
                           Evaluation
                         </th>
-                        <th className="text-center py-3 px-4 font-semibold text-foreground">
+                        <th className="text-center py-4 px-4 font-semibold text-foreground">
                           Funded
                         </th>
                       </tr>
@@ -520,13 +511,13 @@ const Pricing = () => {
                             idx % 2 === 0 ? "bg-transparent" : "bg-muted/5",
                           )}
                         >
-                          <td className="py-3 px-5 text-muted-foreground">
+                          <td className="py-4 px-5 text-muted-foreground">
                             {row.label}
                           </td>
-                          <td className="py-3 px-4 text-center font-semibold text-foreground">
+                          <td className="py-4 px-4 text-center font-semibold text-foreground">
                             {row.evaluation}
                           </td>
-                          <td className="py-3 px-4 text-center font-semibold text-foreground">
+                          <td className="py-4 px-4 text-center font-semibold text-foreground">
                             {row.funded}
                           </td>
                         </tr>
