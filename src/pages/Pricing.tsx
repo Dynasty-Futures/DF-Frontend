@@ -418,8 +418,12 @@ const Pricing = () => {
                 Pricing & <span className="text-gradient">Plans</span>
               </h1>
               <p className="text-lg text-muted-foreground">
-                Choose the plan that fits your trading style. Plans include
-                static drawdown with plan-specific consistency requirements.
+                Our evaluations are extremely straightforward. Plans include
+                end-of-day trailing drawdown on all evaluations, and static
+                drawdown on all funded accounts. No hidden rules, just the max
+                drawdown rule. Prove you can trade profitably and manage risk,
+                pass your evaluation, and become a Dynasty Futures Funded
+                Trader.
               </p>
               <p className="text-sm text-muted-foreground/80 mt-3">
                 Max allocation is currently limited to 2 accounts per trader.
@@ -438,13 +442,21 @@ const Pricing = () => {
                       key={plan}
                       onClick={() => handlePlanChange(plan)}
                       className={cn(
-                        "px-6 py-4 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary flex flex-col items-center gap-1.5 min-w-[150px]",
+                        "px-8 py-6 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary flex flex-col items-center gap-2.5 min-w-[180px]",
                         selectedPlan === plan
                           ? "bg-gradient-to-r from-gold-dark via-primary to-gold-light text-white border border-primary/60 shadow-lg shadow-primary/20"
                           : "border border-border/50 text-muted-foreground hover:border-primary/40 hover:text-foreground bg-transparent",
                       )}
                     >
-                      <PlanImage plan={plan} size={28} />
+                      <PlanImage
+                        plan={plan}
+                        size={36}
+                        className={
+                          selectedPlan === plan
+                            ? "brightness-0 invert drop-shadow-sm"
+                            : undefined
+                        }
+                      />
                       <span>{planConfig[plan].label}</span>
                       <span
                         className={cn(
