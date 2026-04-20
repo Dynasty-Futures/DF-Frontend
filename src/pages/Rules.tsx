@@ -140,9 +140,9 @@ const universalRules = [
   },
   {
     icon: DollarIcon,
-    title: "Long Term Payout Structure: 80/20 Split After Five Payouts",
+    title: "Funded Profit Split & Long Term Payout Structure",
     description:
-      "Once a trader reaches five approved payouts, the account moves into our long term payout structure with an 80/20 profit split. Eighty percent of all future profits goes to the trader. This is a milestone that reflects consistency and performance, and we designed the structure around it. Traders are not required to transition to a live account at that stage. Many prefer staying in the environment they already know and trust, and we want to preserve that continuity while supporting long term growth.",
+      "Funded accounts operate on a 90/10 profit split — 90% of profits go to the trader. After five (5) approved payouts, the account transitions into our long term payout structure with an 80/20 profit split, where 80% of all future profits go to the trader. This milestone reflects consistency and performance, and we designed the structure around it. Traders are not required to transition to a live account at that stage. Many prefer staying in the environment they already know and trust, and we want to preserve that continuity while supporting long term growth.",
     allowed: true,
   },
 ];
