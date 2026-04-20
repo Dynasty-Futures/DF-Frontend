@@ -37,9 +37,9 @@ import { cn } from "@/lib/utils";
 const universalRules = [
   {
     icon: ShieldIcon,
-    title: "Static Drawdown (No Trailing)",
+    title: "Drawdown Rules",
     description:
-      "All accounts use a static Max Loss Limit that does not trail equity. Drawdown level is fixed at the amount listed for each plan and account size.",
+      "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
     allowed: true,
   },
   {
@@ -510,6 +510,10 @@ const Rules = () => {
                 Official Trading Rules for Dynasty Futures. Applies to ALL plans
                 unless otherwise stated.
               </p>
+              <p className="text-sm text-muted-foreground/80 mt-3">
+                Max allocation is currently 3 accounts. We plan to increase
+                this as the firm continues to grow.
+              </p>
             </div>
           </ScrollReveal>
 
@@ -653,29 +657,31 @@ const Rules = () => {
             <ScrollReveal>
               <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-12">
                 <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
-                  What is{" "}
                   <span className="text-gradient-animated">
-                    Static Drawdown
-                  </span>
-                  ?
+                    Drawdown Rules
+                  </span>{" "}
+                  Explained
                 </h2>
                 <div className="prose prose-invert max-w-none">
                   <p className="text-muted-foreground mb-4">
-                    Static drawdown is a fixed maximum loss limit that does not
-                    change based on your account's highest equity. Unlike
-                    trailing drawdown, which follows your peak equity and
-                    reduces your available drawdown as profits grow, static
-                    drawdown remains constant.
+                    <strong className="text-foreground">Evaluations</strong>{" "}
+                    use trailing end-of-day drawdown. This means the drawdown
+                    level follows your highest end-of-day balance, reducing
+                    your available drawdown as your account grows.
                   </p>
                   <p className="text-muted-foreground mb-4">
-                    For example, if you have a $100,000 account with a $2,500
-                    static drawdown, your account will be violated if your
-                    balance drops below $97,500 at any point. This level does
-                    not change regardless of how much profit you make.
+                    <strong className="text-foreground">Funded accounts</strong>{" "}
+                    use static drawdown — a fixed maximum loss limit that does
+                    not change based on your account's equity. For example, if
+                    you have a $100,000 funded account with a $2,500 static
+                    drawdown, your account will be violated if your balance
+                    drops below $97,500 at any point, regardless of profits
+                    made.
                   </p>
                   <p className="text-muted-foreground">
-                    This provides traders with more flexibility and reduces the
-                    pressure that comes with trailing drawdown systems.
+                    Static drawdown on funded accounts provides traders with
+                    more flexibility and reduces the pressure that comes with
+                    trailing drawdown systems.
                   </p>
                 </div>
               </div>
