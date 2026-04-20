@@ -184,7 +184,7 @@ const planRules = [
     tagline: "Pass First, Activate Later",
     features: [
       "Evaluation Fee + $80 Activation Fee (after passing)",
-      "Static drawdown",
+      "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
       "50% consistency rule (evaluation only)",
       "5-day payout cycles",
       "Copy trading allowed",
@@ -198,7 +198,7 @@ const planRules = [
     tagline: "Instant Activation, No Activation Fee",
     features: [
       "You pay only the evaluation fee. No extra costs.",
-      "Static drawdown",
+      "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
       "No consistency rule",
       "Immediate activation",
       "5-day payout cycles",
@@ -217,7 +217,7 @@ const planRules = [
       "50% consistency rule (evaluation) / 40% consistency rule (funded)",
       "No activation fee",
       "5-day payout cycles",
-      "Static drawdown",
+      "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
       "Copy trading allowed",
       "One funded reset allowed per account",
     ],
@@ -562,7 +562,7 @@ const Rules = () => {
                       </div>
                       <div className="flex justify-between items-center py-2 border-b border-border/30">
                         <span className="text-sm text-muted-foreground">
-                          Daily Loss Limit
+                          Daily Loss Limit (Standard Plan Only)
                         </span>
                         <span className="font-semibold text-foreground">
                           {account.dailyLoss}
