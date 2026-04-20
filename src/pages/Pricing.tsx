@@ -427,9 +427,8 @@ const Pricing = () => {
                 Trader.
               </p>
               <p className="text-sm text-muted-foreground/80 mt-3">
-                Max allocation is currently limited to 2 accounts per trader.
-                This limit is expected to increase as the firm continues to
-                grow.
+                Max allocation is currently 3 accounts. We plan to increase
+                this as the firm continues to grow.
               </p>
             </ScrollReveal>
 
