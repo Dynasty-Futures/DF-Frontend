@@ -98,10 +98,16 @@ const faqs = [
       "The profit target varies by account size. For $25K accounts it's $1,500, for $50K accounts it's $3,000, for $100K accounts it's $6,000, and for $150K accounts it's $8,000. Once you reach your profit target while following all rules, you pass the challenge.",
   },
   {
+    id: "profit-split",
+    question: "What is the profit split for funded traders?",
+    answer:
+      "Funded traders receive a 90/10 profit split — you keep 90% of all profits generated in your funded account. After completing five (5) approved payouts, the account transitions into our long-term payout structure with an 80/20 profit split, where 80% of future profits go to the trader and 20% is retained by Dynasty Futures.",
+  },
+  {
     id: "five-payouts",
     question: "What happens after I receive five payouts?",
     answer:
-      "After a trader has completed five (5) payouts, all future payouts are subject to an 80/20 profit split, with 80% paid to the trader and 20% retained by Dynasty Futures.",
+      "After completing five (5) approved payouts, your account transitions into our long-term payout structure with an 80/20 profit split — 80% of future profits go to the trader and 20% is retained by Dynasty Futures. Prior to reaching five payouts, the standard funded profit split is 90/10.",
   },
 ];
 

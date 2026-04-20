@@ -11,6 +11,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import RoleGuard from "@/components/auth/RoleGuard";
 import { getPerfFlags } from "@/lib/perfFlags";
+import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 
 // Keep home route eagerly loaded; lazy-load the rest.
 import Index from "./pages/Index";
@@ -231,6 +232,7 @@ const App = () => {
               <BrowserRouter>
                 <ScrollToTop />
                 <AppRoutes />
+                <CookieConsentBanner />
               </BrowserRouter>
             </TooltipProvider>
           </AuthProvider>

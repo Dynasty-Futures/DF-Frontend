@@ -382,6 +382,7 @@ const Pricing = () => {
       funded: currentPricing?.fundedReset ?? "N/A",
     },
     { label: "Payout Cycle", evaluation: "N/A", funded: "5-day cycles" },
+    { label: "Funded Profit Split", evaluation: "N/A", funded: "90/10" },
     { label: "Copy Trading", evaluation: "Allowed", funded: "Allowed" },
   ];
 
@@ -762,14 +763,10 @@ const Pricing = () => {
             <ScrollReveal as="section" className="mb-12">
               <div className="glass-card rounded-2xl border border-border/50 p-6 md:p-8 text-center">
                 <h2 className="font-display text-xl font-semibold text-foreground mb-3">
-                  Long Term Payout Structure
+                  Profit Split & Long Term Payout Structure
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
-                  After five approved payouts, traders move into an 80/20 profit
-                  split with eighty percent going to the trader. There is no
-                  forced transition to a live account at that stage. Many traders
-                  prefer staying in the environment they already know, and we
-                  built this structure to support that choice.
+                  Funded accounts operate on a <span className="text-foreground font-semibold">90/10 profit split</span> — you keep 90% of all profits. After five approved payouts, traders move into our long-term payout structure with an <span className="text-foreground font-semibold">80/20 profit split</span>, with 80% going to the trader. There is no forced transition to a live account at that stage. Many traders prefer staying in the environment they already know, and we built this structure to support that choice.
                 </p>
               </div>
             </ScrollReveal>

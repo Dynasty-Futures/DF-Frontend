@@ -348,6 +348,49 @@ const Legal = () => {
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
+                      Cookies and Tracking Technologies
+                    </h3>
+                    <p>
+                      Dynasty Futures uses cookies and similar tracking
+                      technologies to enhance user experience, analyze website
+                      performance, and support marketing efforts.
+                    </p>
+                    <p>
+                      Cookies are small data files stored on your device that
+                      help us understand how users interact with our website.
+                      These technologies may collect information such as browser
+                      type, device information, pages visited, time spent on
+                      pages, and general location data.
+                    </p>
+                    <p>
+                      We may use both first-party cookies (set by Dynasty
+                      Futures) and third-party cookies provided by services such
+                      as analytics platforms and advertising partners.
+                    </p>
+                    <p>These technologies are used for purposes including:</p>
+                    <ul className="list-disc pl-6 space-y-1">
+                      <li>Ensuring the website functions properly</li>
+                      <li>
+                        Improving site performance and user experience
+                      </li>
+                      <li>Analyzing traffic and usage patterns</li>
+                      <li>
+                        Supporting marketing and advertising efforts
+                      </li>
+                    </ul>
+                    <p>
+                      By using our website, you consent to the use of cookies in
+                      accordance with this policy. You may control or disable
+                      cookies through your browser settings at any time.
+                      However, disabling cookies may impact certain features and
+                      functionality of the website.
+                    </p>
+                    <p>
+                      For more information about how we handle your data, please
+                      refer to the rest of this Privacy Policy.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
                       Your Rights
                     </h3>
                     <p>
