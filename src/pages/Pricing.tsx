@@ -191,7 +191,8 @@ const planConfig: Record<
     label: string;
     tagline: string;
     description: string;
-    consistencyRule: string;
+    evalConsistencyRule: string;
+    fundedConsistencyRule: string;
     pricing: typeof standardPricing;
     rules: typeof standardAdvancedRules;
     maxPositionSize: Record<string, string>;
@@ -202,7 +203,8 @@ const planConfig: Record<
     tagline: "Pass First, Activate Later",
     description:
       "Lower evaluation fee up front. If passed, a one-time $80 activation fee is required to activate your funded account.",
-    consistencyRule: "50% (evaluation only)",
+    evalConsistencyRule: "50%",
+    fundedConsistencyRule: "None",
     pricing: standardPricing,
     rules: standardAdvancedRules,
     maxPositionSize: maxPositionSizes.standard,
@@ -212,7 +214,8 @@ const planConfig: Record<
     tagline: "Instant Activation, No Activation Fee",
     description:
       "Pay once. When you pass, you're activated with no extra activation cost.",
-    consistencyRule: "No consistency rule",
+    evalConsistencyRule: "None",
+    fundedConsistencyRule: "None",
     pricing: advancedPricing,
     rules: standardAdvancedRules,
     maxPositionSize: maxPositionSizes.advanced,
@@ -222,7 +225,8 @@ const planConfig: Record<
     tagline: "More Room to Execute",
     description:
       "Designed for traders who want more room to execute their strategy. With a higher max loss limit than the Standard Plan, it provides additional flexibility while maintaining a structured evaluation model.",
-    consistencyRule: "50% (evaluation and funded)",
+    evalConsistencyRule: "50%",
+    fundedConsistencyRule: "40%",
     pricing: builderPricing,
     rules: builderRules,
     maxPositionSize: maxPositionSizes.builder,
@@ -327,18 +331,52 @@ const Pricing = () => {
   const sizeNum = parseInt(selectedSize.replace(/[$,]/g, ""));
   const isLoading = loadingKey === `${selectedPlan}-${sizeNum}`;
 
-  const dataFields = [
-    { label: "Evaluation Fee", value: currentPricing?.evalFee ?? "—" },
-    { label: "Activation Fee", value: currentPricing?.activationFee ?? "—" },
-    { label: "Eval Reset", value: currentPricing?.evalReset ?? "—" },
-    { label: "Funded Reset", value: currentPricing?.fundedReset ?? "—" },
-    { label: "Profit Target", value: currentRules?.profitTarget ?? "—" },
-    { label: "Max Loss Limit", value: currentRules?.maxDrawdown ?? "—" },
-    { label: "Daily Loss Limit", value: currentRules?.dailyLoss ?? "—" },
-    { label: "Max Position Size", value: currentMaxPosition },
-    { label: "Consistency Rule", value: currentPlan.consistencyRule },
-    { label: "Payout Cycle", value: "5-day cycles" },
-    { label: "Copy Trading", value: "Allowed" },
+  const tableRows = [
+    {
+      label: "Profit Target",
+      evaluation: currentRules?.profitTarget ?? "—",
+      funded: "None",
+    },
+    {
+      label: "Max Drawdown",
+      evaluation: currentRules?.maxDrawdown ?? "—",
+      funded: currentRules?.maxDrawdown ?? "—",
+    },
+    {
+      label: "Daily Loss Limit",
+      evaluation: currentRules?.dailyLoss ?? "—",
+      funded: currentRules?.dailyLoss ?? "—",
+    },
+    {
+      label: "Max Position Size",
+      evaluation: currentMaxPosition,
+      funded: currentMaxPosition,
+    },
+    {
+      label: "Consistency Rule",
+      evaluation: currentPlan.evalConsistencyRule,
+      funded: currentPlan.fundedConsistencyRule,
+    },
+    {
+      label: "Activation Fee",
+      evaluation: "—",
+      funded:
+        currentPricing?.activationFee === "$0"
+          ? "None"
+          : (currentPricing?.activationFee ?? "—"),
+    },
+    {
+      label: "Eval Reset",
+      evaluation: currentPricing?.evalReset ?? "—",
+      funded: "—",
+    },
+    {
+      label: "Funded Reset",
+      evaluation: "—",
+      funded: currentPricing?.fundedReset ?? "—",
+    },
+    { label: "Payout Cycle", evaluation: "—", funded: "5-day cycles" },
+    { label: "Copy Trading", evaluation: "Allowed", funded: "Allowed" },
   ];
 
   return (
@@ -388,7 +426,7 @@ const Pricing = () => {
             <section className="mb-20">
               <ScrollReveal className="glass-card-strong rounded-3xl border border-border/50 overflow-hidden p-8 md:p-12">
                 {/* Plan Selector */}
-                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                <div className="flex flex-wrap justify-center gap-3 mb-6">
                   {(Object.keys(planConfig) as PlanKey[]).map((plan) => (
                     <button
                       key={plan}
@@ -406,28 +444,36 @@ const Pricing = () => {
                 </div>
 
                 {/* Account Size Selector */}
-                <div className="flex flex-wrap justify-center gap-3 mb-10">
-                  {accountSizeOptions.map((opt) => (
-                    <button
-                      key={opt.value}
-                      onClick={() => setSelectedSize(opt.value)}
-                      className={cn(
-                        "px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                        selectedSize === opt.value
-                          ? "bg-primary/15 text-primary border border-primary/60 shadow-sm"
-                          : "border border-border/40 text-muted-foreground hover:border-primary/30 hover:text-foreground bg-transparent",
-                      )}
-                    >
-                      {opt.label}
-                    </button>
-                  ))}
+                <div className="flex flex-wrap justify-center gap-3 mb-8">
+                  {accountSizeOptions.map((opt) => {
+                    const evalFee =
+                      currentPlan.pricing.find((p) => p.size === opt.value)
+                        ?.evalFee ?? "";
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => setSelectedSize(opt.value)}
+                        className={cn(
+                          "px-5 py-3 rounded-xl font-semibold text-sm transition-all duration-200 min-w-[88px] text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                          selectedSize === opt.value
+                            ? "bg-primary/15 text-primary border border-primary/60 shadow-sm"
+                            : "border border-border/40 text-muted-foreground hover:border-primary/30 hover:text-foreground bg-transparent",
+                        )}
+                      >
+                        <div className="font-bold">{opt.label}</div>
+                        <div className="text-xs mt-0.5 opacity-90">
+                          {evalFee}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
 
                 {/* Plan Identity */}
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-10 pb-8 border-b border-border/30">
+                <div className="flex items-center gap-3 mb-6 pb-5 border-b border-border/30">
                   <div
                     className={cn(
-                      "w-20 h-20 shrink-0 rounded-2xl p-0.5",
+                      "w-10 h-10 shrink-0 rounded-xl p-0.5",
                       selectedPlan === "advanced"
                         ? "bg-gradient-to-br from-primary to-gold-light"
                         : selectedPlan === "builder"
@@ -435,38 +481,58 @@ const Pricing = () => {
                           : "bg-gradient-to-br from-gold-dark to-primary",
                     )}
                   >
-                    <div className="w-full h-full rounded-2xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-1">
-                      <PlanImage plan={selectedPlan} size={64} />
+                    <div className="w-full h-full rounded-xl bg-card/90 backdrop-blur-sm flex items-center justify-center p-0.5">
+                      <PlanImage plan={selectedPlan} size={26} />
                     </div>
                   </div>
-                  <div className="text-center sm:text-left">
-                    <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-1">
+                  <div>
+                    <h2 className="font-display text-xl md:text-2xl font-bold text-foreground leading-tight">
                       {currentPlan.label}
                     </h2>
-                    <p className="text-base text-primary font-medium mb-2 italic">
+                    <p className="text-sm text-primary font-medium italic">
                       &ldquo;{currentPlan.tagline}&rdquo;
-                    </p>
-                    <p className="text-sm text-muted-foreground max-w-lg">
-                      {currentPlan.description}
                     </p>
                   </div>
                 </div>
 
-                {/* Data Display Card */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
-                  {dataFields.map((field) => (
-                    <div
-                      key={field.label}
-                      className="flex items-center justify-between gap-4 p-4 rounded-xl bg-muted/10 border border-border/20 backdrop-blur-sm"
-                    >
-                      <span className="text-sm text-muted-foreground font-medium">
-                        {field.label}
-                      </span>
-                      <span className="text-sm font-semibold text-foreground text-right">
-                        {field.value}
-                      </span>
-                    </div>
-                  ))}
+                {/* Data Display Table */}
+                <div className="rounded-xl border border-border/30 overflow-hidden mb-8">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-border/30 bg-muted/20">
+                        <th className="text-left py-3 px-5 font-semibold text-foreground">
+                          Rule
+                        </th>
+                        <th className="text-center py-3 px-4 font-semibold text-foreground">
+                          Evaluation
+                        </th>
+                        <th className="text-center py-3 px-4 font-semibold text-foreground">
+                          Funded
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tableRows.map((row, idx) => (
+                        <tr
+                          key={row.label}
+                          className={cn(
+                            "border-b border-border/20 last:border-0 transition-colors",
+                            idx % 2 === 0 ? "bg-transparent" : "bg-muted/5",
+                          )}
+                        >
+                          <td className="py-3 px-5 text-muted-foreground">
+                            {row.label}
+                          </td>
+                          <td className="py-3 px-4 text-center font-semibold text-foreground">
+                            {row.evaluation}
+                          </td>
+                          <td className="py-3 px-4 text-center font-semibold text-foreground">
+                            {row.funded}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
 
                 {/* CTA */}
