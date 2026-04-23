@@ -16,8 +16,8 @@ const DiscordCTA = () => {
               </h2>
 
               <p className="text-lg text-muted-foreground mb-8 max-w-md">
-                We're giving away 3 50K accounts on launch day. The first 100
-                members to join the Discord are automatically entered to win.
+                We're giving away 5 Standard 50K accounts at launch. The first
+                100 members to join our Discord are automatically entered to win.
               </p>
 
               <Button
