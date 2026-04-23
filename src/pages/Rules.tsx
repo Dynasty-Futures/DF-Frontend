@@ -58,8 +58,9 @@ const universalRules = [
   {
     icon: Newspaper,
     title: "No News Trading",
+    label: "News Trading Restriction",
     description:
-      "Trading is not allowed during major high-impact news releases.",
+      "To protect traders and maintain fair market conditions, Dynasty Futures prohibits opening new positions, increasing existing positions, or placing pending orders intended to trigger during major scheduled news events. This restriction applies from 2 minutes before to 2 minutes after the release time of designated events, including CPI, PPI, Non-Farm Payrolls, and FOMC rate decisions. Traders may reduce or close existing positions during this window for risk management purposes.",
     allowed: false,
   },
   {
@@ -313,6 +314,9 @@ const UniversalRulesSection = () => {
         </button>
         {isExpanded && (
           <div className="px-3 pb-3 pl-12">
+            {"label" in rule && rule.label && (
+              <p className="text-sm font-semibold text-foreground mb-1">{rule.label}</p>
+            )}
             <p className="text-sm text-muted-foreground">{rule.description}</p>
           </div>
         )}
