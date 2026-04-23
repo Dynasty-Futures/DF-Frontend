@@ -68,6 +68,12 @@ const faqs = [
       "If you violate any of the trading rules (such as exceeding the daily loss limit, Max Loss Limit, holding over the weekend, or trading during high-impact news), your account may be flagged or terminated depending on the severity. Always review the rules carefully before trading.",
   },
   {
+    id: "news-trading",
+    question: "Is news trading allowed?",
+    answer:
+      "News trading is restricted during major scheduled economic events. Dynasty Futures prohibits opening new positions, increasing existing positions, or placing pending orders intended to trigger from 2 minutes before to 2 minutes after major releases, including CPI, PPI, Non-Farm Payrolls, and FOMC rate decisions. Traders are allowed to reduce or close existing positions during this time for risk management.",
+  },
+  {
     id: "real-money",
     question: "Do I trade real money during the challenge?",
     answer:
