@@ -268,8 +268,7 @@ const Support = () => {
                       </p>
                     </div>
                   </div>
-                  <p className="text-foreground">Monday - Friday</p>
-                  <p className="text-muted-foreground">9:00 AM - 6:00 PM EST</p>
+                  <p className="text-foreground">Our support team is available 24 hours a day, 7 days a week to help resolve any issues that arise.</p>
                 </div>
               </ScrollReveal>
 
