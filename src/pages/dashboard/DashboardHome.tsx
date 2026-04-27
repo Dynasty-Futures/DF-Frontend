@@ -54,10 +54,10 @@ const DashboardHome = () => {
   // Determine if this is a Builder account
   const isBuilderAccount = accountData.planType === "Builder";
 
-  // Generate chart data based on selected account and timeframe
+  // Generate chart data based on selected account, timeframe, and selected date (daily view uses selected date)
   const chartData = useMemo(() => {
-    return generateChartData(accountData, dateRange);
-  }, [accountData, dateRange]);
+    return generateChartData(accountData, dateRange, dateRange === 'daily' ? selectedDate : undefined);
+  }, [accountData, dateRange, selectedDate]);
 
   // Format currency values
   const formatCurrency = (value: number, showSign = false) => {
@@ -164,6 +164,7 @@ const DashboardHome = () => {
           chartType={chartType}
           onChartTypeChange={setChartType}
           startingBalance={accountData.startingBalance}
+          timeframe={dateRange}
           className="h-[calc(100vh-380px)] min-h-[400px]"
         />
       </ScrollReveal>

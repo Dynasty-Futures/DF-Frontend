@@ -257,36 +257,52 @@ export interface ChartDataPoint {
 // Generate chart data with real dates
 export const generateChartData = (
   account: AccountData,
-  timeframe: string
+  timeframe: string,
+  selectedDate?: Date
 ): ChartDataPoint[] => {
   const today = new Date();
-  const days = timeframe === 'daily' ? 1 : timeframe === 'weekly' ? 7 : 30;
 
   if (timeframe === 'daily') {
-    // Intraday - show hourly data
+    const targetDate = selectedDate ?? today;
+    const daysAgo = Math.floor((today.getTime() - targetDate.getTime()) / (1000 * 60 * 60 * 24));
+    const pnlIndex = account.dailyPnL.length - 1 - daysAgo;
+
+    let dayPnL = 0;
+    let dayEndBalance = account.currentBalance;
+
+    if (pnlIndex >= 0 && pnlIndex < account.dailyPnL.length) {
+      dayPnL = account.dailyPnL[pnlIndex];
+      dayEndBalance = account.equityHistory[pnlIndex] ?? account.currentBalance;
+    }
+
+    const dayStartBalance = dayEndBalance - dayPnL;
     const data: ChartDataPoint[] = [];
-    const baseBalance = account.currentBalance;
-    const hourlyVariation = account.dailyPnL[account.dailyPnL.length - 1] / 8;
-    
+
     for (let i = 0; i < 8; i++) {
-      const hour = setHours(today, 9 + i);
-      const variation = (Math.random() - 0.4) * Math.abs(hourlyVariation) * 2;
+      const hour = setHours(targetDate, 9 + i);
+      const progress = (i + 1) / 8;
+      // Deterministic noise seeded by account size, day index, and hour
+      const noiseMag = Math.max(Math.abs(dayPnL) * 0.04, 5);
+      const noise = Math.sin(account.size + pnlIndex * 7 + i * 13) * noiseMag;
+      const balance = Math.round(dayStartBalance + dayPnL * progress + noise);
+
       data.push({
         date: format(hour, 'ha'),
-        balance: Math.round(baseBalance - (8 - i) * hourlyVariation + variation),
+        balance,
         maxLoss: account.startingBalance - account.maxDrawdown,
         profitTarget: account.startingBalance + account.profitTarget,
-        pnl: Math.round(variation),
+        pnl: Math.round(dayPnL / 8 + noise),
       });
     }
     return data;
   }
-  
+
   // Multi-day timeframes
+  const days = timeframe === 'weekly' ? 7 : 30;
   const sliceStart = Math.max(0, account.equityHistory.length - days);
   const equitySlice = account.equityHistory.slice(sliceStart);
   const pnlSlice = account.dailyPnL.slice(sliceStart);
-  
+
   return equitySlice.map((balance, index) => {
     const date = subDays(today, days - 1 - index);
     return {
