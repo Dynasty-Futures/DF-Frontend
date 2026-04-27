@@ -200,17 +200,17 @@ const PerformanceChart = ({
               <XAxis
                 dataKey="date"
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={11}
+                fontSize={9}
                 tickLine={false}
                 axisLine={false}
                 interval="preserveStartEnd"
               />
               <YAxis
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={11}
+                fontSize={9}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
                 domain={[minBalance - padding, maxBalance + padding]}
               />
               <Tooltip content={<CustomTooltip />} />
@@ -258,18 +258,18 @@ const PerformanceChart = ({
               <XAxis
                 dataKey="date"
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={11}
+                fontSize={9}
                 tickLine={false}
                 axisLine={false}
                 interval="preserveStartEnd"
               />
               <YAxis
                 stroke="hsl(var(--muted-foreground))"
-                fontSize={11}
+                fontSize={9}
                 tickLine={false}
                 axisLine={false}
                 tickFormatter={(value) =>
-                  `${value >= 0 ? "+" : ""}$${value.toLocaleString()}`
+                  `${value >= 0 ? "+" : "-"}$${(Math.abs(value) / 1000).toFixed(1)}k`
                 }
                 domain={[minPnL - pnlPadding, maxPnL + pnlPadding]}
               />

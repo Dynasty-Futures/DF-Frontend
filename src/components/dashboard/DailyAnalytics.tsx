@@ -78,7 +78,7 @@ const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalytics
       <div className="p-3 rounded-xl bg-muted/10 border border-border/20 hover:border-primary/30 transition-all duration-300 group">
         <div className="flex items-center gap-2 mb-1.5">
           {dayPnL >= 0 ? (
-            <TrendingUp size={14} className="text-primary" />
+            <TrendingUp size={14} className="text-green-400" />
           ) : (
             <TrendingDown size={14} className="text-destructive" />
           )}
@@ -86,7 +86,7 @@ const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalytics
         </div>
         <span className={cn(
           "text-lg font-bold",
-          dayPnL >= 0 ? "text-primary" : "text-destructive"
+          dayPnL >= 0 ? "text-green-400" : "text-destructive"
         )}>
           {formatCurrency(dayPnL, true)}
         </span>
@@ -140,7 +140,7 @@ const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalytics
           <span className="text-xs text-muted-foreground">Best Trade</span>
         </div>
         <div className="flex items-baseline gap-1.5">
-          <span className="text-lg font-bold text-primary">+{formatCurrency(mockData.bestTrade)}</span>
+          <span className="text-lg font-bold text-green-400">+{formatCurrency(mockData.bestTrade)}</span>
           <span className="text-[10px] text-muted-foreground">({mockData.bestInstrument})</span>
         </div>
       </div>

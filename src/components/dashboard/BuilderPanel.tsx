@@ -104,6 +104,7 @@ const BuilderPanel = ({
       isSelected: boolean;
       isToday: boolean;
       isCurrentMonth: boolean;
+      isSaturday: boolean;
     }> = [];
 
     const monthStart = startOfMonth(viewedMonth);
@@ -120,19 +121,22 @@ const BuilderPanel = ({
         isSelected: false,
         isToday: false,
         isCurrentMonth: false,
+        isSaturday: prevDate.getDay() === 6,
       });
     }
 
     for (let i = 0; i < daysInMonth; i++) {
       const date = new Date(monthStart);
       date.setDate(i + 1);
+      const dayOfWeek = date.getDay();
+      const isSaturday = dayOfWeek === 6;
 
       const daysFromToday = Math.floor(
         (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
       );
       const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
       const pnl =
-        pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
+        !isSaturday && pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
           ? account.dailyPnL[pnlIndex]
           : 0;
 
@@ -144,6 +148,7 @@ const BuilderPanel = ({
         isSelected: isSameDay(date, selectedDate),
         isToday: isSameDay(date, today),
         isCurrentMonth: true,
+        isSaturday,
       });
     }
 
@@ -304,20 +309,22 @@ const BuilderPanel = ({
                 <button
                   key={i}
                   onClick={() => {
-                    if (day.isCurrentMonth) {
+                    if (day.isCurrentMonth && !day.isSaturday) {
                       onDateChange(day.date);
                       navigate(
                         `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`,
                       );
                     }
                   }}
-                  disabled={!day.isCurrentMonth}
+                  disabled={!day.isCurrentMonth || day.isSaturday}
                   className={cn(
                     "aspect-square rounded-md text-[10px] flex flex-col items-center justify-center transition-all duration-200",
-                    day.isCurrentMonth
+                    day.isCurrentMonth && !day.isSaturday
                       ? "hover:bg-muted/30 cursor-pointer"
-                      : "opacity-30 cursor-default",
-                    day.isSelected &&
+                      : day.isSaturday && day.isCurrentMonth
+                        ? "bg-muted/5 cursor-not-allowed"
+                        : "opacity-30 cursor-default",
+                    day.isSelected && !day.isSaturday &&
                       "ring-1 ring-primary bg-primary/20 shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
                     day.isToday && !day.isSelected && "ring-1 ring-border",
                   )}
@@ -325,13 +332,14 @@ const BuilderPanel = ({
                   <span
                     className={cn(
                       "font-medium",
-                      day.isSelected && "text-primary",
+                      day.isSelected && !day.isSaturday && "text-primary",
                       !day.isCurrentMonth && "text-muted-foreground/50",
+                      day.isSaturday && day.isCurrentMonth && "text-muted-foreground/30",
                     )}
                   >
                     {day.dayNumber}
                   </span>
-                  {day.isCurrentMonth && !day.noTrades && (
+                  {day.isCurrentMonth && !day.noTrades && !day.isSaturday && (
                     <div
                       className={cn(
                         "w-1 h-1 rounded-full mt-0.5",
@@ -344,7 +352,7 @@ const BuilderPanel = ({
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-4 mt-3 pt-2 border-t border-border/20">
+            <div className="flex items-center justify-center gap-3 mt-3 pt-2 border-t border-border/20">
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                 <span className="text-[9px] text-muted-foreground">Profit</span>
@@ -355,9 +363,11 @@ const BuilderPanel = ({
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
-                <span className="text-[9px] text-muted-foreground">
-                  No trades
-                </span>
+                <span className="text-[9px] text-muted-foreground">No trades</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted/50" />
+                <span className="text-[9px] text-muted-foreground">Closed</span>
               </div>
             </div>
           </div>
