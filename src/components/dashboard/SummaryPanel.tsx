@@ -116,6 +116,7 @@ const SummaryPanel = ({
       isSelected: boolean;
       isToday: boolean;
       isCurrentMonth: boolean;
+      isSaturday: boolean;
     }> = [];
 
     // Get the first day of the viewed month
@@ -134,6 +135,7 @@ const SummaryPanel = ({
         isSelected: false,
         isToday: false,
         isCurrentMonth: false,
+        isSaturday: prevDate.getDay() === 6,
       });
     }
 
@@ -141,6 +143,8 @@ const SummaryPanel = ({
     for (let i = 0; i < daysInMonth; i++) {
       const date = new Date(monthStart);
       date.setDate(i + 1);
+      const dayOfWeek = date.getDay();
+      const isSaturday = dayOfWeek === 6;
 
       // Get P&L for this day from dailyPnL array (index from end)
       const daysFromToday = Math.floor(
@@ -148,7 +152,7 @@ const SummaryPanel = ({
       );
       const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
       const pnl =
-        pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
+        !isSaturday && pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
           ? account.dailyPnL[pnlIndex]
           : 0;
 
@@ -160,6 +164,7 @@ const SummaryPanel = ({
         isSelected: isSameDay(date, selectedDate),
         isToday: isSameDay(date, today),
         isCurrentMonth: true,
+        isSaturday,
       });
     }
 
@@ -216,7 +221,7 @@ const SummaryPanel = ({
           <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
             Funding Requirements
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-2">
+          <div className={cn("grid grid-cols-1 gap-2 mt-2", account.planType === 'Standard' ? "sm:grid-cols-3" : "sm:grid-cols-2")}>
             <SummaryItem
               label="Profit Target"
               value={formatCurrency(account.profitTarget)}
@@ -231,12 +236,14 @@ const SummaryPanel = ({
               variant="danger"
             />
 
-            <SummaryItem
-              label="Daily Loss Limit"
-              value={formatCurrency(account.dailyLossLimit)}
-              icon={<TrendingDown size={14} className="text-yellow-500" />}
-              variant="warning"
-            />
+            {account.planType === 'Standard' && (
+              <SummaryItem
+                label="Daily Loss Limit"
+                value={formatCurrency(account.dailyLossLimit)}
+                icon={<TrendingDown size={14} className="text-yellow-500" />}
+                variant="warning"
+              />
+            )}
           </div>
         </div>
 
@@ -319,22 +326,24 @@ const SummaryPanel = ({
                 <button
                   key={i}
                   onClick={() => {
-                    if (day.isCurrentMonth) {
+                    if (day.isCurrentMonth && !day.isSaturday) {
                       onDateChange(day.date);
                       navigate(
                         `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`,
                       );
                     }
                   }}
-                  disabled={!day.isCurrentMonth}
+                  disabled={!day.isCurrentMonth || day.isSaturday}
                   className={cn(
                     "aspect-square rounded-md text-[10px] flex flex-col items-center justify-center transition-all duration-200",
                     // Base styles
-                    day.isCurrentMonth
+                    day.isCurrentMonth && !day.isSaturday
                       ? "hover:bg-muted/30 cursor-pointer"
-                      : "opacity-30 cursor-default",
+                      : day.isSaturday && day.isCurrentMonth
+                        ? "bg-muted/5 cursor-not-allowed"
+                        : "opacity-30 cursor-default",
                     // Selected day - highlight glow
-                    day.isSelected &&
+                    day.isSelected && !day.isSaturday &&
                       "ring-1 ring-primary bg-primary/20 shadow-[0_0_8px_hsl(var(--primary)/0.4)]",
                     // Today marker (if not selected)
                     day.isToday && !day.isSelected && "ring-1 ring-border",
@@ -343,14 +352,15 @@ const SummaryPanel = ({
                   <span
                     className={cn(
                       "font-medium",
-                      day.isSelected && "text-primary",
+                      day.isSelected && !day.isSaturday && "text-primary",
                       !day.isCurrentMonth && "text-muted-foreground/50",
+                      day.isSaturday && day.isCurrentMonth && "text-muted-foreground/30",
                     )}
                   >
                     {day.dayNumber}
                   </span>
-                  {/* P&L indicator dot */}
-                  {day.isCurrentMonth && !day.noTrades && (
+                  {/* P&L indicator dot - never shown on Saturday */}
+                  {day.isCurrentMonth && !day.noTrades && !day.isSaturday && (
                     <div
                       className={cn(
                         "w-1 h-1 rounded-full mt-0.5",
@@ -363,7 +373,7 @@ const SummaryPanel = ({
             </div>
 
             {/* Legend */}
-            <div className="flex items-center justify-center gap-4 mt-3 pt-2 border-t border-border/20">
+            <div className="flex items-center justify-center gap-3 mt-3 pt-2 border-t border-border/20">
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                 <span className="text-[9px] text-muted-foreground">Profit</span>
@@ -374,9 +384,11 @@ const SummaryPanel = ({
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40" />
-                <span className="text-[9px] text-muted-foreground">
-                  No trades
-                </span>
+                <span className="text-[9px] text-muted-foreground">No trades</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted/50" />
+                <span className="text-[9px] text-muted-foreground">Closed</span>
               </div>
             </div>
           </div>

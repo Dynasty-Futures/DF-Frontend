@@ -260,9 +260,9 @@ export const generateChartData = (
   timeframe: string
 ): ChartDataPoint[] => {
   const today = new Date();
-  const days = timeframe === '1' ? 24 : timeframe === '7' ? 7 : timeframe === '90' ? 90 : 30;
-  
-  if (timeframe === '1') {
+  const days = timeframe === 'daily' ? 1 : timeframe === 'weekly' ? 7 : 30;
+
+  if (timeframe === 'daily') {
     // Intraday - show hourly data
     const data: ChartDataPoint[] = [];
     const baseBalance = account.currentBalance;

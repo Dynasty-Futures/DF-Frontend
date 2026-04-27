@@ -46,13 +46,18 @@ const MetricCard = ({
           </div>
         </div>
         <div className="flex items-end gap-2">
-          <span className="text-xl font-bold text-foreground">{value}</span>
+          <span className={cn(
+            "text-xl font-bold",
+            value.startsWith('+') ? "text-green-400" : "text-foreground",
+          )}>
+            {value}
+          </span>
           {trend && trendValue && (
             <span
               className={cn(
                 "text-xs font-semibold mb-0.5 flex items-center gap-0.5",
                 trend === "up"
-                  ? "text-primary"
+                  ? "text-green-400"
                   : trend === "down"
                     ? "text-destructive"
                     : "text-muted-foreground",

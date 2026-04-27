@@ -42,7 +42,7 @@ const DashboardHome = () => {
     }
   }, [searchParams, setSearchParams]);
   const [selectedAccount, setSelectedAccount] = useState("2"); // Default to 50K Advanced
-  const [dateRange, setDateRange] = useState("30");
+  const [dateRange, setDateRange] = useState("monthly");
   const [chartType, setChartType] = useState<"equity" | "pnl">("equity");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date()); // For Daily Performance Calendar
 
@@ -91,26 +91,26 @@ const DashboardHome = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "7" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                onClick={() => setDateRange("7")}
+                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "daily" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setDateRange("daily")}
               >
-                7 Days
+                Daily
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "30" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                onClick={() => setDateRange("30")}
+                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "weekly" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setDateRange("weekly")}
               >
-                30 Days
+                Weekly
               </Button>
               <Button
                 variant="ghost"
                 size="sm"
-                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "90" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
-                onClick={() => setDateRange("90")}
+                className={`px-2.5 py-1.5 rounded-lg text-xs transition-all ${dateRange === "monthly" ? "bg-primary/20 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                onClick={() => setDateRange("monthly")}
               >
-                90 Days
+                Monthly
               </Button>
             </div>
             <AccountSelector
