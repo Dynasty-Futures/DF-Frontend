@@ -141,7 +141,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
               <TrendingUp size={14} className="text-primary" />
               <span className="text-xs text-muted-foreground">Avg. Win</span>
             </div>
-            <span className="text-lg font-bold text-primary">
+            <span className="text-lg font-bold text-green-400">
               {formatCurrency(metrics.avgWin, true)}
             </span>
           </div>
@@ -239,7 +239,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
             </div>
             <div className="flex flex-col items-center justify-center">
               <span
-                className={`text-2xl font-bold ${expectancy > 0 ? "text-primary" : "text-destructive"}`}
+                className={`text-2xl font-bold ${expectancy > 0 ? "text-green-400" : "text-destructive"}`}
               >
                 {formatCurrency(Math.round(expectancy), true)}
               </span>
@@ -326,7 +326,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                             {data.time}
                           </p>
                           <p
-                            className={`text-sm font-bold ${data.value >= 0 ? "text-primary" : "text-destructive"}`}
+                            className={`text-sm font-bold ${data.value >= 0 ? "text-green-400" : "text-destructive"}`}
                           >
                             {formatCurrency(data.value, true)}
                           </p>
@@ -348,7 +348,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
             <span className="text-[10px] font-medium text-primary">
               {bestSession.name}
             </span>
-            <span className="text-[10px] text-primary">
+            <span className="text-[10px] text-green-400">
               {formatCurrency(bestSession.value, true)}
             </span>
           </div>
@@ -502,7 +502,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                 </span>
               </div>
               <span
-                className={`text-sm font-bold ${totalPnl >= 0 ? "text-primary" : "text-destructive"}`}
+                className={`text-sm font-bold ${totalPnl >= 0 ? "text-green-400" : "text-destructive"}`}
               >
                 {formatCurrency(totalPnl, true)}
               </span>
@@ -529,7 +529,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                   </div>
                   <div className="text-right">
                     <span
-                      className={`text-sm font-bold ${inst.pnl >= 0 ? "text-primary" : "text-destructive"}`}
+                      className={`text-sm font-bold ${inst.pnl >= 0 ? "text-green-400" : "text-destructive"}`}
                     >
                       {formatCurrency(inst.pnl, true)}
                     </span>

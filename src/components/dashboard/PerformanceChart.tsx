@@ -22,6 +22,7 @@ interface PerformanceChartProps {
   chartType: "equity" | "pnl";
   onChartTypeChange: (type: "equity" | "pnl") => void;
   startingBalance: number;
+  timeframe?: string;
   className?: string;
 }
 
@@ -84,13 +85,20 @@ const PerformanceChart = ({
   chartType,
   onChartTypeChange,
   startingBalance,
+  timeframe,
   className,
 }: PerformanceChartProps) => {
-  // Calculate Y-axis domain
+  const isDailyView = timeframe === 'daily';
+
+  // Calculate Y-axis domain — for daily view use only balance data so intraday movement is visible
   const allBalances = data.map((d) => d.balance);
-  const minBalance = Math.min(...allBalances, data[0]?.maxLoss || 0);
-  const maxBalance = Math.max(...allBalances, data[0]?.profitTarget || 0);
-  const padding = (maxBalance - minBalance) * 0.1;
+  const minBalance = isDailyView
+    ? Math.min(...allBalances)
+    : Math.min(...allBalances, data[0]?.maxLoss || 0);
+  const maxBalance = isDailyView
+    ? Math.max(...allBalances)
+    : Math.max(...allBalances, data[0]?.profitTarget || 0);
+  const padding = Math.max((maxBalance - minBalance) * 0.15, isDailyView ? 30 : 0);
 
   // Calculate P&L domain
   const allPnL = data.map((d) => d.pnl);
