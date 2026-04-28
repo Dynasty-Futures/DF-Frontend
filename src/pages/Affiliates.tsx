@@ -49,9 +49,9 @@ const tradeFirstCards = [
 const affiliateBenefits = [
   {
     icon: DollarSign,
-    title: "15% Commission on Every Referred Sale",
+    title: "Up to 15% Commission on Every Referred Sale",
     description:
-      "Earn on every evaluation, activation, or plan purchase your audience makes through your affiliate link. Straightforward, consistent, and transparent.",
+      "Earn on every evaluation, activation, or plan purchase your audience makes through your affiliate link. Community and Growth affiliates earn 10%; Dynasty Partners earn 15%. Straightforward, consistent, and transparent.",
   },
   {
     icon: Shield,
@@ -87,6 +87,7 @@ const tiers = [
       "Early opportunity to build your affiliate history",
     ],
     badge: "Entry Level",
+    commission: "10%",
   },
   {
     icon: Award,
@@ -102,6 +103,7 @@ const tiers = [
       "Recognition as an established Dynasty partner",
     ],
     badge: "Established",
+    commission: "10%",
   },
   {
     icon: Crown,
@@ -118,6 +120,7 @@ const tiers = [
     ],
     badge: "Top Partner",
     featured: true,
+    commission: "15%",
   },
 ];
 
@@ -157,12 +160,12 @@ const affiliateFaqs = [
   {
     question: "How much commission do affiliates earn?",
     answer:
-      "All Dynasty Futures affiliates earn a 15% commission on every referred sale, regardless of tier. This includes evaluations, activations, and plan purchases made through your affiliate link.",
+      "Commission rates vary by tier. Community and Growth affiliates earn 10% on every referred sale. Dynasty Partners earn 15%. This includes evaluations, activations, and plan purchases made through your affiliate link.",
   },
   {
     question: "Do all affiliate tiers earn the same commission?",
     answer:
-      "Yes. Every affiliate tier earns the same 15% commission rate. The tier system is based on recognition, access, support level, and partnership opportunities, not commission percentage. We believe in a consistent, transparent rate for all partners.",
+      "No. Community and Growth affiliates earn 10% commission, while Dynasty Partners earn 15%. The tier system reflects both commission rate and level of recognition, access, and support. As your affiliate presence grows, so does your partnership with Dynasty Futures.",
   },
   {
     question: "What is the Founding Affiliate perk?",
@@ -192,7 +195,7 @@ const Affiliates = () => {
       <PageMeta
         title="Affiliate Program"
         rawTitle="Dynasty Futures Affiliate Program"
-        description="Join the Dynasty Futures affiliate program. Earn 15% commission on every referred sale. Trade first, partner second. Built for traders, creators, and educators who believe in the platform."
+        description="Join the Dynasty Futures affiliate program. Earn up to 15% commission on every referred sale. Trade first, partner second. Built for traders, creators, and educators who believe in the platform."
         path="/affiliates"
       />
       <JsonLd
@@ -211,7 +214,7 @@ const Affiliates = () => {
           "@type": "WebPage",
           name: "Dynasty Futures Affiliate Program",
           description:
-            "Join the Dynasty Futures affiliate program. Earn 15% commission on every referred sale. Trade first, partner second.",
+            "Join the Dynasty Futures affiliate program. Earn up to 15% commission on every referred sale. Trade first, partner second.",
           url: "https://www.dynastyfuturesdyn.com/affiliates",
           mainEntity: {
             "@id": "https://www.dynastyfuturesdyn.com/#organization",
@@ -386,13 +389,12 @@ const Affiliates = () => {
                   </span>
                 </h2>
                 <p className="text-muted-foreground max-w-xl mx-auto mb-2">
-                  All affiliates earn the same{" "}
-                  <span className="text-primary font-semibold">
-                    15% commission
-                  </span>{" "}
-                  on every referred sale. Tiers reflect your level of
-                  partnership: recognition, access, and support that grows with
-                  you.
+                  Affiliate commissions vary by tier, starting at{" "}
+                  <span className="text-primary font-semibold">10%</span> and
+                  increasing to{" "}
+                  <span className="text-primary font-semibold">15%</span> for
+                  top partners. Tiers also reflect recognition, access, and
+                  support that grows with you.
                 </p>
               </div>
             </ScrollReveal>
@@ -442,7 +444,7 @@ const Affiliates = () => {
                     <div className="mt-5 pt-5 border-t border-border/30">
                       <p className="text-xs text-center text-muted-foreground">
                         <span className="text-primary font-semibold">
-                          15% commission
+                          {tier.commission} commission
                         </span>{" "}
                         on all referred sales
                       </p>
