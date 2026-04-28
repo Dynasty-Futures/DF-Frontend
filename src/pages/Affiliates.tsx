@@ -49,7 +49,7 @@ const tradeFirstCards = [
 const affiliateBenefits = [
   {
     icon: DollarSign,
-    title: "10% Commission on Every Referred Sale",
+    title: "15% Commission on Every Referred Sale",
     description:
       "Earn on every evaluation, activation, or plan purchase your audience makes through your affiliate link. Straightforward, consistent, and transparent.",
   },
@@ -144,7 +144,7 @@ const steps = [
     number: "04",
     title: "Get Approved and Start Sharing",
     description:
-      "Once approved, you'll receive your affiliate link and onboarding materials. The first 10 approved affiliates also receive their founding affiliate partner code to share with their audience.",
+      "Once approved, you'll receive your affiliate link and onboarding materials. The first 10 approved affiliates also receive the launch partner offer: 20% commission for their first 3 months, transitioning to Dynasty Partner status at 15% thereafter.",
   },
 ];
 
@@ -157,17 +157,17 @@ const affiliateFaqs = [
   {
     question: "How much commission do affiliates earn?",
     answer:
-      "All Dynasty Futures affiliates earn a 10% commission on every referred sale, regardless of tier. This includes evaluations, activations, and plan purchases made through your affiliate link.",
+      "All Dynasty Futures affiliates earn a 15% commission on every referred sale, regardless of tier. This includes evaluations, activations, and plan purchases made through your affiliate link.",
   },
   {
     question: "Do all affiliate tiers earn the same commission?",
     answer:
-      "Yes. Every affiliate tier earns the same 10% commission rate. The tier system is based on recognition, access, support level, and partnership opportunities, not commission percentage. We believe in a consistent, transparent rate for all partners.",
+      "Yes. Every affiliate tier earns the same 15% commission rate. The tier system is based on recognition, access, support level, and partnership opportunities, not commission percentage. We believe in a consistent, transparent rate for all partners.",
   },
   {
     question: "What is the Founding Affiliate perk?",
     answer:
-      "The first 10 approved Dynasty Futures affiliates receive a private 20% partner code, an exclusive offer they can share directly with their audience. This is a founding affiliate benefit available only to the first 10 approved partners. It is not available after those spots are filled.",
+      "The first 10 approved Dynasty Futures affiliates receive 20% commission for their first 3 months as part of our Launch Partner Offer. After this period, affiliates transition to Dynasty Partner status at 15% commission. This benefit is available only to the first 10 approved partners and will not be available after those spots are filled.",
   },
   {
     question: "Do I need to be a Dynasty Futures user first?",
@@ -192,7 +192,7 @@ const Affiliates = () => {
       <PageMeta
         title="Affiliate Program"
         rawTitle="Dynasty Futures Affiliate Program"
-        description="Join the Dynasty Futures affiliate program. Earn 10% commission on every referred sale. Trade first, partner second. Built for traders, creators, and educators who believe in the platform."
+        description="Join the Dynasty Futures affiliate program. Earn 15% commission on every referred sale. Trade first, partner second. Built for traders, creators, and educators who believe in the platform."
         path="/affiliates"
       />
       <JsonLd
@@ -211,7 +211,7 @@ const Affiliates = () => {
           "@type": "WebPage",
           name: "Dynasty Futures Affiliate Program",
           description:
-            "Join the Dynasty Futures affiliate program. Earn 10% commission on every referred sale. Trade first, partner second.",
+            "Join the Dynasty Futures affiliate program. Earn 15% commission on every referred sale. Trade first, partner second.",
           url: "https://www.dynastyfuturesdyn.com/affiliates",
           mainEntity: {
             "@id": "https://www.dynastyfuturesdyn.com/#organization",
@@ -388,7 +388,7 @@ const Affiliates = () => {
                 <p className="text-muted-foreground max-w-xl mx-auto mb-2">
                   All affiliates earn the same{" "}
                   <span className="text-primary font-semibold">
-                    10% commission
+                    15% commission
                   </span>{" "}
                   on every referred sale. Tiers reflect your level of
                   partnership: recognition, access, and support that grows with
@@ -442,7 +442,7 @@ const Affiliates = () => {
                     <div className="mt-5 pt-5 border-t border-border/30">
                       <p className="text-xs text-center text-muted-foreground">
                         <span className="text-primary font-semibold">
-                          10% commission
+                          15% commission
                         </span>{" "}
                         on all referred sales
                       </p>
@@ -476,28 +476,29 @@ const Affiliates = () => {
                   <div className="md:flex md:items-start md:gap-10">
                     <div className="flex-1">
                       <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-4">
-                        The first{" "}
                         <span className="text-foreground font-semibold">
-                          10 approved Dynasty Futures affiliates
+                          Launch Partner Offer:
                         </span>{" "}
-                        will receive a{" "}
+                        The first 10 approved affiliates receive{" "}
                         <span className="text-primary font-semibold">
-                          private 20% partner code
-                        </span>,
-                        an exclusive offer they can share directly with their
-                        audience.
+                          20% commission
+                        </span>{" "}
+                        for their first 3 months. After this period, affiliates
+                        transition to Dynasty Partner status at{" "}
+                        <span className="text-primary font-semibold">
+                          15% commission
+                        </span>.
                       </p>
                       <p className="text-muted-foreground text-base leading-relaxed mb-4">
-                        This is a founding affiliate benefit. It's designed to
-                        give early supporters something meaningful to bring to
-                        their communities at launch, something that adds real
-                        value and signals that their recommendation comes with
-                        substance.
+                        This is a founding affiliate benefit designed to give
+                        early supporters something meaningful to bring to their
+                        communities at launch — a rate that adds real value and
+                        signals that their recommendation comes with substance.
                       </p>
                       <p className="text-muted-foreground text-sm leading-relaxed">
-                        Once the first 10 spots are filled, this founding
-                        affiliate code will no longer be available to new
-                        partners. It won't come back.
+                        Once the first 10 spots are filled, this launch partner
+                        offer will no longer be available to new affiliates. It
+                        won't come back.
                       </p>
                     </div>
                     <div className="mt-8 md:mt-0 md:w-64 flex-shrink-0">
@@ -506,10 +507,10 @@ const Affiliates = () => {
                           20%
                         </p>
                         <p className="text-sm text-muted-foreground mb-1">
-                          Founding partner code
+                          For first 3 months
                         </p>
                         <p className="text-xs text-primary font-medium">
-                          First 10 affiliates only
+                          Then 15% · First 10 affiliates only
                         </p>
                       </div>
                     </div>
