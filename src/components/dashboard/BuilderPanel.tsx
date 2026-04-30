@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { getAccountById, mockAccounts } from "@/data/mockDashboardData";
+import { useAccountView } from "@/hooks/useAccountView";
 import {
   format,
   subDays,
@@ -80,7 +80,7 @@ const BuilderPanel = ({
   const [payoutType, setPayoutType] = useState<"5day">("5day");
   const [viewedMonth, setViewedMonth] = useState(new Date());
   const navigate = useNavigate();
-  const account = getAccountById(accountId) || mockAccounts[2];
+  const { data: account } = useAccountView(accountId);
 
   const formatCurrency = (value: number, showSign = false) => {
     const formatted = `$${Math.abs(value).toLocaleString()}`;
@@ -94,6 +94,7 @@ const BuilderPanel = ({
   const goToNextMonth = () => setViewedMonth((prev) => addMonths(prev, 1));
 
   // Generate calendar data for viewed month
+  const dailyPnL = useMemo(() => account?.dailyPnL ?? [], [account]);
   const calendarDays = useMemo(() => {
     const today = new Date();
     const days: Array<{
@@ -134,10 +135,10 @@ const BuilderPanel = ({
       const daysFromToday = Math.floor(
         (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
       );
-      const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
+      const pnlIndex = dailyPnL.length - 1 - daysFromToday;
       const pnl =
-        !isSaturday && pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
-          ? account.dailyPnL[pnlIndex]
+        !isSaturday && pnlIndex >= 0 && pnlIndex < dailyPnL.length
+          ? dailyPnL[pnlIndex]
           : 0;
 
       days.push({
@@ -153,12 +154,21 @@ const BuilderPanel = ({
     }
 
     return days;
-  }, [account.dailyPnL, selectedDate, viewedMonth]);
+  }, [dailyPnL, selectedDate, viewedMonth]);
 
-  // Mock payout status - in production this would come from API
+  if (!account) {
+    return (
+      <div className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 h-full text-sm text-muted-foreground">
+        Loading payout tracker…
+      </div>
+    );
+  }
+
+  // Payout status driven by closed P&L; payout-cycle data is not yet exposed
+  // by the backend, so cycle progress remains a placeholder until /v1/payouts.
   const payoutStatus = account.closedPnL > 0 ? "Eligible" : "Not Eligible";
-  const cycleDay = 3; // Mock: current day in payout cycle
-  const cycleDays = payoutType === "daily" ? 1 : 5;
+  const cycleDay = 3;
+  const cycleDays = 5;
 
   return (
     <TooltipProvider delayDuration={100}>

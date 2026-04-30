@@ -63,7 +63,33 @@ export interface User {
   emailVerified: boolean;
   emailVerifiedAt: string | null;
   lastLoginAt: string | null;
+  platformUserId?: string | null;
   createdAt: string;
   updatedAt: string;
   _count?: { accounts: number };
+}
+
+// ---------------------------------------------------------------------------
+// Platform User Profile (Volumetrica) — GET /v1/users/:id/platform
+// Mirrors PlatformUserResult from the backend providers/types.ts.
+// ---------------------------------------------------------------------------
+
+export interface PlatformUserProfile {
+  platformUserId: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  phone?: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  birthday?: string;
+  organizationStatus?: number;
+  webAccessDisabled?: boolean;
+  extEntityId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

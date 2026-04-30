@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { cn } from '@/lib/utils';
-import { getAccountById, mockAccounts } from '@/data/mockDashboardData';
+import { useAccountView } from '@/hooks/useAccountView';
 import { TrendingUp, TrendingDown, Target, Award, ShieldAlert, Calendar } from 'lucide-react';
 import { format, differenceInDays, isToday as isDateToday } from 'date-fns';
 
@@ -10,20 +10,21 @@ interface DailyAnalyticsProps {
 }
 
 const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalyticsProps) => {
-  const account = getAccountById(accountId) || mockAccounts[0];
-  
+  const { data: account } = useAccountView(accountId);
+  const dailyPnL = useMemo(() => account?.dailyPnL ?? [], [account]);
+
   // Calculate the P&L for the selected date
   const { dayPnL, hasTrades } = useMemo(() => {
     const today = new Date();
     const daysAgo = differenceInDays(today, selectedDate);
-    const pnlIndex = account.dailyPnL.length - 1 - daysAgo;
-    
-    if (pnlIndex >= 0 && pnlIndex < account.dailyPnL.length) {
-      const pnl = account.dailyPnL[pnlIndex];
+    const pnlIndex = dailyPnL.length - 1 - daysAgo;
+
+    if (pnlIndex >= 0 && pnlIndex < dailyPnL.length) {
+      const pnl = dailyPnL[pnlIndex];
       return { dayPnL: pnl, hasTrades: pnl !== 0 };
     }
     return { dayPnL: 0, hasTrades: false };
-  }, [account.dailyPnL, selectedDate]);
+  }, [dailyPnL, selectedDate]);
   
   // Generate consistent mock data based on the selected date (seed with date)
   const mockData = useMemo(() => {
@@ -43,7 +44,9 @@ const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalytics
     };
   }, [selectedDate, dayPnL]);
   
-  const dailyDrawdownUsed = Math.abs(Math.min(0, dayPnL)) / account.dailyLossLimit * 100;
+  const dailyDrawdownUsed = account
+    ? (Math.abs(Math.min(0, dayPnL)) / Math.max(account.dailyLossLimit, 1)) * 100
+    : 0;
 
   const formatCurrency = (value: number, showSign = false) => {
     const formatted = new Intl.NumberFormat('en-US', {

@@ -7,7 +7,13 @@
 
 import { apiClient } from '@/services/api';
 import type { ApiResponse, PaginatedResponse } from '@/types/api';
-import type { User, UserRole, UserFilters, UserStats } from '@/types/user';
+import type {
+  User,
+  UserRole,
+  UserFilters,
+  UserStats,
+  PlatformUserProfile,
+} from '@/types/user';
 
 export const userService = {
   // ---------------------------------------------------------------------------
@@ -47,4 +53,11 @@ export const userService = {
    */
   changeRole: (id: string, role: UserRole): Promise<ApiResponse<User>> =>
     apiClient.patch<ApiResponse<User>>(`/users/${id}/role`, { role }),
+
+  /**
+   * Get the user's external trading-platform profile (Volumetrica).
+   * GET /v1/users/:id/platform
+   */
+  getPlatformProfile: (id: string): Promise<ApiResponse<PlatformUserProfile>> =>
+    apiClient.get<ApiResponse<PlatformUserProfile>>(`/users/${id}/platform`),
 } as const;

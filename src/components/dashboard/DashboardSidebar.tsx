@@ -1,13 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Activity, 
-  Briefcase, 
-  Receipt, 
-  ArrowDownToLine, 
+import {
+  Activity,
+  Briefcase,
+  LineChart,
+  Receipt,
+  ArrowDownToLine,
   Users,
-  User, 
-  Award, 
-  Headphones 
+  User,
+  Award,
+  Headphones
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -24,6 +25,7 @@ const siteIconSrc = '/favicon.png?v=20260406';
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: Activity },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Briefcase },
+  { name: 'Trade', path: '/dashboard/trade', icon: LineChart },
   { name: 'Billing', path: '/dashboard/billing', icon: Receipt },
   { name: 'Payouts', path: '/dashboard/payouts', icon: ArrowDownToLine },
   { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },

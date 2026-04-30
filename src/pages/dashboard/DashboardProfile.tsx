@@ -34,6 +34,8 @@ import { apiClient } from "@/services/api";
 import { ApiError } from "@/types/api";
 import type { User as UserType } from "@/types/user";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import { useUserPlatformProfile } from "@/hooks/useUsers";
+import { Server } from "lucide-react";
 
 const DashboardProfile = () => {
   const { user, refreshUser } = useAuth();
@@ -155,7 +157,7 @@ const DashboardProfile = () => {
       {/* Tabs */}
       <ScrollReveal delay={150}>
         <Tabs defaultValue="personal" className="w-full">
-          <TabsList className="w-full grid grid-cols-5 bg-card/50 border border-border/30 p-1 rounded-xl">
+          <TabsList className="w-full grid grid-cols-6 bg-card/50 border border-border/30 p-1 rounded-xl">
             <TabsTrigger
               value="personal"
               className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary rounded-lg px-2 py-2 text-sm"
@@ -193,6 +195,14 @@ const DashboardProfile = () => {
             >
               <Settings size={16} className="mr-2 hidden sm:inline" />
               Settings
+            </TabsTrigger>
+            <TabsTrigger
+              value="platform"
+              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary rounded-lg px-2 py-2 text-sm"
+            >
+              <Server size={16} className="mr-2 hidden sm:inline" />
+              <span className="hidden md:inline">Trading Platform</span>
+              <span className="md:hidden">Platform</span>
             </TabsTrigger>
           </TabsList>
 
@@ -416,52 +426,56 @@ const DashboardProfile = () => {
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-5 rounded-xl bg-primary/5 border border-primary/20">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 rounded-lg bg-primary/20">
-                      <CheckCircle size={20} className="text-primary" />
+                {kycSteps.map((step) => (
+                  <div
+                    key={step.label}
+                    className={`flex items-center justify-between p-5 rounded-xl border ${
+                      step.done
+                        ? "bg-primary/5 border-primary/20"
+                        : "bg-yellow-500/5 border-yellow-500/20"
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`p-2 rounded-lg ${
+                          step.done ? "bg-primary/20" : "bg-yellow-500/20"
+                        }`}
+                      >
+                        {step.done ? (
+                          <CheckCircle size={20} className="text-primary" />
+                        ) : (
+                          <AlertCircle size={20} className="text-yellow-500" />
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-foreground">
+                        {step.label}
+                      </span>
                     </div>
-                    <span className="text-sm font-medium text-foreground">
-                      Email Verified
+                    <span
+                      className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                        step.done
+                          ? "text-primary bg-primary/20"
+                          : "text-yellow-500 bg-yellow-500/20"
+                      }`}
+                    >
+                      {step.done ? "Complete" : "Pending"}
                     </span>
                   </div>
-                  <span className="text-xs text-primary font-semibold px-3 py-1 rounded-full bg-primary/20">
-                    Complete
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between p-5 rounded-xl bg-primary/5 border border-primary/20">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 rounded-lg bg-primary/20">
-                      <CheckCircle size={20} className="text-primary" />
-                    </div>
-                    <span className="text-sm font-medium text-foreground">
-                      Phone Verified
-                    </span>
-                  </div>
-                  <span className="text-xs text-primary font-semibold px-3 py-1 rounded-full bg-primary/20">
-                    Complete
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between p-5 rounded-xl bg-yellow-500/5 border border-yellow-500/20">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 rounded-lg bg-yellow-500/20">
-                      <AlertCircle size={20} className="text-yellow-500" />
-                    </div>
-                    <span className="text-sm font-medium text-foreground">
-                      ID Verification
-                    </span>
-                  </div>
-                  <span className="text-xs text-yellow-500 font-semibold px-3 py-1 rounded-full bg-yellow-500/20">
-                    Pending
-                  </span>
-                </div>
+                ))}
               </div>
 
-              <Button className="w-full mt-8 btn-gradient-animated text-primary-foreground py-6 text-base">
-                Start Verification
-              </Button>
+              <p className="text-xs text-muted-foreground mt-6">
+                KYC status: <span className="font-medium text-foreground">{user?.kycStatus ?? "—"}</span>
+              </p>
+
+              {user?.kycStatus !== "APPROVED" && (
+                <Button
+                  className="w-full mt-4 btn-gradient-animated text-primary-foreground py-6 text-base"
+                  disabled
+                >
+                  Start Verification (coming soon)
+                </Button>
+              )}
             </div>
           </TabsContent>
 
@@ -1031,10 +1045,128 @@ const DashboardProfile = () => {
               </div>
             </div>
           </TabsContent>
+
+          {/* Trading Platform Tab */}
+          <TabsContent value="platform" className="mt-8">
+            <PlatformPanel userId={user?.id} />
+          </TabsContent>
         </Tabs>
       </ScrollReveal>
     </div>
   );
 };
+
+// =============================================================================
+// PlatformPanel — Trading Platform (Volumetrica) profile panel
+// =============================================================================
+
+const PlatformPanel = ({ userId }: { userId: string | undefined }) => {
+  const { data, isLoading, isError, error } = useUserPlatformProfile(userId);
+  const profile = data?.data;
+  const notProvisioned =
+    isError && error instanceof ApiError && error.statusCode === 400;
+
+  return (
+    <div className="p-10 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30">
+      <div className="flex items-center gap-4 mb-6">
+        <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20">
+          <Server size={28} className="text-primary" />
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold text-foreground">
+            Trading Platform
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            Your Volumetrica account linkage status
+          </p>
+        </div>
+      </div>
+
+      {isLoading && (
+        <div className="flex items-center gap-2 text-muted-foreground text-sm">
+          <Loader2 size={14} className="animate-spin" /> Loading platform
+          profile…
+        </div>
+      )}
+
+      {notProvisioned && (
+        <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
+          <p className="text-sm text-yellow-500">
+            Your account isn't linked to the trading platform yet. This usually
+            happens automatically after your first challenge purchase. Reach
+            out to support if it doesn't appear within a few minutes.
+          </p>
+        </div>
+      )}
+
+      {isError && !notProvisioned && (
+        <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-sm text-destructive">
+          {error?.message ?? "Failed to load platform profile."}
+        </div>
+      )}
+
+      {profile && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <PlatformField label="Platform User ID" value={profile.platformUserId} mono />
+          <PlatformField label="Username" value={profile.userName} />
+          <PlatformField label="Email" value={profile.email} />
+          <PlatformField label="Country" value={profile.country} />
+          <PlatformField label="City" value={profile.city} />
+          <PlatformField label="State" value={profile.state} />
+          <PlatformField
+            label="Web Access"
+            value={
+              profile.webAccessDisabled === undefined
+                ? undefined
+                : profile.webAccessDisabled
+                  ? "Disabled"
+                  : "Enabled"
+            }
+          />
+          <PlatformField
+            label="External ID"
+            value={profile.extEntityId}
+            mono
+          />
+          <PlatformField
+            label="Created"
+            value={
+              profile.createdAt
+                ? new Date(profile.createdAt).toLocaleString()
+                : undefined
+            }
+          />
+          <PlatformField
+            label="Last Updated"
+            value={
+              profile.updatedAt
+                ? new Date(profile.updatedAt).toLocaleString()
+                : undefined
+            }
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+const PlatformField = ({
+  label,
+  value,
+  mono,
+}: {
+  label: string;
+  value?: string;
+  mono?: boolean;
+}) => (
+  <div className="p-4 rounded-xl bg-muted/10 border border-border/20">
+    <p className="text-xs text-muted-foreground">{label}</p>
+    <p
+      className={`text-sm text-foreground mt-1 break-all ${mono ? "font-mono" : ""}`}
+    >
+      {value ?? "—"}
+    </p>
+  </div>
+);
 
 export default DashboardProfile;

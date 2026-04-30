@@ -16,7 +16,13 @@ import {
 } from '@tanstack/react-query';
 import { userService } from '@/services/users';
 import type { ApiResponse, PaginatedResponse, ApiError } from '@/types/api';
-import type { User, UserRole, UserFilters, UserStats } from '@/types/user';
+import type {
+  User,
+  UserRole,
+  UserFilters,
+  UserStats,
+  PlatformUserProfile,
+} from '@/types/user';
 
 // =============================================================================
 // Query key factory
@@ -29,6 +35,7 @@ export const userKeys = {
   details: () => [...userKeys.all, 'detail'] as const,
   detail: (id: string) => [...userKeys.details(), id] as const,
   stats: () => [...userKeys.all, 'stats'] as const,
+  platform: (id: string) => [...userKeys.all, 'platform', id] as const,
 };
 
 // =============================================================================
@@ -77,6 +84,23 @@ export const useUserStats = (
 // =============================================================================
 // Mutation hooks
 // =============================================================================
+
+/**
+ * Fetch the user's external trading-platform profile (Volumetrica).
+ * Returns 400 from the backend when the user isn't linked to the platform yet —
+ * consumers should treat that as the "not provisioned" state.
+ */
+export const useUserPlatformProfile = (
+  id: string | undefined,
+  options?: Omit<UseQueryOptions<ApiResponse<PlatformUserProfile>, ApiError>, 'queryKey' | 'queryFn'>,
+) =>
+  useQuery<ApiResponse<PlatformUserProfile>, ApiError>({
+    queryKey: userKeys.platform(id ?? ''),
+    queryFn: () => userService.getPlatformProfile(id as string),
+    enabled: !!id,
+    retry: false,
+    ...options,
+  });
 
 /**
  * Change a user's role (admin only).

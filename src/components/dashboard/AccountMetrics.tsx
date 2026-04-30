@@ -15,7 +15,7 @@ import {
   Moon,
   Coffee,
 } from "lucide-react";
-import { getAccountById, mockAccounts } from "@/data/mockDashboardData";
+import { useAccountView } from "@/hooks/useAccountView";
 import {
   PieChart,
   Pie,
@@ -55,7 +55,15 @@ const SESSION_TIMES = {
 };
 
 const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
-  const accountData = getAccountById(accountId) || mockAccounts[1];
+  const { data: accountData } = useAccountView(accountId);
+
+  if (!accountData) {
+    return (
+      <div className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 h-full text-sm text-muted-foreground">
+        Loading metrics…
+      </div>
+    );
+  }
 
   const formatCurrency = (value: number, showSign = false) => {
     const formatted = `$${Math.abs(value).toLocaleString()}`;

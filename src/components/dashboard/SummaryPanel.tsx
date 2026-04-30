@@ -14,7 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { getAccountById, mockAccounts } from "@/data/mockDashboardData";
+import { useAccountView } from "@/hooks/useAccountView";
 import { useState, useMemo } from "react";
 import {
   format,
@@ -100,12 +100,13 @@ const SummaryPanel = ({
 }: SummaryPanelProps) => {
   const navigate = useNavigate();
   const [viewedMonth, setViewedMonth] = useState(new Date());
-  const account = getAccountById(accountId) || mockAccounts[1];
+  const { data: account } = useAccountView(accountId);
 
   const goToPreviousMonth = () => setViewedMonth((prev) => subMonths(prev, 1));
   const goToNextMonth = () => setViewedMonth((prev) => addMonths(prev, 1));
 
   // Generate calendar data for viewed month
+  const dailyPnL = useMemo(() => account?.dailyPnL ?? [], [account]);
   const calendarDays = useMemo(() => {
     const today = new Date();
     const days: Array<{
@@ -119,12 +120,10 @@ const SummaryPanel = ({
       isSaturday: boolean;
     }> = [];
 
-    // Get the first day of the viewed month
     const monthStart = startOfMonth(viewedMonth);
     const daysInMonth = getDaysInMonth(viewedMonth);
-    const startDayOfWeek = getDay(monthStart); // 0 = Sunday
+    const startDayOfWeek = getDay(monthStart);
 
-    // Add empty cells for days before the month starts
     for (let i = 0; i < startDayOfWeek; i++) {
       const prevDate = subDays(monthStart, startDayOfWeek - i);
       days.push({
@@ -139,21 +138,19 @@ const SummaryPanel = ({
       });
     }
 
-    // Add days of the viewed month
     for (let i = 0; i < daysInMonth; i++) {
       const date = new Date(monthStart);
       date.setDate(i + 1);
       const dayOfWeek = date.getDay();
       const isSaturday = dayOfWeek === 6;
 
-      // Get P&L for this day from dailyPnL array (index from end)
       const daysFromToday = Math.floor(
         (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24),
       );
-      const pnlIndex = account.dailyPnL.length - 1 - daysFromToday;
+      const pnlIndex = dailyPnL.length - 1 - daysFromToday;
       const pnl =
-        !isSaturday && pnlIndex >= 0 && pnlIndex < account.dailyPnL.length
-          ? account.dailyPnL[pnlIndex]
+        !isSaturday && pnlIndex >= 0 && pnlIndex < dailyPnL.length
+          ? dailyPnL[pnlIndex]
           : 0;
 
       days.push({
@@ -169,7 +166,15 @@ const SummaryPanel = ({
     }
 
     return days;
-  }, [account.dailyPnL, selectedDate, viewedMonth]);
+  }, [dailyPnL, selectedDate, viewedMonth]);
+
+  if (!account) {
+    return (
+      <div className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 h-full text-sm text-muted-foreground">
+        Loading account…
+      </div>
+    );
+  }
 
   // Calculate progress percentage
   const profitProgress = Math.min(
