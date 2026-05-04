@@ -55,8 +55,8 @@ const TIER_CONFIG: Record<AffiliateTier, TierConfig> = {
     accentClass: "bg-gold-dark/10",
     borderClass: "border-gold-dark/30",
     nextTier: "Dynasty Partner",
-    nextSalesGoal: 50,
-    nextRevenueGoal: 10000,
+    nextSalesGoal: 30,
+    nextRevenueGoal: 7500,
   },
   "Dynasty Partner": {
     commission: 15,
@@ -307,7 +307,7 @@ const DashboardAffiliate = () => {
                           "en-US",
                           { maximumFractionDigits: 0 }
                         )}{" "}
-                        / $10,000
+                        / $7,500
                       </p>
                     </div>
                     <div className="w-full bg-background/40 rounded-full h-2 border border-border/20">
