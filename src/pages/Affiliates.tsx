@@ -51,7 +51,7 @@ const affiliateBenefits = [
     icon: DollarSign,
     title: "Up to 15% Commission on Every Referred Sale",
     description:
-      "Earn on every evaluation, activation, or plan purchase your audience makes through your affiliate link. Community and Growth affiliates earn 10%; Dynasty Partners earn 15%. Straightforward, consistent, and transparent.",
+      "Earn on every evaluation, activation, or plan purchase your audience makes through your affiliate link. Community Affiliates earn 10%, Growth Affiliates earn 12%, and Dynasty Partners earn 15%. Straightforward, consistent, and transparent.",
   },
   {
     icon: Shield,
@@ -94,7 +94,7 @@ const tiers = [
     name: "Growth Affiliate",
     tagline: "For affiliates with an active audience and a track record",
     description:
-      "You have consistent referral activity, an engaged community, and a real presence in the trading or financial education space.",
+      "You have consistent referral activity, an engaged community, and a real presence in the trading or financial education space. Unlocked after 15 qualified sales in a rolling 90-day period.",
     perks: [
       "Everything in Community Affiliate",
       "Priority partner support",
@@ -103,14 +103,14 @@ const tiers = [
       "Recognition as an established Dynasty partner",
     ],
     badge: "Established",
-    commission: "10%",
+    commission: "12%",
   },
   {
     icon: Crown,
     name: "Dynasty Partner",
     tagline: "For high-performing affiliates driving meaningful results",
     description:
-      "You're building a real brand presence and consistently bringing quality-referred traders to Dynasty Futures. This tier is for serious, long-term partners.",
+      "You're building a real brand presence and consistently bringing quality-referred traders to Dynasty Futures. Unlocked after 30 qualified sales or $7,500 in referred revenue in a rolling 90-day period. Requires a clean compliance history.",
     perks: [
       "Everything in Growth Affiliate",
       "Dedicated partnership contact",
@@ -147,7 +147,7 @@ const steps = [
     number: "04",
     title: "Get Approved and Start Sharing",
     description:
-      "Once approved, you'll receive your affiliate link and onboarding materials. The first 10 approved affiliates also receive the launch partner offer: 20% commission for their first 3 months, transitioning to Dynasty Partner status at 15% thereafter.",
+      "Once approved, you'll receive your affiliate link and onboarding materials. The first 10 approved affiliates also receive the launch partner offer: 20% commission for their first 3 months, transitioning into the standard tier structure based on performance thereafter.",
   },
 ];
 
@@ -160,17 +160,17 @@ const affiliateFaqs = [
   {
     question: "How much commission do affiliates earn?",
     answer:
-      "Commission rates vary by tier. Community and Growth affiliates earn 10% on every referred sale. Dynasty Partners earn 15%. This includes evaluations, activations, and plan purchases made through your affiliate link.",
+      "Commission rates vary by tier. Community Affiliates earn 10%, Growth Affiliates earn 12%, and Dynasty Partners earn 15% on every referred sale. This includes evaluations, activations, and plan purchases made through your affiliate link.",
   },
   {
     question: "Do all affiliate tiers earn the same commission?",
     answer:
-      "No. Community and Growth affiliates earn 10% commission, while Dynasty Partners earn 15%. The tier system reflects both commission rate and level of recognition, access, and support. As your affiliate presence grows, so does your partnership with Dynasty Futures.",
+      "No. Community Affiliates earn 10%, Growth Affiliates earn 12%, and Dynasty Partners earn 15%. The tier system reflects both commission rate and level of recognition, access, and support. As your affiliate presence grows, so does your partnership with Dynasty Futures.",
   },
   {
     question: "What is the Founding Affiliate perk?",
     answer:
-      "The first 10 approved Dynasty Futures affiliates receive 20% commission for their first 3 months as part of our Launch Partner Offer. After this period, affiliates transition to Dynasty Partner status at 15% commission. This benefit is available only to the first 10 approved partners and will not be available after those spots are filled.",
+      "The first 10 approved Dynasty Futures affiliates receive 20% commission for their first 3 months as part of our Launch Partner Offer. After this period, affiliates transition into the standard tier structure based on performance. This benefit is available only to the first 10 approved partners and will not be available after those spots are filled.",
   },
   {
     question: "Do I need to be a Dynasty Futures user first?",
@@ -186,6 +186,16 @@ const affiliateFaqs = [
     question: "When do I get my affiliate link or code?",
     answer:
       "You will receive your affiliate link and onboarding materials after your application is approved. For the first 10 approved affiliates, the founding affiliate partner code is issued at the time of approval.",
+  },
+  {
+    question: "What counts as a qualified sale?",
+    answer:
+      "A qualified sale is a referred purchase that is not refunded, charged back, disputed, self-referred, or flagged for abuse. Tier progression and commission payouts are based on qualified sales only.",
+  },
+  {
+    question: "How is my affiliate tier determined?",
+    answer:
+      "Tier status is based on qualified sales, referred revenue, and overall program compliance over a rolling 90-day period. Growth Affiliate is unlocked after 15 qualified sales. Dynasty Partner is unlocked after 30 qualified sales or $7,500 in referred revenue, with a clean compliance history. Dynasty Futures may review affiliate status to protect program integrity.",
   },
 ];
 
@@ -453,6 +463,17 @@ const Affiliates = () => {
                 </ScrollReveal>
               ))}
             </div>
+            <ScrollReveal delay={400}>
+              <div className="max-w-5xl mx-auto mt-8 space-y-3">
+                <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                  <span className="text-foreground font-semibold">Qualified sale:</span>{" "}
+                  A qualified sale is a referred purchase that is not refunded, charged back, disputed, self-referred, or flagged for abuse.
+                </p>
+                <p className="text-sm text-muted-foreground text-center leading-relaxed">
+                  Tier status is based on qualified sales, referred revenue, and overall program compliance. Dynasty Futures may review affiliate status to protect program integrity.
+                </p>
+              </div>
+            </ScrollReveal>
           </div>
 
           {/* ─── Founding Affiliate Perk ──────────────────────────────── */}
@@ -486,10 +507,8 @@ const Affiliates = () => {
                           20% commission
                         </span>{" "}
                         for their first 3 months. After this period, affiliates
-                        transition to Dynasty Partner status at{" "}
-                        <span className="text-primary font-semibold">
-                          15% commission
-                        </span>.
+                        transition into the standard tier structure based on
+                        performance.
                       </p>
                       <p className="text-muted-foreground text-base leading-relaxed mb-4">
                         This is a founding affiliate benefit designed to give
@@ -512,7 +531,7 @@ const Affiliates = () => {
                           For first 3 months
                         </p>
                         <p className="text-xs text-primary font-medium">
-                          Then 15% · First 10 affiliates only
+                          Then standard tier · First 10 affiliates only
                         </p>
                       </div>
                     </div>
