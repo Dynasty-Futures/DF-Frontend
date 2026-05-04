@@ -9,12 +9,9 @@ import {
   Target,
   ShoppingCart,
   Percent,
-  Gift,
-  Calendar,
   Activity,
   Sparkles,
   Headphones,
-  Zap,
   FileText,
   Download,
   Mail,
@@ -23,12 +20,56 @@ import {
   X,
   Copy,
   Shield,
+  Award,
+  Info,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { toast } from "sonner";
 
-// Mock affiliate data
+type AffiliateTier = "Community Affiliate" | "Growth Affiliate" | "Dynasty Partner";
+
+interface TierConfig {
+  commission: number;
+  colorClass: string;
+  accentClass: string;
+  borderClass: string;
+  nextTier: AffiliateTier | null;
+  nextSalesGoal: number | null;
+  nextRevenueGoal: number | null;
+}
+
+const TIER_CONFIG: Record<AffiliateTier, TierConfig> = {
+  "Community Affiliate": {
+    commission: 10,
+    colorClass: "text-primary",
+    accentClass: "bg-primary/10",
+    borderClass: "border-primary/30",
+    nextTier: "Growth Affiliate",
+    nextSalesGoal: 15,
+    nextRevenueGoal: null,
+  },
+  "Growth Affiliate": {
+    commission: 12,
+    colorClass: "text-gold-dark",
+    accentClass: "bg-gold-dark/10",
+    borderClass: "border-gold-dark/30",
+    nextTier: "Dynasty Partner",
+    nextSalesGoal: 50,
+    nextRevenueGoal: 10000,
+  },
+  "Dynasty Partner": {
+    commission: 15,
+    colorClass: "text-gold-light",
+    accentClass: "bg-gold-light/10",
+    borderClass: "border-gold-light/30",
+    nextTier: null,
+    nextSalesGoal: null,
+    nextRevenueGoal: null,
+  },
+};
+
+// Centralized mock data — replace with real API response when backend is ready
 const affiliateData = {
   referralLink: "https://dynastyfutures.com/ref/USER123",
   discountCode: "DYNASTY15",
@@ -39,17 +80,18 @@ const affiliateData = {
   signups: 89,
   conversions: 34,
   totalSales: 34,
+  currentTier: "Community Affiliate" as AffiliateTier,
+  qualifiedSales90d: 8,
+  referredRevenue90d: 1240.0,
 };
 
 const benefits = [
-  { icon: Percent, title: "40% Commission", subtitle: "Per Sale" },
-  { icon: Gift, title: "15% Discount", subtitle: "For Your Audience" },
-  { icon: TrendingUp, title: "Lifetime", subtitle: "Commissions" },
-  { icon: Calendar, title: "Weekly Payouts", subtitle: "Every Friday" },
+  { icon: Percent, title: "10%–15% Commission", subtitle: "Tier-Based" },
   { icon: Activity, title: "Real-Time", subtitle: "Dashboard Tracking" },
-  { icon: Sparkles, title: "Free Evals", subtitle: "For Creators" },
-  { icon: Headphones, title: "Priority", subtitle: "Creator Support" },
-  { icon: Zap, title: "Early Access", subtitle: "Features & Promos" },
+  { icon: Tag, title: "Discount Code", subtitle: "For Your Audience" },
+  { icon: Sparkles, title: "Branded Assets", subtitle: "Promotional Materials" },
+  { icon: FileText, title: "Documents", subtitle: "Guidelines & Agreements" },
+  { icon: Headphones, title: "Partner Support", subtitle: "Affiliate Team" },
 ];
 
 const allowedItems = [
@@ -79,6 +121,8 @@ const DashboardAffiliate = () => {
     navigator.clipboard.writeText(text);
     toast.success(`${label} copied to clipboard!`);
   };
+
+  const tierConfig = TIER_CONFIG[affiliateData.currentTier];
 
   return (
     <div className="space-y-8 pt-16 lg:pt-0">
@@ -123,14 +167,14 @@ const DashboardAffiliate = () => {
             </Button>
           </div>
 
-          {/* Discount Code Card */}
+          {/* Customer Discount Code Card */}
           <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-6 transition-all duration-300 hover:border-primary/30 hover:bg-card/70 group">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-xl bg-gold-dark/10 flex items-center justify-center">
                 <Tag size={20} className="text-gold-dark" />
               </div>
               <span className="text-sm font-medium text-muted-foreground">
-                Your Discount Code
+                Customer Discount Code
               </span>
             </div>
             <div className="bg-background/50 rounded-xl p-3 mb-2 border border-border/20">
@@ -139,7 +183,7 @@ const DashboardAffiliate = () => {
               </p>
             </div>
             <p className="text-xs text-muted-foreground text-center mb-4">
-              Your audience receives 15% off
+              Share this code so your audience saves on their purchase
             </p>
             <Button
               onClick={() =>
@@ -151,6 +195,162 @@ const DashboardAffiliate = () => {
               Copy Code
             </Button>
           </div>
+        </div>
+
+        {/* Tier Progress */}
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-1 h-6 bg-primary rounded-full"></div>
+            <h2 className="text-lg font-semibold text-foreground">
+              Tier Progress
+            </h2>
+          </div>
+
+          <div
+            className={`rounded-2xl bg-card/50 backdrop-blur-sm border ${tierConfig.borderClass} p-6`}
+          >
+            {/* Current tier & commission rate */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div
+                  className={`w-10 h-10 rounded-xl ${tierConfig.accentClass} flex items-center justify-center`}
+                >
+                  <Award size={20} className={tierConfig.colorClass} />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Current Tier</p>
+                  <p
+                    className={`text-base font-bold ${tierConfig.colorClass}`}
+                  >
+                    {affiliateData.currentTier}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Percent size={20} className="text-primary" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    Your Commission Rate
+                  </p>
+                  <p className="text-base font-bold text-primary">
+                    {tierConfig.commission}% per sale
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Rolling 90-day stats */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-background/30 rounded-xl p-3 border border-border/20">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Qualified Sales (90-day)
+                </p>
+                <p className="text-xl font-bold text-foreground">
+                  {affiliateData.qualifiedSales90d}
+                </p>
+              </div>
+              <div className="bg-background/30 rounded-xl p-3 border border-border/20">
+                <p className="text-xs text-muted-foreground mb-1">
+                  Referred Revenue (90-day)
+                </p>
+                <p className="text-xl font-bold text-foreground">
+                  $
+                  {affiliateData.referredRevenue90d.toLocaleString("en-US", {
+                    minimumFractionDigits: 2,
+                  })}
+                </p>
+              </div>
+            </div>
+
+            {/* Progress toward next tier */}
+            {tierConfig.nextTier ? (
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs text-muted-foreground">
+                      Progress toward{" "}
+                      <span className="text-foreground font-medium">
+                        {tierConfig.nextTier}
+                      </span>
+                    </p>
+                    <p className="text-xs text-foreground font-medium">
+                      {affiliateData.qualifiedSales90d} /{" "}
+                      {tierConfig.nextSalesGoal} sales
+                    </p>
+                  </div>
+                  <div className="w-full bg-background/40 rounded-full h-2 border border-border/20">
+                    <div
+                      className="h-2 rounded-full bg-primary transition-all duration-700"
+                      style={{
+                        width: `${Math.min(
+                          (affiliateData.qualifiedSales90d /
+                            tierConfig.nextSalesGoal!) *
+                            100,
+                          100
+                        )}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {tierConfig.nextRevenueGoal !== null && (
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-xs text-muted-foreground">
+                        Revenue path (alternative to sales goal)
+                      </p>
+                      <p className="text-xs text-foreground font-medium">
+                        $
+                        {affiliateData.referredRevenue90d.toLocaleString(
+                          "en-US",
+                          { maximumFractionDigits: 0 }
+                        )}{" "}
+                        / $10,000
+                      </p>
+                    </div>
+                    <div className="w-full bg-background/40 rounded-full h-2 border border-border/20">
+                      <div
+                        className="h-2 rounded-full bg-gold-dark transition-all duration-700"
+                        style={{
+                          width: `${Math.min(
+                            (affiliateData.referredRevenue90d /
+                              tierConfig.nextRevenueGoal) *
+                              100,
+                            100
+                          )}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 bg-gold-light/10 rounded-xl p-4 border border-gold-light/20">
+                <Award size={20} className="text-gold-light flex-shrink-0" />
+                <p className="text-sm font-semibold text-gold-light">
+                  Highest tier unlocked — Dynasty Partner
+                </p>
+              </div>
+            )}
+
+            {/* Qualified sale definition */}
+            <div className="flex items-start gap-2 mt-5 pt-4 border-t border-border/20">
+              <Info size={14} className="text-muted-foreground mt-0.5 flex-shrink-0" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                A qualified sale is a referred purchase that is not refunded,
+                charged back, disputed, self-referred, or flagged for abuse.
+              </p>
+            </div>
+          </div>
+
+          {/* Compliance note */}
+          <p className="text-xs text-muted-foreground mt-3 pl-1 leading-relaxed">
+            Tier status is based on qualified sales, referred revenue, and
+            overall program compliance. Dynasty Futures may review affiliate
+            status to protect program integrity.
+          </p>
         </div>
 
         {/* Earnings Overview */}
@@ -263,7 +463,7 @@ const DashboardAffiliate = () => {
               Affiliate Benefits
             </h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {benefits.map((benefit, index) => {
               const Icon = benefit.icon;
               return (
