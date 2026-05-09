@@ -2,8 +2,7 @@ import { Helmet } from 'react-helmet-async';
 
 const SITE_NAME = 'Dynasty Futures';
 const BASE_URL = 'https://www.dynastyfuturesdyn.com';
-// TODO: Replace with a proper 1200x630 OG image when available
-const DEFAULT_OG_IMAGE = `${BASE_URL}/icon-512.png`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png`;
 
 interface PageMetaProps {
   title: string;
@@ -31,6 +30,8 @@ const PageMeta = ({ title, description, path, ogImage, noIndex, rawTitle }: Page
       <meta property="og:description" content={description} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:image" content={image} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={SITE_NAME} />
 
