@@ -92,7 +92,8 @@ const isRecentlyUnlocked = (dateStr?: string): boolean => {
   return diffDays <= 7;
 };
 
-// Mock achievements data - ranked by difficulty within each category
+// Achievement definitions — state, progress, and unlockedDate are driven by live
+// trading data. All achievements default to locked until real data supports them.
 const achievements: Achievement[] = [
   // === PROGRESSION (easiest to hardest) ===
   {
@@ -102,8 +103,7 @@ const achievements: Achievement[] = [
     icon: <Target size={24} className="text-primary" />,
     category: "progression",
     rarity: "common",
-    state: "unlocked",
-    unlockedDate: "Jan 15, 2025",
+    state: "locked",
   },
   {
     id: "the-analyst",
@@ -112,8 +112,7 @@ const achievements: Achievement[] = [
     icon: <BookOpen size={24} className="text-primary" />,
     category: "progression",
     rarity: "common",
-    state: "in-progress",
-    progress: { current: 32, target: 50, label: "32 / 50 entries" },
+    state: "locked",
   },
   {
     id: "funded-trader",
@@ -122,8 +121,7 @@ const achievements: Achievement[] = [
     icon: <Award size={24} className="text-primary" />,
     category: "progression",
     rarity: "rare",
-    state: "unlocked",
-    unlockedDate: "Jan 20, 2025",
+    state: "locked",
   },
   {
     id: "1k-profit-club",
@@ -132,8 +130,7 @@ const achievements: Achievement[] = [
     icon: <TrendingUp size={24} className="text-primary" />,
     category: "progression",
     rarity: "rare",
-    state: "unlocked",
-    unlockedDate: "Feb 5, 2025",
+    state: "locked",
   },
   {
     id: "5k-profit-club",
@@ -142,8 +139,7 @@ const achievements: Achievement[] = [
     icon: <Gem size={24} className="text-primary" />,
     category: "progression",
     rarity: "epic",
-    state: "in-progress",
-    progress: { current: 3500, target: 5000, label: "$3,500 / $5,000" },
+    state: "locked",
   },
   {
     id: "10k-profit-club",
@@ -161,8 +157,7 @@ const achievements: Achievement[] = [
     icon: <Crown size={24} className="text-primary" />,
     category: "progression",
     rarity: "legendary",
-    state: "in-progress",
-    progress: { current: 2, target: 6, label: "2 / 6 months" },
+    state: "locked",
   },
 
   // === PERFORMANCE (easiest to hardest) ===
@@ -173,8 +168,7 @@ const achievements: Achievement[] = [
     icon: <Snowflake size={24} className="text-primary" />,
     category: "performance",
     rarity: "common",
-    state: "unlocked",
-    unlockedDate: "Dec 14, 2025",
+    state: "locked",
   },
   {
     id: "speed-demon",
@@ -183,8 +177,7 @@ const achievements: Achievement[] = [
     icon: <Timer size={24} className="text-primary" />,
     category: "performance",
     rarity: "rare",
-    state: "unlocked",
-    unlockedDate: "Feb 10, 2025",
+    state: "locked",
   },
   {
     id: "diversified",
@@ -193,8 +186,7 @@ const achievements: Achievement[] = [
     icon: <Layers size={24} className="text-primary" />,
     category: "performance",
     rarity: "rare",
-    state: "in-progress",
-    progress: { current: 3, target: 5, label: "3 / 5 instruments" },
+    state: "locked",
   },
   {
     id: "risk-manager",
@@ -203,8 +195,7 @@ const achievements: Achievement[] = [
     icon: <Shield size={24} className="text-primary" />,
     category: "performance",
     rarity: "rare",
-    state: "unlocked",
-    unlockedDate: "Feb 8, 2025",
+    state: "locked",
   },
   {
     id: "hot-streak",
@@ -213,8 +204,7 @@ const achievements: Achievement[] = [
     icon: <Zap size={24} className="text-primary" />,
     category: "performance",
     rarity: "rare",
-    state: "unlocked",
-    unlockedDate: "Feb 8, 2025",
+    state: "locked",
   },
   {
     id: "consistency-is-key",
@@ -223,8 +213,7 @@ const achievements: Achievement[] = [
     icon: <Percent size={24} className="text-primary" />,
     category: "performance",
     rarity: "epic",
-    state: "in-progress",
-    progress: { current: 18, target: 30, label: "18 / 30 days" },
+    state: "locked",
   },
   {
     id: "perfect-week",
@@ -271,8 +260,7 @@ const achievements: Achievement[] = [
     icon: <CircleDollarSign size={24} className="text-primary" />,
     category: "payout",
     rarity: "common",
-    state: "unlocked",
-    unlockedDate: "Feb 1, 2025",
+    state: "locked",
   },
   {
     id: "consistent-cashout",
@@ -281,8 +269,7 @@ const achievements: Achievement[] = [
     icon: <Repeat size={24} className="text-primary" />,
     category: "payout",
     rarity: "epic",
-    state: "in-progress",
-    progress: { current: 1, target: 3, label: "1 / 3 months" },
+    state: "locked",
   },
 ];
 
@@ -531,16 +518,24 @@ const DashboardAchievements = () => {
               Track your trading milestones and unlock rewards
             </p>
           </div>
-          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-primary/10 border border-primary/30">
-            <Award size={24} className="text-primary" />
-            <span className="text-xl font-bold text-foreground">
-              {unlockedCount}
-            </span>
-            <span className="text-muted-foreground">of</span>
-            <span className="text-xl font-bold text-foreground">
-              {totalCount}
-            </span>
-            <span className="text-muted-foreground text-sm">Unlocked</span>
+          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-muted/20 border border-border/30">
+            <Award size={24} className="text-muted-foreground" />
+            {unlockedCount === 0 ? (
+              <span className="text-sm text-muted-foreground">
+                No achievements earned yet
+              </span>
+            ) : (
+              <>
+                <span className="text-xl font-bold text-foreground">
+                  {unlockedCount}
+                </span>
+                <span className="text-muted-foreground">of</span>
+                <span className="text-xl font-bold text-foreground">
+                  {totalCount}
+                </span>
+                <span className="text-muted-foreground text-sm">Unlocked</span>
+              </>
+            )}
           </div>
         </div>
       </ScrollReveal>
