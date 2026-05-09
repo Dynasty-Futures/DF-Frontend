@@ -23,6 +23,7 @@ import {
   CheckCircle,
   Zap,
   BarChart2,
+  Clock,
 } from "lucide-react";
 
 const tradeFirstCards = [
@@ -475,6 +476,57 @@ const Affiliates = () => {
               </div>
             </ScrollReveal>
           </div>
+
+          {/* ─── Affiliate Payout Details ─────────────────────────────── */}
+          <ScrollReveal>
+            <div className="mb-20 md:mb-28 max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
+                  Affiliate Payout{" "}
+                  <span className="text-gradient-animated">Details</span>
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-gradient-card rounded-2xl border border-border/50 p-6 hover:border-primary/30 transition-all duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <DollarSign className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-display font-semibold text-foreground mb-2">
+                        Minimum Payout Threshold
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        A minimum balance of{" "}
+                        <span className="text-primary font-semibold">$1,000</span>{" "}
+                        is required before a payout is issued.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gradient-card rounded-2xl border border-border/50 p-6 hover:border-primary/30 transition-all duration-300">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <Clock className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-display font-semibold text-foreground mb-2">
+                        Monthly Payout Cycle
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Commissions are paid monthly. Earnings from the prior
+                        month are issued by the{" "}
+                        <span className="text-primary font-semibold">
+                          15th of the following month
+                        </span>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
 
           {/* ─── Founding Affiliate Perk ──────────────────────────────── */}
           <ScrollReveal>
