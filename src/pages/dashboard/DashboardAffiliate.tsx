@@ -574,6 +574,44 @@ const DashboardAffiliate = () => {
           </div>
         </div>
 
+        {/* Affiliate Payout Details */}
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-1 h-6 bg-primary rounded-full"></div>
+            <h2 className="text-lg font-semibold text-foreground">
+              Affiliate Payout Details
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-primary/30 hover:translate-y-[-2px]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <CircleDollarSign size={20} className="text-primary" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mb-1">
+                Minimum Payout Threshold
+              </p>
+              <p className="text-2xl font-bold text-primary">$1,000</p>
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                Required balance before a payout is issued
+              </p>
+            </div>
+            <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-gold-dark/30 hover:translate-y-[-2px]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-gold-dark/10 flex items-center justify-center">
+                  <Clock size={20} className="text-gold-dark" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground mb-1">Payout Cycle</p>
+              <p className="text-2xl font-bold text-gold-dark">Monthly</p>
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">
+                Prior month commissions paid by the 15th of the following month
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Performance Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
