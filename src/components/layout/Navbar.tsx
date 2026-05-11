@@ -6,7 +6,6 @@ import {
   User as UserIcon,
   Home,
   LayoutDashboard,
-  ShieldCheck,
   Info,
   Tag,
   BookOpen,
@@ -41,9 +40,6 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/", icon: Home },
     ...(isAuthenticated ? [{ name: "Dashboard", path: "/dashboard", icon: LayoutDashboard }] : []),
-    ...(isAuthenticated && user?.role === "ADMIN"
-      ? [{ name: "Admin", path: "/admin", icon: ShieldCheck }]
-      : []),
     { name: "About", path: "/about", icon: Info },
     { name: "Pricing", path: "/pricing", icon: Tag },
     { name: "Rules", path: "/rules", icon: BookOpen },
