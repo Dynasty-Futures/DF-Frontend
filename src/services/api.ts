@@ -34,6 +34,24 @@ export const setTokenAccessor = (accessor: () => string | null): void => {
 };
 
 // =============================================================================
+// Unauthorized handler
+// =============================================================================
+// Fires when the backend returns 401 on any authenticated request OTHER than
+// the auth endpoints themselves (login/register/refresh — those handle their
+// own 401 semantics). AuthContext registers a handler that clears local state
+// and shows a "signed in elsewhere" toast.
+
+type UnauthorizedHandler = (reason: string) => void;
+let onUnauthorized: UnauthorizedHandler | null = null;
+
+/** Paths whose 401s are NOT treated as session-invalidation events. */
+const AUTH_BYPASS_PATHS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/google'];
+
+export const setUnauthorizedHandler = (handler: UnauthorizedHandler | null): void => {
+  onUnauthorized = handler;
+};
+
+// =============================================================================
 // Request helpers
 // =============================================================================
 
@@ -189,12 +207,21 @@ const request = async <T>(
       signal: options?.signal,
     });
 
-    return handleResponse<T>(response, method, url);
+    return await handleResponse<T>(response, method, url);
   } catch (error) {
     logError(method, url, error);
 
-    // Re-throw ApiErrors as-is
+    // Re-throw ApiErrors as-is, but first notify the unauthorized handler
+    // when a non-auth request hits 401. This is how the frontend learns the
+    // session was killed (e.g., the user logged in on another browser).
     if (error instanceof ApiError) {
+      if (
+        error.status === 401 &&
+        onUnauthorized &&
+        !AUTH_BYPASS_PATHS.some((p) => path.startsWith(p))
+      ) {
+        onUnauthorized(error.code);
+      }
       throw error;
     }
 

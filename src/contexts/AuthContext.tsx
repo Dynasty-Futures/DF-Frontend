@@ -20,9 +20,10 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { toast } from 'sonner';
 import type { User, UserRole } from '@/types/user';
 import { authApi } from '@/services/auth';
-import { setTokenAccessor } from '@/services/api';
+import { setTokenAccessor, setUnauthorizedHandler } from '@/services/api';
 import { ApiError } from '@/types/api';
 
 // ---------------------------------------------------------------------------
@@ -30,6 +31,13 @@ import { ApiError } from '@/types/api';
 // ---------------------------------------------------------------------------
 
 const REFRESH_TOKEN_KEY = 'df_refresh_token';
+const AUTH_CHANNEL_NAME = 'df-auth';
+
+// Cross-tab sync message shapes. `BroadcastChannel` only delivers to OTHER
+// tabs, so a tab never receives its own posts.
+type AuthBroadcastMessage =
+  | { type: 'login'; user: User; accessToken: string; refreshToken: string }
+  | { type: 'logout' };
 
 // ---------------------------------------------------------------------------
 // Context shape
@@ -88,6 +96,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const accessTokenRef = useRef<string | null>(null);
   const refreshTokenRef = useRef<string | null>(null);
 
+  // BroadcastChannel used to sync login/logout across tabs in the same browser.
+  // Held in a ref so all callbacks see the same instance.
+  const authChannelRef = useRef<BroadcastChannel | null>(null);
+
+  const postAuthMessage = useCallback((message: AuthBroadcastMessage) => {
+    authChannelRef.current?.postMessage(message);
+  }, []);
+
   // -----------------------------------------------------------------------
   // Token helpers
   // -----------------------------------------------------------------------
@@ -111,6 +127,76 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     setTokenAccessor(() => accessTokenRef.current);
+  }, []);
+
+  // -----------------------------------------------------------------------
+  // Register the unauthorized handler.
+  // Fires when any non-auth API call returns 401 — i.e. the session was
+  // invalidated server-side (most commonly because the user signed in on
+  // another browser, which our backend enforces by deleting prior sessions).
+  // -----------------------------------------------------------------------
+
+  useEffect(() => {
+    setUnauthorizedHandler((code) => {
+      // Idempotent: if we already cleared state, skip the duplicate toast.
+      if (accessTokenRef.current === null && refreshTokenRef.current === null) {
+        return;
+      }
+
+      accessTokenRef.current = null;
+      refreshTokenRef.current = null;
+      if (typeof window !== 'undefined') localStorage.removeItem(REFRESH_TOKEN_KEY);
+      setUser(null);
+
+      // Tell sibling tabs they're also logged out — they share localStorage
+      // and may have their own in-memory access token still loaded.
+      postAuthMessage({ type: 'logout' });
+
+      // Distinguish "kicked by another login" from a naturally-expired token.
+      // Backend returns UNAUTHORIZED for invalidated sessions and TOKEN_EXPIRED
+      // when the access token has aged out without a refresh.
+      if (code === 'TOKEN_EXPIRED') {
+        toast.error('Your session has expired. Please sign in again.');
+      } else {
+        toast.error('You were signed out because this account signed in on another device.');
+      }
+    });
+
+    return () => setUnauthorizedHandler(null);
+  }, [postAuthMessage]);
+
+  // -----------------------------------------------------------------------
+  // Cross-tab login/logout sync via BroadcastChannel.
+  // BroadcastChannel only delivers to OTHER tabs, so we never echo our own
+  // messages back into our state.
+  // -----------------------------------------------------------------------
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') {
+      return;
+    }
+
+    const channel = new BroadcastChannel(AUTH_CHANNEL_NAME);
+    authChannelRef.current = channel;
+
+    channel.onmessage = (event: MessageEvent<AuthBroadcastMessage>) => {
+      const msg = event.data;
+      if (msg.type === 'login') {
+        accessTokenRef.current = msg.accessToken;
+        refreshTokenRef.current = msg.refreshToken;
+        setUser(msg.user);
+      } else if (msg.type === 'logout') {
+        accessTokenRef.current = null;
+        refreshTokenRef.current = null;
+        // The originating tab already removed the localStorage entry.
+        setUser(null);
+      }
+    };
+
+    return () => {
+      channel.close();
+      authChannelRef.current = null;
+    };
   }, []);
 
   // -----------------------------------------------------------------------
@@ -162,8 +248,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const res = await authApi.register(data);
       saveTokens(res.data.accessToken, res.data.refreshToken);
       setUser(res.data.user);
+      postAuthMessage({
+        type: 'login',
+        user: res.data.user,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      });
     },
-    [saveTokens]
+    [saveTokens, postAuthMessage]
   );
 
   const login = useCallback(
@@ -171,8 +263,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const res = await authApi.login(email, password);
       saveTokens(res.data.accessToken, res.data.refreshToken);
       setUser(res.data.user);
+      postAuthMessage({
+        type: 'login',
+        user: res.data.user,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      });
     },
-    [saveTokens]
+    [saveTokens, postAuthMessage]
   );
 
   const googleLogin = useCallback(
@@ -180,8 +278,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       const res = await authApi.googleAuth(idToken);
       saveTokens(res.data.accessToken, res.data.refreshToken);
       setUser(res.data.user);
+      postAuthMessage({
+        type: 'login',
+        user: res.data.user,
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken,
+      });
     },
-    [saveTokens]
+    [saveTokens, postAuthMessage]
   );
 
   const logout = useCallback(async () => {
@@ -190,6 +294,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // Optimistically clear local state
     clearTokens();
     setUser(null);
+    postAuthMessage({ type: 'logout' });
 
     // Fire-and-forget server logout
     if (rt) {
@@ -202,7 +307,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         }
       }
     }
-  }, [clearTokens]);
+  }, [clearTokens, postAuthMessage]);
 
   const refreshUser = useCallback(async () => {
     try {
