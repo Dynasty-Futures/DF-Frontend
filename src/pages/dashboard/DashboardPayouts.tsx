@@ -1,15 +1,14 @@
 import {
-  ArrowRight,
+  ArrowUpRight,
   Clock,
   CheckCircle,
   XCircle,
   Globe,
   CircleDollarSign,
-  ArrowUpRight,
   Info,
+  CircleOff,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -20,39 +19,21 @@ import {
 } from "@/components/ui/table";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
-const eligibleAccounts = [
-  {
-    id: "1",
-    account: "100K Standard",
-    balance: "$104,800",
-    eligible: "$4,800",
-  },
-  { id: "2", account: "150K Builder", balance: "$158,500", eligible: "$8,500" },
-];
+// Future integration: populate these from API response for the authenticated trader
+const eligibleAccounts: {
+  id: string;
+  account: string;
+  balance: string;
+  eligible: string;
+}[] = [];
 
-const payoutHistory = [
-  {
-    id: "1",
-    date: "2025-01-28",
-    amount: "$3,500",
-    method: "Rise Works",
-    status: "Completed",
-  },
-  {
-    id: "2",
-    date: "2025-01-15",
-    amount: "$2,200",
-    method: "Rise Works",
-    status: "Completed",
-  },
-  {
-    id: "3",
-    date: "2025-02-05",
-    amount: "$4,800",
-    method: "Rise Works",
-    status: "Processing",
-  },
-];
+const payoutHistory: {
+  id: string;
+  date: string;
+  amount: string;
+  method: string;
+  status: string;
+}[] = [];
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -190,32 +171,47 @@ const DashboardPayouts = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {eligibleAccounts.map((account, index) => (
-                <TableRow
-                  key={account.id}
-                  className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                    index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-                  }`}
-                >
-                  <TableCell className="font-medium text-foreground py-6">
-                    {account.account}
-                  </TableCell>
-                  <TableCell className="text-foreground py-6">
-                    {account.balance}
-                  </TableCell>
-                  <TableCell className="py-6">
-                    <span className="px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold border border-primary/20">
-                      {account.eligible}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right py-6">
-                    <Button className="btn-gradient-animated text-primary-foreground">
-                      Request Payout
-                      <ArrowRight size={16} className="ml-2" />
-                    </Button>
+              {eligibleAccounts.length === 0 ? (
+                <TableRow className="border-border/30 hover:bg-transparent">
+                  <TableCell colSpan={4} className="py-12 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
+                        <CircleOff size={20} className="text-muted-foreground/50" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">
+                        No funded accounts are currently eligible for payout.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Eligible funded accounts will appear here once payout requirements are met.
+                      </p>
+                    </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                eligibleAccounts.map((account, index) => (
+                  <TableRow
+                    key={account.id}
+                    className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                      index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                    }`}
+                  >
+                    <TableCell className="font-medium text-foreground py-6">
+                      {account.account}
+                    </TableCell>
+                    <TableCell className="text-foreground py-6">
+                      {account.balance}
+                    </TableCell>
+                    <TableCell className="py-6">
+                      <span className="px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold border border-primary/20">
+                        {account.eligible}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right py-6">
+                      {/* Request Payout button — rendered when account data is live */}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
@@ -275,44 +271,56 @@ const DashboardPayouts = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {payoutHistory.map((payout, index) => (
-                <TableRow
-                  key={payout.id}
-                  className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                    index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-                  }`}
-                >
-                  <TableCell className="font-medium text-foreground py-5">
-                    {payout.date}
-                  </TableCell>
-                  <TableCell className="font-bold text-foreground py-5">
-                    {payout.amount}
-                  </TableCell>
-                  <TableCell className="py-5">
-                    <div className="flex items-center gap-2 text-foreground">
-                      {getMethodIcon(payout.method)}
-                      {payout.method}
+              {payoutHistory.length === 0 ? (
+                <TableRow className="border-border/30 hover:bg-transparent">
+                  <TableCell colSpan={5} className="py-12 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
+                        <CircleOff size={20} className="text-muted-foreground/50" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">
+                        No payout history available.
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Completed payout requests will appear here.
+                      </p>
                     </div>
                   </TableCell>
-                  <TableCell className="py-5">
-                    <span
-                      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusStyle(payout.status)}`}
-                    >
-                      {getStatusIcon(payout.status)}
-                      {payout.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right py-5">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/30 transition-all"
-                    >
-                      View
-                    </Button>
-                  </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                payoutHistory.map((payout, index) => (
+                  <TableRow
+                    key={payout.id}
+                    className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                      index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                    }`}
+                  >
+                    <TableCell className="font-medium text-foreground py-5">
+                      {payout.date}
+                    </TableCell>
+                    <TableCell className="font-bold text-foreground py-5">
+                      {payout.amount}
+                    </TableCell>
+                    <TableCell className="py-5">
+                      <div className="flex items-center gap-2 text-foreground">
+                        {getMethodIcon(payout.method)}
+                        {payout.method}
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-5">
+                      <span
+                        className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusStyle(payout.status)}`}
+                      >
+                        {getStatusIcon(payout.status)}
+                        {payout.status}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right py-5">
+                      {/* View button — rendered when payout data is live */}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </div>
