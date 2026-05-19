@@ -23,7 +23,7 @@ const plans = [
       "One fee covers everything. When you pass, you're activated immediately with no extra costs.",
     color: "from-gold-dark to-gold-light",
     bgGlow: "bg-gold-dark/20",
-    features: ["No activation fee", "Priority support", "Immediate activation"],
+    features: ["No activation fee", "Immediate activation"],
   },
   {
     id: "builder" as const,
