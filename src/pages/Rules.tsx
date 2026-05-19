@@ -56,6 +56,13 @@ const universalRules = [
     allowed: false,
   },
   {
+    icon: ClockIcon,
+    title: "Daily Scheduled Maintenance",
+    description:
+      "Dynasty Futures observes a daily scheduled maintenance window from 4:20 PM Eastern Time to 6:00 PM Eastern Time, ending when the futures market reopens. During this time, platform access, account updates, trading availability, and system functions may be temporarily unavailable or limited.",
+    allowed: false,
+  },
+  {
     icon: Newspaper,
     title: "No News Trading",
     label: "News Trading Restriction",
