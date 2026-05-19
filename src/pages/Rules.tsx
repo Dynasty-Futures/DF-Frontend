@@ -210,7 +210,6 @@ const planRules = [
       "No consistency rule",
       "Immediate activation",
       "5-day payout cycles",
-      "Priority support",
       "Copy trading allowed",
       "One funded reset allowed per account",
     ],
