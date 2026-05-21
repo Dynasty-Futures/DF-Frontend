@@ -179,9 +179,12 @@ const Login = () => {
                       />
                       <span className="text-muted-foreground group-hover:text-foreground transition-colors">Remember me</span>
                     </label>
-                    <a href="#" className="text-primary hover:text-gold-light transition-colors">
+                    <Link
+                      to="/forgot-password"
+                      className="text-primary hover:text-gold-light transition-colors"
+                    >
                       Forgot password?
-                    </a>
+                    </Link>
                   </div>
 
                   <Button
