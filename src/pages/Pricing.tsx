@@ -436,13 +436,13 @@ const Pricing = () => {
             <section className="mb-20">
               <ScrollReveal className="glass-card-strong rounded-3xl border border-border/50 overflow-hidden p-8 md:p-12">
                 {/* Plan Selector */}
-                <div className="flex flex-wrap justify-center gap-3 mb-6">
+                <div className="grid grid-cols-3 sm:flex sm:flex-wrap sm:justify-center gap-2 sm:gap-3 mb-6">
                   {(Object.keys(planConfig) as PlanKey[]).map((plan) => (
                     <button
                       key={plan}
                       onClick={() => handlePlanChange(plan)}
                       className={cn(
-                        "px-8 py-6 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary flex flex-col items-center gap-2.5 min-w-[180px]",
+                        "px-2 py-4 sm:px-8 sm:py-6 rounded-xl font-display font-semibold text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary flex flex-col items-center justify-center gap-2 sm:gap-2.5 h-full sm:h-auto min-w-0 sm:min-w-[180px]",
                         selectedPlan === plan
                           ? "bg-gradient-to-r from-gold-dark via-primary to-gold-light text-white border border-primary/60 shadow-lg shadow-primary/20"
                           : "border border-border/50 text-muted-foreground hover:border-primary/40 hover:text-foreground bg-transparent",
@@ -451,11 +451,12 @@ const Pricing = () => {
                       <PlanImage
                         plan={plan}
                         size={64}
-                        className={
+                        className={cn(
+                          "w-8 h-8 sm:w-16 sm:h-16",
                           selectedPlan === plan
                             ? "brightness-0 invert drop-shadow-sm"
-                            : undefined
-                        }
+                            : undefined,
+                        )}
                       />
                       <span>{planConfig[plan].label}</span>
                       <span
