@@ -418,44 +418,25 @@ const Legal = () => {
                   </h2>
 
                   <div className="prose prose-invert max-w-none space-y-4 text-muted-foreground">
-                    <p>
-                      All purchases made through Dynasty Futures are for access
-                      to simulated trading evaluations and related services.
-                    </p>
-
                     <h3 className="text-foreground font-display text-lg mt-6">
                       All Sales Final
                     </h3>
                     <p>
                       Due to the digital and performance-based nature of
-                      simulated trading evaluations, all purchases are generally
-                      considered final once account access or platform
-                      credentials have been issued.
+                      simulated trading evaluations and immediate account
+                      delivery, all purchases made through Dynasty Futures are
+                      considered final.
                     </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Refunds Prior to Account Access
-                    </h3>
                     <p>
-                      Refund requests may only be considered at Dynasty
-                      Futures&apos; sole discretion if all of the following
-                      conditions are met:
+                      Once an evaluation account, funded simulation account,
+                      platform access, or account credentials have been issued,
+                      purchases are non-refundable and non-transferable.
                     </p>
-                    <ul className="list-disc list-inside space-y-1 ml-2">
-                      <li>the account has not been activated,</li>
-                      <li>no trading activity has occurred,</li>
-                      <li>
-                        platform credentials have not been issued or accessed,
-                      </li>
-                      <li>
-                        and the request is submitted within 3 calendar days of
-                        purchase.
-                      </li>
-                    </ul>
                     <p>
-                      After account activation, credential issuance, platform
-                      access, or trading activity, purchases are
-                      non-refundable.
+                      Dynasty Futures does not guarantee trading performance,
+                      profitability, or evaluation success, and failure to meet
+                      trading objectives does not qualify a purchase for refund
+                      or reimbursement.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
@@ -484,9 +465,9 @@ const Legal = () => {
                     <p>
                       In the event of a verified technical issue directly
                       attributable to Dynasty Futures that materially prevents
-                      access to services, Dynasty Futures may, at its sole
+                      platform access, Dynasty Futures may, at its sole
                       discretion, provide an account credit, reset, or
-                      replacement. Cash refunds are not guaranteed.
+                      replacement account. Cash refunds are not guaranteed.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
