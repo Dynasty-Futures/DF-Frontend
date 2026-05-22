@@ -10,9 +10,9 @@ const quickLinks = [
   { name: "Rules", path: "/rules" },
   { name: "FAQ", path: "/faq" },
   { name: "Affiliates", path: "/affiliates" },
-  { name: "Support", path: "/support" },
   { name: "Legal", path: "/legal" },
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
+  { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
 ];
 
 const Footer = () => {
@@ -136,6 +136,15 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>support@dynastyfuturesdyn.com</li>
               <li>Available 24 hours a day, 7 days a week</li>
+              <li>
+                <Link
+                  to="/support"
+                  onClick={handleLinkClick}
+                  className="hover:text-primary transition-colors duration-300 link-transition inline-block"
+                >
+                  Support
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
