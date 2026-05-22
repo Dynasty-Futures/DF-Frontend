@@ -553,8 +553,7 @@ const Pricing = () => {
 
                 {/* Disclaimer */}
                 <p className="text-sm text-muted-foreground mt-6 text-center">
-                  All plans renew monthly. Cancel anytime. Reset fees are
-                  one-time and never billed monthly.
+                  Evaluation accounts are subscription-based and renew monthly unless canceled prior to the next billing cycle. You may cancel at any time before renewal. Reset fees are one-time purchases and are never billed monthly.
                 </p>
               </ScrollReveal>
             </section>
