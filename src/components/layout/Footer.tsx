@@ -12,6 +12,7 @@ const quickLinks = [
   { name: "Affiliates", path: "/affiliates" },
   { name: "Support", path: "/support" },
   { name: "Legal", path: "/legal" },
+  { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
 ];
 
 const Footer = () => {

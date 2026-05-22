@@ -1,10 +1,20 @@
+import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
 import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const VALID_TABS = ["risk", "terms", "privacy", "refund"];
+
 const Legal = () => {
+  const [searchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const [activeTab, setActiveTab] = useState(
+    VALID_TABS.includes(tabParam ?? "") ? tabParam! : "risk"
+  );
+
   return (
     <Layout>
       <PageMeta
@@ -33,7 +43,7 @@ const Legal = () => {
 
           {/* Tabs */}
           <ScrollReveal className="max-w-4xl mx-auto">
-            <Tabs defaultValue="risk" className="w-full">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
               <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-4 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
                 <TabsTrigger
                   value="risk"
@@ -450,13 +460,15 @@ const Legal = () => {
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
-                      Subscription Cancellations (If Applicable)
+                      Subscription Cancellations
                     </h3>
                     <p>
-                      If a subscription-based product is offered, users may
-                      cancel future billing at any time prior to the next
-                      billing cycle. Cancellation stops future charges but does
-                      not entitle the user to refunds for prior payments.
+                      Dynasty Futures evaluation accounts are subscription-based
+                      and renew monthly unless canceled before the next billing
+                      cycle. Users may cancel future billing at any time prior
+                      to renewal. Cancellation stops future charges but does not
+                      entitle the user to refunds for prior payments, active
+                      billing periods, or previously issued account access.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
