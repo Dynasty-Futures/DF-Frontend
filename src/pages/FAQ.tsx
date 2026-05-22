@@ -98,6 +98,12 @@ const faqs = [
       "Simply visit our Pricing page, choose your preferred plan and account size, and complete the checkout process. For Standard, Advanced, and Builder plans, you'll begin your evaluation challenge.",
   },
   {
+    id: "evaluation-renewal",
+    question: "Do evaluation accounts renew monthly?",
+    answer:
+      "Yes. Dynasty Futures evaluation accounts are subscription-based and renew monthly unless canceled before the next billing cycle. You may cancel future billing at any time prior to renewal. Cancellation stops future charges but does not entitle you to refunds for prior payments, active billing periods, or previously issued account access.",
+  },
+  {
     id: "profit-target",
     question: "What is the profit target?",
     answer:
