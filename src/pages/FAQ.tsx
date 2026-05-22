@@ -104,6 +104,12 @@ const faqs = [
       "Yes. Dynasty Futures evaluation accounts are subscription-based and renew monthly unless canceled before the next billing cycle. You may cancel future billing at any time prior to renewal. Cancellation stops future charges but does not entitle you to refunds for prior payments, active billing periods, or previously issued account access.",
   },
   {
+    id: "are-purchases-refundable",
+    question: "Are purchases refundable?",
+    answer:
+      "No. Due to the digital and performance-based nature of simulated trading evaluations and immediate account delivery, all purchases made through Dynasty Futures are generally considered final once account access or platform credentials have been issued.\n\nIf you have a verified technical issue directly attributable to Dynasty Futures, our team may review the situation and provide an account credit, reset, or replacement at our sole discretion.",
+  },
+  {
     id: "profit-target",
     question: "What is the profit target?",
     answer:

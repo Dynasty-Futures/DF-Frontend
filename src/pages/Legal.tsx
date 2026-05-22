@@ -6,7 +6,7 @@ import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["risk", "terms", "privacy", "refund"];
+const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted"];
 
 const Legal = () => {
   const [searchParams] = useSearchParams();
@@ -44,7 +44,7 @@ const Legal = () => {
           {/* Tabs */}
           <ScrollReveal className="max-w-4xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-4 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
+              <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-5 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
                 <TabsTrigger
                   value="risk"
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
@@ -68,6 +68,12 @@ const Legal = () => {
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
                 >
                   Refund & Cancellation
+                </TabsTrigger>
+                <TabsTrigger
+                  value="restricted"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                >
+                  Restricted Countries
                 </TabsTrigger>
               </TabsList>
 
@@ -496,6 +502,115 @@ const Legal = () => {
                       </a>
                       .
                     </p>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="restricted">
+                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10">
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">
+                    Restricted Countries & Regions
+                  </h2>
+
+                  <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
+                    <p>
+                      Dynasty Futures does not currently accept users or account
+                      registrations from certain countries or regions due to U.S.
+                      compliance requirements, sanctions programs, payment
+                      processor limitations, identity verification restrictions,
+                      or internal risk controls.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Restricted Countries & Regions
+                    </h3>
+                    <p>
+                      The following countries and regions are not eligible to
+                      register for or access Dynasty Futures services:
+                    </p>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Afghanistan",
+                        "Belarus",
+                        "Bosnia & Herzegovina",
+                        "Bulgaria",
+                        "Cambodia",
+                        "Central African Republic",
+                        "Congo (DRC)",
+                        "Crimea Region",
+                        "Cuba",
+                        "Donetsk Region",
+                        "Haiti",
+                        "Iran",
+                        "Iraq",
+                        "Lebanon",
+                        "Liberia",
+                        "Libya",
+                        "Luhansk Region",
+                        "Myanmar (Burma)",
+                        "North Korea",
+                        "Pakistan",
+                        "Russia",
+                        "Somalia",
+                        "South Sudan",
+                        "Sudan",
+                        "Syria",
+                        "Venezuela",
+                        "Yemen",
+                        "Zimbabwe",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    <h3 className="text-foreground font-display text-lg mt-8">
+                      Additional Restricted or Limited Access Jurisdictions
+                    </h3>
+                    <p>
+                      Dynasty Futures may limit, deny, or manually review access
+                      from certain jurisdictions based on fraud prevention,
+                      payment processor restrictions, identity verification
+                      limitations, VPN/proxy usage, abnormal account activity,
+                      or internal compliance reviews.
+                    </p>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Botswana",
+                        "Ghana",
+                        "Indonesia",
+                        "Jamaica",
+                        "Nigeria",
+                        "Tanzania",
+                        "Turkey",
+                        "Vietnam",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-8 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm">
+                      <p className="text-muted-foreground">
+                        Dynasty Futures reserves the right to restrict or deny
+                        access to any jurisdiction at its sole discretion for
+                        compliance, fraud prevention, identity verification,
+                        operational risk management, or payment processor
+                        requirements. Restricted jurisdictions may change at any
+                        time without notice.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </TabsContent>
