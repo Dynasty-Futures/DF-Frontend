@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 
 const SITE_NAME = 'Dynasty Futures';
 const BASE_URL = 'https://www.dynastyfuturesdyn.com';
-const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.png?v=20260509`;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/TextPreview.png?v=20260522`;
 
 interface PageMetaProps {
   title: string;
