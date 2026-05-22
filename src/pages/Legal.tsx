@@ -424,40 +424,48 @@ const Legal = () => {
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
-                      No Refunds After Account Activation
+                      All Sales Final
                     </h3>
                     <p>
-                      Once an evaluation account or simulated funded account is
-                      activated, all sales are final and non-refundable. This
-                      includes situations where a user fails to meet trading
-                      objectives, violates trading rules, or chooses to
-                      discontinue participation.
+                      Due to the digital and performance-based nature of
+                      simulated trading evaluations, all purchases are generally
+                      considered final once account access or platform
+                      credentials have been issued.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
-                      Refunds Prior to Account Activation
+                      Refunds Prior to Account Access
                     </h3>
                     <p>
-                      A refund may be considered only if a request is submitted
-                      before the evaluation account has been activated and no
-                      trading activity has occurred on the account. Refund
-                      requests must be submitted by contacting{" "}
-                      <a
-                        href="mailto:support@dynastyfuturesdyn.com"
-                        className="text-primary hover:underline"
-                      >
-                        support@dynastyfuturesdyn.com
-                      </a>
-                      .
+                      Refund requests may only be considered at Dynasty
+                      Futures&apos; sole discretion if all of the following
+                      conditions are met:
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>the account has not been activated,</li>
+                      <li>no trading activity has occurred,</li>
+                      <li>
+                        platform credentials have not been issued or accessed,
+                      </li>
+                      <li>
+                        and the request is submitted within 3 calendar days of
+                        purchase.
+                      </li>
+                    </ul>
+                    <p>
+                      After account activation, credential issuance, platform
+                      access, or trading activity, purchases are
+                      non-refundable.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
                       Rule Violations and Terminations
                     </h3>
                     <p>
-                      Accounts that are breached, terminated, or disabled due to
-                      violations of trading rules or terms of use are not
-                      eligible for refunds, credits, or reimbursements.
+                      Accounts that are breached, terminated, disabled, or
+                      found in violation of Dynasty Futures rules or Terms of
+                      Use are not eligible for refunds, credits, or
+                      reimbursements.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
@@ -467,7 +475,7 @@ const Legal = () => {
                       If a subscription-based product is offered, users may
                       cancel future billing at any time prior to the next
                       billing cycle. Cancellation stops future charges but does
-                      not entitle the user to a refund for any prior payments.
+                      not entitle the user to refunds for prior payments.
                     </p>
 
                     <h3 className="text-foreground font-display text-lg mt-6">
@@ -476,8 +484,8 @@ const Legal = () => {
                     <p>
                       In the event of a verified technical issue directly
                       attributable to Dynasty Futures that materially prevents
-                      access to the services, Dynasty Futures may, at its sole
-                      discretion, provide a credit, account reset, or
+                      access to services, Dynasty Futures may, at its sole
+                      discretion, provide an account credit, reset, or
                       replacement. Cash refunds are not guaranteed.
                     </p>
 
