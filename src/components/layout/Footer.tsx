@@ -135,7 +135,7 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>support@dynastyfuturesdyn.com</li>
-              <li>Mon - Fri: 9AM - 6PM EST</li>
+              <li>Available 24 hours a day, 7 days a week</li>
             </ul>
           </div>
         </div>
