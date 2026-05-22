@@ -12,19 +12,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import BuyChallengeButton from "@/components/dashboard/BuyChallengeButton";
-import { useTradingAccounts, useResetAccount } from "@/hooks/useTrading";
+import { useTradingAccounts } from "@/hooks/useTrading";
 import type { TradingAccount, AccountStatus } from "@/types/trading";
 
 type StageLabel = "Evaluation" | "Funded" | "Closed";
@@ -109,21 +106,91 @@ type FilterStatus = "All" | StatusLabel;
 
 const STATUS_FILTERS: FilterStatus[] = ["All", "Active", "Violated", "Closed"];
 
+// =============================================================================
+// Reset pricing
+// TODO: Replace with real plan/size pricing data from CRM or pricing API once
+//       account billing integration is complete.
+// =============================================================================
+
+type PlanKey = "standard" | "advanced" | "builder";
+type SizeKey = "25k" | "50k" | "100k" | "150k";
+
+interface ResetPricing {
+  evalReset: number;
+  fundedReset: number;
+}
+
+const RESET_PRICING: Record<PlanKey, Record<SizeKey, ResetPricing>> = {
+  standard: {
+    "25k": { evalReset: 30, fundedReset: 119 },
+    "50k": { evalReset: 40, fundedReset: 159 },
+    "100k": { evalReset: 65, fundedReset: 259 },
+    "150k": { evalReset: 80, fundedReset: 319 },
+  },
+  advanced: {
+    "25k": { evalReset: 40, fundedReset: 159 },
+    "50k": { evalReset: 55, fundedReset: 219 },
+    "100k": { evalReset: 90, fundedReset: 359 },
+    "150k": { evalReset: 115, fundedReset: 459 },
+  },
+  builder: {
+    "25k": { evalReset: 55, fundedReset: 219 },
+    "50k": { evalReset: 75, fundedReset: 299 },
+    "100k": { evalReset: 120, fundedReset: 479 },
+    "150k": { evalReset: 150, fundedReset: 599 },
+  },
+};
+
+function resolvePlanKey(planType: string): PlanKey {
+  const lc = planType.toLowerCase();
+  if (lc.includes("builder")) return "builder";
+  if (lc.includes("advanced")) return "advanced";
+  return "standard";
+}
+
+function resolveSizeKey(rawSize: number): SizeKey {
+  if (rawSize <= 25000) return "25k";
+  if (rawSize <= 50000) return "50k";
+  if (rawSize <= 100000) return "100k";
+  return "150k";
+}
+
+interface ResetPriceInfo {
+  price: number;
+  resetType: "Evaluation Reset" | "Funded Reset";
+}
+
+function getResetPriceInfo(account: AccountView): ResetPriceInfo | null {
+  const planKey = resolvePlanKey(account.planType);
+  const rawSize = parseInt(account.accountSize.replace(/[^0-9]/g, ""), 10);
+  if (isNaN(rawSize) || rawSize === 0) return null;
+  const sizeKey = resolveSizeKey(rawSize);
+  const pricing = RESET_PRICING[planKey]?.[sizeKey];
+  if (!pricing) return null;
+  const isFunded = account.stage === "Funded";
+  return {
+    price: isFunded ? pricing.fundedReset : pricing.evalReset,
+    resetType: isFunded ? "Funded Reset" : "Evaluation Reset",
+  };
+}
+
+// =============================================================================
+// Component
+// =============================================================================
+
 const DashboardAccounts = () => {
   const { data, isLoading, isError, error } = useTradingAccounts();
-  const resetMutation = useResetAccount();
 
   const [statusFilter, setStatusFilter] = useState<FilterStatus>("All");
   const [planFilter, setPlanFilter] = useState<string>("All");
+  // Account staged for the reset confirmation modal (null = modal closed)
+  const [resetModalAccount, setResetModalAccount] = useState<AccountView | null>(null);
 
   const accounts = useMemo<AccountView[]>(
     () => (data?.data ?? []).map(toView),
     [data],
   );
 
-  // Build the plan filter from real accountType names — only show options
-  // that exist in the user's accounts. Avoids the old hard-coded list that
-  // didn't match what's actually seeded.
   const planOptions = useMemo<string[]>(() => {
     const set = new Set<string>();
     for (const a of accounts) set.add(a.planType);
@@ -140,23 +207,62 @@ const DashboardAccounts = () => {
     [accounts, statusFilter, planFilter],
   );
 
-  const handleReset = (id: string) => {
-    resetMutation.mutate(id, {
-      onSuccess: () => toast.success("Account reset to starting balance"),
-      onError: (err) =>
-        toast.error(err.message || "Reset failed. Please try again."),
-    });
+  // First resettable account across all accounts (used by the header button).
+  const firstResettable = useMemo(
+    () => accounts.find((a) => a.isResettable) ?? null,
+    [accounts],
+  );
+
+  const hasResettableAccounts = firstResettable !== null;
+
+  const openResetModal = (account: AccountView) => setResetModalAccount(account);
+  const closeResetModal = () => setResetModalAccount(null);
+
+  // TODO: Connect to CRM account lookup, billing/checkout, and account reset
+  //       API once integration is complete. Required values:
+  //         selectedAccountId, selectedPlan, selectedAccountSize,
+  //         selectedAccountStatus, resetType, resetPrice.
+  const handleContinueToReset = () => {
+    toast.info(
+      "Reset checkout will be available once account billing is connected.",
+    );
+    closeResetModal();
   };
+
+  const resetPriceInfo = resetModalAccount
+    ? getResetPriceInfo(resetModalAccount)
+    : null;
 
   return (
     <div className="space-y-10 pt-16 lg:pt-0">
       {/* Header */}
       <ScrollReveal>
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Accounts</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage your trading accounts
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Accounts</h1>
+            <p className="text-muted-foreground mt-1">
+              Manage your trading accounts
+            </p>
+          </div>
+
+          {/* Header-level Reset Account button — enabled when a resettable account exists */}
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
+              disabled={!hasResettableAccounts || isLoading}
+              onClick={() => firstResettable && openResetModal(firstResettable)}
+            >
+              <RotateCcw size={14} className="mr-2" />
+              Reset Account
+            </Button>
+            {!isLoading && !hasResettableAccounts && accounts.length > 0 && (
+              <p className="text-xs text-muted-foreground/60">
+                Account reset available on active evaluations
+              </p>
+            )}
+          </div>
         </div>
       </ScrollReveal>
 
@@ -316,40 +422,15 @@ const DashboardAccounts = () => {
                     <TableCell className="text-right py-5">
                       <div className="flex items-center justify-end gap-2">
                         {account.isResettable && (
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="border-border/40 text-muted-foreground hover:text-foreground"
-                                disabled={resetMutation.isPending}
-                              >
-                                <RotateCcw size={14} className="mr-2" />
-                                Reset
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Reset evaluation account?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This resets the account to its starting
-                                  balance. All progress on the current
-                                  evaluation phase will be lost. This cannot be
-                                  undone.
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction
-                                  onClick={() => handleReset(account.id)}
-                                >
-                                  Reset Account
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
+                            onClick={() => openResetModal(account)}
+                          >
+                            <RotateCcw size={14} className="mr-2" />
+                            Reset Account
+                          </Button>
                         )}
                         <Button
                           variant="outline"
@@ -372,6 +453,65 @@ const DashboardAccounts = () => {
           </div>
         </ScrollReveal>
       )}
+
+      {/* Reset Account confirmation modal */}
+      <Dialog open={resetModalAccount !== null} onOpenChange={(open) => !open && closeResetModal()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Reset Account</DialogTitle>
+            <DialogDescription asChild>
+              <div className="space-y-4 pt-1">
+                {resetModalAccount && (
+                  <>
+                    {/* Account details summary */}
+                    <div className="rounded-xl border border-border/30 bg-muted/20 p-4 space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Account</span>
+                        <span className="text-foreground font-medium">
+                          {resetModalAccount.accountSize} {resetModalAccount.planType}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Stage</span>
+                        <span className="text-foreground">{resetModalAccount.stage}</span>
+                      </div>
+                      {resetPriceInfo && (
+                        <>
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Reset Type</span>
+                            <span className="text-foreground">{resetPriceInfo.resetType}</span>
+                          </div>
+                          <div className="flex justify-between border-t border-border/20 pt-2 mt-2">
+                            <span className="text-muted-foreground">Reset Price</span>
+                            <span className="text-foreground font-semibold">
+                              ${resetPriceInfo.price.toLocaleString()}
+                            </span>
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    <p className="text-sm text-muted-foreground">
+                      Resetting this account will require a reset purchase.
+                      {resetPriceInfo
+                        ? ` The reset price for this account is $${resetPriceInfo.price.toLocaleString()}.`
+                        : " Reset pricing will be calculated at checkout."}
+                    </p>
+                  </>
+                )}
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={closeResetModal}>
+              Cancel
+            </Button>
+            <Button onClick={handleContinueToReset}>
+              Continue to Reset
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
