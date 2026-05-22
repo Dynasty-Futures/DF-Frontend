@@ -450,7 +450,7 @@ const Pricing = () => {
                     >
                       <PlanImage
                         plan={plan}
-                        size={36}
+                        size={64}
                         className={
                           selectedPlan === plan
                             ? "brightness-0 invert drop-shadow-sm"
@@ -547,7 +547,7 @@ const Pricing = () => {
                     onClick={() => handleSelect(selectedPlan, sizeNum)}
                     className="px-10"
                   >
-                    {isLoading ? "Loading..." : `Get Started — ${selectedSize}`}
+                    {isLoading ? "Loading..." : "Get Started"}
                   </Button>
                 </div>
 
