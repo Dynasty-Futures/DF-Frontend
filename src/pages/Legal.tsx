@@ -42,52 +42,54 @@ const Legal = () => {
           </ScrollReveal>
 
           {/* Tabs */}
-          <ScrollReveal className="max-w-4xl mx-auto">
+          <ScrollReveal className="max-w-6xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full flex flex-wrap bg-muted/30 p-1.5 rounded-xl mb-8 gap-1.5">
+              <div className="overflow-x-auto mb-8">
+              <TabsList className="flex flex-nowrap w-full min-w-max bg-muted/30 p-1.5 rounded-xl gap-3">
                 <TabsTrigger
                   value="risk"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Risk Disclosure
                 </TabsTrigger>
                 <TabsTrigger
                   value="terms"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Terms of Use
                 </TabsTrigger>
                 <TabsTrigger
                   value="privacy"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Privacy Policy
                 </TabsTrigger>
                 <TabsTrigger
                   value="refund"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Refund & Cancellation
                 </TabsTrigger>
                 <TabsTrigger
                   value="restricted"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Restricted Countries
                 </TabsTrigger>
                 <TabsTrigger
                   value="rise-payouts"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Rise Payouts
                 </TabsTrigger>
                 <TabsTrigger
                   value="kyc-aml"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   KYC & AML Policy
                 </TabsTrigger>
               </TabsList>
+              </div>
 
               <TabsContent value="risk">
                 <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10">
