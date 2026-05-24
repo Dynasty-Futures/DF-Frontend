@@ -14,6 +14,7 @@ const quickLinks = [
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
   { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
   { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
+  { name: "KYC & AML Policy", path: "/legal?tab=kyc-aml" },
 ];
 
 const Footer = () => {
