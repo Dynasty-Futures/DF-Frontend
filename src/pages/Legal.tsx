@@ -6,7 +6,7 @@ import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts"];
+const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml"];
 
 const Legal = () => {
   const [searchParams] = useSearchParams();
@@ -44,42 +44,48 @@ const Legal = () => {
           {/* Tabs */}
           <ScrollReveal className="max-w-4xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-6 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
+              <TabsList className="w-full flex flex-wrap bg-muted/30 p-1.5 rounded-xl mb-8 gap-1.5">
                 <TabsTrigger
                   value="risk"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Risk Disclosure
                 </TabsTrigger>
                 <TabsTrigger
                   value="terms"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Terms of Use
                 </TabsTrigger>
                 <TabsTrigger
                   value="privacy"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Privacy Policy
                 </TabsTrigger>
                 <TabsTrigger
                   value="refund"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Refund & Cancellation
                 </TabsTrigger>
                 <TabsTrigger
                   value="restricted"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Restricted Countries
                 </TabsTrigger>
                 <TabsTrigger
                   value="rise-payouts"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
                 >
                   Rise Payouts
+                </TabsTrigger>
+                <TabsTrigger
+                  value="kyc-aml"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-4 py-2 text-xs sm:text-sm"
+                >
+                  KYC & AML Policy
                 </TabsTrigger>
               </TabsList>
 
@@ -977,6 +983,349 @@ const Legal = () => {
                     <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
                       Our support team can assist with payout onboarding, verification questions,
                       payout status inquiries, and Rise setup support.
+                    </p>
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <a
+                        href="/support"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                      >
+                        Open Support Center
+                      </a>
+                      <a
+                        href="/support"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
+                      >
+                        Contact Support
+                      </a>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
+                    </p>
+                  </div>
+
+                </div>
+              </TabsContent>
+
+              <TabsContent value="kyc-aml">
+                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-10">
+
+                  {/* Introduction */}
+                  <div>
+                    <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                      KYC &amp; AML Policy
+                    </h2>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        To request payouts from a funded account, traders may be required to complete both
+                        Dynasty Futures internal review procedures and payout provider verification requirements.
+                      </p>
+                      <p>
+                        Dynasty Futures maintains Know Your Customer (KYC) and Anti-Money Laundering (AML)
+                        controls designed to support platform integrity, fraud prevention, compliance obligations,
+                        secure payout processing, and operational risk management.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Our KYC & AML Policy */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      Our KYC &amp; AML Policy
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures may conduct internal identity, compliance, risk, and account review
+                        procedures before approving payouts or certain account activity.
+                      </p>
+                      <p>
+                        These reviews may include account ownership verification, fraud prevention review,
+                        sanctions screening, payment verification, compliance checks, and ongoing monitoring
+                        where applicable.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the right to request additional information, documentation,
+                        or verification procedures at any time.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Two-Step Verification Overview */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      Overview: Two-Step Verification
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Traders may be required to complete two separate verification procedures before
+                      payouts can be approved or released.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                      <div className="flex gap-4 p-5 rounded-xl border border-border/50 bg-muted/10">
+                        <span className="font-display text-2xl font-bold text-primary/40 leading-none mt-0.5 select-none">
+                          01
+                        </span>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground mb-1">
+                            Dynasty Futures Internal Review
+                          </p>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            Internal compliance, identity, and account review procedures conducted by
+                            Dynasty Futures prior to payout approval.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-4 p-5 rounded-xl border border-border/50 bg-muted/10">
+                        <span className="font-display text-2xl font-bold text-primary/40 leading-none mt-0.5 select-none">
+                          02
+                        </span>
+                        <div>
+                          <p className="text-sm font-semibold text-foreground mb-1">
+                            Payout Provider Verification (Rise)
+                          </p>
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            Separate identity and payment verification required by Rise, Dynasty Futures'
+                            primary payout provider, before funds can be released.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground leading-relaxed">
+                      Both verification steps may be required before payouts can be approved or released.
+                      These procedures help protect traders, payment systems, Dynasty Futures, and payout
+                      providers from fraud, unauthorized activity, sanctions exposure, and compliance risks.
+                    </div>
+                  </div>
+
+                  {/* Step 1 — Dynasty Futures Internal Review */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-1">
+                      Step 1 — Dynasty Futures Internal Review
+                    </h3>
+                    <p className="text-xs text-primary/80 font-semibold uppercase tracking-wide mb-4">
+                      Internal Compliance &amp; Account Review
+                    </p>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures may perform internal review procedures designed to verify account
+                        ownership, evaluate compliance status, support fraud prevention efforts, and maintain
+                        platform integrity.
+                      </p>
+                      <p>
+                        Additional review procedures may occur before payout approval or during ongoing
+                        funded account activity.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* When Is Verification Required? */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      When Is Verification or Review Required?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Verification or compliance review may be required before payouts are approved and
+                      may also occur periodically during the funded relationship. Triggering events may include:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                      {[
+                        "Before first payout request",
+                        "During payout review and processing",
+                        "Following account changes or updates",
+                        "After detection of unusual or suspicious activity",
+                        "During scheduled or periodic compliance reviews",
+                        "At Dynasty Futures' sole discretion at any time",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Step 2 — Payout Provider Verification */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-1">
+                      Step 2 — Payout Provider Verification (Rise)
+                    </h3>
+                    <p className="text-xs text-primary/80 font-semibold uppercase tracking-wide mb-4">
+                      Separate Verification Required by Rise
+                    </p>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        After Dynasty Futures completes its internal review procedures, traders must also
+                        complete separate payout provider verification through Rise before payouts can be released.
+                      </p>
+                      <p>
+                        This is a separate verification process required by the payment processor and is
+                        independent of Dynasty Futures internal review. Completion of Dynasty Futures internal
+                        review does not automatically satisfy Rise verification requirements.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Rise — Default Payout Provider */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      Rise (Default Payout Provider)
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed mb-5">
+                      <p>
+                        Rise is Dynasty Futures' primary payout provider for most supported countries.
+                      </p>
+                      <p>
+                        After internal review is completed, eligible traders may receive a Rise onboarding
+                        invitation by email. Traders must complete Rise's verification and onboarding
+                        procedures before payouts can be processed.
+                      </p>
+                      <p>
+                        Rise may require:
+                      </p>
+                    </div>
+                    <ul className="space-y-2 mb-5">
+                      {[
+                        "Identity verification",
+                        "Proof of address",
+                        "Payment or banking verification",
+                        "Tax documentation where applicable",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Traders must also set up their Rise account or Rise Wallet to receive payouts.
+                        Payout method availability may vary by country or region.
+                      </p>
+                      <p>
+                        If a trader already has a verified Rise account using the same email associated with
+                        their Dynasty Futures account, portions of the Rise verification process may be
+                        recognized automatically where supported.
+                      </p>
+                      <p>
+                        If Rise is unavailable in a trader's jurisdiction, payout availability may be
+                        limited or unavailable.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* What Documents May Be Required? */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      What Documents May Be Required?
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                        <p className="text-sm font-semibold text-foreground mb-3">
+                          Dynasty Futures Internal Review
+                        </p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          Dynasty Futures may request information or documentation as needed to confirm
+                          identity consistency, account ownership, compliance status, or platform integrity.
+                          Specific requirements may vary based on account activity, review type, or
+                          compliance circumstances.
+                        </p>
+                      </div>
+                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                        <p className="text-sm font-semibold text-foreground mb-3">
+                          Rise Verification
+                        </p>
+                        <ul className="space-y-1.5">
+                          {[
+                            "Government-issued photo ID (passport, driver's license, or national ID)",
+                            "Proof of address documentation",
+                            "Tax information where applicable",
+                            "Payment or banking information where applicable",
+                          ].map((item) => (
+                            <li key={item} className="flex items-start gap-2 text-xs text-muted-foreground">
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* If Verification Fails */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      If Verification or Review Cannot Be Completed
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      If verification, compliance review, or payout onboarding cannot be completed
+                      successfully, Dynasty Futures may delay, deny, restrict, suspend, or terminate
+                      payout eligibility or account access. Examples of circumstances that may result
+                      in such outcomes include:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                      {[
+                        "Inaccurate or inconsistent account information",
+                        "Altered or fraudulent documentation",
+                        "Sanctions or watchlist concerns",
+                        "Access from prohibited jurisdictions",
+                        "Payment verification failures",
+                        "VPN or proxy usage triggering review",
+                        "Account ownership inconsistencies",
+                        "Incomplete payout provider onboarding",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Important Compliance Notes */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      Important Compliance Notes
+                    </h3>
+                    <div className="p-5 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2.5">
+                      {[
+                        "VPN, proxy, or location-masking tool usage may trigger additional compliance review or result in payout denial.",
+                        "Third-party account access is strictly prohibited. Accounts must be operated solely by the registered account holder.",
+                        "Fraudulent, altered, or misrepresented information may result in denied payouts, account restriction, or permanent platform termination.",
+                        "Ongoing monitoring may occur throughout the funded account relationship as part of Dynasty Futures' compliance obligations.",
+                        "All payouts remain subject to Dynasty Futures internal approval and compliance review at every stage of the payout process.",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
+                          <span className="mt-0.5 text-amber-500 font-bold leading-none flex-shrink-0">!</span>
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Restricted Jurisdictions */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-3">
+                      Restricted Jurisdictions
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Certain countries and regions are not eligible to register for, access, or receive
+                      payouts from Dynasty Futures due to sanctions programs, AML requirements, payment
+                      processor limitations, fraud prevention policies, or identity verification restrictions.
+                    </p>
+                    <button
+                      onClick={() => setActiveTab("restricted")}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
+                    >
+                      View Restricted Countries →
+                    </button>
+                  </div>
+
+                  {/* Support */}
+                  <div className="p-6 rounded-2xl border border-border/50 bg-muted/20">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Need Help With Verification or Payout Onboarding?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                      Our support team can assist with payout onboarding, verification questions,
+                      and compliance-related inquiries.
                     </p>
                     <div className="flex flex-wrap gap-3 mb-4">
                       <a
