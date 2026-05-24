@@ -6,7 +6,7 @@ import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted"];
+const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts"];
 
 const Legal = () => {
   const [searchParams] = useSearchParams();
@@ -44,7 +44,7 @@ const Legal = () => {
           {/* Tabs */}
           <ScrollReveal className="max-w-4xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-5 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
+              <TabsList className="w-full overflow-x-auto flex md:grid md:grid-cols-6 bg-muted/30 p-1 rounded-xl mb-8 gap-1 md:gap-0">
                 <TabsTrigger
                   value="risk"
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
@@ -74,6 +74,12 @@ const Legal = () => {
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
                 >
                   Restricted Countries
+                </TabsTrigger>
+                <TabsTrigger
+                  value="rise-payouts"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-shrink-0"
+                >
+                  Rise Payouts
                 </TabsTrigger>
               </TabsList>
 
@@ -694,6 +700,283 @@ const Legal = () => {
                         change at any time without notice.
                       </p>
                     </div>
+                  </div>
+                </div>
+              </TabsContent>
+              <TabsContent value="rise-payouts">
+                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10">
+                  <h2 className="font-display text-2xl font-bold text-foreground mb-2">
+                    Rise Payout Guide
+                  </h2>
+                  <p className="text-sm text-muted-foreground mb-8">
+                    How Dynasty Futures processes trader payouts through Rise Works.
+                  </p>
+
+                  <div className="prose prose-invert max-w-none space-y-4 text-muted-foreground">
+                    <p>
+                      Dynasty Futures processes trader payouts through{" "}
+                      <strong className="text-foreground">Rise Works</strong>,
+                      a third-party payout and verification provider used by
+                      many modern trading firms and financial platforms. Rise
+                      securely handles trader withdrawals, identity
+                      verification, compliance screening, and international
+                      payout delivery on behalf of Dynasty Futures.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      How Dynasty Futures Payouts Work
+                    </h3>
+                    <p>
+                      Funded traders who meet program payout requirements may
+                      submit a payout request through the Dynasty Futures
+                      dashboard. Approved requests are routed through Rise for
+                      secure processing and final disbursement. Dynasty Futures
+                      reviews all requests prior to Rise submission, and Rise
+                      conducts its own compliance and verification checks before
+                      releasing funds.
+                    </p>
+                    <p>
+                      All funded traders must successfully complete required
+                      verification steps before payouts can be processed.
+                      Submitting a payout request does not guarantee approval —
+                      requests remain subject to ongoing compliance review,
+                      account standing, and verification status.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Rise Account Setup
+                    </h3>
+                    <p>
+                      When you become eligible for a payout, you may receive an
+                      email invitation from Rise to create or activate your Rise
+                      account. Payout information, banking details, and payment
+                      preferences are managed securely through the Rise
+                      platform.
+                    </p>
+                    <p>
+                      To ensure accurate and timely payouts, traders are
+                      responsible for:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-1">
+                      <li>
+                        Providing a legal name that exactly matches their
+                        government-issued identification
+                      </li>
+                      <li>
+                        Completing all required Rise account setup and identity
+                        verification steps
+                      </li>
+                      <li>
+                        Entering accurate banking or payment details
+                      </li>
+                      <li>
+                        Keeping their Rise account information current and up
+                        to date
+                      </li>
+                    </ul>
+                    <p>
+                      Dynasty Futures is not responsible for payout delays or
+                      failures caused by inaccurate information, mismatched
+                      identities, or incomplete Rise account setup.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Identity Verification (KYC)
+                    </h3>
+                    <p>
+                      As part of the payout process, Rise may require traders
+                      to complete Know Your Customer (KYC) verification. This
+                      is a standard compliance requirement across financial
+                      platforms designed to protect against fraud, money
+                      laundering, and unauthorized disbursements.
+                    </p>
+                    <p>
+                      KYC verification may include, but is not limited to:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-1">
+                      <li>
+                        Government-issued photo identification (passport,
+                        driver's license, or national ID)
+                      </li>
+                      <li>Proof of address documentation</li>
+                      <li>Selfie or biometric identity confirmation</li>
+                      <li>Sanctions and watchlist screening</li>
+                      <li>Anti-fraud and compliance checks</li>
+                    </ul>
+                    <p>
+                      Dynasty Futures and Rise reserve the right to request
+                      additional verification documentation at any time if
+                      required for compliance, fraud prevention, or payment
+                      processing purposes. Failure to provide requested
+                      documentation may result in payout delays or denial.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Payout Processing Times
+                    </h3>
+                    <p>
+                      Payout timelines involve multiple stages, each of which
+                      may contribute to the overall processing window:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>
+                        <strong className="text-foreground">
+                          Dynasty Futures Review
+                        </strong>{" "}
+                        — Initial review of your payout request for eligibility
+                        and account standing
+                      </li>
+                      <li>
+                        <strong className="text-foreground">
+                          Compliance Screening
+                        </strong>{" "}
+                        — Internal and third-party compliance checks prior to
+                        submission to Rise
+                      </li>
+                      <li>
+                        <strong className="text-foreground">
+                          Rise Processing
+                        </strong>{" "}
+                        — Rise verifies your identity and processes the approved
+                        disbursement
+                      </li>
+                      <li>
+                        <strong className="text-foreground">
+                          Banking Transfer
+                        </strong>{" "}
+                        — Final delivery to your bank or payment account, which
+                        varies by institution and country
+                      </li>
+                    </ul>
+                    <p>
+                      Most approved payouts are processed within standard
+                      business processing windows. Timing may vary depending on
+                      verification status, banking institution, public holidays,
+                      compliance reviews, or international transfer
+                      requirements. Dynasty Futures does not guarantee specific
+                      payout delivery dates.
+                    </p>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Important Payout Notes
+                    </h3>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>
+                        Payout requests may be delayed or placed under review
+                        if identity verification is incomplete or unresolved
+                      </li>
+                      <li>
+                        Use of VPNs, proxies, or location-masking tools at the
+                        time of payout submission may trigger additional review
+                        or result in denial
+                      </li>
+                      <li>
+                        Providing false, inaccurate, or misleading information
+                        during the verification process may result in payout
+                        denial and account termination
+                      </li>
+                      <li>
+                        Traders are solely responsible for the accuracy of all
+                        banking, payment, and personal details submitted through
+                        Rise
+                      </li>
+                      <li>
+                        Dynasty Futures may request additional verification at
+                        any point during the payout lifecycle, including after
+                        initial approval
+                      </li>
+                      <li>
+                        Payouts are subject to all applicable program rules and
+                        Dynasty Futures Terms of Use
+                      </li>
+                      <li>
+                        Payout eligibility does not constitute a guarantee of
+                        payment — final approval depends on verification,
+                        compliance, and account standing
+                      </li>
+                    </ul>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      International Payouts
+                    </h3>
+                    <p>
+                      Rise supports a broad range of international payout
+                      methods, enabling Dynasty Futures to serve traders across
+                      many countries and regions. Payout method availability
+                      varies by country, and not all payment options are
+                      supported in every jurisdiction.
+                    </p>
+                    <p>
+                      Traders located outside the United States should be aware
+                      that:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-1">
+                      <li>
+                        Certain countries and regions may be restricted from
+                        receiving payouts
+                      </li>
+                      <li>
+                        Currency conversion or international transfer fees may
+                        be applied by your bank or Rise
+                      </li>
+                      <li>
+                        International transfers may take longer than domestic
+                        transactions
+                      </li>
+                      <li>
+                        Additional documentation or compliance requirements may
+                        apply depending on your country of residence
+                      </li>
+                    </ul>
+
+                    <h3 className="text-foreground font-display text-lg mt-6">
+                      Restricted Jurisdictions
+                    </h3>
+                    <p>
+                      Certain jurisdictions are restricted from accessing
+                      Dynasty Futures services and receiving payouts.
+                      Restrictions may apply due to U.S. compliance
+                      requirements, international sanctions programs, payment
+                      processor limitations, fraud prevention measures, or
+                      identity verification restrictions imposed by Rise or
+                      other third-party providers.
+                    </p>
+                    <p>
+                      Traders residing in restricted jurisdictions are not
+                      eligible to receive payouts regardless of trading
+                      performance or account status.
+                    </p>
+                  </div>
+
+                  {/* Restricted countries link */}
+                  <div className="mt-5">
+                    <button
+                      onClick={() => setActiveTab("restricted")}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
+                    >
+                      View Restricted Countries & Regions →
+                    </button>
+                  </div>
+
+                  {/* Support section */}
+                  <div className="mt-10 p-6 rounded-2xl border border-border/50 bg-muted/20">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Payout Support
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-5">
+                      Questions about your payout, verification status, or Rise
+                      account setup? Our support team is here to help.
+                    </p>
+                    <a
+                      href="mailto:support@dynastyfuturesdyn.com"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                    >
+                      Contact Support
+                    </a>
+                    <p className="mt-3 text-xs text-muted-foreground">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day,
+                      7 days a week
+                    </p>
                   </div>
                 </div>
               </TabsContent>
