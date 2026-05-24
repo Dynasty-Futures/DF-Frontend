@@ -517,45 +517,147 @@ const Legal = () => {
                       registrations from certain countries or regions due to U.S.
                       compliance requirements, sanctions programs, payment
                       processor limitations, identity verification restrictions,
-                      or internal risk controls.
+                      fraud prevention, AML risk, or internal risk controls.
                     </p>
 
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Restricted Countries & Regions
-                    </h3>
                     <p>
                       The following countries and regions are not eligible to
                       register for or access Dynasty Futures services:
                     </p>
 
+                    {/* A–C */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      A – C
+                    </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
                       {[
                         "Afghanistan",
+                        "Albania",
+                        "Algeria",
+                        "Angola",
+                        "Bahamas",
+                        "Barbados",
                         "Belarus",
                         "Bosnia & Herzegovina",
+                        "Botswana",
                         "Bulgaria",
+                        "Burkina Faso",
+                        "Burundi",
                         "Cambodia",
+                        "Cameroon",
                         "Central African Republic",
+                        "China",
                         "Congo (DRC)",
+                        "Côte d'Ivoire",
                         "Crimea Region",
+                        "Croatia",
                         "Cuba",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* D–L */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      D – L
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
                         "Donetsk Region",
+                        "Ecuador",
+                        "Ethiopia",
+                        "Ghana",
                         "Haiti",
+                        "Hong Kong",
+                        "Indonesia",
                         "Iran",
                         "Iraq",
+                        "Jamaica",
+                        "Jordan",
+                        "Kenya",
+                        "Kosovo",
+                        "Laos",
                         "Lebanon",
                         "Liberia",
                         "Libya",
                         "Luhansk Region",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* M–S */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      M – S
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Malaysia",
+                        "Mali",
+                        "Mauritius",
+                        "Mexico",
+                        "Mongolia",
+                        "Montenegro",
+                        "Morocco",
+                        "Mozambique",
                         "Myanmar (Burma)",
+                        "Namibia",
+                        "Nicaragua",
+                        "Nigeria",
                         "North Korea",
+                        "North Macedonia",
                         "Pakistan",
+                        "Panama",
+                        "Papua New Guinea",
+                        "Philippines",
+                        "Qatar",
+                        "Romania",
                         "Russia",
+                        "Serbia",
                         "Somalia",
+                        "South Africa",
                         "South Sudan",
+                        "Sri Lanka",
                         "Sudan",
                         "Syria",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* T–Z */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      T – Z
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Tanzania",
+                        "Trinidad and Tobago",
+                        "Tunisia",
+                        "Turkey",
+                        "Uganda",
+                        "Ukraine",
+                        "United Arab Emirates",
                         "Venezuela",
+                        "Vietnam",
                         "Yemen",
                         "Zimbabwe",
                       ].map((country) => (
@@ -570,45 +672,26 @@ const Legal = () => {
                     </div>
 
                     <h3 className="text-foreground font-display text-lg mt-8">
-                      Additional Restricted or Limited Access Jurisdictions
+                      KYC & Verification Requirements
                     </h3>
                     <p>
-                      Dynasty Futures may limit, deny, or manually review access
-                      from certain jurisdictions based on fraud prevention,
-                      payment processor restrictions, identity verification
-                      limitations, VPN/proxy usage, abnormal account activity,
-                      or internal compliance reviews.
+                      All funded traders must complete identity verification and
+                      payout provider verification before receiving payouts.
+                      Dynasty Futures may deny, suspend, restrict, or terminate
+                      access if verification fails, documents are fraudulent,
+                      sanctions screening identifies risk, or a user attempts to
+                      bypass jurisdiction restrictions through VPNs, proxies,
+                      false information, or third-party account access.
                     </p>
-
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
-                      {[
-                        "Botswana",
-                        "Ghana",
-                        "Indonesia",
-                        "Jamaica",
-                        "Nigeria",
-                        "Tanzania",
-                        "Turkey",
-                        "Vietnam",
-                      ].map((country) => (
-                        <div
-                          key={country}
-                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500/70 flex-shrink-0" />
-                          {country}
-                        </div>
-                      ))}
-                    </div>
 
                     <div className="mt-8 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm">
                       <p className="text-muted-foreground">
                         Dynasty Futures reserves the right to restrict or deny
                         access to any jurisdiction at its sole discretion for
                         compliance, fraud prevention, identity verification,
-                        operational risk management, or payment processor
-                        requirements. Restricted jurisdictions may change at any
-                        time without notice.
+                        operational risk management, AML risk, or payment
+                        processor requirements. Restricted jurisdictions may
+                        change at any time without notice.
                       </p>
                     </div>
                   </div>
