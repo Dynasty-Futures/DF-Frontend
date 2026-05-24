@@ -11,16 +11,36 @@ import {
   BookOpen,
   HelpCircle,
   Users,
-  MessageCircle,
+  ChevronDown,
+  LifeBuoy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/Dynasty_Futures.png";
 
+const helpCenterLinks = [
+  { name: "Support", href: "https://www.dynastyfuturesdyn.com/support" },
+  { name: "KYC & AML Policy", href: "https://www.dynastyfuturesdyn.com/legal?tab=kyc-aml" },
+  { name: "Restricted Countries & Regions", href: "https://www.dynastyfuturesdyn.com/legal?tab=restricted" },
+  { name: "Rise Payout Guide", href: "https://www.dynastyfuturesdyn.com/legal?tab=rise-payouts" },
+];
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -45,7 +65,6 @@ const Navbar = () => {
     { name: "Rules", path: "/rules", icon: BookOpen },
     { name: "FAQ", path: "/faq", icon: HelpCircle },
     { name: "Affiliates", path: "/affiliates", icon: Users },
-    { name: "Support", path: "/support", icon: MessageCircle },
   ];
 
   return (
@@ -93,6 +112,34 @@ const Navbar = () => {
                 />
               </Link>
             ))}
+
+            {/* Help Center dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="relative flex items-center gap-1 font-medium text-sm text-muted-foreground transition-all duration-300 hover:text-primary outline-none">
+                  Help Center
+                  <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200 [[data-state=open]_&]:rotate-180" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                align="center"
+                sideOffset={12}
+                className="min-w-[220px] rounded-xl border border-border/40 bg-card/95 backdrop-blur-xl p-1.5 shadow-xl shadow-black/30"
+              >
+                {helpCenterLinks.map((link) => (
+                  <DropdownMenuItem key={link.href} asChild>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground cursor-pointer transition-all duration-200 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary"
+                    >
+                      {link.name}
+                    </a>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           {/* Desktop CTA Buttons */}
@@ -189,6 +236,35 @@ const Navbar = () => {
                         </Link>
                       );
                     })}
+
+                    {/* Help Center collapsible */}
+                    <Collapsible open={helpOpen} onOpenChange={setHelpOpen}>
+                      <CollapsibleTrigger className="flex items-center gap-3 w-full px-4 py-3 rounded-xl font-medium text-sm text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all duration-300">
+                        <LifeBuoy size={20} />
+                        <span>Help Center</span>
+                        <ChevronDown
+                          size={16}
+                          className={cn(
+                            "ml-auto transition-transform duration-200",
+                            helpOpen && "rotate-180",
+                          )}
+                        />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent className="pl-4 space-y-0.5 mt-0.5">
+                        {helpCenterLinks.map((link) => (
+                          <a
+                            key={link.href}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setIsOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
+                          >
+                            {link.name}
+                          </a>
+                        ))}
+                      </CollapsibleContent>
+                    </Collapsible>
                   </nav>
                 </div>
 
