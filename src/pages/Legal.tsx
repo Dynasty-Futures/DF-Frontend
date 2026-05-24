@@ -988,16 +988,10 @@ const Legal = () => {
                     </p>
                     <div className="flex flex-wrap gap-3 mb-4">
                       <a
-                        href="/support"
+                        href="https://www.dynastyfuturesdyn.com/support"
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
                       >
                         Open Support Center
-                      </a>
-                      <a
-                        href="/support"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
-                      >
-                        Contact Support
                       </a>
                     </div>
                     <p className="text-xs text-muted-foreground">
@@ -1331,16 +1325,10 @@ const Legal = () => {
                     </p>
                     <div className="flex flex-wrap gap-3 mb-4">
                       <a
-                        href="/support"
+                        href="https://www.dynastyfuturesdyn.com/support"
                         className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
                       >
                         Open Support Center
-                      </a>
-                      <a
-                        href="/support"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
-                      >
-                        Contact Support
                       </a>
                     </div>
                     <p className="text-xs text-muted-foreground">
