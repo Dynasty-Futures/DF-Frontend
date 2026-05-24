@@ -13,6 +13,7 @@ const quickLinks = [
   { name: "Legal", path: "/legal" },
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
   { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
+  { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
 ];
 
 const Footer = () => {
