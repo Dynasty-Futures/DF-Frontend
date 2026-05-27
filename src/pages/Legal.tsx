@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
 import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
@@ -30,6 +30,7 @@ const Legal = () => {
   const [activeRule, setActiveRule] = useState<string | null>(
     ruleParam && RULE_EXPLAINERS.some(r => r.id === ruleParam) ? ruleParam : null
   );
+  const navigate = useNavigate();
 
   const handleSetActiveRule = (id: string | null) => {
     setActiveRule(id);
@@ -39,14 +40,14 @@ const Legal = () => {
   return (
     <Layout>
       <PageMeta
-        title="Legal & Risk Disclosure"
+        title="Help & Legal Center"
         description="Dynasty Futures legal documents including risk disclosure, terms of service, privacy policy, and refund policy."
         path="/legal"
       />
       <JsonLd
         data={breadcrumb([
           { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
-          { name: 'Legal & Risk Disclosure', url: 'https://www.dynastyfuturesdyn.com/legal' },
+          { name: 'Help & Legal Center', url: 'https://www.dynastyfuturesdyn.com/legal' },
         ])}
       />
       <div className="page-transition py-12 md:py-20">
@@ -54,7 +55,7 @@ const Legal = () => {
           {/* Header */}
           <ScrollReveal className="text-center max-w-3xl mx-auto mb-16">
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Legal & <span className="text-gradient">Risk Disclosure</span>
+              Help & <span className="text-gradient">Legal Center</span>
             </h1>
             <p className="text-lg text-muted-foreground">
               Important legal information and disclosures for Dynasty Futures
@@ -65,59 +66,59 @@ const Legal = () => {
           {/* Tabs */}
           <ScrollReveal className="max-w-6xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <div className="overflow-x-auto mb-8">
-              <TabsList className="flex flex-nowrap w-full min-w-max bg-muted/30 p-1.5 rounded-xl gap-3">
+              <div className="overflow-x-auto md:overflow-visible mb-8">
+              <TabsList className="flex flex-nowrap md:flex-wrap w-full min-w-max md:min-w-0 bg-muted/30 p-1 rounded-xl gap-1">
                 <TabsTrigger
                   value="risk"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Risk Disclosure
                 </TabsTrigger>
                 <TabsTrigger
                   value="terms"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Terms of Use
                 </TabsTrigger>
                 <TabsTrigger
                   value="privacy"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Privacy Policy
                 </TabsTrigger>
                 <TabsTrigger
                   value="refund"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Refund & Cancellation
                 </TabsTrigger>
                 <TabsTrigger
                   value="restricted"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Restricted Countries
                 </TabsTrigger>
                 <TabsTrigger
                   value="rise-payouts"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Rise Payouts
                 </TabsTrigger>
                 <TabsTrigger
                   value="kyc-aml"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   KYC & AML Policy
                 </TabsTrigger>
                 <TabsTrigger
                   value="chargebacks"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                 >
                   Payment Disputes
                 </TabsTrigger>
                 <TabsTrigger
                   value="trading-rules"
-                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-2.5 py-1.5 text-xs flex-1"
                   onClick={() => handleSetActiveRule(null)}
                 >
                   Trading Rules
@@ -226,7 +227,7 @@ const Legal = () => {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-4">
                       {[
-                        { label: "Trading Rules", tab: "risk" },
+                        { label: "Trading Rules", tab: "", href: "/rules" },
                         { label: "Risk Disclosure", tab: "risk" },
                         { label: "Refund & Cancellation Policy", tab: "refund" },
                         { label: "KYC & AML Policy", tab: "kyc-aml" },
@@ -234,10 +235,10 @@ const Legal = () => {
                         { label: "Chargeback & Payment Dispute Policy", tab: "chargebacks" },
                         { label: "Rise Payout Guide", tab: "rise-payouts" },
                         { label: "Privacy Policy", tab: "privacy" },
-                      ].map(({ label, tab }) => (
+                      ].map(({ label, tab, href }) => (
                         <button
                           key={label}
-                          onClick={() => setActiveTab(tab)}
+                          onClick={() => href ? navigate(href) : setActiveTab(tab)}
                           className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 text-left group"
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
