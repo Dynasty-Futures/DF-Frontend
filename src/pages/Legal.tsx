@@ -6,7 +6,7 @@ import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml"];
+const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml", "chargebacks"];
 
 const Legal = () => {
   const [searchParams] = useSearchParams();
@@ -87,6 +87,12 @@ const Legal = () => {
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   KYC & AML Policy
+                </TabsTrigger>
+                <TabsTrigger
+                  value="chargebacks"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                >
+                  Payment Disputes
                 </TabsTrigger>
               </TabsList>
               </div>
@@ -1334,6 +1340,219 @@ const Legal = () => {
                     <p className="text-xs text-muted-foreground">
                       support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
                     </p>
+                  </div>
+
+                </div>
+              </TabsContent>
+              <TabsContent value="chargebacks">
+                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-10">
+
+                  {/* Header */}
+                  <div>
+                    <h2 className="font-display text-2xl font-bold text-foreground mb-4">
+                      Chargeback &amp; Payment Dispute Policy
+                    </h2>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures takes payment fraud, unauthorized disputes, and abusive
+                        chargeback activity seriously.
+                      </p>
+                      <p>
+                        By purchasing access to Dynasty Futures services, users agree to the
+                        Dynasty Futures Terms of Use, Refund &amp; Cancellation Policy, and all
+                        applicable platform rules.
+                      </p>
+                      <p>
+                        Submitting a chargeback or payment dispute for services that were
+                        delivered, accessed, activated, or used may be treated as a violation
+                        of these agreements.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Important highlight box */}
+                  <div className="p-5 rounded-xl border border-primary/40 bg-primary/5">
+                    <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+                      Important
+                    </p>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      If you experience billing, technical, or account-related issues, please
+                      contact Dynasty Futures support before initiating a payment dispute or
+                      chargeback with your bank or payment provider. Most concerns can be
+                      resolved quickly through direct communication.
+                    </p>
+                  </div>
+
+                  {/* What Happens If a Chargeback Is Filed? */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      What Happens If a Chargeback Is Filed?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Dynasty Futures reserves the right to suspend, restrict, terminate, or
+                      permanently ban accounts associated with disputed or reversed transactions.
+                      Upon receipt of a chargeback or payment dispute notification, Dynasty
+                      Futures may take the following actions:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                      {[
+                        {
+                          title: "Account Suspension",
+                          desc: "All active evaluation or funded accounts associated with the disputed transaction may be immediately suspended or frozen pending review.",
+                        },
+                        {
+                          title: "Payout Hold",
+                          desc: "Any pending or in-progress payout requests may be paused during the duration of the dispute investigation.",
+                        },
+                        {
+                          title: "Platform Access Restriction",
+                          desc: "Access to the Dynasty Futures platform, dashboard, and trading environment may be restricted without prior notice.",
+                        },
+                        {
+                          title: "Future Purchase Restriction",
+                          desc: "Accounts associated with disputed transactions may be permanently restricted from making future purchases on the platform.",
+                        },
+                        {
+                          title: "Associated Account Review",
+                          desc: "Accounts linked by email, payment method, device, or identity may also be subject to review and restriction.",
+                        },
+                        {
+                          title: "Permanent Platform Ban",
+                          desc: "Dynasty Futures reserves the right to permanently deny platform access to any user associated with fraudulent or abusive dispute activity.",
+                        },
+                      ].map(({ title, desc }) => (
+                        <div key={title} className="p-4 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-1">{title}</p>
+                          <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/5 text-sm text-muted-foreground leading-relaxed">
+                      <strong className="text-foreground">Note:</strong>{" "}
+                      These actions may be taken regardless of whether the chargeback is ultimately
+                      resolved in the user's favor. Dynasty Futures will assess each situation based
+                      on account history, service delivery records, and applicable platform rules.
+                    </div>
+                  </div>
+
+                  {/* Fraud Prevention & Platform Protection */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      Fraud Prevention &amp; Platform Protection
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed mb-5">
+                      <p>
+                        Filing a chargeback or payment reversal for digital services that were
+                        delivered, accessed, or activated may constitute fraudulent activity.
+                        Dynasty Futures treats all such disputes with appropriate seriousness.
+                      </p>
+                      <p>
+                        Dynasty Futures maintains comprehensive records to support payment dispute
+                        investigations, including:
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                      {[
+                        "Transaction and purchase records",
+                        "Account activation and delivery confirmation",
+                        "Login history and session records",
+                        "Platform usage and trading activity logs",
+                        "Identity and verification documentation",
+                        "IP address and device records",
+                        "Communication and support history",
+                        "Subscription and billing records",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        This evidence may be submitted to payment processors, acquiring banks, and
+                        card networks during the course of any dispute investigation. Dynasty Futures
+                        will actively contest chargebacks filed for services that were rendered and
+                        accessible to the user.
+                      </p>
+                      <p>
+                        Disputes determined to involve misrepresentation, unauthorized use claims
+                        for delivered services, or patterns of abusive behavior may be escalated
+                        through available channels where appropriate.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Please Contact Support First */}
+                  <div className="p-6 rounded-2xl border border-border/50 bg-muted/20">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Please Contact Support First
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Before initiating a payment dispute or chargeback with your bank or payment
+                      provider, Dynasty Futures strongly encourages users to contact our support team
+                      directly. Many concerns can be addressed quickly and efficiently through direct
+                      communication, including:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                      {[
+                        "Billing questions or unexpected charges",
+                        "Subscription cancellation assistance",
+                        "Technical issues affecting platform access",
+                        "Account review or status inquiries",
+                        "Payment method updates or corrections",
+                        "General account and service questions",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                      Our support team is available to assist and will work to address any legitimate
+                      concern in a timely manner. Direct communication is always preferred over
+                      payment disputes, and resolving issues through support helps avoid unnecessary
+                      account restrictions.
+                    </p>
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <a
+                        href="https://www.dynastyfuturesdyn.com/support"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                      >
+                        Open Support Center
+                      </a>
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
+                    </p>
+                  </div>
+
+                  {/* Acknowledgement */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
+                      User Acknowledgement
+                    </h3>
+                    <div className="p-5 rounded-xl border border-border/50 bg-muted/10 space-y-3 text-sm text-muted-foreground leading-relaxed">
+                      <p>
+                        By using Dynasty Futures services, users acknowledge and agree that
+                        unauthorized payment disputes, abusive chargebacks, or fraudulent reversal
+                        attempts may result in account restrictions, payout denial, permanent
+                        platform bans, or additional review procedures as described in this policy.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves all rights regarding fraud prevention, payment
+                        enforcement, and platform protection. This policy applies to all purchases,
+                        subscriptions, and transactions associated with Dynasty Futures services,
+                        regardless of the payment method or provider used.
+                      </p>
+                      <p>
+                        This policy is incorporated into and governed by the Dynasty Futures Terms
+                        of Use. Dynasty Futures reserves the right to amend this policy at any time.
+                        Continued use of Dynasty Futures services constitutes acceptance of the
+                        current policy.
+                      </p>
+                    </div>
                   </div>
 
                 </div>
