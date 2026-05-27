@@ -174,167 +174,469 @@ const Legal = () => {
               </TabsContent>
 
               <TabsContent value="terms">
-                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10">
-                  <h2 className="font-display text-2xl font-bold text-foreground mb-6">
-                    Terms of Use
-                  </h2>
+                <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-10">
 
-                  <div className="prose prose-invert max-w-none space-y-4 text-muted-foreground">
-                    <h3 className="text-foreground font-display text-lg">
-                      Acceptance of Terms
-                    </h3>
-                    <p>
-                      By accessing and using the Dynasty Futures website and
-                      services, you accept and agree to be bound by these Terms
-                      of Use. If you do not agree to these terms, you should not
-                      use our services.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Eligibility
-                    </h3>
-                    <p>
-                      You must be at least 18 years old and legally able to
-                      enter into contracts to use Dynasty Futures services. By
-                      using our services, you represent that you meet these
-                      requirements.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Account Responsibilities
-                    </h3>
-                    <p>
-                      You are responsible for maintaining the confidentiality of
-                      your account credentials and for all activities that occur
-                      under your account. You agree to notify us immediately of
-                      any unauthorized use of your account.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Trading Rules Compliance
-                    </h3>
-                    <p>
-                      All traders must comply with the trading rules outlined on
-                      our Rules page. Violation of these rules may result in
-                      account termination without refund.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Modifications to Terms
-                    </h3>
-                    <p>
-                      Dynasty Futures reserves the right to modify these terms
-                      at any time. Continued use of our services after changes
-                      constitutes acceptance of the new terms.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Disclaimer of Warranties
-                    </h3>
-                    <p>
-                      Dynasty Futures provides its website, services, platforms,
-                      and any related content on an "as is" and "as available"
-                      basis. To the fullest extent permitted by law, Dynasty
-                      Futures disclaims all warranties of any kind, whether
-                      express or implied, including but not limited to implied
-                      warranties of merchantability, fitness for a particular
-                      purpose, non-infringement, accuracy, reliability, or
-                      availability. Dynasty Futures does not warrant that the
-                      services will be uninterrupted, error-free, secure, or
-                      free from defects. Your use of the services is at your
-                      sole risk.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Governing Law
-                    </h3>
-                    <p>
-                      These Terms of Use are governed by and construed in
-                      accordance with the laws of the State of Wyoming, without
-                      regard to its conflict of law principles.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Limitation of Liability
-                    </h3>
-                    <p>
-                      Dynasty Futures shall not be liable for any indirect,
-                      incidental, special, consequential, or punitive damages
-                      resulting from your use of our services or any related
-                      matter.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      Simulated Trading Disclosure
-                    </h3>
-                    <p>
-                      Any references on this website to trading, traders,
-                      accounts, performance, revenue, profits, or payouts refer
-                      to simulated or evaluation-based activity unless expressly
-                      stated otherwise. Dynasty Futures provides proprietary
-                      trading evaluation services and does not offer investment
-                      advice, brokerage services, or live client investment
-                      accounts.
-                    </p>
-
-                    <p>
-                      Futures trading involves substantial risk and is not
-                      appropriate for every person. Market conditions can change
-                      rapidly, and trading futures or futures-related products
-                      can result in significant losses. Only risk capital should
-                      ever be used in connection with trading activity. Past
-                      performance, whether actual, simulated, or advertised, is
-                      not indicative of future results.
-                    </p>
-
-                    <p>
-                      Any performance information, metrics, results, or examples
-                      shown on this website, in dashboards, on social media, in
-                      promotional content, or in other materials may be based on
-                      simulated, hypothetical, or evaluation account performance.
-                      Hypothetical or simulated results have important
-                      limitations. Unlike actual trading, simulated results do
-                      not reflect real market execution, liquidity constraints,
-                      slippage, emotional decision-making, or the impact of live
-                      market conditions. Because hypothetical results are often
-                      prepared with the benefit of hindsight, they may overstate
-                      or understate actual performance.
-                    </p>
-
-                    <p>
-                      No representation is being made that any user, trader, or
-                      account will achieve profits or losses similar to those
-                      referenced on this website or in any Dynasty Futures
-                      material. There is no guarantee that any participant will
-                      pass an evaluation, receive a funded account, earn profits,
-                      or receive payouts.
-                    </p>
-
-                    <p>
-                      Payout examples, testimonials, and user experiences shown
-                      on this website may not be representative of the experience
-                      of all users. Testimonials are not a guarantee of future
-                      success or performance. Individual results vary based on
-                      many factors, including skill, market conditions, risk
-                      management, and adherence to program rules.
-                    </p>
-
-                    <h3 className="text-foreground font-display text-lg mt-6">
-                      CFTC Rule 4.41 Disclosure
-                    </h3>
-                    <p>
-                      Hypothetical or simulated performance results have certain
-                      inherent limitations. Unlike an actual performance record,
-                      simulated results do not represent actual trading. Also,
-                      because the trades have not been executed, the results may
-                      have under- or over-compensated for the impact, if any, of
-                      certain market factors, including lack of liquidity.
-                      Simulated trading programs in general are also designed
-                      with the benefit of hindsight. No representation is being
-                      made that any account will or is likely to achieve profits
-                      or losses similar to those shown.
+                  {/* Header */}
+                  <div>
+                    <h2 className="font-display text-2xl font-bold text-foreground mb-3">
+                      Terms of Use
+                    </h2>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Last updated: May 2026 · Governing law: State of Wyoming
                     </p>
                   </div>
+
+                  {/* 1. Acceptance of Policies & Disclosures */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      1. Acceptance of Policies &amp; Disclosures
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        By accessing, registering for, or using any Dynasty Futures LLC website, platform, service, or product, you accept and agree to be bound by these Terms of Use and all of the following policies, which are incorporated herein by reference and form a single master agreement between you and Dynasty Futures:
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-4">
+                      {[
+                        { label: "Trading Rules", tab: "risk" },
+                        { label: "Risk Disclosure", tab: "risk" },
+                        { label: "Refund & Cancellation Policy", tab: "refund" },
+                        { label: "KYC & AML Policy", tab: "kyc-aml" },
+                        { label: "Restricted Countries & Regions Policy", tab: "restricted" },
+                        { label: "Chargeback & Payment Dispute Policy", tab: "chargebacks" },
+                        { label: "Rise Payout Guide", tab: "rise-payouts" },
+                        { label: "Privacy Policy", tab: "privacy" },
+                      ].map(({ label, tab }) => (
+                        <button
+                          key={label}
+                          onClick={() => setActiveTab(tab)}
+                          className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-all duration-200 text-left group"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                          <span className="text-sm text-primary group-hover:text-primary font-medium">{label} →</span>
+                        </button>
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Any additional policies, guidelines, or rules posted on the Dynasty Futures website are also incorporated into this agreement. If you do not agree to these Terms or any incorporated policy, you must immediately stop using Dynasty Futures services.
+                    </p>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground leading-relaxed">
+                      <strong className="text-foreground">Policy Updates:</strong> Dynasty Futures reserves the right to modify these Terms and any referenced policy at any time. Updates are effective upon posting. Continued use of Dynasty Futures services after any update constitutes your acceptance of the revised terms.
+                    </div>
+                  </div>
+
+                  {/* 2. Eligibility */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      2. Eligibility
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        You must be at least 18 years old and legally capable of entering into binding contracts to use Dynasty Futures services. By using our services, you represent and warrant that you meet these requirements.
+                      </p>
+                      <p>
+                        Users from restricted countries and regions are not eligible to register for, purchase, or access Dynasty Futures services. See Section 7 and the{" "}
+                        <button onClick={() => setActiveTab("restricted")} className="text-primary hover:underline font-medium">Restricted Countries &amp; Regions Policy</button>{" "}
+                        for the full list.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 3. Account Responsibilities */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      3. Account Responsibilities
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        You are solely responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You must notify Dynasty Futures support immediately of any unauthorized access or suspected breach.
+                      </p>
+                      <p>
+                        Accounts are personal and non-transferable. You may not share your account, allow third-party access, or permit another individual to trade on your behalf. Each account must be registered with accurate, truthful identity information matching the account holder.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 4. Subscription Renewals & Billing */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      4. Subscription Renewals &amp; Billing
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures evaluation accounts are <strong className="text-foreground">subscription-based</strong> and renew monthly unless canceled before the next billing cycle. By purchasing an evaluation account, you authorize recurring monthly charges until you cancel.
+                      </p>
+                      <p>
+                        You are responsible for canceling your subscription before the next billing cycle if you do not wish to be charged for the next period. Cancellation stops future billing only. Cancellations do not create refunds or credits for the current or any prior billing period, or for previously issued account access, platform access, or credentials.
+                      </p>
+                      <p>
+                        <strong className="text-foreground">Reset fees</strong> (evaluation resets and funded resets) are one-time purchases and are never billed on a recurring monthly basis. Reset fees are non-refundable once issued.
+                      </p>
+                      <p>
+                        The Standard Plan requires a separate one-time <strong className="text-foreground">$80 activation fee</strong> after passing the evaluation, in addition to the evaluation subscription fee. The Advanced and Builder Plans have no activation fee.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      For full billing and cancellation terms, see the{" "}
+                      <button onClick={() => setActiveTab("refund")} className="text-primary hover:underline font-medium">Refund &amp; Cancellation Policy</button>.
+                    </div>
+                  </div>
+
+                  {/* 5. Refunds & Cancellations */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      5. Refunds &amp; Cancellations
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        All purchases made through Dynasty Futures are <strong className="text-foreground">generally final</strong>. Due to the digital and performance-based nature of simulated trading evaluations and the immediate delivery of account access, purchases are non-refundable and non-transferable once account access, platform access, or credentials have been issued.
+                      </p>
+                      <p>
+                        Failure to meet trading objectives, rule violations, breaches, or account terminations do not qualify any purchase for refund, credit, or reimbursement.
+                      </p>
+                      <p>
+                        In the event of a verified technical issue directly attributable to Dynasty Futures that materially prevents platform access, Dynasty Futures may, at its sole discretion, provide an account credit, reset, or replacement account. Cash refunds are not guaranteed.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      See the{" "}
+                      <button onClick={() => setActiveTab("refund")} className="text-primary hover:underline font-medium">Refund &amp; Cancellation Policy</button>{" "}
+                      for complete terms.
+                    </div>
+                  </div>
+
+                  {/* 6. Trading Rules Compliance */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      6. Trading Rules Compliance
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        All traders must comply with the Dynasty Futures Trading Rules at all times during both the evaluation and funded phases. Trading rules include, but are not limited to:
+                      </p>
+                      <ul className="list-none space-y-1.5 pl-2">
+                        {[
+                          "Trailing end-of-day drawdown limits during evaluations",
+                          "Static drawdown limits on funded accounts",
+                          "Daily loss limits (Standard Plan)",
+                          "Profit targets (evaluation phase)",
+                          "Weekend hold prohibition — all positions must be closed before market close on Friday",
+                          "News trading restriction — no new positions 2 minutes before or after major scheduled events (CPI, PPI, NFP, FOMC)",
+                          "No automated trading systems or bots — all trading must be manually executed",
+                          "Trading freeze after payout submission until the payout is approved or denied",
+                          "50% withdrawal limit per payout request",
+                          "Consistency rules where applicable (Standard and Builder plans)",
+                          "Maximum account allocation of 3 accounts",
+                        ].map((item) => (
+                          <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <p>
+                        Violation of any trading rule may result in account flag, breach, termination, or permanent suspension without refund. Dynasty Futures reserves the right to review, audit, and take action on any account at any time.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      Full rule definitions are available on the{" "}
+                      <a href="/rules" className="text-primary hover:underline font-medium">Trading Rules page</a>.
+                    </div>
+                  </div>
+
+                  {/* 7. KYC, AML & Compliance Reviews */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      7. KYC, AML &amp; Compliance Reviews
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures may require Know Your Customer (KYC) and Anti-Money Laundering (AML) verification before approving any payout. KYC and AML compliance are mandatory requirements for funded traders.
+                      </p>
+                      <p>
+                        Dynasty Futures utilizes <strong className="text-foreground">Sumsub</strong>, a regulated identity verification and compliance provider, to conduct identity verification, liveness checks, sanctions screening, politically exposed person (PEP) screening, adverse media review, and ongoing AML compliance monitoring.
+                      </p>
+                      <p>
+                        Separately, <strong className="text-foreground">Rise Works</strong> (Dynasty Futures' primary payout provider) requires its own independent verification and onboarding before any payout can be processed. Completing Dynasty Futures / Sumsub verification does not satisfy Rise verification, and vice versa. Both must be completed independently.
+                      </p>
+                      <p>
+                        Compliance reviews may also include fraud prevention checks, account ownership verification, sanctions screening, and review of trading activity. Dynasty Futures may initiate these reviews at any time during the funded account relationship, not only at the time of a payout request.
+                      </p>
+                      <p>
+                        Failed, incomplete, or fraudulent verification may result in delayed payouts, payout denial, account restriction, or permanent platform termination.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      See the{" "}
+                      <button onClick={() => setActiveTab("kyc-aml")} className="text-primary hover:underline font-medium">KYC &amp; AML Policy</button>{" "}
+                      and{" "}
+                      <button onClick={() => setActiveTab("rise-payouts")} className="text-primary hover:underline font-medium">Rise Payout Guide</button>{" "}
+                      for full verification requirements.
+                    </div>
+                  </div>
+
+                  {/* 8. Restricted Countries & Jurisdictions */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      8. Restricted Countries &amp; Jurisdictions
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Users from restricted countries and regions may not register for, purchase, access, or use Dynasty Futures services in any capacity. This restriction applies to account registration, evaluation purchases, funded account access, and payout eligibility.
+                      </p>
+                      <p>
+                        Dynasty Futures may restrict access based on U.S. sanctions programs, AML risk, payment processor limitations, identity verification restrictions, fraud prevention controls, VPN or proxy usage, or internal risk management decisions.
+                      </p>
+                      <p>
+                        The list of restricted jurisdictions may change at any time without prior notice. Dynasty Futures reserves the right to deny or terminate access to any jurisdiction at its sole discretion.
+                      </p>
+                      <p>
+                        Attempting to bypass geographic restrictions through VPNs, proxies, false residency information, or any other means is a violation of these Terms and may result in immediate account termination and permanent ban without refund.
+                      </p>
+                    </div>
+                    <div className="mt-4">
+                      <button
+                        onClick={() => setActiveTab("restricted")}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/40 bg-primary/10 text-primary text-sm font-semibold hover:bg-primary/20 hover:border-primary/60 transition-all duration-200"
+                      >
+                        View Restricted Countries &amp; Regions →
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* 9. Chargebacks & Payment Disputes */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      9. Chargebacks &amp; Payment Disputes
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        By purchasing Dynasty Futures services, you agree that initiating an unauthorized or illegitimate chargeback or payment dispute after services have been delivered, activated, or accessed is a violation of these Terms of Use.
+                      </p>
+                      <p>
+                        Upon receipt of a chargeback or payment dispute notification, Dynasty Futures may immediately suspend, freeze, restrict, or terminate all accounts associated with the disputed transaction, including any pending or in-progress payout requests. Future purchases may also be permanently blocked.
+                      </p>
+                      <p>
+                        Dynasty Futures maintains comprehensive records of all transactions and will actively contest illegitimate disputes. Evidence submitted to payment processors may include transaction records, account activation and delivery confirmation, login history, session records, platform usage and trading activity logs, identity and verification documentation, IP address and device records, and support and communication history.
+                      </p>
+                      <p>
+                        If you have a billing question, technical issue, or account concern, you are strongly encouraged to contact Dynasty Futures support before initiating a payment dispute. Most concerns can be resolved quickly through direct communication.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      See the{" "}
+                      <button onClick={() => setActiveTab("chargebacks")} className="text-primary hover:underline font-medium">Chargeback &amp; Payment Dispute Policy</button>{" "}
+                      for full terms.
+                    </div>
+                  </div>
+
+                  {/* 10. Account Suspension & Termination */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      10. Account Suspension &amp; Termination
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures reserves the right to suspend, restrict, review, or permanently terminate any account at any time, with or without prior notice, for any of the following reasons:
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-4">
+                      {[
+                        "Trading rule violations",
+                        "Suspicious or unusual account activity",
+                        "Fraud concerns or indicators",
+                        "Identity misrepresentation or false information",
+                        "Account sharing or joint access",
+                        "Third-party account operation",
+                        "VPN, proxy, or location-masking tool usage",
+                        "Payment disputes or chargebacks",
+                        "Access from a restricted jurisdiction",
+                        "KYC or AML verification failure",
+                        "Attempts to exploit platform errors or loopholes",
+                        "Breach of any Dynasty Futures policy",
+                        "Encouraging or facilitating rule violations by others",
+                        "Any conduct deemed harmful to platform integrity",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Termination may occur without refund where permitted under Dynasty Futures policies. Dynasty Futures will assess each situation based on account history, compliance records, and applicable platform rules.
+                    </p>
+                  </div>
+
+                  {/* 11. Payout Eligibility & Verification */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      11. Payout Eligibility &amp; Verification
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Payouts are not guaranteed. Eligibility for a payout requires full compliance with all Dynasty Futures trading rules, successful completion of KYC and AML verification, completion of Rise payout provider onboarding, and Dynasty Futures internal review approval.
+                      </p>
+                      <p>
+                        <strong className="text-foreground">Passing an evaluation does not guarantee payout approval.</strong> All payout requests remain subject to ongoing compliance review, account standing, trading rule adherence, verification status, and Dynasty Futures internal approval at every stage of processing.
+                      </p>
+                      <p>
+                        Payouts may be delayed, held, or denied due to compliance, fraud, trading rule violations, incomplete verification, payout provider requirements, or any other reason at Dynasty Futures' discretion.
+                      </p>
+                      <p>
+                        The following payout structure applies to funded accounts:
+                      </p>
+                      <ul className="list-none space-y-1.5 pl-2">
+                        {[
+                          "90/10 profit split for the first five approved payouts (90% to trader)",
+                          "80/20 profit split after five approved payouts (80% to trader)",
+                          "Up to 4 payout requests per calendar month",
+                          "Minimum 5 qualifying trading days between payout requests",
+                          "50% withdrawal limit per payout request",
+                          "Payout requests submitted before 2:00 PM CT begin processing same business day",
+                        ].map((item) => (
+                          <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      See the{" "}
+                      <button onClick={() => setActiveTab("rise-payouts")} className="text-primary hover:underline font-medium">Rise Payout Guide</button>{" "}
+                      and{" "}
+                      <button onClick={() => setActiveTab("kyc-aml")} className="text-primary hover:underline font-medium">KYC &amp; AML Policy</button>{" "}
+                      for full payout and verification requirements.
+                    </div>
+                  </div>
+
+                  {/* 12. Prohibited Activities */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      12. Prohibited Activities
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      The following activities are strictly prohibited and may result in immediate account suspension or permanent termination without refund:
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {[
+                        "Account sharing or allowing third parties to access or trade your account",
+                        "Using false, altered, or fraudulent identity information",
+                        "Using stolen, unauthorized, or third-party payment methods",
+                        "Exploiting platform errors, system glitches, or pricing anomalies",
+                        "Attempting to bypass geographic or jurisdiction restrictions",
+                        "Using VPNs, proxies, or location-masking tools to evade compliance controls",
+                        "Filing unauthorized, abusive, or fraudulent chargebacks",
+                        "Operating multiple accounts in violation of platform rules",
+                        "Using automated trading systems, bots, or algorithmic execution tools",
+                        "Trading during prohibited news windows",
+                        "Holding positions over the weekend",
+                        "Engaging in fraudulent or deceptive conduct on or relating to the platform",
+                        "Encouraging, facilitating, or enabling rule violations by other users",
+                        "Providing false information during KYC, AML, or Rise verification",
+                      ].map((item) => (
+                        <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 13. No Guarantee of Success — Simulated Trading Disclosure */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      13. No Guarantee of Success — Simulated Trading Disclosure
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Any references on this website to trading, traders, accounts, performance, revenue, profits, or payouts refer to simulated or evaluation-based activity unless expressly stated otherwise. Dynasty Futures provides proprietary trading evaluation services and does not offer investment advice, brokerage services, or live client investment accounts.
+                      </p>
+                      <p>
+                        Futures trading involves substantial risk and is not appropriate for every person. Market conditions can change rapidly, and trading futures or futures-related products can result in significant losses. Only risk capital should ever be used in connection with trading activity. Past performance, whether actual, simulated, or advertised, is not indicative of future results.
+                      </p>
+                      <p>
+                        Any performance information, metrics, results, or examples shown on this website, in dashboards, on social media, in promotional content, or in other materials may be based on simulated, hypothetical, or evaluation account performance. Hypothetical or simulated results have important limitations. Unlike actual trading, simulated results do not reflect real market execution, liquidity constraints, slippage, emotional decision-making, or the impact of live market conditions. Because hypothetical results are often prepared with the benefit of hindsight, they may overstate or understate actual performance.
+                      </p>
+                      <p>
+                        <strong className="text-foreground">There is no guarantee that any participant will pass an evaluation, receive a funded account, earn profits, or receive payouts.</strong> Dynasty Futures makes no representations or warranties regarding evaluation outcomes, payout approvals, or trading profitability.
+                      </p>
+                      <p>
+                        Payout examples, testimonials, and user experiences shown on this website may not be representative of the experience of all users. Testimonials are not a guarantee of future success or performance. Individual results vary based on many factors, including skill, market conditions, risk management, and adherence to program rules.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 14. CFTC Rule 4.41 Disclosure */}
+                  <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      CFTC Rule 4.41 Disclosure
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Hypothetical or simulated performance results have certain inherent limitations. Unlike an actual performance record, simulated results do not represent actual trading. Also, because the trades have not been executed, the results may have under- or over-compensated for the impact, if any, of certain market factors, including lack of liquidity. Simulated trading programs in general are also designed with the benefit of hindsight. No representation is being made that any account will or is likely to achieve profits or losses similar to those shown.
+                    </p>
+                  </div>
+
+                  {/* 15. Disclaimer of Warranties */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      15. Disclaimer of Warranties
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Dynasty Futures provides its website, services, platforms, and any related content on an "as is" and "as available" basis. To the fullest extent permitted by law, Dynasty Futures disclaims all warranties of any kind, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, non-infringement, accuracy, reliability, or availability. Dynasty Futures does not warrant that the services will be uninterrupted, error-free, secure, or free from defects. Your use of the services is at your sole risk.
+                    </p>
+                  </div>
+
+                  {/* 16. Limitation of Liability */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      16. Limitation of Liability
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      To the fullest extent permitted by applicable law, Dynasty Futures shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services, including but not limited to loss of profits, loss of data, business interruption, or any other commercial damages or losses, even if Dynasty Futures has been advised of the possibility of such damages.
+                    </p>
+                  </div>
+
+                  {/* 17. Governing Law */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      17. Governing Law
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      These Terms of Use are governed by and construed in accordance with the laws of the State of Wyoming, without regard to its conflict of law principles. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts of the State of Wyoming.
+                    </p>
+                  </div>
+
+                  {/* 18. Modifications to Terms */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      18. Modifications to Terms
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Dynasty Futures reserves the right to modify, update, or replace these Terms of Use and any incorporated policy at any time. Changes are effective upon posting to the website. Continued use of Dynasty Futures services after any modification constitutes your acceptance of the updated Terms. You are responsible for reviewing these Terms periodically.
+                    </p>
+                  </div>
+
+                  {/* Contact */}
+                  <div className="p-6 rounded-2xl border border-border/50 bg-muted/20">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Questions About These Terms?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      If you have questions about these Terms of Use or any Dynasty Futures policy, please contact our support team.
+                    </p>
+                    <a
+                      href="https://www.dynastyfuturesdyn.com/support"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                    >
+                      Open Support Center
+                    </a>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
+                    </p>
+                  </div>
+
                 </div>
               </TabsContent>
 
