@@ -10,12 +10,24 @@ const quickLinks = [
   { name: "Rules", path: "/rules" },
   { name: "FAQ", path: "/faq" },
   { name: "Affiliates", path: "/affiliates" },
-  { name: "Legal", path: "/legal" },
-  { name: "Essential Trading Rules Overview", path: "/legal?tab=trading-rules" },
+  { name: "Legal / Terms of Use", path: "/legal?tab=terms" },
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
   { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
-  { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
+];
+
+const dynastyArticleLinks = [
+  { name: "Essential Trading Rules Overview", path: "/legal?tab=trading-rules" },
   { name: "KYC & AML Policy", path: "/legal?tab=kyc-aml" },
+  { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
+  { name: "Daily Loss Limit Explained", path: "/legal?tab=trading-rules&rule=daily-loss" },
+  { name: "Drawdown Rules Explained", path: "/legal?tab=trading-rules&rule=drawdown" },
+  { name: "News Trading Policy", path: "/legal?tab=trading-rules&rule=news-trading" },
+  { name: "Consistency Rule Explained", path: "/legal?tab=trading-rules&rule=consistency" },
+  { name: "Position Size Limits", path: "/legal?tab=trading-rules&rule=position-size" },
+  { name: "Profit Targets Explained", path: "/legal?tab=trading-rules&rule=profit-targets" },
+  { name: "Payouts & Profit Split", path: "/legal?tab=trading-rules&rule=payouts-split" },
+  { name: "Account Violations & Resets", path: "/legal?tab=trading-rules&rule=violations" },
+  { name: "Copy Trading & Automated Systems Policy", path: "/legal?tab=trading-rules&rule=copy-trading" },
 ];
 
 const Footer = () => {
@@ -31,7 +43,7 @@ const Footer = () => {
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
       <div className="container mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {/* Logo & Description */}
           <div className="flex flex-col justify-between min-h-[160px]">
             <div className="flex-1 flex items-center justify-start">
@@ -128,6 +140,26 @@ const Footer = () => {
                   Pre-Launch Announcement
                 </button>
               </li>
+            </ul>
+          </div>
+
+          {/* Dynasty Articles */}
+          <div>
+            <h4 className="font-display font-semibold text-foreground mb-4">
+              Dynasty Articles
+            </h4>
+            <ul className="space-y-2">
+              {dynastyArticleLinks.map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    onClick={handleLinkClick}
+                    className="text-muted-foreground text-sm hover:text-primary transition-colors duration-300 link-transition inline-block"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
