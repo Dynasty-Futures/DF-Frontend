@@ -1018,60 +1018,48 @@ const Legal = () => {
                     </h2>
                     <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
                       <p>
-                        To request payouts from a funded account, traders may be required to complete both
-                        Dynasty Futures internal review procedures and payout provider verification requirements.
+                        Dynasty Futures verifies funded traders through Know Your Customer (KYC) and
+                        Anti-Money Laundering (AML) procedures prior to payout approval. These requirements
+                        are in place to protect traders, safeguard payout systems, and maintain the integrity
+                        of the Dynasty Futures platform.
                       </p>
                       <p>
-                        Dynasty Futures maintains Know Your Customer (KYC) and Anti-Money Laundering (AML)
-                        controls designed to support platform integrity, fraud prevention, compliance obligations,
-                        secure payout processing, and operational risk management.
+                        Dynasty Futures utilizes Sumsub, a regulated identity verification and compliance
+                        provider, to assist with identity verification and AML screening requirements.
+                        AML screening may include sanctions screening, politically exposed person (PEP)
+                        screening, adverse media review, and ongoing compliance monitoring.
+                      </p>
+                      <p>
+                        In addition to Dynasty Futures verification, traders must also complete a separate
+                        onboarding and verification process with Rise, Dynasty Futures' primary payout
+                        provider, before any payouts can be processed. Both verifications must be completed
+                        independently — completing one does not satisfy the other.
                       </p>
                     </div>
                   </div>
 
-                  {/* Our KYC & AML Policy */}
+                  {/* Overview: Two-Step Verification */}
                   <div>
                     <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      Our KYC &amp; AML Policy
+                      Overview: Two-Step Verification Process
                     </h3>
-                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
-                      <p>
-                        Dynasty Futures may conduct internal identity, compliance, risk, and account review
-                        procedures before approving payouts or certain account activity.
-                      </p>
-                      <p>
-                        These reviews may include account ownership verification, fraud prevention review,
-                        sanctions screening, payment verification, compliance checks, and ongoing monitoring
-                        where applicable.
-                      </p>
-                      <p>
-                        Dynasty Futures reserves the right to request additional information, documentation,
-                        or verification procedures at any time.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Two-Step Verification Overview */}
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      Overview: Two-Step Verification
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                      Traders may be required to complete two separate verification procedures before
-                      payouts can be approved or released.
+                    <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+                      Before payouts can be approved or released, traders are required to complete two
+                      separate and independent verification processes. These steps are not interchangeable —
+                      each must be completed in full.
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
                       <div className="flex gap-4 p-5 rounded-xl border border-border/50 bg-muted/10">
                         <span className="font-display text-2xl font-bold text-primary/40 leading-none mt-0.5 select-none">
                           01
                         </span>
                         <div>
                           <p className="text-sm font-semibold text-foreground mb-1">
-                            Dynasty Futures Internal Review
+                            Dynasty Futures Identity Verification
                           </p>
                           <p className="text-xs text-muted-foreground leading-relaxed">
-                            Internal compliance, identity, and account review procedures conducted by
-                            Dynasty Futures prior to payout approval.
+                            Conducted via Sumsub. Includes identity verification, liveness check, sanctions
+                            screening, PEP screening, and AML compliance review prior to payout approval.
                           </p>
                         </div>
                       </div>
@@ -1084,56 +1072,79 @@ const Legal = () => {
                             Payout Provider Verification (Rise)
                           </p>
                           <p className="text-xs text-muted-foreground leading-relaxed">
-                            Separate identity and payment verification required by Rise, Dynasty Futures'
-                            primary payout provider, before funds can be released.
+                            A separate onboarding and verification process required directly by Rise before
+                            funds can be released. Independent of Dynasty Futures verification.
                           </p>
                         </div>
                       </div>
                     </div>
                     <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground leading-relaxed">
-                      Both verification steps may be required before payouts can be approved or released.
-                      These procedures help protect traders, payment systems, Dynasty Futures, and payout
-                      providers from fraud, unauthorized activity, sanctions exposure, and compliance risks.
+                      Completing Dynasty Futures verification does not automatically satisfy Rise verification
+                      requirements, and vice versa. Both processes must be completed before payouts can be
+                      approved or released.
                     </div>
                   </div>
 
-                  {/* Step 1 — Dynasty Futures Internal Review */}
+                  {/* Step 1 — Dynasty Futures Identity Verification */}
                   <div>
                     <h3 className="font-display text-lg font-semibold text-foreground mb-1">
-                      Step 1 — Dynasty Futures Internal Review
+                      Step 1 — Dynasty Futures Identity Verification
                     </h3>
                     <p className="text-xs text-primary/80 font-semibold uppercase tracking-wide mb-4">
-                      Internal Compliance &amp; Account Review
+                      Powered by Sumsub · Identity &amp; AML Compliance
                     </p>
-                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed mb-5">
                       <p>
-                        Dynasty Futures may perform internal review procedures designed to verify account
-                        ownership, evaluate compliance status, support fraud prevention efforts, and maintain
-                        platform integrity.
+                        Dynasty Futures uses Sumsub, a regulated identity verification and compliance
+                        platform, to conduct KYC and AML screening for funded traders. Traders may complete
+                        verification prior to submitting their first payout request, or verification may be
+                        required as part of the payout review process.
                       </p>
                       <p>
-                        Additional review procedures may occur before payout approval or during ongoing
-                        funded account activity.
+                        KYC verification becomes a mandatory requirement before any payout can be approved.
+                        Dynasty Futures reserves the right to request verification at any point during the
+                        funded account relationship.
                       </p>
+                    </div>
+                    <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                      <p className="text-sm font-semibold text-foreground mb-3">
+                        Verification may include:
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {[
+                          "Government-issued photo ID",
+                          "Liveness check / selfie verification",
+                          "Sanctions and watchlist screening",
+                          "Politically exposed person (PEP) screening",
+                          "Adverse media review",
+                          "Ongoing AML compliance monitoring",
+                        ].map((item) => (
+                          <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
                   {/* When Is Verification Required? */}
                   <div>
                     <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      When Is Verification or Review Required?
+                      When Is Verification Required?
                     </h3>
                     <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                      Verification or compliance review may be required before payouts are approved and
-                      may also occur periodically during the funded relationship. Triggering events may include:
+                      Verification and compliance review requirements are not limited to a single point in
+                      the funded relationship. Dynasty Futures may require or initiate verification under
+                      any of the following circumstances:
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                       {[
                         "Before first payout request",
                         "During payout review and processing",
-                        "Following account changes or updates",
                         "After detection of unusual or suspicious activity",
-                        "During scheduled or periodic compliance reviews",
+                        "During periodic scheduled compliance reviews",
+                        "Following material account changes or updates",
                         "At Dynasty Futures' sole discretion at any time",
                       ].map((item) => (
                         <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
@@ -1142,136 +1153,93 @@ const Legal = () => {
                         </div>
                       ))}
                     </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Dynasty Futures maintains ongoing compliance and fraud prevention procedures designed
+                      to protect traders, payout providers, platform integrity, and operational security.
+                      Verification and compliance reviews may occur periodically throughout the funded
+                      account relationship.
+                    </p>
                   </div>
 
-                  {/* Step 2 — Payout Provider Verification */}
+                  {/* Step 2 — Rise Payout Provider Verification */}
                   <div>
                     <h3 className="font-display text-lg font-semibold text-foreground mb-1">
                       Step 2 — Payout Provider Verification (Rise)
                     </h3>
                     <p className="text-xs text-primary/80 font-semibold uppercase tracking-wide mb-4">
-                      Separate Verification Required by Rise
+                      Separate Onboarding Required · Independent of Dynasty Futures Verification
                     </p>
-                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
-                      <p>
-                        After Dynasty Futures completes its internal review procedures, traders must also
-                        complete separate payout provider verification through Rise before payouts can be released.
-                      </p>
-                      <p>
-                        This is a separate verification process required by the payment processor and is
-                        independent of Dynasty Futures internal review. Completion of Dynasty Futures internal
-                        review does not automatically satisfy Rise verification requirements.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Rise — Default Payout Provider */}
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      Rise (Default Payout Provider)
-                    </h3>
                     <div className="space-y-3 text-muted-foreground text-sm leading-relaxed mb-5">
                       <p>
                         Rise is Dynasty Futures' primary payout provider for most supported countries.
+                        Traders must complete Rise's own onboarding and verification process before any
+                        payouts can be released. This is a separate requirement from Dynasty Futures
+                        verification — completing Step 1 does not automatically satisfy Rise requirements.
                       </p>
                       <p>
-                        After internal review is completed, eligible traders may receive a Rise onboarding
-                        invitation by email. Traders must complete Rise's verification and onboarding
-                        procedures before payouts can be processed.
+                        After Dynasty Futures internal review is completed, eligible traders may receive
+                        a Rise onboarding invitation to the email address associated with their Dynasty
+                        Futures account. Traders must follow that process to completion before payouts
+                        can be processed.
                       </p>
-                      <p>
+                    </div>
+                    <div className="p-5 rounded-xl border border-border/50 bg-muted/10 mb-5">
+                      <p className="text-sm font-semibold text-foreground mb-3">
                         Rise may require:
                       </p>
+                      <ul className="space-y-2">
+                        {[
+                          "Government-issued photo ID (passport, driver's license, or national ID)",
+                          "Proof of address documentation",
+                          "Tax documentation where applicable",
+                          "Banking or payment method verification",
+                        ].map((item) => (
+                          <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <ul className="space-y-2 mb-5">
-                      {[
-                        "Identity verification",
-                        "Proof of address",
-                        "Payment or banking verification",
-                        "Tax documentation where applicable",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
                     <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
                       <p>
-                        Traders must also set up their Rise account or Rise Wallet to receive payouts.
-                        Payout method availability may vary by country or region.
+                        Traders must complete Rise account setup, including wallet or payment method
+                        configuration, before payouts can be released. Payout method availability may
+                        vary by country or jurisdiction.
                       </p>
                       <p>
-                        If a trader already has a verified Rise account using the same email associated with
-                        their Dynasty Futures account, portions of the Rise verification process may be
-                        recognized automatically where supported.
+                        If you already have a verified Rise account using the same email address associated
+                        with your Dynasty Futures account, portions of the Rise verification process may
+                        be automatically recognized where supported by Rise's platform.
                       </p>
                       <p>
-                        If Rise is unavailable in a trader's jurisdiction, payout availability may be
-                        limited or unavailable.
+                        If Rise is unavailable in your country or jurisdiction, payout availability may
+                        be limited or unavailable. Refer to the Restricted Countries page for details.
                       </p>
-                    </div>
-                  </div>
-
-                  {/* What Documents May Be Required? */}
-                  <div>
-                    <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      What Documents May Be Required?
-                    </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
-                        <p className="text-sm font-semibold text-foreground mb-3">
-                          Dynasty Futures Internal Review
-                        </p>
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          Dynasty Futures may request information or documentation as needed to confirm
-                          identity consistency, account ownership, compliance status, or platform integrity.
-                          Specific requirements may vary based on account activity, review type, or
-                          compliance circumstances.
-                        </p>
-                      </div>
-                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
-                        <p className="text-sm font-semibold text-foreground mb-3">
-                          Rise Verification
-                        </p>
-                        <ul className="space-y-1.5">
-                          {[
-                            "Government-issued photo ID (passport, driver's license, or national ID)",
-                            "Proof of address documentation",
-                            "Tax information where applicable",
-                            "Payment or banking information where applicable",
-                          ].map((item) => (
-                            <li key={item} className="flex items-start gap-2 text-xs text-muted-foreground">
-                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
                     </div>
                   </div>
 
                   {/* If Verification Fails */}
                   <div>
                     <h3 className="font-display text-lg font-semibold text-foreground mb-4">
-                      If Verification or Review Cannot Be Completed
+                      If Verification Cannot Be Completed
                     </h3>
                     <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                       If verification, compliance review, or payout onboarding cannot be completed
                       successfully, Dynasty Futures may delay, deny, restrict, suspend, or terminate
-                      payout eligibility or account access. Examples of circumstances that may result
-                      in such outcomes include:
+                      payout eligibility or funded account access. Circumstances that may result in
+                      such outcomes include, but are not limited to:
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                       {[
                         "Inaccurate or inconsistent account information",
-                        "Altered or fraudulent documentation",
-                        "Sanctions or watchlist concerns",
-                        "Access from prohibited jurisdictions",
-                        "Payment verification failures",
-                        "VPN or proxy usage triggering review",
+                        "Altered, fraudulent, or misrepresented documentation",
+                        "Sanctions, PEP, or watchlist concerns",
+                        "Access from restricted or prohibited jurisdictions",
+                        "Payment or banking verification failures",
+                        "VPN or proxy usage triggering compliance review",
                         "Account ownership inconsistencies",
-                        "Incomplete payout provider onboarding",
+                        "Incomplete Rise payout provider onboarding",
                       ].map((item) => (
                         <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
                           <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
@@ -1286,12 +1254,12 @@ const Legal = () => {
                     <h3 className="font-display text-lg font-semibold text-foreground mb-4">
                       Important Compliance Notes
                     </h3>
-                    <div className="p-5 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2.5">
+                    <div className="p-5 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-3">
                       {[
                         "VPN, proxy, or location-masking tool usage may trigger additional compliance review or result in payout denial.",
-                        "Third-party account access is strictly prohibited. Accounts must be operated solely by the registered account holder.",
-                        "Fraudulent, altered, or misrepresented information may result in denied payouts, account restriction, or permanent platform termination.",
-                        "Ongoing monitoring may occur throughout the funded account relationship as part of Dynasty Futures' compliance obligations.",
+                        "Third-party account access is strictly prohibited. All accounts must be operated solely by the verified, registered account holder.",
+                        "Providing fraudulent, altered, or materially misrepresented information may result in denied payouts, account restriction, or permanent platform termination.",
+                        "Dynasty Futures conducts ongoing monitoring throughout the funded account relationship as part of its compliance obligations.",
                         "All payouts remain subject to Dynasty Futures internal approval and compliance review at every stage of the payout process.",
                       ].map((item) => (
                         <div key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
@@ -1320,24 +1288,70 @@ const Legal = () => {
                     </button>
                   </div>
 
+                  {/* FAQ */}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-5">
+                      Frequently Asked Questions
+                    </h3>
+                    <div className="space-y-4">
+                      {[
+                        {
+                          q: "Do I need to complete both verifications?",
+                          a: "Yes. Dynasty Futures verification (via Sumsub) and Rise payout provider verification are two separate and independent requirements. Both must be completed before any payout can be approved or released.",
+                        },
+                        {
+                          q: "Can I complete KYC before requesting a payout?",
+                          a: "Yes. Traders are encouraged to complete Dynasty Futures identity verification proactively rather than waiting until a payout is requested. Early completion can help avoid delays during payout processing.",
+                        },
+                        {
+                          q: "How long does verification take?",
+                          a: "Dynasty Futures identity verification via Sumsub is typically completed within minutes for standard submissions. Rise onboarding timelines may vary. Additional review may be required in certain circumstances.",
+                        },
+                        {
+                          q: "What happens if my verification is unsuccessful?",
+                          a: "If verification cannot be completed, Dynasty Futures may place your payout on hold, request additional documentation, or restrict payout eligibility. Contact our support team for guidance.",
+                        },
+                        {
+                          q: "Do all funded traders need to complete KYC?",
+                          a: "KYC and AML verification is required before any payout can be processed. Dynasty Futures may also require verification at other points during the funded account relationship.",
+                        },
+                        {
+                          q: "Is my personal information secure?",
+                          a: "Yes. Dynasty Futures uses Sumsub, a regulated compliance platform, for identity verification. All data is handled in accordance with applicable data protection requirements. Refer to the Dynasty Futures Privacy Policy for full details.",
+                        },
+                        {
+                          q: "What AML checks are performed?",
+                          a: "AML screening conducted through Sumsub may include sanctions list screening, PEP (politically exposed person) screening, adverse media review, and ongoing compliance monitoring where applicable.",
+                        },
+                        {
+                          q: "I already have a Rise account. Do I still need to verify?",
+                          a: "If your existing Rise account uses the same email address associated with your Dynasty Futures account, portions of the Rise verification process may be automatically recognized where supported. You should still complete the Rise onboarding flow to confirm your account is fully verified and ready for payouts.",
+                        },
+                      ].map(({ q, a }) => (
+                        <div key={q} className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">{q}</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Support */}
                   <div className="p-6 rounded-2xl border border-border/50 bg-muted/20">
                     <h3 className="font-display text-lg font-semibold text-foreground mb-2">
                       Need Help With Verification or Payout Onboarding?
                     </h3>
                     <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-                      Our support team can assist with payout onboarding, verification questions,
-                      and compliance-related inquiries.
+                      Our support team can assist with KYC verification, Rise onboarding, and
+                      compliance-related inquiries.
                     </p>
-                    <div className="flex flex-wrap gap-3 mb-4">
-                      <a
-                        href="https://www.dynastyfuturesdyn.com/support"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
-                      >
-                        Open Support Center
-                      </a>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
+                    <a
+                      href="https://www.dynastyfuturesdyn.com/support"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200 mb-4"
+                    >
+                      Open Support Center
+                    </a>
+                    <p className="text-xs text-muted-foreground mt-4">
                       support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
                     </p>
                   </div>
