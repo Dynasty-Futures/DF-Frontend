@@ -775,6 +775,24 @@ const Legal = () => {
                       contact us at support@dynastyfuturesdyn.com.
                     </p>
                   </div>
+
+                  <div className="p-6 rounded-2xl border border-border/50 bg-muted/20 mt-6">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Questions About This Policy?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      If you have questions about this Privacy Policy or how we handle your data, please contact our support team.
+                    </p>
+                    <a
+                      href="https://www.dynastyfuturesdyn.com/support"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                    >
+                      Open Support Center
+                    </a>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
+                    </p>
+                  </div>
                 </div>
               </TabsContent>
 
@@ -852,6 +870,24 @@ const Legal = () => {
                         support@dynastyfuturesdyn.com
                       </a>
                       .
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-border/50 bg-muted/20 mt-6">
+                    <h3 className="font-display text-lg font-semibold text-foreground mb-2">
+                      Questions About This Policy?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      If you have questions about this Refund & Cancellation Policy, please contact our support team.
+                    </p>
+                    <a
+                      href="https://www.dynastyfuturesdyn.com/support"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200"
+                    >
+                      Open Support Center
+                    </a>
+                    <p className="text-xs text-muted-foreground mt-4">
+                      support@dynastyfuturesdyn.com · Available 24 hours a day, 7 days a week
                     </p>
                   </div>
                 </div>
