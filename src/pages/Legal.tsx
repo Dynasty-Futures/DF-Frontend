@@ -31,6 +31,11 @@ const Legal = () => {
     ruleParam && RULE_EXPLAINERS.some(r => r.id === ruleParam) ? ruleParam : null
   );
 
+  const handleSetActiveRule = (id: string | null) => {
+    setActiveRule(id);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
   return (
     <Layout>
       <PageMeta
@@ -113,7 +118,7 @@ const Legal = () => {
                 <TabsTrigger
                   value="trading-rules"
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
-                  onClick={() => setActiveRule(null)}
+                  onClick={() => handleSetActiveRule(null)}
                 >
                   Trading Rules
                 </TabsTrigger>
@@ -2067,7 +2072,7 @@ const Legal = () => {
                         {RULE_EXPLAINERS.map(({ id, label }) => (
                           <button
                             key={id}
-                            onClick={() => setActiveRule(id)}
+                            onClick={() => handleSetActiveRule(id)}
                             className="group flex items-center gap-3 px-5 py-4 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all duration-200 text-left"
                           >
                             <span className="w-2 h-2 rounded-full bg-primary/60 flex-shrink-0 group-hover:bg-primary transition-colors" />
@@ -2082,7 +2087,7 @@ const Legal = () => {
                 {/* ── DAILY LOSS LIMIT ── */}
                 {activeRule === "daily-loss" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Daily Loss Limit Explained</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">The Daily Loss Limit (DLL) applies to the <strong className="text-foreground">Standard Plan only</strong> and is active during both the evaluation and funded phases. It caps how much you can lose in a single trading day, providing an additional layer of risk management on top of the Maximum Loss Limit.</p>
@@ -2151,7 +2156,7 @@ const Legal = () => {
                 {/* ── DRAWDOWN RULES ── */}
                 {activeRule === "drawdown" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Drawdown Rules Explained</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures uses two types of drawdown depending on your phase: trailing end-of-day drawdown during evaluations and static drawdown on funded accounts.</p>
@@ -2218,7 +2223,7 @@ const Legal = () => {
                 {/* ── NEWS TRADING POLICY ── */}
                 {activeRule === "news-trading" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">News Trading Policy</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">The News Trading restriction applies to <strong className="text-foreground">all plans</strong> in both evaluation and funded phases. It is designed to protect traders and maintain fair, orderly market conditions during periods of extreme volatility caused by scheduled economic releases.</p>
@@ -2280,7 +2285,7 @@ const Legal = () => {
                 {/* ── CONSISTENCY RULE ── */}
                 {activeRule === "consistency" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Consistency Rule Explained</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">The Consistency Rule ensures that no single trading day makes up a disproportionate share of your total account profit. It encourages disciplined, repeatable performance rather than relying on one outsized day.</p>
@@ -2349,7 +2354,7 @@ const Legal = () => {
                 {/* ── POSITION SIZE LIMITS ── */}
                 {activeRule === "position-size" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Position Size Limits</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures enforces maximum contract limits on all accounts to ensure appropriate risk management. These limits are applied at the platform level and are designed to prevent excessive position sizing relative to account size.</p>
@@ -2370,10 +2375,10 @@ const Legal = () => {
                           </thead>
                           <tbody>
                             {[
-                              { size: "25K", std: "3 contracts", builder: "5 contracts" },
-                              { size: "50K", std: "5 contracts", builder: "8 contracts" },
-                              { size: "100K", std: "10 contracts", builder: "14 contracts" },
-                              { size: "150K", std: "15 contracts", builder: "20 contracts" },
+                              { size: "25K", std: "1 mini / 10 micros", builder: "1 mini / 10 micros" },
+                              { size: "50K", std: "5 minis / 50 micros", builder: "3 minis / 30 micros" },
+                              { size: "100K", std: "10 minis / 100 micros", builder: "6 minis / 60 micros" },
+                              { size: "150K", std: "15 minis / 150 micros", builder: "8 minis / 80 micros" },
                             ].map((row, i) => (
                               <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
                                 <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
@@ -2399,7 +2404,7 @@ const Legal = () => {
                 {/* ── PROFIT TARGETS ── */}
                 {activeRule === "profit-targets" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Profit Targets Explained</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">The profit target is a minimum profit threshold that must be reached to pass the evaluation phase. <strong className="text-foreground">Profit targets apply during the evaluation only.</strong> There is no profit target requirement on funded accounts.</p>
@@ -2460,7 +2465,7 @@ const Legal = () => {
                 {/* ── PAYOUTS & PROFIT SPLIT ── */}
                 {activeRule === "payouts-split" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Payouts &amp; Profit Split</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures pays out through Rise Works, a modern payout and compliance platform. Before any payout can be approved, traders must complete KYC verification through Dynasty Futures (via Sumsub) and separately through Rise.</p>
@@ -2524,7 +2529,7 @@ const Legal = () => {
                 {/* ── ACCOUNT VIOLATIONS & RESETS ── */}
                 {activeRule === "violations" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Account Violations &amp; Resets</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">Account violations occur when a trading rule is breached. Depending on the severity and phase, violations may result in account termination, or may be eligible for a reset.</p>
@@ -2543,12 +2548,11 @@ const Legal = () => {
                           <tbody>
                             {[
                               { v: "Exceeded Maximum Loss Limit (MLL)", a: "All plans", r: "Account failed / terminated" },
-                              { v: "Exceeded Daily Loss Limit (DLL)", a: "Standard Plan only", r: "Account failed / terminated" },
-                              { v: "Holding positions over the weekend", a: "All plans", r: "Account flag / termination" },
-                              { v: "News trading during restricted window", a: "All plans", r: "Account flag / termination" },
+                              { v: "Exceeded Daily Loss Limit (DLL)", a: "Standard Plan only", r: "Trading Blocked Until Day Resets" },
+                              { v: "News trading during restricted window", a: "All plans", r: "Account Flag / Possible Payout Rejection" },
                               { v: "Using automated bots", a: "All plans", r: "Immediate termination" },
                               { v: "Account sharing / third-party access", a: "All plans", r: "Immediate termination, no refund" },
-                              { v: "Trading during payout freeze", a: "All plans", r: "Account flag / termination" },
+                              { v: "Trading during payout freeze", a: "All plans", r: "Account Flag / Payout Rejection" },
                             ].map((row, i) => (
                               <tr key={row.v} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
                                 <td className="px-4 py-3 text-muted-foreground">{row.v}</td>
@@ -2582,7 +2586,7 @@ const Legal = () => {
                 {/* ── COPY TRADING & AUTOMATED SYSTEMS ── */}
                 {activeRule === "copy-trading" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
-                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Copy Trading &amp; Automated Systems Policy</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures permits copy trading but prohibits automated bots and algorithmic execution. All trading must ultimately be initiated by the account holder — not by software acting autonomously on their behalf.</p>
