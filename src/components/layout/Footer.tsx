@@ -11,6 +11,7 @@ const quickLinks = [
   { name: "FAQ", path: "/faq" },
   { name: "Affiliates", path: "/affiliates" },
   { name: "Legal", path: "/legal" },
+  { name: "Essential Trading Rules Overview", path: "/legal?tab=trading-rules" },
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
   { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
   { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
@@ -185,7 +186,7 @@ const Footer = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground text-sm">
-                    Important Legal Disclosure
+                    Help Center And Important Legal Disclosure
                   </h4>
                   <p className="text-muted-foreground text-xs">
                     Read our full risk disclosure and terms

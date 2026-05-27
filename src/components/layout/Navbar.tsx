@@ -33,6 +33,7 @@ import logo from "@/assets/Dynasty_Futures.png";
 
 const helpCenterLinks = [
   { name: "Support", href: "https://www.dynastyfuturesdyn.com/support" },
+  { name: "Essential Trading Rules Overview", href: "https://www.dynastyfuturesdyn.com/legal?tab=trading-rules" },
   { name: "KYC & AML Policy", href: "https://www.dynastyfuturesdyn.com/legal?tab=kyc-aml" },
   { name: "Restricted Countries & Regions", href: "https://www.dynastyfuturesdyn.com/legal?tab=restricted" },
   { name: "Rise Payout Guide", href: "https://www.dynastyfuturesdyn.com/legal?tab=rise-payouts" },

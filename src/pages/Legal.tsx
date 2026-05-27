@@ -6,13 +6,29 @@ import JsonLd, { breadcrumb } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml", "chargebacks"];
+const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml", "chargebacks", "trading-rules"];
+
+const RULE_EXPLAINERS = [
+  { id: "daily-loss", label: "Daily Loss Limit Explained" },
+  { id: "drawdown", label: "Drawdown Rules Explained" },
+  { id: "news-trading", label: "News Trading Policy" },
+  { id: "consistency", label: "Consistency Rule Explained" },
+  { id: "position-size", label: "Position Size Limits" },
+  { id: "profit-targets", label: "Profit Targets Explained" },
+  { id: "payouts-split", label: "Payouts & Profit Split" },
+  { id: "violations", label: "Account Violations & Resets" },
+  { id: "copy-trading", label: "Copy Trading & Automated Systems Policy" },
+];
 
 const Legal = () => {
   const [searchParams] = useSearchParams();
   const tabParam = searchParams.get("tab");
+  const ruleParam = searchParams.get("rule");
   const [activeTab, setActiveTab] = useState(
     VALID_TABS.includes(tabParam ?? "") ? tabParam! : "risk"
+  );
+  const [activeRule, setActiveRule] = useState<string | null>(
+    ruleParam && RULE_EXPLAINERS.some(r => r.id === ruleParam) ? ruleParam : null
   );
 
   return (
@@ -93,6 +109,13 @@ const Legal = () => {
                   className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
                 >
                   Payment Disputes
+                </TabsTrigger>
+                <TabsTrigger
+                  value="trading-rules"
+                  className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground whitespace-nowrap px-3 py-2 text-xs sm:text-sm flex-1"
+                  onClick={() => setActiveRule(null)}
+                >
+                  Trading Rules
                 </TabsTrigger>
               </TabsList>
               </div>
@@ -1873,6 +1896,739 @@ const Legal = () => {
 
                 </div>
               </TabsContent>
+              {/* ── TRADING RULES KNOWLEDGE BASE ── */}
+              <TabsContent value="trading-rules">
+                {activeRule === null && (
+                  <div className="space-y-8">
+                    {/* Overview */}
+                    <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-10">
+                      <div>
+                        <h2 className="font-display text-2xl font-bold text-foreground mb-3">
+                          Essential Trading Rules Overview
+                        </h2>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          Dynasty Futures is a proprietary trading firm that provides simulated funded accounts to qualified futures traders. All trading activity takes place in a simulated environment using real-time market data. No live capital is ever at risk. Payouts are based on your simulated trading performance and are subject to compliance with all program rules.
+                        </p>
+                      </div>
+
+                      {/* Simulated Trading Disclosure */}
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Simulated Trading Disclosure</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">
+                          Both the evaluation and funded phases use simulated accounts with live market data. You never trade live capital at any stage. Performance metrics, profit targets, and payout eligibility are all based on simulated results. Dynasty Futures is not a brokerage and does not provide investment advice.
+                        </p>
+                      </div>
+
+                      {/* Three Plan Types */}
+                      <div>
+                        <h3 className="font-display text-lg font-semibold text-foreground mb-4">Three Plan Types</h3>
+                        <div className="overflow-x-auto rounded-xl border border-border/50">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-border/50 bg-muted/20">
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Plan</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Activation Fee</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Consistency Rule</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Min Winning Day</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Daily Loss Limit</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {[
+                                { plan: "Standard", activation: "$80 (after passing)", consistency: "50% (eval only)", minDay: "$150", dll: "Yes" },
+                                { plan: "Advanced", activation: "None", consistency: "None", minDay: "$200", dll: "No" },
+                                { plan: "Builder", activation: "None", consistency: "50% eval / 40% funded", minDay: "$200", dll: "No" },
+                              ].map((row, i) => (
+                                <tr key={row.plan} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                  <td className="px-4 py-3 font-semibold text-primary">{row.plan}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.activation}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.consistency}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.minDay}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.dll}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      {/* Account Size Parameters */}
+                      <div>
+                        <h3 className="font-display text-lg font-semibold text-foreground mb-4">Account Size Parameters</h3>
+                        <div className="overflow-x-auto rounded-xl border border-border/50">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="border-b border-border/50 bg-muted/20">
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Account</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Profit Target</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Std/Adv Max Loss</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Builder Max Loss</th>
+                                <th className="text-left px-4 py-3 font-semibold text-foreground">Daily Loss (Std)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {[
+                                { size: "25K", target: "$1,500", stdLoss: "$1,000", builderLoss: "$1,500", dll: "$750" },
+                                { size: "50K", target: "$3,000", stdLoss: "$2,000", builderLoss: "$2,500", dll: "$1,500" },
+                                { size: "100K", target: "$6,000", stdLoss: "$2,500", builderLoss: "$3,500", dll: "$2,000" },
+                                { size: "150K", target: "$8,000", stdLoss: "$4,000", builderLoss: "$5,000", dll: "$3,000" },
+                              ].map((row, i) => (
+                                <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                  <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.target}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.stdLoss}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.builderLoss}</td>
+                                  <td className="px-4 py-3 text-muted-foreground">{row.dll}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      {/* Universal Rules */}
+                      <div>
+                        <h3 className="font-display text-lg font-semibold text-foreground mb-4">Universal Rules — All Plans</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {[
+                            { ok: true, text: "Overnight trading allowed within the trading week" },
+                            { ok: false, text: "Weekend holds NOT allowed — all positions must be closed before Friday market close" },
+                            { ok: false, text: "No news trading — restricted window 2 minutes before and after major scheduled events" },
+                            { ok: true, text: "Copy trading allowed on all plans" },
+                            { ok: false, text: "No automated bots or algorithmic execution — all trading must be manually executed" },
+                            { ok: false, text: "Trading freeze while a payout request is pending approval" },
+                            { ok: true, text: "50% withdrawal limit per payout request" },
+                            { ok: true, text: "Maximum 3 accounts across all plans" },
+                            { ok: true, text: "90/10 profit split for first 5 payouts; 80/20 thereafter" },
+                          ].map(({ ok, text }) => (
+                            <div key={text} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${ok ? "bg-primary/60" : "bg-destructive/60"}`} />
+                              {text}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Evaluation vs Funded */}
+                      <div>
+                        <h3 className="font-display text-lg font-semibold text-foreground mb-4">Evaluation vs. Funded Phase</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-2">Evaluation (Challenge Phase)</p>
+                            <ul className="space-y-1.5 text-sm text-muted-foreground">
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Trailing end-of-day drawdown</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Profit target required</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Consistency rule applies (Standard & Builder)</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Daily loss limit applies (Standard only)</li>
+                            </ul>
+                          </div>
+                          <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-2">Funded Phase</p>
+                            <ul className="space-y-1.5 text-sm text-muted-foreground">
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Static (fixed) drawdown</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />No profit target</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Consistency rule: Builder only (40%)</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Daily loss limit: Standard only</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Quick Reference */}
+                      <div>
+                        <h3 className="font-display text-lg font-semibold text-foreground mb-4">Quick Reference: What Can Close Your Account</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {[
+                            "Exceeding the Maximum Loss Limit (MLL)",
+                            "Exceeding the Daily Loss Limit (Standard Plan)",
+                            "Holding positions over the weekend",
+                            "Trading during a restricted news window",
+                            "Using automated bots or algorithmic execution",
+                            "Violating the consistency rule",
+                            "Trading during a payout freeze",
+                            "Account sharing or third-party access",
+                            "KYC or AML compliance failure",
+                            "Fraudulent activity or policy violation",
+                          ].map(item => (
+                            <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                              {item}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Rule Explainers Grid */}
+                    <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10">
+                      <h3 className="font-display text-xl font-bold text-foreground mb-2">Rule Explainers</h3>
+                      <p className="text-sm text-muted-foreground mb-6">Deep-dive explanations for each major rule. Select a topic to learn more.</p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {RULE_EXPLAINERS.map(({ id, label }) => (
+                          <button
+                            key={id}
+                            onClick={() => setActiveRule(id)}
+                            className="group flex items-center gap-3 px-5 py-4 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/60 transition-all duration-200 text-left"
+                          >
+                            <span className="w-2 h-2 rounded-full bg-primary/60 flex-shrink-0 group-hover:bg-primary transition-colors" />
+                            <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">{label} →</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── DAILY LOSS LIMIT ── */}
+                {activeRule === "daily-loss" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Daily Loss Limit Explained</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The Daily Loss Limit (DLL) applies to the <strong className="text-foreground">Standard Plan only</strong> and is active during both the evaluation and funded phases. It caps how much you can lose in a single trading day, providing an additional layer of risk management on top of the Maximum Loss Limit.</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Important:</strong> The DLL applies to Standard Plan accounts in both the evaluation and funded phases. Advanced and Builder plan accounts do not have a Daily Loss Limit.
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Daily Loss Limit by Account Size (Standard Plan)</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Account Size</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Daily Loss Limit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { size: "25K", dll: "$750" },
+                              { size: "50K", dll: "$1,500" },
+                              { size: "100K", dll: "$2,000" },
+                              { size: "150K", dll: "$3,000" },
+                            ].map((row, i) => (
+                              <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.dll}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">DLL vs. MLL — What's the Difference?</h3>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">Daily Loss Limit (DLL)</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">A per-day loss cap. If your account loses the DLL amount within a single trading day, your account is in violation and no further trading is permitted that day. Resets each trading day.</p>
+                        </div>
+                        <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-2">Maximum Loss Limit (MLL)</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">Your total allowable loss from your starting balance. This is a cumulative limit that does not reset daily. Breaching the MLL results in account termination regardless of daily performance.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h3>
+                      <div className="space-y-3">
+                        {[
+                          { q: "Does the DLL apply on funded accounts?", a: "Yes. For Standard Plan accounts, the Daily Loss Limit applies in both the evaluation and funded phases." },
+                          { q: "Does the DLL reset each day?", a: "Yes. The DLL is calculated on a per-day basis and resets at the start of each new trading day." },
+                          { q: "What happens if I hit the DLL?", a: "Trading is halted for the remainder of that day. If losses also exceed the MLL, the account is terminated." },
+                          { q: "Do Advanced or Builder plans have a DLL?", a: "No. The Daily Loss Limit is exclusive to the Standard Plan." },
+                        ].map(({ q, a }) => (
+                          <div key={q} className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-2">{q}</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── DRAWDOWN RULES ── */}
+                {activeRule === "drawdown" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Drawdown Rules Explained</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures uses two types of drawdown depending on your phase: trailing end-of-day drawdown during evaluations and static drawdown on funded accounts.</p>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Evaluation Phase</p>
+                        <p className="text-sm font-semibold text-foreground mb-2">Trailing End-of-Day Drawdown</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">Your Maximum Loss Limit (MLL) trails upward as your end-of-day account balance grows. If your balance increases, your MLL floor rises with it — locking in a higher minimum balance. The trailing stops once the MLL has moved up by the full initial drawdown amount.</p>
+                      </div>
+                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                        <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2">Funded Phase</p>
+                        <p className="text-sm font-semibold text-foreground mb-2">Static Drawdown</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">Your MLL is fixed from the start. It does not move or change based on profits. For example, a $100K funded account with a $2,500 static MLL will be violated if the balance drops below $97,500 at any point — regardless of how much profit was made before.</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">MLL Behavior After a Payout</h3>
+                      <div className="p-5 rounded-xl border border-amber-500/30 bg-amber-500/5 space-y-2">
+                        {[
+                          "After a payout is processed, the MLL resets to $0.00.",
+                          "Your remaining post-payout balance becomes your entire available loss buffer.",
+                          "If losses reduce your account balance to $0.00 or below, the account is failed.",
+                          "Plan your position sizing carefully after payouts to account for this reset.",
+                        ].map(item => (
+                          <div key={item} className="flex items-start gap-3 text-sm text-muted-foreground">
+                            <span className="mt-0.5 text-amber-500 font-bold leading-none flex-shrink-0">!</span>
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Drawdown Comparison Table</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Feature</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Evaluation</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Funded</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { feature: "Drawdown Type", eval: "Trailing end-of-day", funded: "Static (fixed)" },
+                              { feature: "MLL Moves Up?", eval: "Yes — as EOD balance grows", funded: "No — fixed from start" },
+                              { feature: "Resets After Payout?", eval: "N/A", funded: "Yes — resets to $0" },
+                              { feature: "Protection Style", eval: "Progressive floor", funded: "Fixed floor" },
+                            ].map((row, i) => (
+                              <tr key={row.feature} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 font-medium text-foreground">{row.feature}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.eval}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.funded}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── NEWS TRADING POLICY ── */}
+                {activeRule === "news-trading" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">News Trading Policy</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The News Trading restriction applies to <strong className="text-foreground">all plans</strong> in both evaluation and funded phases. It is designed to protect traders and maintain fair, orderly market conditions during periods of extreme volatility caused by scheduled economic releases.</p>
+                    </div>
+                    <div className="p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                      <p className="text-sm font-semibold text-foreground mb-2">Restricted Window</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">You may <strong className="text-foreground">not</strong> open new positions, increase existing positions, or place pending orders intended to trigger during the following window:</p>
+                      <p className="mt-3 text-center text-lg font-bold text-primary">2 minutes before → 2 minutes after</p>
+                      <p className="text-center text-sm text-muted-foreground mt-1">the scheduled release time of any restricted high-impact event</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">What Is Allowed During the Window?</h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div className="p-4 rounded-xl border border-primary/20 bg-primary/5">
+                          <p className="text-sm font-semibold text-foreground mb-1">Allowed</p>
+                          <ul className="space-y-1 text-sm text-muted-foreground">
+                            <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Reducing an existing position</li>
+                            <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Closing an existing position</li>
+                          </ul>
+                        </div>
+                        <div className="p-4 rounded-xl border border-destructive/20 bg-destructive/5">
+                          <p className="text-sm font-semibold text-foreground mb-1">Not Allowed</p>
+                          <ul className="space-y-1 text-sm text-muted-foreground">
+                            <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />Opening a new position</li>
+                            <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />Adding to an existing position</li>
+                            <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />Placing pending orders set to trigger during the window</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Restricted High-Impact Events</h3>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                        {[
+                          "Non-Farm Payrolls (NFP)",
+                          "FOMC Rate Decision",
+                          "Consumer Price Index (CPI)",
+                          "Producer Price Index (PPI)",
+                          "Gross Domestic Product (GDP)",
+                          "Retail Sales",
+                          "Purchasing Managers Index (PMI)",
+                          "ISM Manufacturing/Services",
+                          "Other designated high-impact events",
+                        ].map(event => (
+                          <div key={event} className="flex items-start gap-2 p-3 rounded-lg border border-border/40 bg-muted/10 text-sm text-muted-foreground">
+                            <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                            {event}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Compliance Consequences</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Trading during a restricted news window is a rule violation. Violations may result in account flag, breach, or termination depending on the nature and frequency of the offense. Dynasty Futures monitors trading activity and reserves the right to review any account at any time.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── CONSISTENCY RULE ── */}
+                {activeRule === "consistency" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Consistency Rule Explained</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The Consistency Rule ensures that no single trading day makes up a disproportionate share of your total account profit. It encourages disciplined, repeatable performance rather than relying on one outsized day.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Consistency Requirements by Plan & Phase</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Plan</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Evaluation</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Funded</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { plan: "Standard", eval: "50% rule applies", funded: "No consistency rule" },
+                              { plan: "Advanced", eval: "No consistency rule", funded: "No consistency rule" },
+                              { plan: "Builder", eval: "50% rule applies", funded: "40% rule applies" },
+                            ].map((row, i) => (
+                              <tr key={row.plan} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 font-semibold text-primary">{row.plan}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.eval}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.funded}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">How the Rule Works</h3>
+                      <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                        <p><strong className="text-foreground">50% Consistency Rule:</strong> Your single best trading day must not account for more than 50% of your total account profit at the time of payout eligibility or evaluation completion. If your best day exceeds that threshold, you do not meet the consistency requirement.</p>
+                        <p><strong className="text-foreground">40% Consistency Rule (Builder Funded):</strong> The same concept applies but with a stricter 40% cap. Your single best day must represent no more than 40% of total profits.</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Example</h3>
+                      <div className="p-5 rounded-xl border border-border/50 bg-muted/10 text-sm text-muted-foreground space-y-2">
+                        <p>Total account profit: <strong className="text-foreground">$3,000</strong></p>
+                        <p>Best single day: <strong className="text-foreground">$1,200</strong></p>
+                        <p>$1,200 ÷ $3,000 = <strong className="text-foreground">40%</strong></p>
+                        <p className="text-primary font-medium">→ Passes the 50% rule. Fails the 40% rule (Builder funded).</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h3>
+                      <div className="space-y-3">
+                        {[
+                          { q: "Does the consistency rule apply to all plans?", a: "No. The Advanced Plan has no consistency rule in either phase. The Standard Plan has a 50% rule during evaluation only. The Builder Plan has a 50% rule during evaluation and a 40% rule during the funded phase." },
+                          { q: "What if I violate the consistency rule?", a: "You will not be eligible for a payout or evaluation pass until the consistency threshold is met. No account termination occurs solely from a consistency violation — but you must trade additional days to dilute the outsized day's share." },
+                          { q: "Is the rule checked per day or per payout period?", a: "The consistency rule is evaluated at the time of payout eligibility or evaluation completion. It looks at your best single day relative to your total profit at that moment." },
+                        ].map(({ q, a }) => (
+                          <div key={q} className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-2">{q}</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── POSITION SIZE LIMITS ── */}
+                {activeRule === "position-size" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Position Size Limits</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures enforces maximum contract limits on all accounts to ensure appropriate risk management. These limits are applied at the platform level and are designed to prevent excessive position sizing relative to account size.</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Platform-Enforced:</strong> Position size limits are enforced directly by the trading platform where applicable. You may not be able to place orders that exceed these limits.
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Max Contract Limits by Account Size</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Account Size</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Standard / Advanced</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Builder</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { size: "25K", std: "3 contracts", builder: "5 contracts" },
+                              { size: "50K", std: "5 contracts", builder: "8 contracts" },
+                              { size: "100K", std: "10 contracts", builder: "14 contracts" },
+                              { size: "150K", std: "15 contracts", builder: "20 contracts" },
+                            ].map((row, i) => (
+                              <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.std}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.builder}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <p className="mt-3 text-xs text-muted-foreground">Contract limits refer to standard futures contracts (e.g., ES, NQ minis). For questions about your specific account limits, contact support.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Minis, Micros & Mixed Positions</h3>
+                      <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                        <p>Contract limits apply to full-sized mini contracts (e.g., E-mini S&P 500). Micro contracts (e.g., Micro E-mini S&P 500) are counted proportionally — 10 micros equal 1 mini for the purposes of position limit calculations.</p>
+                        <p>Mixed positions combining minis and micros are aggregated and must remain within the total contract equivalent limit for your account size.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── PROFIT TARGETS ── */}
+                {activeRule === "profit-targets" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Profit Targets Explained</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The profit target is a minimum profit threshold that must be reached to pass the evaluation phase. <strong className="text-foreground">Profit targets apply during the evaluation only.</strong> There is no profit target requirement on funded accounts.</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Funded accounts have no profit target.</strong> Once you pass your evaluation and are funded, there is no minimum profit goal. You simply trade, meet payout eligibility rules, and request payouts.
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Profit Targets by Account Size</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Account Size</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Profit Target (Evaluation)</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Funded Phase</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { size: "25K", target: "$1,500", funded: "No target" },
+                              { size: "50K", target: "$3,000", funded: "No target" },
+                              { size: "100K", target: "$6,000", funded: "No target" },
+                              { size: "150K", target: "$8,000", funded: "No target" },
+                            ].map((row, i) => (
+                              <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.target}</td>
+                                <td className="px-4 py-3 text-primary text-sm font-medium">{row.funded}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Passing Requires All Rules Satisfied</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">Reaching the profit target alone does not guarantee evaluation pass. All of the following must be met simultaneously:</p>
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        {[
+                          "Profit target reached",
+                          "Maximum Loss Limit not breached",
+                          "Daily Loss Limit not breached (Standard Plan)",
+                          "Consistency rule met (Standard & Builder)",
+                          "No rule violations during the evaluation",
+                          "Minimum trading days completed where applicable",
+                        ].map(item => (
+                          <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── PAYOUTS & PROFIT SPLIT ── */}
+                {activeRule === "payouts-split" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Payouts &amp; Profit Split</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures pays out through Rise Works, a modern payout and compliance platform. Before any payout can be approved, traders must complete KYC verification through Dynasty Futures (via Sumsub) and separately through Rise.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Payout Eligibility Requirements</h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[
+                          { title: "5 Winning Days", desc: "You must have at least 5 trading days that meet the minimum winning day threshold since your last payout." },
+                          { title: "Minimum Winning Day", desc: "Standard Plan: $150 minimum profit per qualifying day. Advanced & Builder: $200 minimum profit per qualifying day." },
+                          { title: "$500 Minimum Payout", desc: "The minimum payout amount is $500. You may withdraw up to 50% of your account balance per request." },
+                          { title: "5-Day Payout Cycles", desc: "At least 5 qualifying trading days must pass between payout requests. Up to 4 payout requests per calendar month." },
+                        ].map(({ title, desc }) => (
+                          <div key={title} className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-1">{title}</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Profit Split Structure</h3>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                          <p className="text-2xl font-bold text-primary mb-1">90/10</p>
+                          <p className="text-sm font-semibold text-foreground mb-1">First Five Approved Payouts</p>
+                          <p className="text-sm text-muted-foreground">90% of profits go to the trader. Dynasty Futures retains 10%.</p>
+                        </div>
+                        <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-2xl font-bold text-foreground mb-1">80/20</p>
+                          <p className="text-sm font-semibold text-foreground mb-1">After Fifth Approved Payout</p>
+                          <p className="text-sm text-muted-foreground">80% of profits go to the trader. Dynasty Futures retains 20%.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">KYC Requirements Before Payout</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">Dynasty Futures KYC (via Sumsub) can be completed at any time and must be completed before requesting a payout. Rise performs a separate payout provider verification independently before payouts are processed. Both must be completed — completing one does not satisfy the other.</p>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div className="p-4 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-1">Step 1 — Dynasty Futures KYC</p>
+                          <p className="text-sm text-muted-foreground">Identity verification via Sumsub. Complete any time; required before payout approval.</p>
+                        </div>
+                        <div className="p-4 rounded-xl border border-border/50 bg-muted/10">
+                          <p className="text-sm font-semibold text-foreground mb-1">Step 2 — Rise Verification</p>
+                          <p className="text-sm text-muted-foreground">Separate onboarding required by Rise before funds can be released. Independent of Dynasty Futures KYC.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Payout Processing</h3>
+                      <div className="space-y-2 text-sm text-muted-foreground leading-relaxed">
+                        <p>Payout requests submitted before <strong className="text-foreground">2:00 PM CT</strong> begin processing the same business day. Requests submitted after that time begin processing the next business day.</p>
+                        <p>After Dynasty Futures approval, payouts are sent to Rise for disbursement. Delivery timing depends on Rise verification status and payment method.</p>
+                        <p>A trading freeze is in effect from the time a payout is submitted until it is approved or denied. No new trades may be placed during this period.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── ACCOUNT VIOLATIONS & RESETS ── */}
+                {activeRule === "violations" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Account Violations &amp; Resets</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Account violations occur when a trading rule is breached. Depending on the severity and phase, violations may result in account termination, or may be eligible for a reset.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Common Violations</h3>
+                      <div className="overflow-x-auto rounded-xl border border-border/50">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-border/50 bg-muted/20">
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Violation</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Applies To</th>
+                              <th className="text-left px-4 py-3 font-semibold text-foreground">Result</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {[
+                              { v: "Exceeded Maximum Loss Limit (MLL)", a: "All plans", r: "Account failed / terminated" },
+                              { v: "Exceeded Daily Loss Limit (DLL)", a: "Standard Plan only", r: "Account failed / terminated" },
+                              { v: "Holding positions over the weekend", a: "All plans", r: "Account flag / termination" },
+                              { v: "News trading during restricted window", a: "All plans", r: "Account flag / termination" },
+                              { v: "Using automated bots", a: "All plans", r: "Immediate termination" },
+                              { v: "Account sharing / third-party access", a: "All plans", r: "Immediate termination, no refund" },
+                              { v: "Trading during payout freeze", a: "All plans", r: "Account flag / termination" },
+                            ].map((row, i) => (
+                              <tr key={row.v} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
+                                <td className="px-4 py-3 text-muted-foreground">{row.v}</td>
+                                <td className="px-4 py-3 text-muted-foreground">{row.a}</td>
+                                <td className="px-4 py-3 text-destructive text-sm">{row.r}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Evaluation Resets</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">If your evaluation account is breached, you may purchase an evaluation reset to start a fresh evaluation on the same account. Resets preserve your account continuity. Purchasing a new account creates a brand-new account with fresh eligibility requirements.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Funded Account Resets</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">One funded reset is available per account on all plans. A funded reset restores your account balance and MLL. Reset fees are non-refundable once issued and are a one-time purchase (not recurring).</p>
+                      <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 text-sm text-muted-foreground">
+                        <strong className="text-foreground">Note:</strong> Funded resets are subject to availability and account standing. Dynasty Futures reserves the right to review accounts before approving a funded reset.
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Need Help?</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">If you believe your account was flagged in error, or if you have questions about a violation or reset options, contact our support team. We review each situation based on account history and trading records.</p>
+                      <a href="https://www.dynastyfuturesdyn.com/support" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors duration-200">Open Support Center</a>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── COPY TRADING & AUTOMATED SYSTEMS ── */}
+                {activeRule === "copy-trading" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => setActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Copy Trading &amp; Automated Systems Policy</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures permits copy trading but prohibits automated bots and algorithmic execution. All trading must ultimately be initiated by the account holder — not by software acting autonomously on their behalf.</p>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">Allowed</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Copy trading platforms (e.g., trade copiers)",
+                            "Social trading tools",
+                            "Using your own accounts as master accounts",
+                            "Signal-based trading where you manually approve each trade",
+                            "Alert systems that notify you to enter manually",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-destructive mb-3">Not Allowed</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Automated trading bots or EAs that execute without manual input",
+                            "Algorithmic execution systems placing orders automatically",
+                            "Scripts that open, modify, or close positions autonomously",
+                            "High-frequency trading systems",
+                            "Third-party bots copying signals and executing automatically",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">The Key Distinction</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The line between allowed and prohibited is <strong className="text-foreground">human decision-making in the execution loop</strong>. If a human trader is approving each trade — even via a copy platform — that is permitted. If software is opening and closing positions without a human in the loop for each execution, that is prohibited.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Consequences of Using Prohibited Systems</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Use of automated bots or prohibited algorithmic execution systems is a serious rule violation that may result in immediate account termination without refund. Dynasty Futures monitors trading patterns and reserves the right to investigate and act on suspicious activity consistent with automated execution.</p>
+                    </div>
+                  </div>
+                )}
+              </TabsContent>
+
             </Tabs>
           </ScrollReveal>
         </div>
