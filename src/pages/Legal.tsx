@@ -227,7 +227,7 @@ const Legal = () => {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 my-4">
                       {[
-                        { label: "Trading Rules", tab: "", href: "/rules" },
+                        { label: "Trading Rules", tab: "trading-rules" },
                         { label: "Risk Disclosure", tab: "risk" },
                         { label: "Refund & Cancellation Policy", tab: "refund" },
                         { label: "KYC & AML Policy", tab: "kyc-aml" },
@@ -369,7 +369,7 @@ const Legal = () => {
                     </div>
                     <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
                       Full rule definitions are available on the{" "}
-                      <a href="/rules" className="text-primary hover:underline font-medium">Trading Rules page</a>.
+                      <button onClick={() => setActiveTab("trading-rules")} className="text-primary hover:underline font-medium">Trading Rules page</button>.
                     </div>
                   </div>
 
