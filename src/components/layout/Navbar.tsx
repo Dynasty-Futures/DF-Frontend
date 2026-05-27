@@ -32,11 +32,9 @@ import { useAuth } from "@/hooks/useAuth";
 import logo from "@/assets/Dynasty_Futures.png";
 
 const helpCenterLinks = [
-  { name: "Support", href: "https://www.dynastyfuturesdyn.com/support" },
-  { name: "Essential Trading Rules Overview", href: "https://www.dynastyfuturesdyn.com/legal?tab=trading-rules" },
-  { name: "KYC & AML Policy", href: "https://www.dynastyfuturesdyn.com/legal?tab=kyc-aml" },
-  { name: "Restricted Countries & Regions", href: "https://www.dynastyfuturesdyn.com/legal?tab=restricted" },
-  { name: "Rise Payout Guide", href: "https://www.dynastyfuturesdyn.com/legal?tab=rise-payouts" },
+  { name: "Support", to: "/support" },
+  { name: "Dynasty Articles", to: "/legal?tab=trading-rules" },
+  { name: "Important Disclosure", to: "/legal?tab=terms" },
 ];
 
 const Navbar = () => {
@@ -128,15 +126,14 @@ const Navbar = () => {
                 className="min-w-[220px] rounded-xl border border-border/40 bg-card/95 backdrop-blur-xl p-1.5 shadow-xl shadow-black/30"
               >
                 {helpCenterLinks.map((link) => (
-                  <DropdownMenuItem key={link.href} asChild>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                  <DropdownMenuItem key={link.to} asChild>
+                    <Link
+                      to={link.to}
+                      onClick={handleLinkClick}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-muted-foreground cursor-pointer transition-all duration-200 hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary"
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -253,16 +250,14 @@ const Navbar = () => {
                       </CollapsibleTrigger>
                       <CollapsibleContent className="pl-4 space-y-0.5 mt-0.5">
                         {helpCenterLinks.map((link) => (
-                          <a
-                            key={link.href}
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => setIsOpen(false)}
+                          <Link
+                            key={link.to}
+                            to={link.to}
+                            onClick={handleLinkClick}
                             className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-muted-foreground hover:bg-primary/10 hover:text-primary transition-all duration-200"
                           >
                             {link.name}
-                          </a>
+                          </Link>
                         ))}
                       </CollapsibleContent>
                     </Collapsible>
