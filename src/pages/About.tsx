@@ -99,42 +99,64 @@ const About = () => {
           </ScrollReveal>
 
           {/* Our Story */}
-          <ScrollReveal>
-            <div className="max-w-3xl mx-auto mb-20 md:mb-28">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-6">
+          <div className="max-w-2xl mx-auto mb-20 md:mb-28">
+            <ScrollReveal>
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3">
                 Why We Built{" "}
                 <span className="text-gradient-animated">This</span>
               </h2>
-              <div className="space-y-5 text-muted-foreground text-base md:text-lg leading-relaxed">
+              <div className="w-10 h-px bg-gradient-to-r from-primary to-transparent mb-8" />
+            </ScrollReveal>
+            <div className="space-y-6 text-muted-foreground text-base md:text-[1.0625rem] leading-[1.85]">
+              <ScrollReveal delay={100}>
                 <p>
-                  The prop firm space has never been short on options. What it
-                  has been short on is clarity.
+                  Dynasty Futures was built around a simple belief: traders
+                  deserve a firm that is clear, structured, and built for
+                  long-term growth.
                 </p>
+              </ScrollReveal>
+              <ScrollReveal delay={150}>
                 <p>
-                  When Brock started looking seriously at the futures trading
-                  world, during his time studying finance at the University of
-                  Utah, he quickly became drawn to the markets: the structure,
-                  the discipline, the opportunity. But the deeper he got into
-                  the prop firm side of things, a pattern kept showing up:
-                  confusing rules, gimmicky pricing, and payout structures
-                  nobody could actually explain.
+                  The futures prop firm space has grown quickly, but with that
+                  growth has come confusion — complicated rules, unclear payout
+                  structures, hidden restrictions, and pricing models that can
+                  make it difficult for traders to understand exactly what they
+                  are signing up for.
                 </p>
+              </ScrollReveal>
+              <ScrollReveal delay={200}>
                 <p>
-                  Dynasty Futures LLC was incorporated in Wyoming with one
-                  clear goal: build the firm the space was missing. Fair
-                  pricing, higher max loss limits, and a payout philosophy that
-                  doesn't leave people guessing.
+                  Dynasty Futures was created to bring more clarity and
+                  professionalism to that experience.
                 </p>
+              </ScrollReveal>
+              <ScrollReveal delay={250}>
                 <p>
-                  The bigger vision was to build something traders could grow
-                  with, a firm that scales as its traders scale. As that vision
-                  became real, the right people, systems, and partnerships came
-                  together. What started as a simple frustration became a
-                  company.
+                  Our focus is straightforward: provide simulated futures
+                  traders with transparent rules, competitive account
+                  structures, defined payout expectations, and a platform
+                  environment designed to support disciplined trading. Every
+                  rule, plan, and account structure is built with the goal of
+                  balancing trader opportunity with responsible risk management.
                 </p>
-              </div>
+              </ScrollReveal>
+              <ScrollReveal delay={300}>
+                <p>
+                  What started as frustration with the lack of transparency in
+                  the industry became a larger mission: build a firm that
+                  traders can understand, trust, and grow with.
+                </p>
+              </ScrollReveal>
+              <ScrollReveal delay={350}>
+                <p>
+                  Dynasty Futures is not trying to be the loudest firm in the
+                  space. We are working to become one of the most respected —
+                  by focusing on clarity, consistency, trader support, and
+                  long-term sustainability.
+                </p>
+              </ScrollReveal>
             </div>
-          </ScrollReveal>
+          </div>
 
           {/* Mission & Vision */}
           <div className="mb-20 md:mb-28">
