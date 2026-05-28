@@ -119,13 +119,13 @@ const faqs = [
     id: "profit-split",
     question: "What is the profit split for funded traders?",
     answer:
-      "Funded traders receive a 90/10 profit split — you keep 90% of all profits generated in your funded account. After completing five (5) approved payouts, the account transitions into our long-term payout structure with an 80/20 profit split, where 80% of future profits go to the trader and 20% is retained by Dynasty Futures.",
+      "Dynasty Futures funded accounts operate on a 90/10 profit split. Traders keep 90% of approved profits, while Dynasty Futures retains 10%. The profit split does not automatically change after five payouts.",
   },
   {
     id: "five-payouts",
     question: "What happens after I receive five payouts?",
     answer:
-      "After completing five (5) approved payouts, your account transitions into our long-term payout structure with an 80/20 profit split — 80% of future profits go to the trader and 20% is retained by Dynasty Futures. Prior to reaching five payouts, the standard funded profit split is 90/10.",
+      "After five approved payouts, Dynasty Futures may internally review the account for potential live trading consideration. Reviews may include trading consistency, compliance history, payout history, risk management, operational availability, and jurisdictional eligibility. Transition to a live environment is not guaranteed and remains at the sole discretion of Dynasty Futures.",
   },
 ];
 

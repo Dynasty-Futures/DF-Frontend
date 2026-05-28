@@ -762,10 +762,16 @@ const Pricing = () => {
             <ScrollReveal as="section" className="mb-12">
               <div className="glass-card rounded-2xl border border-border/50 p-6 md:p-8 text-center">
                 <h2 className="font-display text-xl font-semibold text-foreground mb-3">
-                  Profit Split & Long Term Payout Structure
+                  Profit Split & Payout Structure
                 </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-sm mb-3">
+                  Funded accounts operate on a <span className="text-foreground font-semibold">90/10 profit split</span>. Traders keep 90% of approved profits, while Dynasty Futures retains 10%.
+                </p>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-sm mb-3">
+                  After five approved payouts, accounts may be internally reviewed for potential live trading consideration based on consistency, risk management, compliance history, operational availability, platform/broker support, and jurisdictional eligibility.
+                </p>
                 <p className="text-muted-foreground max-w-2xl mx-auto text-sm">
-                  Funded accounts operate on a <span className="text-foreground font-semibold">90/10 profit split</span> — you keep 90% of all profits. After five approved payouts, traders move into our long-term payout structure with an <span className="text-foreground font-semibold">80/20 profit split</span>, with 80% going to the trader. There is no forced transition to a live account at that stage. Many traders prefer staying in the environment they already know, and we built this structure to support that choice.
+                  Transition to a live trading environment is not guaranteed and remains subject to Dynasty Futures approval, operational readiness, legal/compliance requirements, and jurisdictional availability.
                 </p>
               </div>
             </ScrollReveal>

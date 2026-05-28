@@ -148,9 +148,9 @@ const universalRules = [
   },
   {
     icon: DollarIcon,
-    title: "Funded Profit Split & Long Term Payout Structure",
+    title: "Funded Profit Split",
     description:
-      "Funded accounts operate on a 90/10 profit split — 90% of profits go to the trader. After five (5) approved payouts, the account transitions into our long term payout structure with an 80/20 profit split, where 80% of all future profits go to the trader. This milestone reflects consistency and performance, and we designed the structure around it. Traders are not required to transition to a live account at that stage. Many prefer staying in the environment they already know and trust, and we want to preserve that continuity while supporting long term growth.",
+      "Funded accounts operate on a 90/10 profit split, with traders keeping 90% of approved profits. After five (5) approved payouts, accounts may be internally reviewed for potential live trading consideration based on consistency, risk management, compliance history, operational availability, broker/platform support, and jurisdictional eligibility. Live trading placement is not guaranteed and remains subject to Dynasty Futures approval and applicable legal/compliance requirements.",
     allowed: true,
   },
 ];
