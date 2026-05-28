@@ -2525,17 +2525,35 @@ const Legal = () => {
                     </div>
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-4">Profit Split Structure</h3>
-                      <div className="grid sm:grid-cols-2 gap-4">
-                        <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
-                          <p className="text-2xl font-bold text-primary mb-1">90/10</p>
-                          <p className="text-sm font-semibold text-foreground mb-1">First Five Approved Payouts</p>
-                          <p className="text-sm text-muted-foreground">90% of profits go to the trader. Dynasty Futures retains 10%.</p>
-                        </div>
-                        <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
-                          <p className="text-2xl font-bold text-foreground mb-1">80/20</p>
-                          <p className="text-sm font-semibold text-foreground mb-1">After Fifth Approved Payout</p>
-                          <p className="text-sm text-muted-foreground">80% of profits go to the trader. Dynasty Futures retains 20%.</p>
-                        </div>
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5 mb-4">
+                        <p className="text-2xl font-bold text-primary mb-1">90/10</p>
+                        <p className="text-sm font-semibold text-foreground mb-1">Funded Account Profit Split</p>
+                        <p className="text-sm text-muted-foreground">Dynasty Futures funded accounts operate on a 90/10 profit split. Traders keep 90% of approved profits, while Dynasty Futures retains 10%.</p>
+                      </div>
+                      <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
+                        <p>After five approved payouts, Dynasty Futures may conduct an internal review of the account to determine whether the trader may be eligible for potential live trading consideration.</p>
+                        <p>Live trading placement is not guaranteed and remains subject to Dynasty Futures' sole discretion, operational availability, compliance review, platform/broker support, and jurisdictional eligibility.</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Internal Review Criteria</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">If an internal review is initiated after five approved payouts, Dynasty Futures may evaluate any or all of the following factors:</p>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[
+                          { title: "Trading Consistency", desc: "Demonstrated ability to trade within rules consistently across multiple payout cycles." },
+                          { title: "Risk Management", desc: "Responsible use of position sizing, drawdown management, and adherence to daily/maximum loss limits." },
+                          { title: "Payout History", desc: "Number of approved payouts and absence of payout-related flags or freezes." },
+                          { title: "Compliance History", desc: "Adherence to all trading rules including news windows, banned instruments, and account usage policies." },
+                          { title: "Account Behavior", desc: "Overall account activity, patterns, and absence of rule violations or resets." },
+                          { title: "Broker / Platform Availability", desc: "Whether supported broker and platform infrastructure is available for the trader's region and account size." },
+                          { title: "Operational Readiness", desc: "Internal capacity and readiness to onboard traders to live trading at the time of review." },
+                          { title: "Jurisdictional Eligibility", desc: "Compliance with applicable laws and regulations in the trader's country or region." },
+                        ].map(({ title, desc }) => (
+                          <div key={title} className="p-4 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-1">{title}</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                          </div>
+                        ))}
                       </div>
                     </div>
                     <div>
