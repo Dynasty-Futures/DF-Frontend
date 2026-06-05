@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useAccountView } from "@/hooks/useAccountView";
+import { EMPTY_ACCOUNT_DATA } from "@/lib/emptyAccountData";
 import { useState, useMemo } from "react";
 import {
   format,
@@ -100,7 +101,8 @@ const SummaryPanel = ({
 }: SummaryPanelProps) => {
   const navigate = useNavigate();
   const [viewedMonth, setViewedMonth] = useState(new Date());
-  const { data: account } = useAccountView(accountId);
+  const { data: accountData } = useAccountView(accountId);
+  const account = accountData ?? EMPTY_ACCOUNT_DATA;
 
   const goToPreviousMonth = () => setViewedMonth((prev) => subMonths(prev, 1));
   const goToNextMonth = () => setViewedMonth((prev) => addMonths(prev, 1));
@@ -168,19 +170,10 @@ const SummaryPanel = ({
     return days;
   }, [dailyPnL, selectedDate, viewedMonth]);
 
-  if (!account) {
-    return (
-      <div className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 h-full text-sm text-muted-foreground">
-        Loading account…
-      </div>
-    );
-  }
-
-  // Calculate progress percentage
-  const profitProgress = Math.min(
-    100,
-    Math.max(0, (account.closedPnL / account.profitTarget) * 100),
-  );
+  // Guard against division by zero when no account is connected
+  const profitProgress = account.profitTarget > 0
+    ? Math.min(100, Math.max(0, (account.closedPnL / account.profitTarget) * 100))
+    : 0;
 
   // Format currency
   const formatCurrency = (value: number, showSign = false) => {
