@@ -8,18 +8,12 @@ import {
   Users,
   User,
   Award,
-  Headphones
+  Headphones,
+  Tag,
+  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-  TooltipPortal,
-} from '@/components/ui/tooltip';
 
-/** Same asset as <link rel="icon"> in index.html */
 const siteIconSrc = '/favicon.png?v=20260406';
 
 const sidebarLinks = [
@@ -45,64 +39,70 @@ const DashboardSidebar = () => {
   };
 
   return (
-    <TooltipProvider delayDuration={0}>
-      <aside className="w-16 shrink-0 h-screen sticky top-0 bg-transparent backdrop-blur-xl border-r border-border/30 flex flex-col overflow-hidden">
-        {/* Logo */}
-        <div className="p-3 flex justify-center bg-transparent">
-          <Link to="/" className="group">
-            <img
-              src={siteIconSrc}
-              alt="Dynasty Futures"
-              className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-105 logo-blend"
-            />
-          </Link>
-        </div>
+    <aside className="w-52 shrink-0 h-screen sticky top-0 bg-transparent backdrop-blur-xl border-r border-border/30 flex flex-col overflow-hidden">
+      {/* Logo + Home link */}
+      <div className="px-4 py-4 flex flex-col items-center gap-2 border-b border-border/20">
+        <Link to="/" className="group">
+          <img
+            src={siteIconSrc}
+            alt="Dynasty Futures"
+            className="h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-105 logo-blend"
+          />
+        </Link>
+        <a
+          href="https://www.dynastyfuturesdyn.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ExternalLink size={10} />
+          Home
+        </a>
+      </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-2 space-y-1">
-          {sidebarLinks.map((link) => {
-            const Icon = link.icon;
-            const active = isActive(link.path);
-            
-            return (
-              <Tooltip key={link.path}>
-                <TooltipTrigger asChild>
-                  <Link
-                    to={link.path}
-                    className={cn(
-                      "flex items-center justify-center p-3 rounded-xl transition-all duration-300",
-                      active 
-                        ? "bg-primary/10 text-primary border border-primary/20" 
-                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-                    )}
-                  >
-                    <Icon 
-                      size={22} 
-                      className={cn(
-                        "transition-colors duration-300",
-                        active ? "text-primary" : ""
-                      )} 
-                    />
-                  </Link>
-                </TooltipTrigger>
-                <TooltipPortal>
-                  <TooltipContent side="right" className="font-medium z-50">
-                    {link.name}
-                  </TooltipContent>
-                </TooltipPortal>
-              </Tooltip>
-            );
-          })}
-        </nav>
+      {/* Navigation */}
+      <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        {sidebarLinks.map((link) => {
+          const Icon = link.icon;
+          const active = isActive(link.path);
 
-        {/* Footer */}
-        <div className="p-2 border-t border-border/30">
-        <p className="text-[10px] text-muted-foreground text-center">
-          © 2026
-        </p>
-        </div>
-      </aside>
-    </TooltipProvider>
+          return (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={cn(
+                'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300',
+                active
+                  ? 'bg-primary/10 text-primary border border-primary/20'
+                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground',
+              )}
+            >
+              <Icon
+                size={18}
+                className={cn('shrink-0 transition-colors duration-300', active ? 'text-primary' : '')}
+              />
+              <span className="text-sm font-medium truncate">{link.name}</span>
+            </Link>
+          );
+        })}
+
+        {/* Pricing — external link */}
+        <a
+          href="https://www.dynastyfuturesdyn.com/pricing"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-all duration-300"
+        >
+          <Tag size={18} className="shrink-0" />
+          <span className="text-sm font-medium">Pricing</span>
+        </a>
+      </nav>
+
+      {/* Footer */}
+      <div className="p-3 border-t border-border/30">
+        <p className="text-[10px] text-muted-foreground text-center">© 2026</p>
+      </div>
+    </aside>
   );
 };
 

@@ -1,4 +1,4 @@
-import { ExternalLink, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDashboardUrl } from '@/hooks/useTrading';
 import { toast } from 'sonner';
@@ -48,9 +48,9 @@ const OpenPlatformButton = ({
       {isFetching ? (
         <Loader2 size={14} className="mr-2 animate-spin" />
       ) : (
-        <ExternalLink size={14} className="mr-2" />
+        <img src="/deepcharts-logo.png" alt="" className="h-4 w-4 mr-2 object-contain" />
       )}
-      Open Platform
+      DeepCharts
     </Button>
   );
 };
