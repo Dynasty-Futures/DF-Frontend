@@ -24,11 +24,12 @@ import {
   Info,
   Lock,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import AffiliateRegistrationModal from "@/components/dashboard/AffiliateRegistrationModal";
 
 type AffiliateTier = "Community Affiliate" | "Growth Affiliate" | "Dynasty Partner";
 
@@ -123,6 +124,8 @@ const documents = [
 const DashboardAffiliate = () => {
   useAuth();
 
+  const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
+
   // Drive this from user.affiliateStatus once the backend field is available.
   // Until then all users are treated as non-affiliates.
   const isApprovedAffiliate = false;
@@ -164,10 +167,10 @@ const DashboardAffiliate = () => {
                 </p>
               </div>
               <Button
-                asChild
                 className="bg-primary hover:bg-primary/90 text-primary-foreground shrink-0"
+                onClick={() => setIsAffiliateModalOpen(true)}
               >
-                <Link to="/support">Apply to Become an Affiliate</Link>
+                Apply to Become an Affiliate
               </Button>
             </div>
           </div>
@@ -833,6 +836,11 @@ const DashboardAffiliate = () => {
           </div>
         </div>
       </ScrollReveal>
+
+      <AffiliateRegistrationModal
+        open={isAffiliateModalOpen}
+        onOpenChange={setIsAffiliateModalOpen}
+      />
     </div>
   );
 };
