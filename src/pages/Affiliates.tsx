@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
 import JsonLd, { breadcrumb, faqPageSchema } from "@/components/seo/JsonLd";
@@ -25,6 +26,7 @@ import {
   BarChart2,
   Clock,
 } from "lucide-react";
+import AffiliateRegistrationModal from "@/components/dashboard/AffiliateRegistrationModal";
 
 const tradeFirstCards = [
   {
@@ -201,6 +203,8 @@ const affiliateFaqs = [
 ];
 
 const Affiliates = () => {
+  const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
+
   return (
     <Layout>
       <PageMeta
@@ -268,12 +272,12 @@ const Affiliates = () => {
                   </Link>
                 </Button>
                 <Button
-                  asChild
                   variant="outline"
                   size="lg"
                   className="border-border/50 hover:border-primary/50 hover:text-primary"
+                  onClick={() => setIsAffiliateModalOpen(true)}
                 >
-                  <Link to="/support">Apply to Become an Affiliate</Link>
+                  Apply to Become an Affiliate
                 </Button>
               </div>
             </div>
@@ -716,12 +720,12 @@ const Affiliates = () => {
                   </Link>
                 </Button>
                 <Button
-                  asChild
                   variant="outline"
                   size="lg"
                   className="border-border/50 hover:border-primary/50 hover:text-primary"
+                  onClick={() => setIsAffiliateModalOpen(true)}
                 >
-                  <Link to="/support">Apply to Become an Affiliate</Link>
+                  Apply to Become an Affiliate
                 </Button>
               </div>
             </div>
@@ -729,6 +733,11 @@ const Affiliates = () => {
 
         </div>
       </div>
+
+      <AffiliateRegistrationModal
+        open={isAffiliateModalOpen}
+        onOpenChange={setIsAffiliateModalOpen}
+      />
     </Layout>
   );
 };

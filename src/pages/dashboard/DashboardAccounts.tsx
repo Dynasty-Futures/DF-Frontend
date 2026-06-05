@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Eye, ChevronRight, RotateCcw, AlertCircle, Loader2 } from "lucide-react";
+import { Eye, ChevronRight, RotateCcw, AlertCircle, Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,7 +20,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import BuyChallengeButton from "@/components/dashboard/BuyChallengeButton";
 import { useTradingAccounts } from "@/hooks/useTrading";
 import type { TradingAccount, AccountStatus } from "@/types/trading";
 
@@ -102,10 +101,6 @@ const getStageBadge = (stage: StageLabel): string => {
   return styles[stage];
 };
 
-type FilterStatus = "All" | StatusLabel;
-
-const STATUS_FILTERS: FilterStatus[] = ["All", "Active", "Violated", "Closed"];
-
 // =============================================================================
 // Reset pricing
 // TODO: Replace with real plan/size pricing data from CRM or pricing API once
@@ -174,16 +169,164 @@ function getResetPriceInfo(account: AccountView): ResetPriceInfo | null {
   };
 }
 
+const truncateId = (id: string) => id.length > 12 ? `${id.slice(0, 8)}…` : id;
+
 // =============================================================================
-// Component
+// Sub-components
+// =============================================================================
+
+interface ActiveAccountsTableProps {
+  accounts: AccountView[];
+  onReset: (account: AccountView) => void;
+}
+
+const ActiveAccountsTable = ({ accounts, onReset }: ActiveAccountsTableProps) => {
+  if (accounts.length === 0) {
+    return (
+      <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-10 text-center text-muted-foreground">
+        <p className="font-medium text-foreground mb-1">No active accounts yet</p>
+        <p className="text-sm">Purchase a challenge to get started.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-border/30 hover:bg-transparent">
+            <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Balance</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {accounts.map((account, index) => (
+            <TableRow
+              key={account.id}
+              className={`border-border/30 hover:bg-muted/20 transition-colors border-l-2 border-l-primary ${
+                index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+              }`}
+            >
+              <TableCell className="font-mono text-xs text-muted-foreground py-4">
+                {truncateId(account.id)}
+              </TableCell>
+              <TableCell className="text-foreground py-4">{account.planType}</TableCell>
+              <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
+              <TableCell className="py-4">
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
+                  {account.stage}
+                </span>
+              </TableCell>
+              <TableCell className="py-4">
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
+                  {account.status}
+                </span>
+              </TableCell>
+              <TableCell className="font-semibold text-foreground py-4">{account.balance}</TableCell>
+              <TableCell className="text-right py-4">
+                <div className="flex items-center justify-end gap-2">
+                  {account.isResettable && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
+                      onClick={() => onReset(account)}
+                    >
+                      <RotateCcw size={14} className="mr-2" />
+                      Reset
+                    </Button>
+                  )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all"
+                    asChild
+                  >
+                    <Link to={`/dashboard?account=${account.id}`}>
+                      <Eye size={16} className="mr-2" />
+                      View
+                      <ChevronRight size={14} className="ml-1" />
+                    </Link>
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+interface InactiveAccountsTableProps {
+  accounts: AccountView[];
+}
+
+const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
+  if (accounts.length === 0) {
+    return (
+      <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-10 text-center text-muted-foreground">
+        <p className="font-medium text-foreground mb-1">No inactive accounts</p>
+        <p className="text-sm">Closed or violated accounts will appear here.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-border/30 hover:bg-transparent">
+            <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {accounts.map((account, index) => (
+            <TableRow
+              key={account.id}
+              className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+              }`}
+            >
+              <TableCell className="font-mono text-xs text-muted-foreground py-4">
+                {truncateId(account.id)}
+              </TableCell>
+              <TableCell className="text-foreground py-4">{account.planType}</TableCell>
+              <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
+              <TableCell className="py-4">
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
+                  {account.stage}
+                </span>
+              </TableCell>
+              <TableCell className="py-4">
+                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
+                  {account.status}
+                </span>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
+// =============================================================================
+// Main Component
 // =============================================================================
 
 const DashboardAccounts = () => {
   const { data, isLoading, isError, error } = useTradingAccounts();
 
-  const [statusFilter, setStatusFilter] = useState<FilterStatus>("All");
-  const [planFilter, setPlanFilter] = useState<string>("All");
-  // Account staged for the reset confirmation modal (null = modal closed)
   const [resetModalAccount, setResetModalAccount] = useState<AccountView | null>(null);
 
   const accounts = useMemo<AccountView[]>(
@@ -191,47 +334,27 @@ const DashboardAccounts = () => {
     [data],
   );
 
-  const planOptions = useMemo<string[]>(() => {
-    const set = new Set<string>();
-    for (const a of accounts) set.add(a.planType);
-    return ["All", ...Array.from(set).sort()];
-  }, [accounts]);
-
-  const filteredAccounts = useMemo(
-    () =>
-      accounts.filter((a) => {
-        if (statusFilter !== "All" && a.status !== statusFilter) return false;
-        if (planFilter !== "All" && a.planType !== planFilter) return false;
-        return true;
-      }),
-    [accounts, statusFilter, planFilter],
-  );
-
-  // First resettable account across all accounts (used by the header button).
-  const firstResettable = useMemo(
-    () => accounts.find((a) => a.isResettable) ?? null,
+  const activeAccounts = useMemo(
+    () => accounts.filter((a) => a.status === "Active"),
     [accounts],
   );
 
-  const hasResettableAccounts = firstResettable !== null;
+  const inactiveAccounts = useMemo(
+    () => accounts.filter((a) => a.status !== "Active"),
+    [accounts],
+  );
 
   const openResetModal = (account: AccountView) => setResetModalAccount(account);
   const closeResetModal = () => setResetModalAccount(null);
 
   // TODO: Connect to CRM account lookup, billing/checkout, and account reset
-  //       API once integration is complete. Required values:
-  //         selectedAccountId, selectedPlan, selectedAccountSize,
-  //         selectedAccountStatus, resetType, resetPrice.
+  //       API once integration is complete.
   const handleContinueToReset = () => {
-    toast.info(
-      "Reset checkout will be available once account billing is connected.",
-    );
+    toast.info("Reset checkout will be available once account billing is connected.");
     closeResetModal();
   };
 
-  const resetPriceInfo = resetModalAccount
-    ? getResetPriceInfo(resetModalAccount)
-    : null;
+  const resetPriceInfo = resetModalAccount ? getResetPriceInfo(resetModalAccount) : null;
 
   return (
     <div className="space-y-10 pt-16 lg:pt-0">
@@ -240,29 +363,14 @@ const DashboardAccounts = () => {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Accounts</h1>
-            <p className="text-muted-foreground mt-1">
-              Manage your trading accounts
-            </p>
+            <p className="text-muted-foreground mt-1">Manage your trading accounts</p>
           </div>
-
-          {/* Header-level Reset Account button — enabled when a resettable account exists */}
-          <div className="flex flex-col items-end gap-1 shrink-0">
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
-              disabled={!hasResettableAccounts || isLoading}
-              onClick={() => firstResettable && openResetModal(firstResettable)}
-            >
-              <RotateCcw size={14} className="mr-2" />
-              Reset Account
-            </Button>
-            {!isLoading && !hasResettableAccounts && accounts.length > 0 && (
-              <p className="text-xs text-muted-foreground/60">
-                Account reset available on active evaluations
-              </p>
-            )}
-          </div>
+          <Button asChild size="sm">
+            <Link to="/pricing">
+              <Plus size={14} className="mr-2" />
+              New Challenge
+            </Link>
+          </Button>
         </div>
       </ScrollReveal>
 
@@ -278,9 +386,7 @@ const DashboardAccounts = () => {
         <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-6 flex items-start gap-3">
           <AlertCircle className="text-destructive shrink-0 mt-0.5" size={20} />
           <div>
-            <p className="font-medium text-foreground">
-              Failed to load accounts
-            </p>
+            <p className="font-medium text-foreground">Failed to load accounts</p>
             <p className="text-sm text-muted-foreground mt-1">
               {error?.message ?? "Please try again."}
             </p>
@@ -288,169 +394,35 @@ const DashboardAccounts = () => {
         </div>
       )}
 
-      {/* Empty state */}
-      {!isLoading && !isError && accounts.length === 0 && (
-        <ScrollReveal delay={150}>
-          <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-12 text-center">
-            <h2 className="text-xl font-semibold text-foreground">
-              No accounts yet
-            </h2>
-            <p className="text-muted-foreground mt-2 mb-6">
-              Purchase a challenge to get started.
-            </p>
-            <div className="flex items-center justify-center gap-3">
-              <BuyChallengeButton size="default" />
-              <Button asChild variant="outline">
-                <Link to="/pricing">Browse Plans</Link>
-              </Button>
-            </div>
+      {/* Active Accounts */}
+      {!isLoading && !isError && (
+        <ScrollReveal delay={150} className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-primary" />
+            <h2 className="text-lg font-semibold text-foreground">Active Accounts</h2>
+            {activeAccounts.length > 0 && (
+              <span className="text-xs text-muted-foreground bg-muted/40 border border-border/30 px-2 py-0.5 rounded-full">
+                {activeAccounts.length}
+              </span>
+            )}
           </div>
+          <ActiveAccountsTable accounts={activeAccounts} onReset={openResetModal} />
         </ScrollReveal>
       )}
 
-      {/* Filters + table */}
-      {!isLoading && !isError && accounts.length > 0 && (
-        <ScrollReveal delay={150} className="space-y-10">
-          <div className="flex flex-wrap gap-6">
-            {/* Plan Type Filter */}
-            <div className="space-y-2">
-              <span className="text-sm text-muted-foreground">Plan Type</span>
-              <div className="flex items-center gap-2 flex-wrap">
-                {planOptions.map((plan) => (
-                  <Button
-                    key={plan}
-                    variant="ghost"
-                    size="sm"
-                    className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                      planFilter === plan
-                        ? "bg-primary/20 text-primary border border-primary/30"
-                        : "text-muted-foreground hover:text-foreground border border-border/30"
-                    }`}
-                    onClick={() => setPlanFilter(plan)}
-                  >
-                    {plan}
-                  </Button>
-                ))}
-              </div>
-            </div>
-
-            {/* Status Filter */}
-            <div className="space-y-2">
-              <span className="text-sm text-muted-foreground">Status</span>
-              <div className="flex items-center gap-2">
-                {STATUS_FILTERS.map((status) => (
-                  <Button
-                    key={status}
-                    variant="ghost"
-                    size="sm"
-                    className={`px-4 py-2 rounded-lg text-sm transition-all ${
-                      statusFilter === status
-                        ? "bg-primary/20 text-primary border border-primary/30"
-                        : "text-muted-foreground hover:text-foreground border border-border/30"
-                    }`}
-                    onClick={() => setStatusFilter(status)}
-                  >
-                    {status}
-                  </Button>
-                ))}
-              </div>
-            </div>
+      {/* Inactive Accounts */}
+      {!isLoading && !isError && (
+        <ScrollReveal delay={250} className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-muted-foreground/40" />
+            <h2 className="text-lg font-semibold text-foreground">Inactive Accounts</h2>
+            {inactiveAccounts.length > 0 && (
+              <span className="text-xs text-muted-foreground bg-muted/40 border border-border/30 px-2 py-0.5 rounded-full">
+                {inactiveAccounts.length}
+              </span>
+            )}
           </div>
-
-          {/* Accounts Table */}
-          <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Start Date
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Plan Type
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Account Size
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Stage
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Status
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5">
-                    Balance
-                  </TableHead>
-                  <TableHead className="text-muted-foreground font-medium py-5 text-right">
-                    Actions
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAccounts.map((account, index) => (
-                  <TableRow
-                    key={account.id}
-                    className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                      index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-                    } ${account.status === "Active" ? "border-l-2 border-l-primary" : ""}`}
-                  >
-                    <TableCell className="font-medium text-foreground py-5">
-                      {account.startDate}
-                    </TableCell>
-                    <TableCell className="text-foreground py-5">
-                      {account.planType}
-                    </TableCell>
-                    <TableCell className="text-foreground py-5">
-                      {account.accountSize}
-                    </TableCell>
-                    <TableCell className="py-5">
-                      <span
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}
-                      >
-                        {account.stage}
-                      </span>
-                    </TableCell>
-                    <TableCell className="py-5">
-                      <span
-                        className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}
-                      >
-                        {account.status}
-                      </span>
-                    </TableCell>
-                    <TableCell className="font-semibold text-foreground py-5">
-                      {account.balance}
-                    </TableCell>
-                    <TableCell className="text-right py-5">
-                      <div className="flex items-center justify-end gap-2">
-                        {account.isResettable && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
-                            onClick={() => openResetModal(account)}
-                          >
-                            <RotateCcw size={14} className="mr-2" />
-                            Reset Account
-                          </Button>
-                        )}
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all"
-                          asChild
-                        >
-                          <Link to={`/dashboard?account=${account.id}`}>
-                            <Eye size={16} className="mr-2" />
-                            View
-                            <ChevronRight size={14} className="ml-1" />
-                          </Link>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <InactiveAccountsTable accounts={inactiveAccounts} />
         </ScrollReveal>
       )}
 
@@ -463,7 +435,6 @@ const DashboardAccounts = () => {
               <div className="space-y-4 pt-1">
                 {resetModalAccount && (
                   <>
-                    {/* Account details summary */}
                     <div className="rounded-xl border border-border/30 bg-muted/20 p-4 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Account</span>
@@ -490,7 +461,6 @@ const DashboardAccounts = () => {
                         </>
                       )}
                     </div>
-
                     <p className="text-sm text-muted-foreground">
                       Resetting this account will require a reset purchase.
                       {resetPriceInfo
@@ -503,12 +473,8 @@ const DashboardAccounts = () => {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="gap-2 sm:gap-2">
-            <Button variant="outline" onClick={closeResetModal}>
-              Cancel
-            </Button>
-            <Button onClick={handleContinueToReset}>
-              Continue to Reset
-            </Button>
+            <Button variant="outline" onClick={closeResetModal}>Cancel</Button>
+            <Button onClick={handleContinueToReset}>Continue to Reset</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

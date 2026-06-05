@@ -46,7 +46,7 @@ const DashboardTrade = () => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Trade</h1>
             <p className="text-muted-foreground mt-1">
-              Live trading via Volumetrica, embedded right here.
+              Live trading via DeepCharts, embedded right here.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -100,7 +100,7 @@ const DashboardTrade = () => {
             </p>
             <p className="text-sm text-muted-foreground mt-1">
               {iframeQ.error?.message ??
-                'Try the "Open Platform" button to launch in a new tab.'}
+                'Try the "DeepCharts" button to launch in a new tab.'}
             </p>
           </div>
         </div>
@@ -117,7 +117,7 @@ const DashboardTrade = () => {
           />
           <div className="flex items-center justify-end gap-2 p-2 border-t border-border/30 text-xs text-muted-foreground">
             <ExternalLink size={12} />
-            <span>Embedded via Volumetrica</span>
+            <span>Embedded via DeepCharts</span>
           </div>
         </div>
       )}
