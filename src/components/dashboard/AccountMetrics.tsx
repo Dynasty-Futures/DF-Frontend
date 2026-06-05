@@ -16,6 +16,7 @@ import {
   Coffee,
 } from "lucide-react";
 import { useAccountView } from "@/hooks/useAccountView";
+import { EMPTY_ACCOUNT_DATA } from "@/lib/emptyAccountData";
 import {
   PieChart,
   Pie,
@@ -55,15 +56,8 @@ const SESSION_TIMES = {
 };
 
 const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
-  const { data: accountData } = useAccountView(accountId);
-
-  if (!accountData) {
-    return (
-      <div className="p-5 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 h-full text-sm text-muted-foreground">
-        Loading metrics…
-      </div>
-    );
-  }
+  const { data: rawAccountData } = useAccountView(accountId);
+  const accountData = rawAccountData ?? EMPTY_ACCOUNT_DATA;
 
   const formatCurrency = (value: number, showSign = false) => {
     const formatted = `$${Math.abs(value).toLocaleString()}`;
@@ -99,21 +93,18 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
 
   const bestSession = sessionData.reduce((a, b) => (a.value > b.value ? a : b));
 
-  // Mock instrument data with P&L
-  const instrumentBreakdown = [
-    { name: "NQ", trades: 45, winRate: 72, pnl: 2340, avgPnl: 52 },
-    { name: "ES", trades: 30, winRate: 65, pnl: 890, avgPnl: 30 },
-    { name: "MES", trades: 15, winRate: 58, pnl: -120, avgPnl: -8 },
-    { name: "MNQ", trades: 10, winRate: 70, pnl: 450, avgPnl: 45 },
-  ];
+  // TODO: replace with real instrument breakdown from CRM/broker API
+  const instrumentBreakdown: Array<{name: string; trades: number; winRate: number; pnl: number; avgPnl: number}> = [];
 
-  const totalTrades = instrumentBreakdown.reduce((sum, i) => sum + i.trades, 0);
-  const totalPnl = instrumentBreakdown.reduce((sum, i) => sum + i.pnl, 0);
+  const totalTrades = 0;
+  const totalPnl = 0;
 
-  const sortedByWinRate = [...instrumentBreakdown].sort(
-    (a, b) => b.winRate - a.winRate,
-  );
-  const tradeDirection = { long: 68, short: 32 };
+  const sortedByWinRate = [...instrumentBreakdown];
+  const hasInstrumentData = instrumentBreakdown.length > 0;
+
+  // TODO: derive from real trade data
+  const tradeDirection = { long: 0, short: 0 };
+  const hasTradeDirection = tradeDirection.long > 0 || tradeDirection.short > 0;
 
   // Get color for profit factor
   const getProfitFactorColor = () => {
@@ -171,7 +162,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                 Avg. Duration
               </span>
             </div>
-            <span className="text-lg font-bold text-foreground">2h 15m</span>
+            <span className="text-lg font-bold text-foreground">—</span>
           </div>
         </div>
       </div>
@@ -273,26 +264,30 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
               Trade Direction
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1.5 min-w-[80px]">
-              <ArrowUpRight size={14} className="text-primary" />
-              <span className="text-sm font-semibold text-foreground">
-                Long {tradeDirection.long}%
-              </span>
+          {hasTradeDirection ? (
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 min-w-[80px]">
+                <ArrowUpRight size={14} className="text-primary" />
+                <span className="text-sm font-semibold text-foreground">
+                  Long {tradeDirection.long}%
+                </span>
+              </div>
+              <div className="flex-1 h-2.5 rounded-full bg-muted/20 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-gold-dark to-primary rounded-full transition-all duration-500"
+                  style={{ width: `${tradeDirection.long}%` }}
+                />
+              </div>
+              <div className="flex items-center gap-1.5 min-w-[80px] justify-end">
+                <span className="text-sm font-semibold text-foreground">
+                  Short {tradeDirection.short}%
+                </span>
+                <ArrowDownRight size={14} className="text-destructive/70" />
+              </div>
             </div>
-            <div className="flex-1 h-2.5 rounded-full bg-muted/20 overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-gold-dark to-primary rounded-full transition-all duration-500"
-                style={{ width: `${tradeDirection.long}%` }}
-              />
-            </div>
-            <div className="flex items-center gap-1.5 min-w-[80px] justify-end">
-              <span className="text-sm font-semibold text-foreground">
-                Short {tradeDirection.short}%
-              </span>
-              <ArrowDownRight size={14} className="text-destructive/70" />
-            </div>
-          </div>
+          ) : (
+            <p className="text-xs text-muted-foreground/60 text-center py-1">No trade data yet</p>
+          )}
         </div>
       </div>
 
@@ -376,179 +371,113 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
           </span>
         </div>
         <div className="flex-1 p-4 rounded-xl bg-muted/10 border border-border/20">
-          {/* Top Row: Pie Chart + Trade Volume */}
-          <div className="flex items-center gap-6 mb-5">
-            {/* Large Pie Chart */}
-            <div className="w-36 h-36 flex-shrink-0">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={instrumentBreakdown}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={30}
-                    outerRadius={60}
-                    paddingAngle={3}
-                    dataKey="trades"
-                  >
-                    {instrumentBreakdown.map((entry) => (
-                      <Cell
-                        key={entry.name}
-                        fill={
-                          INSTRUMENT_COLORS[
-                            entry.name as keyof typeof INSTRUMENT_COLORS
-                          ] || "hsl(var(--muted-foreground))"
-                        }
-                      />
-                    ))}
-                  </Pie>
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* Trade Volume Stats */}
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-1.5 mb-3">
-                <BarChart3 size={12} className="text-muted-foreground" />
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                  Trade Volume
-                </span>
+          {hasInstrumentData ? (
+            <>
+              {/* Top Row: Pie Chart + Trade Volume */}
+              <div className="flex items-center gap-6 mb-5">
+                <div className="w-36 h-36 flex-shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={instrumentBreakdown}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={30}
+                        outerRadius={60}
+                        paddingAngle={3}
+                        dataKey="trades"
+                      >
+                        {instrumentBreakdown.map((entry) => (
+                          <Cell
+                            key={entry.name}
+                            fill={INSTRUMENT_COLORS[entry.name as keyof typeof INSTRUMENT_COLORS] || "hsl(var(--muted-foreground))"}
+                          />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-1.5 mb-3">
+                    <BarChart3 size={12} className="text-muted-foreground" />
+                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Trade Volume</span>
+                  </div>
+                  {instrumentBreakdown.map((inst) => (
+                    <div key={inst.name} className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 min-w-[50px]">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <span className="text-xs font-medium text-foreground">{inst.name}</span>
+                      </div>
+                      <div className="flex-1 h-2 rounded-full bg-muted/20 overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(inst.trades / totalTrades) * 100}%`, backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground min-w-[45px] text-right">{inst.trades} trades</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              {instrumentBreakdown.map((inst) => (
-                <div key={inst.name} className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 min-w-[50px]">
-                    <div
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{
-                        backgroundColor:
-                          INSTRUMENT_COLORS[
-                            inst.name as keyof typeof INSTRUMENT_COLORS
-                          ],
-                      }}
-                    />
-                    <span className="text-xs font-medium text-foreground">
-                      {inst.name}
-                    </span>
-                  </div>
-                  <div className="flex-1 h-2 rounded-full bg-muted/20 overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${(inst.trades / totalTrades) * 100}%`,
-                        backgroundColor:
-                          INSTRUMENT_COLORS[
-                            inst.name as keyof typeof INSTRUMENT_COLORS
-                          ],
-                      }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-muted-foreground min-w-[45px] text-right">
-                    {inst.trades} trades
-                  </span>
+
+              <div className="border-t border-border/20 my-4" />
+
+              {/* Win Rate Progress Bars */}
+              <div className="mb-5">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <Trophy size={12} className="text-primary" />
+                  <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Win Rate by Instrument</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="border-t border-border/20 my-4" />
-
-          {/* Win Rate Progress Bars */}
-          <div className="mb-5">
-            <div className="flex items-center gap-1.5 mb-3">
-              <Trophy size={12} className="text-primary" />
-              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                Win Rate by Instrument
-              </span>
-            </div>
-            <div className="space-y-2.5">
-              {sortedByWinRate.map((inst, index) => (
-                <div key={inst.name} className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 min-w-[50px]">
-                    <div
-                      className="w-2.5 h-2.5 rounded-full"
-                      style={{
-                        backgroundColor:
-                          INSTRUMENT_COLORS[
-                            inst.name as keyof typeof INSTRUMENT_COLORS
-                          ],
-                      }}
-                    />
-                    <span className="text-xs font-medium text-foreground">
-                      {inst.name}
-                    </span>
-                  </div>
-                  <div className="flex-1 h-3 rounded-full bg-muted/20 overflow-hidden">
-                    <div
-                      className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-primary/80 to-primary"
-                      style={{ width: `${inst.winRate}%` }}
-                    />
-                  </div>
-                  <div className="flex items-center gap-1.5 min-w-[55px] justify-end">
-                    <span
-                      className={`text-xs font-bold ${inst.winRate >= 70 ? "text-primary" : inst.winRate >= 60 ? "text-gold-dark" : "text-muted-foreground"}`}
-                    >
-                      {inst.winRate}%
-                    </span>
-                    {index === 0 && (
-                      <Trophy size={11} className="text-primary" />
-                    )}
-                  </div>
+                <div className="space-y-2.5">
+                  {sortedByWinRate.map((inst, index) => (
+                    <div key={inst.name} className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 min-w-[50px]">
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <span className="text-xs font-medium text-foreground">{inst.name}</span>
+                      </div>
+                      <div className="flex-1 h-3 rounded-full bg-muted/20 overflow-hidden">
+                        <div className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-primary/80 to-primary" style={{ width: `${inst.winRate}%` }} />
+                      </div>
+                      <div className="flex items-center gap-1.5 min-w-[55px] justify-end">
+                        <span className={`text-xs font-bold ${inst.winRate >= 70 ? "text-primary" : inst.winRate >= 60 ? "text-gold-dark" : "text-muted-foreground"}`}>{inst.winRate}%</span>
+                        {index === 0 && <Trophy size={11} className="text-primary" />}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="border-t border-border/20 my-4" />
-
-          {/* P&L Contribution Grid */}
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-1.5">
-                <DollarSign size={12} className="text-primary" />
-                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">
-                  P&L Contribution
-                </span>
               </div>
-              <span
-                className={`text-sm font-bold ${totalPnl >= 0 ? "text-green-400" : "text-destructive"}`}
-              >
-                {formatCurrency(totalPnl, true)}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {instrumentBreakdown.map((inst) => (
-                <div
-                  key={inst.name}
-                  className="p-3 rounded-lg bg-muted/10 border border-border/20 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{
-                        backgroundColor:
-                          INSTRUMENT_COLORS[
-                            inst.name as keyof typeof INSTRUMENT_COLORS
-                          ],
-                      }}
-                    />
-                    <span className="text-sm font-medium text-foreground">
-                      {inst.name}
-                    </span>
+
+              <div className="border-t border-border/20 my-4" />
+
+              {/* P&L Contribution Grid */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-1.5">
+                    <DollarSign size={12} className="text-primary" />
+                    <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">P&L Contribution</span>
                   </div>
-                  <div className="text-right">
-                    <span
-                      className={`text-sm font-bold ${inst.pnl >= 0 ? "text-green-400" : "text-destructive"}`}
-                    >
-                      {formatCurrency(inst.pnl, true)}
-                    </span>
-                    <p className="text-[9px] text-muted-foreground">
-                      Avg: {formatCurrency(inst.avgPnl, true)}/trade
-                    </p>
-                  </div>
+                  <span className={`text-sm font-bold ${totalPnl >= 0 ? "text-green-400" : "text-destructive"}`}>{formatCurrency(totalPnl, true)}</span>
                 </div>
-              ))}
+                <div className="grid grid-cols-2 gap-2">
+                  {instrumentBreakdown.map((inst) => (
+                    <div key={inst.name} className="p-3 rounded-lg bg-muted/10 border border-border/20 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <span className="text-sm font-medium text-foreground">{inst.name}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className={`text-sm font-bold ${inst.pnl >= 0 ? "text-green-400" : "text-destructive"}`}>{formatCurrency(inst.pnl, true)}</span>
+                        <p className="text-[9px] text-muted-foreground">Avg: {formatCurrency(inst.avgPnl, true)}/trade</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 text-muted-foreground text-center">
+              <BarChart3 size={28} className="mb-2 opacity-30" />
+              <p className="text-xs">No instrument data yet</p>
+              <p className="text-[10px] mt-1 opacity-60">Instrument breakdown will appear once you start trading</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

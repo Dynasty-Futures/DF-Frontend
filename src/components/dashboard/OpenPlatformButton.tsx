@@ -2,6 +2,7 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDashboardUrl } from '@/hooks/useTrading';
 import { toast } from 'sonner';
+import deepchartsLogo from '@/assets/deepcharts-logo.png';
 
 interface OpenPlatformButtonProps {
   variant?: 'default' | 'outline' | 'ghost';
@@ -48,7 +49,10 @@ const OpenPlatformButton = ({
       {isFetching ? (
         <Loader2 size={14} className="mr-2 animate-spin" />
       ) : (
-        <img src="/deepcharts-logo.png" alt="" className="h-4 w-4 mr-2 object-contain" />
+        /* Show only the DC icon mark (left portion of the logo) */
+        <div className="mr-2 h-4 overflow-hidden flex-shrink-0" style={{ width: '22px' }}>
+          <img src={deepchartsLogo} alt="" className="h-4 w-auto" />
+        </div>
       )}
       DeepCharts
     </Button>

@@ -213,35 +213,25 @@ const DashboardHome = () => {
           />
         </div>
 
-        {accountData && (
-          <div className="flex justify-center">
-            <button
-              onClick={scrollToStats}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
-            >
-              <span>Jump to Stats</span>
-              <ChevronDown size={16} className="animate-bounce" />
-            </button>
-          </div>
-        )}
+        <div className="flex justify-center">
+          <button
+            onClick={scrollToStats}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors group"
+          >
+            <span>Jump to Stats</span>
+            <ChevronDown size={16} className="animate-bounce" />
+          </button>
+        </div>
 
         {/* Performance Chart */}
-        {accountData ? (
-          <PerformanceChart
-            data={chartData}
-            chartType={chartType}
-            onChartTypeChange={setChartType}
-            startingBalance={accountData.startingBalance}
-            timeframe={dateRange}
-            className="h-[calc(100vh-380px)] min-h-[400px]"
-          />
-        ) : (
-          <div className="rounded-2xl border border-border/30 bg-card/50 backdrop-blur-sm flex flex-col items-center justify-center min-h-[300px] text-muted-foreground mt-3">
-            <BarChart3 size={40} className="mb-3 opacity-30" />
-            <p className="text-sm font-medium">No trading data yet</p>
-            <p className="text-xs mt-1 opacity-60">Purchase a challenge to start tracking performance</p>
-          </div>
-        )}
+        <PerformanceChart
+          data={chartData}
+          chartType={chartType}
+          onChartTypeChange={setChartType}
+          startingBalance={accountData?.startingBalance ?? 0}
+          timeframe={dateRange}
+          className="h-[calc(100vh-380px)] min-h-[400px]"
+        />
       </ScrollReveal>
 
       {/* Stats Section */}
@@ -252,53 +242,38 @@ const DashboardHome = () => {
             <h2 className="text-lg font-semibold text-foreground">Performance Overview</h2>
           </div>
 
-          {accountData ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <Map size={14} className="text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                    {isBuilderAccount ? "Payout Tracker" : "Account Roadmap"}
-                  </span>
-                </div>
-                {isBuilderAccount ? (
-                  <BuilderPanel
-                    accountId={selectedAccount}
-                    selectedDate={selectedDate}
-                    onDateChange={setSelectedDate}
-                  />
-                ) : (
-                  <SummaryPanel
-                    accountId={selectedAccount}
-                    selectedDate={selectedDate}
-                    onDateChange={setSelectedDate}
-                  />
-                )}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Map size={14} className="text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                  {isBuilderAccount ? "Payout Tracker" : "Account Roadmap"}
+                </span>
               </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <BarChart3 size={14} className="text-muted-foreground" />
-                  <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                    Trading Analytics
-                  </span>
-                </div>
-                <AccountMetrics accountId={selectedAccount} />
-              </div>
+              {isBuilderAccount ? (
+                <BuilderPanel
+                  accountId={selectedAccount}
+                  selectedDate={selectedDate}
+                  onDateChange={setSelectedDate}
+                />
+              ) : (
+                <SummaryPanel
+                  accountId={selectedAccount}
+                  selectedDate={selectedDate}
+                  onDateChange={setSelectedDate}
+                />
+              )}
             </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-8 flex flex-col items-center justify-center min-h-[200px] text-muted-foreground text-center">
-                <Map size={32} className="mb-3 opacity-30" />
-                <p className="text-sm font-medium">Account Roadmap</p>
-                <p className="text-xs mt-1 opacity-60">No account connected</p>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <BarChart3 size={14} className="text-muted-foreground" />
+                <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                  Trading Analytics
+                </span>
               </div>
-              <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-8 flex flex-col items-center justify-center min-h-[200px] text-muted-foreground text-center">
-                <BarChart3 size={32} className="mb-3 opacity-30" />
-                <p className="text-sm font-medium">Trading Analytics</p>
-                <p className="text-xs mt-1 opacity-60">No account connected</p>
-              </div>
+              <AccountMetrics accountId={selectedAccount} />
             </div>
-          )}
+          </div>
         </div>
       </ScrollReveal>
 
@@ -316,15 +291,7 @@ const DashboardHome = () => {
               </p>
             </div>
           </div>
-          {accountData ? (
-            <DailyAnalytics accountId={selectedAccount} selectedDate={selectedDate} />
-          ) : (
-            <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-8 flex flex-col items-center justify-center text-muted-foreground text-center">
-              <Calendar size={32} className="mb-3 opacity-30" />
-              <p className="text-sm font-medium">No trading activity yet</p>
-              <p className="text-xs mt-1 opacity-60">Daily stats will appear here once you start trading</p>
-            </div>
-          )}
+          <DailyAnalytics accountId={selectedAccount} selectedDate={selectedDate} />
         </div>
       </ScrollReveal>
     </div>
