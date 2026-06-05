@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react';
+import { ExternalLink, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useDashboardUrl } from '@/hooks/useTrading';
 import { toast } from 'sonner';
@@ -47,14 +47,22 @@ const OpenPlatformButton = ({
       className={className}
     >
       {isFetching ? (
-        <Loader2 size={14} className="mr-2 animate-spin" />
+        <>
+          <Loader2 size={14} className="mr-2 animate-spin flex-shrink-0" />
+          Launching…
+        </>
       ) : (
-        /* Show only the DC icon mark (left portion of the logo) */
-        <div className="mr-2 h-4 overflow-hidden flex-shrink-0" style={{ width: '22px' }}>
-          <img src={deepchartsLogo} alt="" className="h-4 w-auto" />
-        </div>
+        <>
+          <ExternalLink size={14} className="mr-2 flex-shrink-0" />
+          Launch
+          <img
+            src={deepchartsLogo}
+            alt="DeepCharts"
+            className="ml-2 w-auto object-contain flex-shrink-0"
+            style={{ height: '18px' }}
+          />
+        </>
       )}
-      DeepCharts
     </Button>
   );
 };
