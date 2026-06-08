@@ -35,6 +35,7 @@ const DashboardBilling = lazy(() => import("./pages/dashboard/DashboardBilling")
 const DashboardPayouts = lazy(() => import("./pages/dashboard/DashboardPayouts"));
 const DashboardProfile = lazy(() => import("./pages/dashboard/DashboardProfile"));
 const DashboardAchievements = lazy(() => import("./pages/dashboard/DashboardAchievements"));
+const DashboardAwards = lazy(() => import("./pages/dashboard/DashboardAwards"));
 const DashboardHelp = lazy(() => import("./pages/dashboard/DashboardHelp"));
 const DashboardAffiliate = lazy(() => import("./pages/dashboard/DashboardAffiliate"));
 const DashboardJournal = lazy(() => import("./pages/dashboard/DashboardJournal"));
@@ -104,6 +105,7 @@ export const AppRoutes = () => (
       <Route path="affiliate" element={<LazyRoute><DashboardAffiliate /></LazyRoute>} />
       <Route path="profile" element={<LazyRoute><DashboardProfile /></LazyRoute>} />
       <Route path="achievements" element={<LazyRoute><DashboardAchievements /></LazyRoute>} />
+      <Route path="awards" element={<LazyRoute><DashboardAwards /></LazyRoute>} />
       <Route path="help" element={<LazyRoute><DashboardHelp /></LazyRoute>} />
       <Route path="journal/:date" element={<LazyRoute><DashboardJournal /></LazyRoute>} />
       <Route path="trade" element={<LazyRoute><DashboardTrade /></LazyRoute>} />
