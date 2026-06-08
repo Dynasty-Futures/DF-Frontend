@@ -14,8 +14,11 @@ import {
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { affiliateService } from "@/services/affiliates";
+import { ApiError } from "@/types/api";
 
 interface FormData {
   websiteUrl: string;
@@ -203,34 +206,42 @@ const AffiliateRegistrationModal = ({ open, onOpenChange }: AffiliateRegistratio
     if (!validateStep(3)) return;
     setIsSubmitting(true);
 
-    // TODO: Replace with real API endpoint when affiliate backend is ready.
-    // POST /v1/affiliates/apply — userId is extracted server-side from the auth token.
-    const affiliateApplication = {
-      websiteUrl: form.websiteUrl,
-      youtubeUrl: form.youtubeUrl,
-      xUrl: form.xUrl,
-      instagramUrl: form.instagramUrl,
-      facebookUrl: form.facebookUrl,
-      telegramUrl: form.telegramUrl,
-      discordUrl: form.discordUrl,
-      isFundedTrader: form.isFundedTrader === "yes",
-      hasActiveDynastyAccount: form.hasActiveDynastyAccount === "yes",
-      promotionPlan: form.promotionPlan,
-      primaryTrafficMethod: form.primaryTrafficMethod,
-      createsCustomContent: form.createsCustomContent === "yes",
-      contentUpdateFrequency: form.contentUpdateFrequency,
-      preferredAffiliateCode: form.preferredAffiliateCode,
-      restrictedJurisdictionConfirmation: form.restrictedJurisdictionConfirmation,
-      submittedAt: new Date().toISOString(),
-      status: "pending" as const,
+    // Only send URL fields that were actually filled in — the backend validates
+    // each as a URL and rejects malformed values.
+    const trimmedUrl = (v: string) => {
+      const trimmed = v.trim();
+      return trimmed ? trimmed : undefined;
     };
 
-    console.log("Affiliate application:", affiliateApplication);
-    // Placeholder: remove this delay when connecting to real endpoint
-    await new Promise<void>(resolve => setTimeout(resolve, 800));
+    try {
+      await affiliateService.apply({
+        websiteUrl: trimmedUrl(form.websiteUrl),
+        youtubeUrl: trimmedUrl(form.youtubeUrl),
+        xUrl: trimmedUrl(form.xUrl),
+        instagramUrl: trimmedUrl(form.instagramUrl),
+        facebookUrl: trimmedUrl(form.facebookUrl),
+        telegramUrl: trimmedUrl(form.telegramUrl),
+        discordUrl: trimmedUrl(form.discordUrl),
+        isFundedTrader: form.isFundedTrader === "yes",
+        hasActiveDynastyAccount: form.hasActiveDynastyAccount === "yes",
+        promotionPlan: form.promotionPlan,
+        primaryTrafficMethod: form.primaryTrafficMethod,
+        createsCustomContent: form.createsCustomContent === "yes",
+        contentUpdateFrequency: form.contentUpdateFrequency,
+        preferredAffiliateCode: form.preferredAffiliateCode,
+        restrictedJurisdictionConfirmation: form.restrictedJurisdictionConfirmation,
+      });
 
-    setIsSubmitting(false);
-    setSubmitted(true);
+      setSubmitted(true);
+    } catch (err) {
+      const message =
+        err instanceof ApiError
+          ? err.message
+          : "Something went wrong submitting your application. Please try again.";
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = (isOpen: boolean) => {
