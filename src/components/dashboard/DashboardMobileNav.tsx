@@ -15,7 +15,7 @@ const sidebarLinks = [
   { name: 'Payouts', path: '/dashboard/payouts', icon: Banknote },
   { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },
   { name: 'Profile', path: '/dashboard/profile', icon: User },
-  { name: 'Achievements', path: '/dashboard/achievements', icon: Trophy },
+  { name: 'Awards', path: '/dashboard/awards', icon: Trophy },
   { name: 'Help Center', path: '/dashboard/help', icon: HelpCircle },
 ];
 

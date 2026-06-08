@@ -24,7 +24,7 @@ const sidebarLinks = [
   { name: 'Payouts', path: '/dashboard/payouts', icon: ArrowDownToLine },
   { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },
   { name: 'Profile', path: '/dashboard/profile', icon: User },
-  { name: 'Achievements', path: '/dashboard/achievements', icon: Award },
+  { name: 'Awards', path: '/dashboard/awards', icon: Award },
   { name: 'Help Center', path: '/dashboard/help', icon: Headphones },
 ];
 

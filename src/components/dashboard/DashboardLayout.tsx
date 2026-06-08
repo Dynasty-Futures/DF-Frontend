@@ -15,6 +15,7 @@ const DASHBOARD_TITLES: Record<string, string> = {
   '/dashboard/affiliate': 'Affiliate',
   '/dashboard/profile': 'Profile',
   '/dashboard/achievements': 'Achievements',
+  '/dashboard/awards': 'Awards',
   '/dashboard/help': 'Help Center',
 };
 
