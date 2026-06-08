@@ -21,6 +21,8 @@ const Support = lazy(() => import("./pages/Support"));
 const Legal = lazy(() => import("./pages/Legal"));
 const Login = lazy(() => import("./pages/Login"));
 const Register = lazy(() => import("./pages/Register"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 const About = lazy(() => import("./pages/About"));
 const Payouts = lazy(() => import("./pages/Payouts"));
 const Affiliates = lazy(() => import("./pages/Affiliates"));
@@ -81,6 +83,8 @@ export const AppRoutes = () => (
     <Route path="/legal" element={<LazyRoute><Legal /></LazyRoute>} />
     <Route path="/login" element={<LazyRoute><Login /></LazyRoute>} />
     <Route path="/register" element={<LazyRoute><Register /></LazyRoute>} />
+    <Route path="/forgot-password" element={<LazyRoute><ForgotPassword /></LazyRoute>} />
+    <Route path="/reset-password" element={<LazyRoute><ResetPassword /></LazyRoute>} />
     <Route path="/about" element={<LazyRoute><About /></LazyRoute>} />
     <Route path="/payouts" element={<LazyRoute><Payouts /></LazyRoute>} />
     <Route path="/affiliates" element={<LazyRoute><Affiliates /></LazyRoute>} />

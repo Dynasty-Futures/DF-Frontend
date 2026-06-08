@@ -52,6 +52,11 @@ export interface LogoutResponse {
   message: string;
 }
 
+export interface SimpleSuccessResponse {
+  success: true;
+  message: string;
+}
+
 // ---------------------------------------------------------------------------
 // API methods
 // ---------------------------------------------------------------------------
@@ -95,4 +100,21 @@ export const authApi = {
    * Fetch the currently authenticated user's profile.
    */
   getMe: () => apiClient.get<MeResponse>('/auth/me'),
+
+  /**
+   * Initiate a password reset. Always resolves successfully regardless of
+   * whether the email is on file (the backend uses a constant response shape
+   * to prevent email enumeration).
+   */
+  requestPasswordReset: (email: string) =>
+    apiClient.post<SimpleSuccessResponse>('/auth/password/forgot', { email }),
+
+  /**
+   * Complete a password reset using the token from the email link.
+   */
+  resetPassword: (token: string, newPassword: string) =>
+    apiClient.post<SimpleSuccessResponse>('/auth/password/reset', {
+      token,
+      newPassword,
+    }),
 } as const;
