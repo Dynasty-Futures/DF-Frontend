@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ArrowUpRight,
   Clock,
@@ -7,8 +8,11 @@ import {
   CircleDollarSign,
   Info,
   CircleOff,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 import {
   Table,
   TableBody,
@@ -17,60 +21,232 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import ScrollReveal from "@/components/ui/ScrollReveal";
+import {
+  useEligibleAccounts,
+  usePayoutHistory,
+  useRequestPayout,
+} from "@/hooks/usePayouts";
+import type { EligibleAccount, Payout, PayoutStatus } from "@/services/payouts";
 
-// Future integration: populate these from API response for the authenticated trader
-const eligibleAccounts: {
-  id: string;
-  account: string;
-  balance: string;
-  eligible: string;
-}[] = [];
+const formatCurrency = (value: number, currency = "USD") =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency }).format(value);
 
-const payoutHistory: {
-  id: string;
-  date: string;
-  amount: string;
-  method: string;
-  status: string;
-}[] = [];
+const statusLabel: Record<PayoutStatus, string> = {
+  PENDING: "Pending",
+  APPROVED: "Approved",
+  PROCESSING: "Processing",
+  COMPLETED: "Completed",
+  REJECTED: "Rejected",
+  FAILED: "Failed",
+};
 
-const getStatusIcon = (status: string) => {
+const getStatusIcon = (status: PayoutStatus) => {
   switch (status) {
-    case "Completed":
+    case "COMPLETED":
+    case "APPROVED":
       return <CheckCircle size={16} className="text-primary" />;
-    case "Processing":
+    case "PROCESSING":
+    case "PENDING":
       return <Clock size={16} className="text-yellow-500" />;
-    case "Failed":
+    case "REJECTED":
+    case "FAILED":
       return <XCircle size={16} className="text-destructive" />;
     default:
       return null;
   }
 };
 
-const getStatusStyle = (status: string) => {
+const getStatusStyle = (status: PayoutStatus) => {
   switch (status) {
-    case "Completed":
+    case "COMPLETED":
+    case "APPROVED":
       return "bg-primary/20 text-primary border-primary/30";
-    case "Processing":
+    case "PROCESSING":
+    case "PENDING":
       return "bg-yellow-500/20 text-yellow-500 border-yellow-500/30";
-    case "Failed":
+    case "REJECTED":
+    case "FAILED":
       return "bg-destructive/20 text-destructive border-destructive/30";
     default:
       return "";
   }
 };
 
-const getMethodIcon = (method: string) => {
-  switch (method) {
-    case "Rise Works":
-      return <Globe size={16} className="text-gold-dark" />;
-    default:
-      return <CircleDollarSign size={16} className="text-muted-foreground" />;
-  }
+// =============================================================================
+// Request Payout Modal
+// =============================================================================
+
+interface PayoutModalProps {
+  account: EligibleAccount | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+const PayoutRequestModal = ({ account, open, onOpenChange }: PayoutModalProps) => {
+  const [amount, setAmount] = useState("");
+  const [accountHolder, setAccountHolder] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
+  const [swiftBic, setSwiftBic] = useState("");
+
+  const requestPayout = useRequestPayout({
+    onSuccess: () => {
+      toast.success("Payout request submitted for review.");
+      onOpenChange(false);
+      setAmount("");
+      setAccountHolder("");
+      setAccountNumber("");
+      setSwiftBic("");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Could not submit payout request.");
+    },
+  });
+
+  if (!account) return null;
+
+  const numericAmount = Number(amount);
+  const amountValid =
+    Number.isFinite(numericAmount) &&
+    numericAmount > 0 &&
+    numericAmount <= account.availableProfit;
+  const detailsValid =
+    accountHolder.trim() !== "" &&
+    accountNumber.trim() !== "" &&
+    swiftBic.trim() !== "";
+  const canSubmit = amountValid && detailsValid && !requestPayout.isPending;
+
+  const handleSubmit = () => {
+    if (!canSubmit) return;
+    requestPayout.mutate({
+      accountId: account.accountId,
+      amount: numericAmount,
+      payoutDetails: {
+        accountHolder: accountHolder.trim(),
+        accountNumber: accountNumber.trim(),
+        swiftBic: swiftBic.trim().toUpperCase(),
+        currency: account.currency,
+      },
+    });
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Request Payout</DialogTitle>
+          <DialogDescription>
+            {account.accountName} — up to{" "}
+            {formatCurrency(account.availableProfit, account.currency)} available.
+            Payments are processed through Rise after Dynasty Futures approval.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-2">
+          <div className="space-y-2">
+            <Label htmlFor="amount">Amount ({account.currency})</Label>
+            <Input
+              id="amount"
+              type="number"
+              min={0}
+              max={account.availableProfit}
+              step="0.01"
+              placeholder="0.00"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            {amount !== "" && !amountValid && (
+              <p className="text-xs text-destructive">
+                Enter an amount between $0 and{" "}
+                {formatCurrency(account.availableProfit, account.currency)}.
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="accountHolder">Account Holder Name</Label>
+            <Input
+              id="accountHolder"
+              value={accountHolder}
+              onChange={(e) => setAccountHolder(e.target.value)}
+              placeholder="Full name on the bank account"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="accountNumber">Account Number / IBAN</Label>
+            <Input
+              id="accountNumber"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value)}
+              placeholder="Bank account number"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="swiftBic">SWIFT / BIC</Label>
+            <Input
+              id="swiftBic"
+              value={swiftBic}
+              onChange={(e) => setSwiftBic(e.target.value)}
+              placeholder="e.g. CHASUS33"
+            />
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            Your bank details are forwarded securely to Rise for processing and are
+            not stored by Dynasty Futures.
+          </p>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} disabled={!canSubmit}>
+            {requestPayout.isPending && (
+              <Loader2 size={16} className="mr-2 animate-spin" />
+            )}
+            Submit Request
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
+// =============================================================================
+// Page
+// =============================================================================
+
 const DashboardPayouts = () => {
+  const eligibleQ = useEligibleAccounts();
+  const historyQ = usePayoutHistory();
+
+  const eligibleAccounts = eligibleQ.data?.data ?? [];
+  const payoutHistory = historyQ.data?.data ?? [];
+
+  const [selectedAccount, setSelectedAccount] = useState<EligibleAccount | null>(
+    null,
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = (account: EligibleAccount) => {
+    setSelectedAccount(account);
+    setModalOpen(true);
+  };
+
   return (
     <div className="space-y-8 pt-16 lg:pt-0">
       {/* Header */}
@@ -119,9 +295,7 @@ const DashboardPayouts = () => {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Cutoff Time</p>
-                <p className="text-sm font-medium text-foreground">
-                  2:00 PM CT
-                </p>
+                <p className="text-sm font-medium text-foreground">2:00 PM CT</p>
               </div>
             </div>
             <div className="flex items-start gap-3 col-span-2">
@@ -149,7 +323,7 @@ const DashboardPayouts = () => {
                 Eligible for Payout
               </h3>
               <p className="text-sm text-muted-foreground">
-                Accounts ready for withdrawal
+                Funded accounts with withdrawable profit
               </p>
             </div>
           </div>
@@ -163,7 +337,7 @@ const DashboardPayouts = () => {
                   Balance
                 </TableHead>
                 <TableHead className="text-muted-foreground font-medium py-5">
-                  Eligible Amount
+                  Available Profit
                 </TableHead>
                 <TableHead className="text-muted-foreground font-medium py-5 text-right">
                   Action
@@ -171,7 +345,28 @@ const DashboardPayouts = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {eligibleAccounts.length === 0 ? (
+              {eligibleQ.isLoading ? (
+                <TableRow className="border-border/30 hover:bg-transparent">
+                  <TableCell colSpan={4} className="py-12 text-center">
+                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                      <Loader2 className="animate-spin" size={18} /> Loading
+                      accounts…
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : eligibleQ.isError ? (
+                <TableRow className="border-border/30 hover:bg-transparent">
+                  <TableCell colSpan={4} className="py-12 text-center">
+                    <div className="flex flex-col items-center gap-2 text-destructive">
+                      <AlertCircle size={20} />
+                      <p className="text-sm">
+                        {eligibleQ.error?.message ??
+                          "Failed to load eligible accounts."}
+                      </p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : eligibleAccounts.length === 0 ? (
                 <TableRow className="border-border/30 hover:bg-transparent">
                   <TableCell colSpan={4} className="py-12 text-center">
                     <div className="flex flex-col items-center gap-3">
@@ -182,7 +377,8 @@ const DashboardPayouts = () => {
                         No funded accounts are currently eligible for payout.
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Eligible funded accounts will appear here once payout requirements are met.
+                        Eligible funded accounts will appear here once payout
+                        requirements are met.
                       </p>
                     </div>
                   </TableCell>
@@ -190,24 +386,36 @@ const DashboardPayouts = () => {
               ) : (
                 eligibleAccounts.map((account, index) => (
                   <TableRow
-                    key={account.id}
+                    key={account.accountId}
                     className={`border-border/30 hover:bg-muted/20 transition-colors ${
                       index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
                     }`}
                   >
                     <TableCell className="font-medium text-foreground py-6">
-                      {account.account}
+                      {account.accountName}
                     </TableCell>
                     <TableCell className="text-foreground py-6">
-                      {account.balance}
+                      {formatCurrency(account.currentBalance, account.currency)}
                     </TableCell>
                     <TableCell className="py-6">
                       <span className="px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold border border-primary/20">
-                        {account.eligible}
+                        {formatCurrency(account.availableProfit, account.currency)}
                       </span>
                     </TableCell>
                     <TableCell className="text-right py-6">
-                      {/* Request Payout button — rendered when account data is live */}
+                      {account.hasPendingPayout ? (
+                        <span className="text-xs text-muted-foreground">
+                          Request in progress
+                        </span>
+                      ) : (
+                        <Button
+                          size="sm"
+                          disabled={!account.eligible}
+                          onClick={() => openModal(account)}
+                        >
+                          Request Payout
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -223,7 +431,10 @@ const DashboardPayouts = () => {
               <Info size={16} className="text-primary" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Payouts at Dynasty Futures are processed through Rise Works, a third-party payment provider. Rise handles payment processing, compliance, and verification to ensure all payouts are secure and accurate.
+              Payouts at Dynasty Futures are processed through Rise Works, a
+              third-party payment provider. Rise handles payment processing,
+              compliance, and verification to ensure all payouts are secure and
+              accurate.
             </p>
           </div>
           <div className="flex items-start gap-3">
@@ -231,8 +442,17 @@ const DashboardPayouts = () => {
               <Info size={16} className="text-primary" />
             </div>
             <div className="text-sm text-muted-foreground space-y-2">
-              <p>To receive a payout, traders may be required to complete identity and payment verification through Rise Works. This process helps protect both the trader and the platform.</p>
-              <p>Payouts are not arbitrarily denied. As long as your information is accurate and verification is completed successfully, your payout will be processed. Issues only arise in cases of incomplete verification or fraudulent information.</p>
+              <p>
+                To receive a payout, traders may be required to complete identity
+                and payment verification through Rise Works. This process helps
+                protect both the trader and the platform.
+              </p>
+              <p>
+                Payouts are not arbitrarily denied. As long as your information is
+                accurate and verification is completed successfully, your payout
+                will be processed. Issues only arise in cases of incomplete
+                verification or fraudulent information.
+              </p>
             </div>
           </div>
         </div>
@@ -260,20 +480,26 @@ const DashboardPayouts = () => {
                   Amount
                 </TableHead>
                 <TableHead className="text-muted-foreground font-medium py-5">
-                  Method
+                  Net Transfer
                 </TableHead>
                 <TableHead className="text-muted-foreground font-medium py-5">
                   Status
                 </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5 text-right">
-                  Details
-                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {payoutHistory.length === 0 ? (
+              {historyQ.isLoading ? (
                 <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={5} className="py-12 text-center">
+                  <TableCell colSpan={4} className="py-12 text-center">
+                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                      <Loader2 className="animate-spin" size={18} /> Loading
+                      history…
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : payoutHistory.length === 0 ? (
+                <TableRow className="border-border/30 hover:bg-transparent">
+                  <TableCell colSpan={4} className="py-12 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
                         <CircleOff size={20} className="text-muted-foreground/50" />
@@ -288,7 +514,7 @@ const DashboardPayouts = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                payoutHistory.map((payout, index) => (
+                payoutHistory.map((payout: Payout, index) => (
                   <TableRow
                     key={payout.id}
                     className={`border-border/30 hover:bg-muted/20 transition-colors ${
@@ -296,27 +522,24 @@ const DashboardPayouts = () => {
                     }`}
                   >
                     <TableCell className="font-medium text-foreground py-5">
-                      {payout.date}
+                      {new Date(payout.requestedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="font-bold text-foreground py-5">
-                      {payout.amount}
+                      {formatCurrency(payout.amount, payout.currency)}
                     </TableCell>
-                    <TableCell className="py-5">
-                      <div className="flex items-center gap-2 text-foreground">
-                        {getMethodIcon(payout.method)}
-                        {payout.method}
-                      </div>
+                    <TableCell className="text-foreground py-5">
+                      {payout.transferAmount !== null
+                        ? formatCurrency(payout.transferAmount, payout.currency)
+                        : "—"}
                     </TableCell>
                     <TableCell className="py-5">
                       <span
                         className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusStyle(payout.status)}`}
+                        title={payout.rejectionReason ?? undefined}
                       >
                         {getStatusIcon(payout.status)}
-                        {payout.status}
+                        {statusLabel[payout.status]}
                       </span>
-                    </TableCell>
-                    <TableCell className="text-right py-5">
-                      {/* View button — rendered when payout data is live */}
                     </TableCell>
                   </TableRow>
                 ))
@@ -325,6 +548,12 @@ const DashboardPayouts = () => {
           </Table>
         </div>
       </ScrollReveal>
+
+      <PayoutRequestModal
+        account={selectedAccount}
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+      />
     </div>
   );
 };
