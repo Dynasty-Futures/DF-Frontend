@@ -73,7 +73,7 @@ const About = () => {
                 <span className="text-gradient-animated">Clarity, Discipline, and Opportunity</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Dynasty Futures LLC was built to offer something the prop firm
+                Dynasty Futures was built to offer something the prop firm
                 space was missing: fair pricing, higher max loss flexibility,
                 honest payout transparency, and a firm focused on long-term
                 trust.
@@ -267,7 +267,7 @@ const About = () => {
               </div>
               <div className="mt-6 pt-6 border-t border-border/30 flex items-center gap-2 text-xs text-muted-foreground">
                 <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Dynasty Futures LLC, registered in Wyoming</span>
+                <span>Dynasty Futures, registered in Wyoming</span>
               </div>
             </div>
           </ScrollReveal>
@@ -474,6 +474,14 @@ const About = () => {
                       trust the company wants to be known for.
                     </p>
                   </div>
+                  <blockquote className="border-l-2 border-primary pl-6 mb-6">
+                    <p className="text-foreground italic leading-relaxed">
+                      "Markets reward discipline. Businesses reward patience. Long-term success comes from mastering both."
+                    </p>
+                    <footer className="mt-3 text-sm text-muted-foreground font-medium">
+                      — Cliff Adams
+                    </footer>
+                  </blockquote>
                   <a
                     href="https://www.linkedin.com/in/cliff-adams-9b7b1180"
                     target="_blank"
