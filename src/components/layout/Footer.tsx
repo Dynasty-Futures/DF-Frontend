@@ -101,7 +101,7 @@ const Footer = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/dynasty-futures-1639483b8"
+                  href="https://www.linkedin.com/company/dynasty-futures/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
