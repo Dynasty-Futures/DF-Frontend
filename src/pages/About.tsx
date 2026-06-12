@@ -166,7 +166,7 @@ const FounderCard = ({
 
 const founders: FounderCardProps[] = [
   {
-    image: "/founders/brock-adams.jpg",
+    image: "/founders/Brock website photo.png",
     name: "Brock Adams",
     title: "Chief Executive Officer",
     badge: "Founder",
@@ -200,7 +200,7 @@ const founders: FounderCardProps[] = [
     linkedin: "https://www.linkedin.com/in/brock-adams2002",
   },
   {
-    image: "/founders/zachary-perez.jpg",
+    image: "/founders/Zachary website photo.png",
     name: "Zachary Perez",
     title: "Chief Strategy Officer",
     badge: "Co-Founder",
@@ -228,7 +228,7 @@ const founders: FounderCardProps[] = [
     linkedin: "https://www.linkedin.com/in/zachary-perez-1771zp",
   },
   {
-    image: "/founders/cliff-adams.jpg",
+    image: "/founders/cliff website photo.png",
     name: "Cliff Adams",
     title: "Chief Financial Officer",
     badge: "Co-Founder",
