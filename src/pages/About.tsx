@@ -77,10 +77,10 @@ const FounderCard = ({
 }: FounderCardProps) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <ScrollReveal delay={delay}>
+    <ScrollReveal delay={delay} className="h-full">
       <div className="bg-gradient-card rounded-2xl border border-border/50 flex flex-col h-full overflow-hidden">
         {/* Headshot */}
-        <div className="relative w-full aspect-[3/4] overflow-hidden">
+        <div className="relative w-full h-80 overflow-hidden">
           <img
             src={image}
             alt={name}
@@ -170,7 +170,7 @@ const founders: FounderCardProps[] = [
     name: "Brock Adams",
     title: "Chief Executive Officer",
     badge: "Founder",
-    location: "Texas",
+    location: "Utah",
     preview:
       "Brock focuses on long-term company building, trader experience, and creating a prop firm designed around transparency and sustainability.",
     fullBio: (
@@ -270,7 +270,7 @@ const FoundersSection = () => (
       </p>
     </ScrollReveal>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
       {founders.map((f, i) => (
         <FounderCard key={f.name} {...f} delay={i * 100} />
       ))}
