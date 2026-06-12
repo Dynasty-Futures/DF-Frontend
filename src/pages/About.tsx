@@ -12,7 +12,10 @@ import {
   Clock,
   MapPin,
   Building2,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
+import { useState } from "react";
 
 const differentiators = [
   {
@@ -40,6 +43,240 @@ const differentiators = [
       "We're not here for a quick run. The structure, rules, and systems we've built are designed to hold up over time.",
   },
 ];
+
+const linkedInIcon = (
+  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  </svg>
+);
+
+interface FounderCardProps {
+  image: string;
+  name: string;
+  title: string;
+  badge: string;
+  location: string;
+  preview: string;
+  fullBio: React.ReactNode;
+  quote: string;
+  linkedin: string;
+  delay?: number;
+}
+
+const FounderCard = ({
+  image,
+  name,
+  title,
+  badge,
+  location,
+  preview,
+  fullBio,
+  quote,
+  linkedin,
+  delay = 0,
+}: FounderCardProps) => {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <ScrollReveal delay={delay}>
+      <div className="bg-gradient-card rounded-2xl border border-border/50 flex flex-col h-full overflow-hidden">
+        {/* Headshot */}
+        <div className="relative w-full aspect-[3/4] overflow-hidden">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover object-top"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+        </div>
+
+        {/* Card body */}
+        <div className="flex flex-col flex-1 p-6">
+          {/* Identity */}
+          <div className="mb-4">
+            <div className="flex items-start justify-between gap-2 mb-1">
+              <h3 className="font-display text-xl font-bold text-foreground leading-tight">
+                {name}
+              </h3>
+              <span className="shrink-0 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20 mt-0.5">
+                {badge}
+              </span>
+            </div>
+            <p className="text-primary text-sm font-semibold mb-2">{title}</p>
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <MapPin className="w-3 h-3 shrink-0" />
+              <span>{location}</span>
+            </div>
+          </div>
+
+          {/* Bio preview */}
+          <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
+            {preview}
+          </p>
+
+          {/* Expand toggle */}
+          <button
+            onClick={() => setExpanded((v) => !v)}
+            className="inline-flex items-center gap-1.5 text-sm text-primary font-medium hover:text-primary/80 transition-colors mb-4 self-start"
+          >
+            {expanded ? (
+              <>
+                <ChevronUp className="w-4 h-4" />
+                Collapse Bio
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" />
+                Read Full Bio
+              </>
+            )}
+          </button>
+
+          {/* Expandable content */}
+          <div
+            className={`overflow-hidden transition-all duration-500 ease-in-out ${
+              expanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+            }`}
+          >
+            <div className="space-y-3 text-sm text-muted-foreground leading-relaxed mb-5">
+              {fullBio}
+            </div>
+            <blockquote className="border-l-2 border-primary pl-4 mb-5">
+              <p className="text-foreground italic text-sm leading-relaxed">
+                "{quote}"
+              </p>
+              <footer className="mt-2 text-xs text-muted-foreground font-medium">
+                — {name}
+              </footer>
+            </blockquote>
+            <a
+              href={linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              {linkedInIcon}
+              <span>LinkedIn Profile</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </ScrollReveal>
+  );
+};
+
+const founders: FounderCardProps[] = [
+  {
+    image: "/founders/brock-adams.jpg",
+    name: "Brock Adams",
+    title: "Chief Executive Officer",
+    badge: "Founder",
+    location: "Texas",
+    preview:
+      "Brock focuses on long-term company building, trader experience, and creating a prop firm designed around transparency and sustainability.",
+    fullBio: (
+      <>
+        <p>
+          Born and raised in Texas, Brock has always been drawn to
+          performance-driven environments, whether in sports or the financial
+          markets. That interest evolved early into a focus on futures trading,
+          where discipline, risk management, and consistency ultimately
+          determine who lasts.
+        </p>
+        <p>
+          As Founder and CEO of Dynasty Futures, Brock leads the strategic
+          direction of the company across platform development, trader
+          experience, and risk management — building infrastructure and systems
+          designed to hold up over time.
+        </p>
+        <p>
+          He has built meaningful experience in the private equity space, an
+          area that continues to influence how he approaches performance
+          psychology and long-term sustainability in trading.
+        </p>
+      </>
+    ),
+    quote:
+      "I got tired of seeing traders deal with firms that made things harder than they needed to be. Dynasty is what I thought the space should already have.",
+    linkedin: "https://www.linkedin.com/in/brock-adams2002",
+  },
+  {
+    image: "/founders/zachary-perez.jpg",
+    name: "Zachary Perez",
+    title: "Chief Strategy Officer",
+    badge: "Co-Founder",
+    location: "Georgia",
+    preview:
+      "Zachary drives Dynasty's strategic direction with a focus on building something that lasts — systems designed to endure across market conditions.",
+    fullBio: (
+      <>
+        <p>
+          Zachary grew up in Georgia and earned his BBA from the University of
+          Utah, where he became deeply interested in how capital markets
+          function — price discovery, how risk gets mispriced, and what
+          separates traders with real staying power.
+        </p>
+        <p>
+          At Dynasty Futures, Zachary works on the strategic side with one
+          priority: building something that lasts. He pushes for decisions that
+          hold up across market conditions, systems that keep traders
+          accountable, and a culture where risk is not just managed on paper.
+        </p>
+      </>
+    ),
+    quote:
+      "While many firms in this space optimize for the highlight reel, Dynasty is building for year ten.",
+    linkedin: "https://www.linkedin.com/in/zachary-perez-1771zp",
+  },
+  {
+    image: "/founders/cliff-adams.jpg",
+    name: "Cliff Adams",
+    title: "Chief Financial Officer",
+    badge: "Co-Founder",
+    location: "Texas",
+    preview:
+      "Cliff brings over four decades of experience in M&A, investment banking, and company-building to guide Dynasty's financial discipline and payout reputation.",
+    fullBio: (
+      <>
+        <p>
+          Cliff brings more than four decades of experience in mergers and
+          acquisitions, investment banking, and company-building. His
+          background in leading oil and gas firms, combined with a long-standing
+          personal interest in futures trading, gives Dynasty strong financial
+          oversight as the company grows.
+        </p>
+        <p>
+          He helps guide Dynasty's financial discipline with a focus on
+          building the kind of payout reputation and long-term trust the
+          company wants to be known for.
+        </p>
+      </>
+    ),
+    quote:
+      "Markets reward discipline. Businesses reward patience. Long-term success comes from mastering both.",
+    linkedin: "https://www.linkedin.com/in/cliff-adams-9b7b1180",
+  },
+];
+
+const FoundersSection = () => (
+  <div className="mb-20 md:mb-28">
+    <ScrollReveal>
+      <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3 text-center">
+        Founders &{" "}
+        <span className="text-gradient-animated">Leadership</span>
+      </h2>
+      <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
+        Dynasty Futures is led by people with real backgrounds in finance,
+        strategy, and business — not a faceless operation.
+      </p>
+    </ScrollReveal>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto items-start">
+      {founders.map((f, i) => (
+        <FounderCard key={f.name} {...f} delay={i * 100} />
+      ))}
+    </div>
+  </div>
+);
 
 const About = () => {
   return (
@@ -273,230 +510,7 @@ const About = () => {
           </ScrollReveal>
 
           {/* Meet the Founders & Leadership */}
-          <div className="mb-20 md:mb-28">
-            <ScrollReveal>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3 text-center">
-                Founders &{" "}
-                <span className="text-gradient-animated">Leadership</span>
-              </h2>
-              <p className="text-center text-muted-foreground mb-12 max-w-xl mx-auto">
-                Dynasty Futures is led by people with real backgrounds in
-                finance, strategy, and business, not a faceless operation.
-              </p>
-            </ScrollReveal>
-
-            {/* Brock Adams — featured card */}
-            <ScrollReveal delay={0}>
-              <div className="bg-gradient-card rounded-2xl border border-border/50 p-8 md:p-10 max-w-4xl mx-auto mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                  <div>
-                    <h3 className="font-display text-xl font-bold text-foreground mb-1">
-                      Brock Adams
-                    </h3>
-                    <p className="text-primary text-sm font-medium">
-                      Chief Executive Officer
-                    </p>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3" />
-                        <span>Texas</span>
-                      </div>
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
-                        Founder
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
-                  <p>
-                    Born and raised in Texas, I've always been drawn to
-                    performance-driven environments, whether in sports or the
-                    financial markets. That interest evolved early into a focus
-                    on futures trading, where discipline, risk management, and
-                    consistency ultimately determine who lasts.
-                  </p>
-                  <p>
-                    I'm the Founder and CEO of Dynasty Futures, a proprietary
-                    trading firm built to create a more sustainable and
-                    transparent path for futures traders. The firm is centered
-                    around one core belief: longevity matters more than
-                    short-term success. In an industry often driven by hype and
-                    rapid turnover, we are building infrastructure, systems, and
-                    standards designed to hold up over time.
-                  </p>
-                  <p>
-                    At Dynasty, I lead the strategic direction of the company
-                    across platform development, trader experience, and risk
-                    management. This includes building our proprietary
-                    dashboard, integrating real-time market data, and
-                    structuring payout systems that are competitive while still
-                    protecting the long-term health of the firm.
-                  </p>
-                  <p>
-                    I've also built meaningful experience within the private
-                    equity space, an area that continues to influence how I
-                    approach performance, psychology, and long-term
-                    sustainability in trading.
-                  </p>
-                  <p>
-                    I'm particularly interested in the intersection of trading,
-                    performance psychology, and risk discipline. The same
-                    principles that separate elite performers from the rest,
-                    resilience, consistency, and the ability to execute under
-                    pressure, are the same ones that define successful traders.
-                  </p>
-                  <p>
-                    Dynasty Futures is being built with a long-term vision in
-                    mind. Not for quick wins, but to create a firm that traders
-                    can rely on for years to come.
-                  </p>
-                </div>
-                <blockquote className="border-l-2 border-primary pl-6">
-                  <p className="text-foreground italic leading-relaxed">
-                    "I got tired of seeing traders deal with firms that made
-                    things harder than they needed to be. Dynasty is what I
-                    thought the space should already have."
-                  </p>
-                  <footer className="mt-3 text-sm text-muted-foreground font-medium">
-                    — Brock Adams
-                  </footer>
-                </blockquote>
-                <a
-                  href="https://www.linkedin.com/in/brock-adams2002"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 mt-6 text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                  </svg>
-                  <span>Connect with me on LinkedIn</span>
-                </a>
-              </div>
-            </ScrollReveal>
-
-            {/* Zachary & Cliff — side by side */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <ScrollReveal delay={100}>
-                <div className="bg-gradient-card rounded-2xl border border-border/50 p-8 h-full">
-                  <div className="mb-6">
-                    <h3 className="font-display text-xl font-bold text-foreground mb-1">
-                      Zachary Perez
-                    </h3>
-                    <p className="text-primary text-sm font-medium">
-                      Chief Strategy Officer
-                    </p>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3" />
-                        <span>Georgia</span>
-                      </div>
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
-                        Co-Founder
-                      </span>
-                    </div>
-                  </div>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
-                    <p>
-                      Zachary grew up in Georgia and earned his BBA from the
-                      University of Utah, where he became deeply interested in
-                      how capital markets function — price discovery, how risk
-                      gets mispriced, and what separates traders with real
-                      staying power from those who do not. Futures became his
-                      focus because of the leverage, the structure, and what the
-                      market demands from you when you are wrong.
-                    </p>
-                    <p>
-                      At Dynasty Futures, Zachary works on the strategic side
-                      with one priority: building something that lasts. The prop
-                      firm space is full of companies that grow quickly and
-                      disappear just as fast, and that is exactly what Dynasty
-                      is working to avoid. He pushes for decisions that hold up
-                      across market conditions, systems that keep traders
-                      accountable, and a culture where risk is not just managed
-                      on paper.
-                    </p>
-                  </div>
-                  <blockquote className="border-l-2 border-primary pl-6">
-                    <p className="text-foreground italic leading-relaxed">
-                      "While many firms in this space optimize for the highlight
-                      reel, Dynasty is building for year ten."
-                    </p>
-                    <footer className="mt-3 text-sm text-muted-foreground font-medium">
-                      — Zachary Perez
-                    </footer>
-                  </blockquote>
-                  <a
-                    href="https://www.linkedin.com/in/zachary-perez-1771zp"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-6 text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                    <span>Connect with me on LinkedIn</span>
-                  </a>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={200}>
-                <div className="bg-gradient-card rounded-2xl border border-border/50 p-8 h-full">
-                  <div className="mb-6">
-                    <h3 className="font-display text-xl font-bold text-foreground mb-1">
-                      Cliff Adams
-                    </h3>
-                    <p className="text-primary text-sm font-medium">
-                      Chief Financial Officer
-                    </p>
-                    <div className="flex items-center gap-3 mt-2">
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3" />
-                        <span>Texas</span>
-                      </div>
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full border border-primary/20">
-                        Co-Founder
-                      </span>
-                    </div>
-                  </div>
-                  <div className="space-y-4 text-muted-foreground leading-relaxed mb-8">
-                    <p>
-                      Cliff brings more than four decades of experience in
-                      mergers and acquisitions, investment banking, and
-                      company-building. His background in leading oil and gas
-                      firms, combined with a long-standing personal interest in
-                      futures trading, gives Dynasty strong financial oversight
-                      as the company grows.
-                    </p>
-                    <p>
-                      He helps guide Dynasty's financial discipline with a focus
-                      on building the kind of payout reputation and long-term
-                      trust the company wants to be known for.
-                    </p>
-                  </div>
-                  <blockquote className="border-l-2 border-primary pl-6 mb-6">
-                    <p className="text-foreground italic leading-relaxed">
-                      "Markets reward discipline. Businesses reward patience. Long-term success comes from mastering both."
-                    </p>
-                    <footer className="mt-3 text-sm text-muted-foreground font-medium">
-                      — Cliff Adams
-                    </footer>
-                  </blockquote>
-                  <a
-                    href="https://www.linkedin.com/in/cliff-adams-9b7b1180"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                    <span>Connect with me on LinkedIn</span>
-                  </a>
-                </div>
-              </ScrollReveal>
-            </div>
-          </div>
+          <FoundersSection />
 
           {/* Technical / Software */}
           <div className="mb-20 md:mb-28">
