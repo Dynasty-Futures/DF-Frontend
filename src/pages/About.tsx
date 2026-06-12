@@ -204,7 +204,7 @@ const founders: FounderCardProps[] = [
     name: "Zachary Perez",
     title: "Chief Strategy Officer",
     badge: "Co-Founder",
-    location: "Georgia",
+    location: "California",
     preview:
       "Zachary drives Dynasty's strategic direction with a focus on building something that lasts — systems designed to endure across market conditions.",
     fullBio: (
