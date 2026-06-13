@@ -15,10 +15,30 @@ const DiscordCTA = () => {
                 Join the <span className="text-gradient-animated">Discord</span>
               </h2>
 
-              <p className="text-lg text-muted-foreground mb-8 max-w-md">
-                We're giving away 5 Standard 50K accounts at launch. The first
-                100 members to join our Discord are automatically entered to win.
+              <p className="text-lg text-muted-foreground mb-4 max-w-md">
+                Join the Dynasty Futures Discord and get involved before launch.
               </p>
+
+              <p className="text-base text-muted-foreground mb-2 max-w-md">
+                We currently have <span className="text-foreground font-semibold">3 active pre-launch giveaways</span> with{" "}
+                <span className="text-foreground font-semibold">15 total Standard Accounts</span> being awarded:
+              </p>
+
+              <ul className="text-base text-muted-foreground mb-4 max-w-md space-y-1 list-none">
+                <li>• 5 × $25K Standard Accounts</li>
+                <li>• 5 × $50K Standard Accounts</li>
+                <li>• 5 × $100K Standard Accounts</li>
+              </ul>
+
+              <p className="text-sm text-muted-foreground mb-4 max-w-md">
+                Winners will be announced on launch day.
+              </p>
+
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/40 bg-gold/10 mb-6">
+                <span className="text-sm font-semibold text-gold">
+                  15 Winners&nbsp;•&nbsp;15 Accounts&nbsp;•&nbsp;Launch Day Announcement
+                </span>
+              </div>
 
               <Button
                 size="lg"
