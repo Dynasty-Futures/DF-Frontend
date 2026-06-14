@@ -908,8 +908,18 @@ const Legal = () => {
                     </p>
 
                     <p>
-                      The following countries and regions are not eligible to
-                      register for or access Dynasty Futures services:
+                      The following three-tier structure outlines jurisdiction
+                      eligibility for Dynasty Futures services.
+                    </p>
+
+                    {/* ── TIER 1: Fully Restricted ── */}
+                    <h3 className="text-foreground font-display text-lg font-bold mt-8 mb-1 not-prose">
+                      Tier 1 — Fully Restricted Jurisdictions
+                    </h3>
+                    <p className="text-sm mb-4">
+                      Residents of the following jurisdictions are not eligible
+                      to register for or access any Dynasty Futures services,
+                      including evaluation accounts.
                     </p>
 
                     {/* A–C */}
@@ -928,16 +938,12 @@ const Legal = () => {
                         "Bosnia & Herzegovina",
                         "Botswana",
                         "Bulgaria",
-                        "Burkina Faso",
                         "Burundi",
                         "Cambodia",
-                        "Cameroon",
                         "Central African Republic",
-                        "China",
                         "Congo (DRC)",
                         "Côte d'Ivoire",
                         "Crimea Region",
-                        "Croatia",
                         "Cuba",
                       ].map((country) => (
                         <div
@@ -956,24 +962,19 @@ const Legal = () => {
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
                       {[
-                        "Donetsk Region",
                         "Ecuador",
                         "Ethiopia",
                         "Ghana",
                         "Haiti",
-                        "Hong Kong",
                         "Indonesia",
                         "Iran",
                         "Iraq",
                         "Jamaica",
-                        "Jordan",
-                        "Kenya",
                         "Kosovo",
                         "Laos",
                         "Lebanon",
                         "Liberia",
                         "Libya",
-                        "Luhansk Region",
                       ].map((country) => (
                         <div
                           key={country}
@@ -994,27 +995,17 @@ const Legal = () => {
                         "Malaysia",
                         "Mali",
                         "Mauritius",
-                        "Mexico",
                         "Mongolia",
                         "Montenegro",
                         "Morocco",
-                        "Mozambique",
                         "Myanmar (Burma)",
-                        "Namibia",
                         "Nicaragua",
-                        "Nigeria",
                         "North Korea",
-                        "North Macedonia",
                         "Pakistan",
                         "Panama",
                         "Papua New Guinea",
-                        "Philippines",
-                        "Qatar",
-                        "Romania",
                         "Russia",
-                        "Serbia",
                         "Somalia",
-                        "South Africa",
                         "South Sudan",
                         "Sri Lanka",
                         "Sudan",
@@ -1036,13 +1027,11 @@ const Legal = () => {
                     </h3>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
                       {[
-                        "Tanzania",
                         "Trinidad and Tobago",
                         "Tunisia",
                         "Turkey",
                         "Uganda",
                         "Ukraine",
-                        "United Arab Emirates",
                         "Venezuela",
                         "Vietnam",
                         "Yemen",
@@ -1053,6 +1042,94 @@ const Legal = () => {
                           className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-destructive/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* ── TIER 2: Sim Funded Only ── */}
+                    <h3 className="text-foreground font-display text-lg font-bold mt-10 mb-1 not-prose">
+                      Tier 2 — Evaluation Eligible / Sim Funded Only / Not Live Eligible
+                    </h3>
+                    <p className="text-sm mb-4">
+                      Residents of the following jurisdictions may participate
+                      in evaluation accounts and simulated funded accounts where
+                      permitted, but are not currently eligible for live-funded
+                      trading accounts.
+                    </p>
+
+                    {/* A–F */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      A – F
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Antarctica",
+                        "Burkina Faso",
+                        "Cameroon",
+                        "Canada (Ontario Residents Only)",
+                        "China",
+                        "Croatia",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* G–N */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      G – N
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Gibraltar",
+                        "Hong Kong",
+                        "Jordan",
+                        "Kenya",
+                        "Monaco",
+                        "Mozambique",
+                        "Namibia",
+                        "Nigeria",
+                        "North Macedonia",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/70 flex-shrink-0" />
+                          {country}
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* P–Z */}
+                    <h3 className="text-foreground font-display text-base font-semibold mt-6 mb-2 not-prose tracking-wide uppercase text-xs">
+                      P – Z
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2 not-prose">
+                      {[
+                        "Philippines",
+                        "Qatar",
+                        "Romania",
+                        "Senegal",
+                        "Serbia",
+                        "Slovenia",
+                        "South Africa",
+                        "South Korea",
+                        "Tanzania",
+                        "Turkmenistan",
+                        "United Arab Emirates",
+                      ].map((country) => (
+                        <div
+                          key={country}
+                          className="flex items-center gap-2 py-1.5 border-b border-border/30 text-sm text-muted-foreground"
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/70 flex-shrink-0" />
                           {country}
                         </div>
                       ))}
