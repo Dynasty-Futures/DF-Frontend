@@ -9,14 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 const VALID_TABS = ["risk", "terms", "privacy", "refund", "restricted", "rise-payouts", "kyc-aml", "chargebacks", "trading-rules"];
 
 const RULE_EXPLAINERS = [
-  { id: "daily-loss", label: "Daily Loss Limit Explained" },
+  { id: "daily-loss-limit", label: "Daily Loss Limit Explained" },
   { id: "drawdown", label: "Drawdown Rules Explained" },
   { id: "news-trading", label: "News Trading Policy" },
   { id: "consistency", label: "Consistency Rule Explained" },
   { id: "position-size", label: "Position Size Limits" },
   { id: "profit-targets", label: "Profit Targets Explained" },
   { id: "payouts-split", label: "Payouts & Profit Split" },
-  { id: "violations", label: "Account Violations & Resets" },
+  { id: "violations-resets", label: "Account Violations & Resets" },
   { id: "copy-trading", label: "Copy Trading & Automated Systems Policy" },
 ];
 
@@ -513,12 +513,16 @@ const Legal = () => {
                         Payouts may be delayed, held, or denied due to compliance, fraud, trading rule violations, incomplete verification, payout provider requirements, or any other reason at Dynasty Futures' discretion.
                       </p>
                       <p>
-                        The following payout structure applies to funded accounts:
+                        Funded accounts operate on a 90/10 profit split unless otherwise stated by Dynasty Futures. Traders keep 90% of approved profits, while Dynasty Futures retains 10%.
+                      </p>
+                      <p>
+                        After five approved payouts, accounts may be internally reviewed for potential live trading consideration based on consistency, risk management, compliance history, operational availability, platform/broker support, and jurisdictional eligibility.
+                      </p>
+                      <p>
+                        Live trading placement is not guaranteed and remains subject to Dynasty Futures approval, compliance review, operational availability, platform/broker requirements, and jurisdictional eligibility.
                       </p>
                       <ul className="list-none space-y-1.5 pl-2">
                         {[
-                          "90/10 profit split for the first five approved payouts (90% to trader)",
-                          "80/20 profit split after five approved payouts (80% to trader)",
                           "Up to 4 payout requests per calendar month",
                           "Minimum 5 qualifying trading days between payout requests",
                           "50% withdrawal limit per payout request",
@@ -2118,7 +2122,7 @@ const Legal = () => {
                             { ok: false, text: "Trading freeze while a payout request is pending approval" },
                             { ok: true, text: "50% withdrawal limit per payout request" },
                             { ok: true, text: "Maximum 3 accounts across all plans" },
-                            { ok: true, text: "90/10 profit split for first 5 payouts; 80/20 thereafter" },
+                            { ok: true, text: "90/10 profit split — traders keep 90% of approved profits" },
                           ].map(({ ok, text }) => (
                             <div key={text} className="flex items-start gap-2 text-sm text-muted-foreground">
                               <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${ok ? "bg-primary/60" : "bg-destructive/60"}`} />
