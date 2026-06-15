@@ -11,6 +11,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { getPerfFlags } from "@/lib/perfFlags";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import CrispChat from "@/components/integrations/CrispChat";
 
 // Keep home route eagerly loaded; lazy-load the rest.
 import Index from "./pages/Index";
@@ -134,6 +135,7 @@ const App = () => {
             <TooltipProvider>
               <Toaster />
               <Sonner />
+              <CrispChat />
               <BrowserRouter>
                 <ScrollToTop />
                 <AppRoutes />

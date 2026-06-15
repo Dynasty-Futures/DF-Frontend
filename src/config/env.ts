@@ -35,6 +35,13 @@ export const env = {
   /** Google OAuth Client ID (required for Google SSO) */
   googleClientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || '',
 
+  /**
+   * Crisp live-chat Website ID (a UUID from Crisp → Settings → Website
+   * Settings → Setup). When empty, the chat widget is disabled entirely.
+   * This value is public by design (baked into the client bundle).
+   */
+  crispWebsiteId: import.meta.env.VITE_CRISP_WEBSITE_ID || '',
+
   /** True when running `npm run build` (NODE_ENV=production) */
   isProduction: import.meta.env.PROD,
 
