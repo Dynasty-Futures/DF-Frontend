@@ -13,15 +13,14 @@ const quickLinks = [
   { name: "Legal / Terms of Use", path: "/legal?tab=terms" },
   { name: "Refund & Cancellation Policy", path: "/legal?tab=refund" },
   { name: "Restricted Countries & Regions", path: "/legal?tab=restricted" },
-  { name: "Payment Disputes / Chargeback Policy", path: "/legal?tab=chargebacks" },
+  { name: "Payment Disputes", path: "/legal?tab=chargebacks" },
   { name: "Risk Disclosure", path: "/legal?tab=risk" },
+  { name: "Trading Rules", path: "/legal?tab=trading-rules" },
+  { name: "KYC & AML Policy", path: "/legal?tab=kyc-aml" },
+  { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
 ];
 
 const dynastyArticleLinks = [
-  { name: "Essential Trading Rules Overview", path: "/legal?tab=trading-rules" },
-  { name: "KYC & AML Policy", path: "/legal?tab=kyc-aml" },
-  { name: "Rise Payout Guide", path: "/legal?tab=rise-payouts" },
-  { name: "Daily Loss Limit Explained", path: "/legal?tab=trading-rules&rule=daily-loss-limit" },
   { name: "Drawdown Rules Explained", path: "/legal?tab=trading-rules&rule=drawdown" },
   { name: "News Trading Policy", path: "/legal?tab=trading-rules&rule=news-trading" },
   { name: "Consistency Rule Explained", path: "/legal?tab=trading-rules&rule=consistency" },
