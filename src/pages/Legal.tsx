@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
 import PageMeta from "@/components/seo/PageMeta";
@@ -31,6 +31,16 @@ const Legal = () => {
     ruleParam && RULE_EXPLAINERS.some(r => r.id === ruleParam) ? ruleParam : null
   );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    const rule = searchParams.get("rule");
+    if (tab && VALID_TABS.includes(tab)) {
+      setActiveTab(tab);
+    }
+    setActiveRule(rule && RULE_EXPLAINERS.some(r => r.id === rule) ? rule : null);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [searchParams]);
 
   const handleSetActiveRule = (id: string | null) => {
     setActiveRule(id);
