@@ -121,6 +121,53 @@ const buildSeries = (
 };
 
 // ---------------------------------------------------------------------------
+// Fallback equity/daily-P&L series derived from closed trades, used when the
+// backend has no daily snapshots (YPF exposes no daily-snapshot time series, so
+// snapshots are usually empty). Same dense oldest→newest, last == today layout
+// as buildSeries so the calendar + equity curve read it unchanged.
+// ---------------------------------------------------------------------------
+
+const buildSeriesFromTrades = (
+  trades: Trade[],
+  startingBalance: number,
+  currentBalance: number,
+): { equityHistory: number[]; dailyPnL: number[] } => {
+  const closed = trades
+    .filter((t) => t.exitTime && t.realizedPnl !== null)
+    .map((t) => ({
+      day: new Date(t.exitTime as string).toISOString().slice(0, 10),
+      pnl: num(t.realizedPnl),
+    }));
+
+  if (!closed.length) {
+    return { equityHistory: [currentBalance || startingBalance], dailyPnL: [0] };
+  }
+
+  const byDay = new Map<string, number>();
+  for (const c of closed) byDay.set(c.day, (byDay.get(c.day) ?? 0) + c.pnl);
+
+  const firstKey = closed.reduce((min, c) => (c.day < min ? c.day : min), closed[0]!.day);
+  const first = new Date(`${firstKey}T00:00:00`);
+  const today = new Date();
+  const totalDays = differenceInCalendarDays(today, first) + 1;
+
+  const equityHistory: number[] = [];
+  const dailyPnL: number[] = [];
+  let runningBalance = startingBalance;
+
+  for (let i = 0; i < totalDays; i++) {
+    const day = new Date(first);
+    day.setDate(first.getDate() + i);
+    const dayPnl = byDay.get(day.toISOString().slice(0, 10)) ?? 0;
+    runningBalance += dayPnl;
+    equityHistory.push(runningBalance);
+    dailyPnL.push(dayPnl);
+  }
+
+  return { equityHistory, dailyPnL };
+};
+
+// ---------------------------------------------------------------------------
 // Trades → win rate, avg win, avg loss, gross profit/loss, session perf,
 // day-of-week perf, streaks. All derived; if no trades, fields zero out.
 // ---------------------------------------------------------------------------
@@ -257,7 +304,11 @@ export const adaptAccountView = (
     startingBalance,
   );
 
-  const series = buildSeries(snapshots, startingBalance, currentBalance);
+  // Prefer real daily snapshots; fall back to a trade-derived series when the
+  // backend has none (the common case, since YPF has no snapshot time series).
+  const series = snapshots.length
+    ? buildSeries(snapshots, startingBalance, currentBalance)
+    : buildSeriesFromTrades(trades, startingBalance, currentBalance);
   const derived = computeMetrics(trades);
 
   // currentDrawdown is a percentage in the DB (Decimal(5,2)); convert to money

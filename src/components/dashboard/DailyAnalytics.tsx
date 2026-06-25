@@ -17,8 +17,9 @@ interface TradeHighlight {
 
 const DailyAnalytics = ({ accountId, selectedDate = new Date() }: DailyAnalyticsProps) => {
   const { data: account } = useAccountView(accountId);
-  // Shares the trades query with useAccountView (same React Query key — no extra fetch).
-  const tradesQ = useAccountTrades(accountId);
+  // Shares the trades query with useAccountView (same React Query key — no extra
+  // fetch). Must match useAccountView's `{ live: true }` so they stay one query.
+  const tradesQ = useAccountTrades(accountId, { live: true });
   const trades = useMemo(() => tradesQ.data?.data ?? [], [tradesQ.data]);
   const dailyPnL = useMemo(() => account?.dailyPnL ?? [], [account]);
 
