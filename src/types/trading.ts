@@ -56,6 +56,21 @@ export interface LiveSnapshot {
   margin?: number;
   startingBalance: number;
   currency: string;
+  // Phase progression
+  programName?: string;
+  nextProgramName?: string;
+  // Day counters (payout / upgrade eligibility)
+  tradingDays?: number;
+  profitTradingDays?: number;
+  withdrawProfitTradingDays?: number;
+  activeDays?: number;
+  // Trader's profit-split % on this account
+  profitSplit?: number;
+  // Drawdown metrics
+  drawDown?: number;
+  maxDrawDown?: number;
+  // Platform trading credentials (trader's own login/password)
+  loginCredentials?: { login: string; password: string };
   createdAt?: string;
   updatedAt?: string;
 }

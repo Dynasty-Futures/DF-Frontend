@@ -263,6 +263,13 @@ export const adaptAccountView = (
   // currentDrawdown is a percentage in the DB (Decimal(5,2)); convert to money
   const drawdownUsedMoney = (num(account.currentDrawdown) / 100) * startingBalance;
 
+  // Live platform snapshot (YPF) — present on detail views. Prefer its
+  // authoritative day counts / program names over values derived from trades.
+  const live = 'live' in account ? account.live : null;
+  if (live?.tradingDays !== undefined) {
+    derived.metrics.tradingDays = live.tradingDays;
+  }
+
   return {
     id: account.id,
     name: account.accountType.displayName || account.accountType.name,
@@ -284,6 +291,12 @@ export const adaptAccountView = (
     streaks: derived.streaks,
     equityHistory: series.equityHistory,
     dailyPnL: series.dailyPnL,
+    ...(live?.nextProgramName ? { nextProgramName: live.nextProgramName } : {}),
+    ...(live?.profitSplit !== undefined ? { profitSplit: live.profitSplit } : {}),
+    ...(live?.profitTradingDays !== undefined
+      ? { profitTradingDays: live.profitTradingDays }
+      : {}),
+    ...(live?.loginCredentials ? { credentials: live.loginCredentials } : {}),
   };
 };
 

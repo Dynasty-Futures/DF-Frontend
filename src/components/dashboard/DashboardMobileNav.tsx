@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, LayoutDashboard, Wallet, LineChart, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
+import { Menu, LayoutDashboard, Wallet, LineChart, CalendarClock, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -11,6 +11,7 @@ const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Wallet },
   { name: 'Trade', path: '/dashboard/trade', icon: LineChart },
+  { name: 'Economic Calendar', path: '/dashboard/economic-calendar', icon: CalendarClock },
   { name: 'Billing', path: '/dashboard/billing', icon: CreditCard },
   { name: 'Payouts', path: '/dashboard/payouts', icon: Banknote },
   { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },

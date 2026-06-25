@@ -17,11 +17,15 @@ import {
 } from "@/components/ui/accordion";
 import { PlanImage } from "@/components/icons/PlanIcons";
 import { useAuth } from "@/hooks/useAuth";
-import { checkoutApi } from "@/services/checkout";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { ApiError } from "@/types/api";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+
+// Purchasing is handled by the YPF-hosted WooCommerce store (Worthy gateway);
+// YPF provisions the trading account on a completed purchase.
+// TODO: deep-link to the specific product (per plan/size) + pass ypf-ref/email
+// for bound attribution once YPF confirms the product map + ref endpoint.
+const CHECKOUT_STORE_URL = "https://checkout.dynastyfuturesdyn.com/";
 
 const standardPricing = [
   {
@@ -298,7 +302,7 @@ const Pricing = () => {
     setSelectedSize("$50,000");
   };
 
-  const handleSelect = async (planType: string, accountSize: number) => {
+  const handleSelect = (planType: string, accountSize: number) => {
     const key = `${planType}-${accountSize}`;
 
     if (!isAuthenticated) {
@@ -306,18 +310,9 @@ const Pricing = () => {
       return;
     }
 
+    // Hand off to the WooCommerce store to pick + pay; YPF provisions the account.
     setLoadingKey(key);
-    try {
-      const res = await checkoutApi.createSession(planType, accountSize);
-      window.location.href = res.data.checkoutUrl;
-    } catch (error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-      } else {
-        toast.error("Unable to start checkout. Please try again.");
-      }
-      setLoadingKey(null);
-    }
+    window.location.href = CHECKOUT_STORE_URL;
   };
 
   const currentPlan = planConfig[selectedPlan];
