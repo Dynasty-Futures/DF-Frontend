@@ -39,6 +39,10 @@ import type { User as UserType } from "@/types/user";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useUserPlatformProfile } from "@/hooks/useUsers";
 
+// KYC is completed in the YPF-hosted trading portal (it owns identity
+// verification); we surface status here and hand off to complete/resubmit.
+const KYC_PORTAL_URL = "https://admin.dynastyfuturesdyn.com";
+
 const DashboardProfile = () => {
   const { user, refreshUser } = useAuth();
 
@@ -676,11 +680,37 @@ const DashboardProfile = () => {
                 </div>
               </div>
 
-              <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 mb-8">
-                <p className="text-sm text-yellow-500">
-                  Verification is required before payouts can be processed.
-                </p>
-              </div>
+              {(() => {
+                const status = user?.kycStatus ?? "NOT_STARTED";
+                const cfg = {
+                  APPROVED: {
+                    cls: "bg-primary/10 border-primary/20 text-primary",
+                    icon: <CheckCircle size={18} className="text-primary shrink-0 mt-0.5" />,
+                    msg: "Your identity is verified — you're all set for payouts.",
+                  },
+                  PENDING: {
+                    cls: "bg-yellow-500/10 border-yellow-500/20 text-yellow-500",
+                    icon: <Loader2 size={18} className="text-yellow-500 shrink-0 mt-0.5 animate-spin" />,
+                    msg: "Your documents are under review. This page updates once verification completes.",
+                  },
+                  REJECTED: {
+                    cls: "bg-destructive/10 border-destructive/20 text-destructive",
+                    icon: <AlertCircle size={18} className="text-destructive shrink-0 mt-0.5" />,
+                    msg: "Verification wasn't approved. Please resubmit your documents in the trading portal.",
+                  },
+                  NOT_STARTED: {
+                    cls: "bg-yellow-500/10 border-yellow-500/20 text-yellow-500",
+                    icon: <AlertCircle size={18} className="text-yellow-500 shrink-0 mt-0.5" />,
+                    msg: "Verification is required before payouts can be processed.",
+                  },
+                }[status];
+                return (
+                  <div className={`p-4 rounded-xl border mb-8 flex items-start gap-3 ${cfg.cls}`}>
+                    {cfg.icon}
+                    <p className="text-sm">{cfg.msg}</p>
+                  </div>
+                );
+              })()}
 
               <div className="mb-8">
                 <Progress value={kycProgress} className="h-2 bg-muted/30" />
@@ -721,15 +751,21 @@ const DashboardProfile = () => {
 
               <p className="text-xs text-muted-foreground mt-6">
                 KYC status:{" "}
-                <span className="font-medium text-foreground">{user?.kycStatus ?? "—"}</span>
+                <span className="font-medium text-foreground">
+                  {user?.kycStatus ?? "NOT_STARTED"}
+                </span>
               </p>
 
-              {user?.kycStatus !== "APPROVED" && (
+              {user?.kycStatus !== "APPROVED" && user?.kycStatus !== "PENDING" && (
                 <Button
+                  asChild
                   className="w-full mt-4 btn-gradient-animated text-primary-foreground py-6 text-base"
-                  disabled
                 >
-                  Start Verification (coming soon)
+                  <a href={KYC_PORTAL_URL} target="_blank" rel="noopener noreferrer">
+                    {user?.kycStatus === "REJECTED"
+                      ? "Resubmit Verification"
+                      : "Start Verification"}
+                  </a>
                 </Button>
               )}
             </div>
