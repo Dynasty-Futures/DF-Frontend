@@ -10,6 +10,7 @@ const DASHBOARD_TITLES: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/dashboard/accounts': 'Accounts',
   '/dashboard/trade': 'Trade',
+  '/dashboard/economic-calendar': 'Economic Calendar',
   '/dashboard/billing': 'Billing',
   '/dashboard/payouts': 'Payouts',
   '/dashboard/affiliate': 'Affiliate',

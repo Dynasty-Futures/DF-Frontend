@@ -41,6 +41,7 @@ const DashboardHelp = lazy(() => import("./pages/dashboard/DashboardHelp"));
 const DashboardAffiliate = lazy(() => import("./pages/dashboard/DashboardAffiliate"));
 const DashboardJournal = lazy(() => import("./pages/dashboard/DashboardJournal"));
 const DashboardTrade = lazy(() => import("./pages/dashboard/DashboardTrade"));
+const DashboardEconomicCalendar = lazy(() => import("./pages/dashboard/DashboardEconomicCalendar"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -110,6 +111,7 @@ export const AppRoutes = () => (
       <Route path="help" element={<LazyRoute><DashboardHelp /></LazyRoute>} />
       <Route path="journal/:date" element={<LazyRoute><DashboardJournal /></LazyRoute>} />
       <Route path="trade" element={<LazyRoute><DashboardTrade /></LazyRoute>} />
+      <Route path="economic-calendar" element={<LazyRoute><DashboardEconomicCalendar /></LazyRoute>} />
     </Route>
 
     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

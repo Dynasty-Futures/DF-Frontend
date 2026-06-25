@@ -55,6 +55,11 @@ export interface AccountData {
   streaks: Streaks;
   equityHistory: number[];
   dailyPnL: number[];
+  // Live platform fields (YPF) — only present on detail views with live data
+  nextProgramName?: string;
+  profitSplit?: number;
+  profitTradingDays?: number;
+  credentials?: { login: string; password: string };
 }
 
 // Generate random but realistic equity curves
