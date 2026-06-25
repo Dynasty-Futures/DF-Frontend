@@ -30,7 +30,9 @@ export interface AccountViewResult {
 export const useAccountView = (accountId: string | undefined): AccountViewResult => {
   const accountQ = useTradingAccount(accountId);
   const snapshotsQ = useAccountSnapshots(accountId);
-  const tradesQ = useAccountTrades(accountId);
+  // Pull trades live so a freshly-viewed account syncs its YPF history into the
+  // dashboard's derived metrics (win rate, sessions, calendar, streaks).
+  const tradesQ = useAccountTrades(accountId, { live: true });
 
   const data = useMemo<AccountData | null>(() => {
     if (!accountQ.data?.data) return null;
