@@ -59,7 +59,7 @@ const DashboardHome = () => {
     }
   }, [accounts, selectedAccount, urlAccountId]);
 
-  const [dateRange, setDateRange] = useState("monthly");
+  const [dateRange, setDateRange] = useState("daily");
   const [chartType, setChartType] = useState<"equity" | "pnl">("equity");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 

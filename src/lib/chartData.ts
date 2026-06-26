@@ -1,87 +1,177 @@
 // =============================================================================
 // Chart data builders
 // =============================================================================
-// Generates ChartDataPoint[] for the dashboard's PerformanceChart from a
-// real AccountData view shape. Replaces the synthetic generateChartData()
-// helper from mockDashboardData.
+// Generates ChartDataPoint[] for the dashboard's PerformanceChart from a real
+// AccountData view shape.
 //
-// Accepted timeframe tokens (origin/main vocabulary):
-//   - 'daily'   → 8 hourly points around the selected date's daily P&L
-//   - 'weekly'  → last 7 calendar days
-//   - 'monthly' → last 30 calendar days  (default fallback)
+// Primary path: a PER-TRADE running-equity curve built from account.closedTrades
+// (oldest→newest, commission-netted). This mirrors what the trading platform
+// plots — equity steps once per closed trade, so an early losing trade shows a
+// dip before later wins recover it, instead of collapsing a whole day into one
+// step. The P&L view shows each trade's net P&L as a bar.
 //
-// Legacy numeric tokens '1'|'7'|'30'|'90' still map to the same buckets so
-// callers can migrate gradually.
+// Accepted timeframe tokens:
+//   - 'daily'   → per-TRADE intraday curve for the selected day
+//   - 'weekly'  → per-DAY closing-equity over the last 7 days
+//   - 'monthly' → per-DAY closing-equity over the last ~3 months (90 days)
+//
+// The weekly/monthly views span the FULL calendar window (today − N … today),
+// not just the days that had trades — no-trade days carry the prior equity
+// flat — so changing the range visibly changes the chart's span.
 // =============================================================================
 
-import { differenceInCalendarDays, format, setHours, subDays } from 'date-fns';
-import type { AccountData, ChartDataPoint } from '@/data/mockDashboardData';
+import {
+  addDays,
+  format,
+  isSameDay,
+  setHours,
+  startOfDay,
+  subDays,
+} from 'date-fns';
+import type {
+  AccountData,
+  ChartDataPoint,
+  ClosedTradePoint,
+} from '@/data/mockDashboardData';
 
 const tfDays = (tf: string): number => {
   if (tf === 'weekly' || tf === '7') return 7;
-  if (tf === '90') return 90;
-  return 30; // 'monthly' default
+  if (tf === 'monthly' || tf === '90') return 90; // ~3 months
+  if (tf === '30') return 30;
+  return 90;
 };
 
 const isDailyTf = (tf: string): boolean => tf === 'daily' || tf === '1';
+
+// Filter closed trades to the active timeframe window.
+// Build a per-trade running-equity series for a single day. The leading "Start"
+// point anchors the curve at the equity *before* the first trade, so the first
+// trade's bar/step is visible. Equity values are absolute (cumulative from the
+// account's true starting balance), already computed in the adapter.
+const buildFromTrades = (
+  account: AccountData,
+  windowed: ClosedTradePoint[],
+): ChartDataPoint[] => {
+  const profitTarget = account.startingBalance + account.profitTarget;
+  const maxLoss = account.startingBalance - account.maxDrawdown;
+  const labelFmt = 'h:mm a';
+
+  const first = windowed[0]!;
+  const baseEquity = first.equity - first.netPnl;
+
+  const points: ChartDataPoint[] = [
+    {
+      date: 'Start',
+      balance: Math.round(baseEquity),
+      maxLoss,
+      profitTarget,
+      pnl: 0,
+    },
+  ];
+
+  for (const t of windowed) {
+    points.push({
+      date: format(new Date(t.time), labelFmt),
+      balance: Math.round(t.equity),
+      maxLoss,
+      profitTarget,
+      pnl: Math.round(t.netPnl),
+    });
+  }
+
+  return points;
+};
+
+// Per-day closing-equity series for the weekly/monthly (zoomed-out) views.
+// Spans the FULL window (today − N + 1 … today) directly from closedTrades:
+// each day's bar is that day's net P&L and the line is the running equity, so
+// no-trade days carry the prior balance flat. Weekly (7 pts) and monthly
+// (~90 pts) therefore differ by span even when trades cluster on one day.
+const buildFromDaySeries = (
+  account: AccountData,
+  timeframe: string,
+): ChartDataPoint[] => {
+  const profitTarget = account.startingBalance + account.profitTarget;
+  const maxLoss = account.startingBalance - account.maxDrawdown;
+  const days = tfDays(timeframe);
+  const windowStart = subDays(startOfDay(new Date()), days - 1);
+
+  // Net P&L per calendar day, and the equity carried into the window (starting
+  // balance plus everything realized before the window began).
+  const pnlByDay = new Map<string, number>();
+  let equity = account.startingBalance;
+  for (const t of account.closedTrades) {
+    const when = new Date(t.time);
+    if (when < windowStart) {
+      equity += t.netPnl;
+    } else {
+      const key = format(when, 'yyyy-MM-dd');
+      pnlByDay.set(key, (pnlByDay.get(key) ?? 0) + t.netPnl);
+    }
+  }
+
+  // No trade history at all → flat line at the current balance across the span.
+  if (!account.closedTrades.length) {
+    equity = account.currentBalance || account.startingBalance;
+  }
+
+  const points: ChartDataPoint[] = [];
+  for (let i = 0; i < days; i++) {
+    const day = addDays(windowStart, i);
+    const dayPnl = pnlByDay.get(format(day, 'yyyy-MM-dd')) ?? 0;
+    equity += dayPnl;
+    points.push({
+      date: format(day, 'MMM d'),
+      balance: Math.round(equity),
+      maxLoss,
+      profitTarget,
+      pnl: Math.round(dayPnl),
+    });
+  }
+
+  return points;
+};
+
+// Flat intraday baseline — shown for the daily view on a day with no trades.
+// Emits a point per market hour (9am–4pm) all at the current balance so the
+// chart draws a flat line across the day instead of a single floating dot.
+const flatBaseline = (account: AccountData, day: Date): ChartDataPoint[] => {
+  const profitTarget = account.startingBalance + account.profitTarget;
+  const maxLoss = account.startingBalance - account.maxDrawdown;
+  const balance = account.currentBalance || account.startingBalance;
+
+  const points: ChartDataPoint[] = [];
+  for (let hour = 9; hour <= 16; hour++) {
+    points.push({
+      date: format(setHours(day, hour), 'h:mm a'),
+      balance,
+      maxLoss,
+      profitTarget,
+      pnl: 0,
+    });
+  }
+  return points;
+};
 
 export const buildChartData = (
   account: AccountData,
   timeframe: string,
   selectedDate?: Date,
 ): ChartDataPoint[] => {
-  const today = new Date();
-  const profitTarget = account.startingBalance + account.profitTarget;
-  const maxLoss = account.startingBalance - account.maxDrawdown;
-
-  // Intraday — synthesize hourly points around the selected day's P&L. Real
-  // intraday data isn't exposed by /v1/trading; this is the best we can do
-  // without a per-tick endpoint, but it's deterministic given a fixed date.
+  // Daily → a per-TRADE intraday curve for the selected day, so a losing trade
+  // early in the session shows a dip before later wins recover it.
   if (isDailyTf(timeframe)) {
-    const target = selectedDate ?? today;
-    const daysAgo = Math.max(
-      0,
-      differenceInCalendarDays(today, target),
+    const target = selectedDate ?? new Date();
+    const dayTrades = account.closedTrades.filter((t) =>
+      isSameDay(new Date(t.time), target),
     );
-    const idx = account.dailyPnL.length - 1 - daysAgo;
-    const dayPnl =
-      idx >= 0 && idx < account.dailyPnL.length ? account.dailyPnL[idx] : 0;
-    const dayClose =
-      idx >= 0 && idx < account.equityHistory.length
-        ? account.equityHistory[idx]
-        : account.currentBalance;
-    const dayOpen = dayClose - dayPnl;
-    const hourlyVariation = dayPnl / 8;
-
-    const data: ChartDataPoint[] = [];
-    for (let i = 0; i < 8; i++) {
-      const hour = setHours(target, 9 + i);
-      data.push({
-        date: format(hour, 'ha'),
-        balance: Math.round(dayOpen + (i + 1) * hourlyVariation),
-        maxLoss,
-        profitTarget,
-        pnl: Math.round(hourlyVariation),
-      });
-    }
-    return data;
+    return dayTrades.length
+      ? buildFromTrades(account, dayTrades)
+      : flatBaseline(account, target);
   }
 
-  const days = tfDays(timeframe);
-  const equity = account.equityHistory;
-  const pnl = account.dailyPnL;
-  const sliceStart = Math.max(0, equity.length - days);
-  const equitySlice = equity.slice(sliceStart);
-  const pnlSlice = pnl.slice(sliceStart);
-
-  return equitySlice.map((balance, index) => {
-    const date = subDays(today, equitySlice.length - 1 - index);
-    return {
-      date: format(date, 'MMM d'),
-      balance,
-      maxLoss,
-      profitTarget,
-      pnl: pnlSlice[index] ?? 0,
-    };
-  });
+  // Weekly / monthly → a per-DAY closing-equity series (zoomed out). Distinct
+  // from the daily view's per-trade granularity, so changing the range visibly
+  // changes the chart. Falls back to a flat baseline when there's no history.
+  return buildFromDaySeries(account, timeframe);
 };

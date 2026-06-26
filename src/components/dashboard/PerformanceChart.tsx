@@ -48,7 +48,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         ))}
         {payload[0]?.payload?.pnl !== undefined && (
           <div className="mt-2 pt-2 border-t border-border/30">
-            <span className="text-xs text-muted-foreground">Daily P&L: </span>
+            <span className="text-xs text-muted-foreground">P&L: </span>
             <span
               className={`text-sm font-semibold ${payload[0].payload.pnl >= 0 ? "text-primary" : "text-destructive"}`}
             >
@@ -88,17 +88,14 @@ const PerformanceChart = ({
   timeframe,
   className,
 }: PerformanceChartProps) => {
-  const isDailyView = timeframe === 'daily';
-
-  // Calculate Y-axis domain — for daily view use only balance data so intraday movement is visible
+  // Y-axis domain is driven by the equity range itself (not the profit-target /
+  // max-loss rule lines) so per-trade dips/recoveries stay visible — a few-
+  // hundred-dollar swing on a six-figure account would otherwise flatten to a
+  // straight line. The rule lines still render as overlays when in range.
   const allBalances = data.map((d) => d.balance);
-  const minBalance = isDailyView
-    ? Math.min(...allBalances)
-    : Math.min(...allBalances, data[0]?.maxLoss || 0);
-  const maxBalance = isDailyView
-    ? Math.max(...allBalances)
-    : Math.max(...allBalances, data[0]?.profitTarget || 0);
-  const padding = Math.max((maxBalance - minBalance) * 0.15, isDailyView ? 30 : 0);
+  const minBalance = Math.min(...allBalances);
+  const maxBalance = Math.max(...allBalances);
+  const padding = Math.max((maxBalance - minBalance) * 0.15, 30);
 
   // Calculate P&L domain
   const allPnL = data.map((d) => d.pnl);
@@ -221,7 +218,14 @@ const PerformanceChart = ({
                 tickFormatter={(value) => `$${(value / 1000).toFixed(1)}k`}
                 domain={[minBalance - padding, maxBalance + padding]}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{
+                  stroke: "hsl(var(--primary))",
+                  strokeOpacity: 0.35,
+                  strokeWidth: 1,
+                }}
+              />
 
               {/* Profit Target Line - dashed, semi-transparent */}
               <ReferenceLine
@@ -281,7 +285,10 @@ const PerformanceChart = ({
                 }
                 domain={[minPnL - pnlPadding, maxPnL + pnlPadding]}
               />
-              <Tooltip content={<PnLTooltip />} />
+              <Tooltip
+                content={<PnLTooltip />}
+                cursor={{ fill: "hsl(var(--primary))", fillOpacity: 0.08 }}
+              />
               <ReferenceLine
                 y={0}
                 stroke="hsl(var(--border))"
