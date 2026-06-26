@@ -7,6 +7,39 @@ import logo from "@/assets/DF_Logo.png";
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 
+declare global {
+  interface Window {
+    Trustpilot?: { loadFromElement: (el: Element, reinitialize: boolean) => void };
+  }
+}
+
+const TrustpilotWidget = () => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ref.current && window.Trustpilot) {
+      window.Trustpilot.loadFromElement(ref.current, true);
+    }
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className="trustpilot-widget"
+      data-locale="en-US"
+      data-template-id="56278e9abfbbba0bdcd568bc"
+      data-businessunit-id="6a2b945f8f56de259c00cd76"
+      data-style-height="52px"
+      data-style-width="100%"
+      data-token="7ef7d5f6-8481-4d7d-97e8-cd139cf18ebbb"
+    >
+      <a href="https://www.trustpilot.com/review/dynastyfuturesdyn.com" target="_blank" rel="noopener">
+        Trustpilot
+      </a>
+    </div>
+  );
+};
+
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const { progress } = useScrollProgress(sectionRef);
@@ -171,34 +204,11 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Trustpilot CTA */}
-            <div className="flex justify-center lg:justify-start mt-2 animate-fade-in" style={{ animationDelay: "0.45s" }}>
-              <a
-                href="https://www.trustpilot.com/review/dynastyfuturesdyn.com?_gl=1*r3p7l0*_gcl_au*MTQ4MzEyNDE1Ny4xNzgxMjE1NTEz*_ga*MjAyMTc4MzE1My4xNzgxMjE1NTEz*_ga_11HBWMC274*czE3ODEyNDA4NjIkbzMkZzEkdDE3ODEyNDEzMjIkajYwJGwwJGgw"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-md hover:shadow-black/20"
-              >
-                {/* Trustpilot stars */}
-                <span className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className="inline-flex items-center justify-center w-4 h-4 rounded-sm bg-[#00b67a]"
-                      aria-hidden="true"
-                    >
-                      <svg viewBox="0 0 24 24" fill="white" className="w-2.5 h-2.5">
-                        <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z" />
-                      </svg>
-                    </span>
-                  ))}
-                </span>
-                {/* Trustpilot wordmark */}
-                <span className="text-xs font-semibold text-foreground/80 tracking-tight">Trustpilot</span>
-                <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-200 whitespace-nowrap">
-                  Review us on Trustpilot
-                </span>
-              </a>
+            {/* Official Trustpilot Review Collector widget */}
+            <div className="flex justify-center lg:justify-start mt-3 animate-fade-in" style={{ animationDelay: "0.45s" }}>
+              <div className="trustpilot-hero-widget">
+                <TrustpilotWidget />
+              </div>
             </div>
           </div>
 
