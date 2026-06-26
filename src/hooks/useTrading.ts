@@ -30,6 +30,12 @@ import type {
   ReportRange,
 } from '@/types/trading';
 
+// Dashboard data auto-refreshes on this cadence while a view is mounted, so a
+// trader sitting on the page sees new trades/balances/account changes without a
+// manual refresh. Paired with staleTime: 0 on the dashboard queries, every
+// mount and window-focus also pulls fresh (a hard refresh always does anyway).
+export const LIVE_REFRESH_MS = 120_000; // 2 minutes
+
 // =============================================================================
 // Query key factory
 // =============================================================================
@@ -64,6 +70,10 @@ export const useTradingAccounts = (
   useQuery<ApiResponse<TradingAccount[]>, ApiError>({
     queryKey: tradingKeys.list(opts),
     queryFn: () => tradingService.listAccounts(opts),
+    // Keep the account list live — so newly-discovered accounts appear and
+    // disabled ones drop off without a manual refresh. Overridable via options.
+    staleTime: 0,
+    refetchInterval: LIVE_REFRESH_MS,
     ...options,
   });
 
