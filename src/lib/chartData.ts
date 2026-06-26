@@ -20,7 +20,14 @@
 // flat — so changing the range visibly changes the chart's span.
 // =============================================================================
 
-import { addDays, format, isSameDay, startOfDay, subDays } from 'date-fns';
+import {
+  addDays,
+  format,
+  isSameDay,
+  setHours,
+  startOfDay,
+  subDays,
+} from 'date-fns';
 import type {
   AccountData,
   ChartDataPoint,
@@ -125,20 +132,25 @@ const buildFromDaySeries = (
   return points;
 };
 
-// Flat single-point baseline — shown when the selected window has no trades
-// (e.g. "daily" on a day the trader didn't trade).
-const flatBaseline = (account: AccountData): ChartDataPoint[] => {
+// Flat intraday baseline — shown for the daily view on a day with no trades.
+// Emits a point per market hour (9am–4pm) all at the current balance so the
+// chart draws a flat line across the day instead of a single floating dot.
+const flatBaseline = (account: AccountData, day: Date): ChartDataPoint[] => {
   const profitTarget = account.startingBalance + account.profitTarget;
   const maxLoss = account.startingBalance - account.maxDrawdown;
-  return [
-    {
-      date: format(new Date(), 'MMM d'),
-      balance: account.currentBalance || account.startingBalance,
+  const balance = account.currentBalance || account.startingBalance;
+
+  const points: ChartDataPoint[] = [];
+  for (let hour = 9; hour <= 16; hour++) {
+    points.push({
+      date: format(setHours(day, hour), 'h:mm a'),
+      balance,
       maxLoss,
       profitTarget,
       pnl: 0,
-    },
-  ];
+    });
+  }
+  return points;
 };
 
 export const buildChartData = (
@@ -155,7 +167,7 @@ export const buildChartData = (
     );
     return dayTrades.length
       ? buildFromTrades(account, dayTrades)
-      : flatBaseline(account);
+      : flatBaseline(account, target);
   }
 
   // Weekly / monthly → a per-DAY closing-equity series (zoomed out). Distinct
