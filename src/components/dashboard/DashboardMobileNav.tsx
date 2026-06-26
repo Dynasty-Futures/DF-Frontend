@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, LayoutDashboard, Wallet, LineChart, CalendarClock, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
+import { Menu, LayoutDashboard, Wallet, CalendarClock, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -10,7 +10,8 @@ const siteIconSrc = '/favicon.png?v=20260406';
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Wallet },
-  { name: 'Trade', path: '/dashboard/trade', icon: LineChart },
+  // 'Trade' tab hidden until the in-app Volumetrica embed is unblocked; traders
+  // launch via the "Launch Platform" button. Route + page kept for later.
   { name: 'Economic Calendar', path: '/dashboard/economic-calendar', icon: CalendarClock },
   { name: 'Billing', path: '/dashboard/billing', icon: CreditCard },
   { name: 'Payouts', path: '/dashboard/payouts', icon: Banknote },
