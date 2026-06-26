@@ -70,10 +70,18 @@ const challengeRules = (
   startingBalance: number,
 ): { profitTarget: number; maxDrawdown: number; dailyLossLimit: number } => {
   const active = challenges?.find((c) => c.status === 'ACTIVE');
+  // The backend stores these rules as PERCENTAGES of account size (e.g. 6 = 6%
+  // — see prisma/seed.ts `toPercent`), but every dashboard consumer (chart rule
+  // lines, SummaryPanel, metric tiles) works in DOLLARS. Convert here so the
+  // whole dashboard stays consistent and the chart's target/loss/breakeven
+  // lines land at distinct levels instead of collapsing onto the start balance.
+  // A 0 (e.g. a funded account with no profit target) → $0, which consumers hide.
+  const pctToDollars = (pct: number | null | undefined, fallbackPct: number): number =>
+    (num(pct, fallbackPct) / 100) * startingBalance;
   return {
-    profitTarget: num(active?.profitTarget, startingBalance * 0.06),
-    maxDrawdown: num(active?.maxTotalDrawdown, startingBalance * 0.1),
-    dailyLossLimit: num(active?.maxDailyLoss, startingBalance * 0.05),
+    profitTarget: pctToDollars(active?.profitTarget, 6),
+    maxDrawdown: pctToDollars(active?.maxTotalDrawdown, 10),
+    dailyLossLimit: pctToDollars(active?.maxDailyLoss, 5),
   };
 };
 

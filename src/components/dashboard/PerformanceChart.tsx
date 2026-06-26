@@ -93,8 +93,13 @@ const PerformanceChart = ({
   // hundred-dollar swing on a six-figure account would otherwise flatten to a
   // straight line. The rule lines still render as overlays when in range.
   const allBalances = data.map((d) => d.balance);
-  const minBalance = Math.min(...allBalances);
-  const maxBalance = Math.max(...allBalances);
+  const peakEquity = Math.max(...allBalances);
+  const troughEquity = Math.min(...allBalances);
+  // Anchor the domain to include the starting balance so the breakeven divider
+  // always renders — even when equity has stayed entirely above or below it.
+  // The target line stays out of the domain by design (shown as a top marker).
+  const minBalance = Math.min(...allBalances, startingBalance);
+  const maxBalance = Math.max(...allBalances, startingBalance);
   const padding = Math.max((maxBalance - minBalance) * 0.15, 30);
 
   // Calculate P&L domain
@@ -102,6 +107,29 @@ const PerformanceChart = ({
   const maxPnL = Math.max(...allPnL, 0);
   const minPnL = Math.min(...allPnL, 0);
   const pnlPadding = Math.max(Math.abs(maxPnL), Math.abs(minPnL)) * 0.2;
+
+  // Profit-target marker. The target ($start + profit target) almost always
+  // sits ABOVE the equity-driven Y domain, so we keep the chart zoomed to real
+  // movement and pin a labeled marker at the top instead of stretching the axis.
+  // Once equity reaches the target it falls inside the domain and the dashed
+  // Target line renders too — and the marker flips to a "reached" state.
+  const profitTargetValue = data[0]?.profitTarget;
+  const maxLossValue = data[0]?.maxLoss;
+  // A target / max-loss line only "exists" when it sits away from the start
+  // balance. Funded (and unconfigured) accounts have a 0 target/drawdown, which
+  // would collapse those lines onto breakeven — so only draw them when distinct.
+  const hasTarget =
+    profitTargetValue !== undefined && profitTargetValue > startingBalance;
+  const hasMaxLoss =
+    maxLossValue !== undefined && maxLossValue < startingBalance;
+  const targetReached =
+    profitTargetValue !== undefined &&
+    profitTargetValue > startingBalance &&
+    peakEquity >= profitTargetValue;
+  const maxLossBreached =
+    maxLossValue !== undefined &&
+    maxLossValue < startingBalance &&
+    troughEquity <= maxLossValue;
 
   return (
     <div
@@ -146,6 +174,39 @@ const PerformanceChart = ({
         </div>
       </div>
 
+      {/* Profit-target marker, pinned at the top. Gold "▲ Target $Xk" while the
+          target is still above the chart; flips to a green "✓ target reached"
+          once equity climbs to it. */}
+      {chartType === "equity" && hasTarget && (
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <div
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
+              targetReached
+                ? "text-emerald-400 border-emerald-400/40 bg-emerald-400/10"
+                : "text-gold-light border-gold-light/40 bg-gold-light/10"
+            }`}
+          >
+            {targetReached
+              ? "✓ Profit target reached"
+              : `▲ Target $${((profitTargetValue ?? 0) / 1000).toFixed(1)}k`}
+          </div>
+        </div>
+      )}
+
+      {/* Max-loss marker, pinned at the bottom — mirrors the target marker.
+          The max-loss level sits below the equity range, so we label it here
+          instead of stretching the axis. Flips to "breached" if equity dipped
+          to it. The red line still renders when equity drops near it. */}
+      {chartType === "equity" && hasMaxLoss && (
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border text-destructive border-destructive/40 bg-destructive/10">
+            {maxLossBreached
+              ? "✗ Max loss breached"
+              : `▼ Max Loss $${((maxLossValue ?? 0) / 1000).toFixed(1)}k`}
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 min-h-0">
         <ResponsiveContainer width="100%" height="100%">
           {chartType === "equity" ? (
@@ -187,13 +248,6 @@ const PerformanceChart = ({
                     stopOpacity="0"
                   />
                 </linearGradient>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
               </defs>
 
               <CartesianGrid
@@ -227,25 +281,44 @@ const PerformanceChart = ({
                 }}
               />
 
-              {/* Profit Target Line - dashed, semi-transparent */}
-              <ReferenceLine
-                y={data[0]?.profitTarget}
-                stroke="hsl(var(--gold-light))"
-                strokeDasharray="8 4"
-                strokeOpacity={0.6}
-                strokeWidth={2}
-              />
+              {/* Profit Target Line - dashed, semi-transparent. Renders only
+                  once equity climbs near it (otherwise it's the top marker). */}
+              {hasTarget && (
+                <ReferenceLine
+                  y={profitTargetValue}
+                  stroke="hsl(var(--gold-light))"
+                  strokeDasharray="8 4"
+                  strokeOpacity={0.6}
+                  strokeWidth={2}
+                />
+              )}
 
               {/* Max Loss Line - dashed, semi-transparent */}
+              {hasMaxLoss && (
+                <ReferenceLine
+                  y={maxLossValue}
+                  stroke="hsl(var(--destructive))"
+                  strokeDasharray="8 4"
+                  strokeOpacity={0.6}
+                  strokeWidth={2}
+                />
+              )}
+
+              {/* Breakeven (starting balance) — the in/out-of-profit divider.
+                  Above it = in profit, below = in loss. Sits inside the equity
+                  range so it reliably renders, unlike the target/max-loss rules. */}
               <ReferenceLine
-                y={data[0]?.maxLoss}
-                stroke="hsl(var(--destructive))"
+                y={startingBalance}
+                stroke="#34d399"
                 strokeDasharray="8 4"
-                strokeOpacity={0.6}
+                strokeOpacity={0.7}
                 strokeWidth={2}
               />
 
-              {/* Account Balance Area - thicker with glow */}
+              {/* Account Balance Area. The animated draw-in is kept, but the
+                  Gaussian-blur glow filter is removed — it recomputed every
+                  animation frame and was the source of the chart jank, so the
+                  animation now runs smooth. */}
               <Area
                 type="monotone"
                 dataKey="balance"
@@ -253,7 +326,6 @@ const PerformanceChart = ({
                 strokeWidth={4}
                 fill="url(#areaFillGradient)"
                 name="Account Balance"
-                filter="url(#glow)"
               />
             </AreaChart>
           ) : (
@@ -316,8 +388,8 @@ const PerformanceChart = ({
             <span className="text-muted-foreground">Balance</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-6 h-0.5 border-t-2 border-dashed border-gold-light/60" />
-            <span className="text-muted-foreground">Target</span>
+            <div className="w-6 h-0.5 border-t-2 border-dashed border-emerald-400/70" />
+            <span className="text-muted-foreground">Breakeven</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-6 h-0.5 border-t-2 border-dashed border-destructive/60" />
