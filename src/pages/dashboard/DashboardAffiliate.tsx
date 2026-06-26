@@ -115,10 +115,26 @@ const notAllowedItems = [
 ];
 
 const documents = [
-  { name: "Affiliate Agreement (PDF)", icon: FileText },
-  { name: "Affiliate NDA (PDF)", icon: FileText },
-  { name: "Branding Guidelines", icon: FileText },
-  { name: "FTC Compliance Guide", icon: FileText },
+  {
+    name: "Affiliate Agreement (PDF)",
+    icon: FileText,
+    href: "/documents/affiliate/affiliate-agreement.pdf",
+  },
+  {
+    name: "Affiliate NDA (PDF)",
+    icon: FileText,
+    href: "/documents/affiliate/affiliate-nda.pdf",
+  },
+  {
+    name: "Brand Guidelines (PDF)",
+    icon: FileText,
+    href: "/documents/affiliate/affiliate-brand-guidelines.pdf",
+  },
+  {
+    name: "CFTC Compliance Guide (PDF)",
+    icon: FileText,
+    href: "/documents/affiliate/affiliate-cftc-guideline.pdf",
+  },
 ];
 
 const DashboardAffiliate = () => {
@@ -781,8 +797,12 @@ const DashboardAffiliate = () => {
           <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {documents.map((doc, index) => (
-                <button
+                <a
                   key={index}
+                  href={doc.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
                   className="flex items-center gap-3 p-3 rounded-xl bg-background/30 border border-border/20 hover:border-primary/30 hover:bg-background/50 transition-all duration-300 group text-left"
                 >
                   <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -795,7 +815,7 @@ const DashboardAffiliate = () => {
                     size={16}
                     className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
                   />
-                </button>
+                </a>
               ))}
             </div>
           </div>

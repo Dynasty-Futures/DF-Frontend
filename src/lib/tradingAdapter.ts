@@ -69,7 +69,13 @@ const challengeRules = (
   challenges: Challenge[] | undefined,
   startingBalance: number,
 ): { profitTarget: number; maxDrawdown: number; dailyLossLimit: number } => {
-  const active = challenges?.find((c) => c.status === 'ACTIVE');
+  // Prefer the ACTIVE challenge, but fall back to the most recent challenge of
+  // any status — a breached/failed account has no ACTIVE challenge, yet its
+  // rules (profit target, max loss) are still real and should display, not
+  // collapse to the generic % fallbacks below.
+  const active =
+    challenges?.find((c) => c.status === 'ACTIVE') ??
+    challenges?.[challenges.length - 1];
   // The backend stores these rules as PERCENTAGES of account size (e.g. 6 = 6%
   // — see prisma/seed.ts `toPercent`), but every dashboard consumer (chart rule
   // lines, SummaryPanel, metric tiles) works in DOLLARS. Convert here so the
@@ -280,8 +286,14 @@ const computeMetrics = (trades: Trade[]): {
 
   const dayPnls = Array.from(byDay.values());
   const tradingDays = dayPnls.length;
-  const bestDay = dayPnls.length ? Math.max(...dayPnls) : 0;
-  const worstDay = dayPnls.length ? Math.min(...dayPnls) : 0;
+  // Best Day = highest WINNING day; Worst Day = largest LOSING day. Each is 0
+  // when there's no such day yet — so an all-losing account doesn't report a
+  // negative "best day", and an all-winning account doesn't report a positive
+  // "worst day" (the previous max/min over ALL days did exactly that).
+  const winningDays = dayPnls.filter((p) => p > 0);
+  const losingDays = dayPnls.filter((p) => p < 0);
+  const bestDay = winningDays.length ? Math.max(...winningDays) : 0;
+  const worstDay = losingDays.length ? Math.min(...losingDays) : 0;
 
   // Streaks — walk by chronological day
   const orderedDays = Array.from(byDay.entries()).sort((a, b) =>
@@ -358,8 +370,12 @@ export const adaptAccountView = (
     : buildSeriesFromTrades(trades, startingBalance, currentBalance);
   const derived = computeMetrics(trades);
 
-  // currentDrawdown is a percentage in the DB (Decimal(5,2)); convert to money
-  const drawdownUsedMoney = (num(account.currentDrawdown) / 100) * startingBalance;
+  // Drawdown used = how far the account is below its starting (face-value)
+  // balance — i.e. how much of the max-loss limit has been consumed. Derive it
+  // from balances rather than the DB `currentDrawdown` %, which is unreliable/
+  // often 0 for discovered accounts and would show $0 drawdown on an account
+  // that's clearly down. 0 when the account is at or above its start.
+  const drawdownUsedMoney = Math.max(0, startingBalance - currentBalance);
 
   // Live platform snapshot (YPF) — present on detail views. Prefer its
   // authoritative day counts / program names over values derived from trades.
