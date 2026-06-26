@@ -41,6 +41,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Compact per-day P&L for the calendar face, e.g. +$1.2k / -$340.
+const fmtDayPnl = (pnl: number): string => {
+  const abs = Math.abs(pnl);
+  const sign = pnl > 0 ? "+" : "-";
+  return abs >= 1000
+    ? `${sign}$${(abs / 1000).toFixed(1)}k`
+    : `${sign}$${Math.round(abs)}`;
+};
+
 interface SummaryItemProps {
   label: string;
   value: string;
@@ -281,7 +290,7 @@ const SummaryPanel = ({
 
             <SummaryItem
               label="Worst Day"
-              value={formatCurrency(account.metrics.worstDay)}
+              value={formatCurrency(account.metrics.worstDay, true)}
               icon={<ArrowDownRight size={14} className="text-destructive" />}
             />
 
@@ -456,7 +465,7 @@ const SummaryPanel = ({
                 >
                   <span
                     className={cn(
-                      "font-medium",
+                      "font-medium leading-none",
                       day.isSelected && !day.isSaturday && "text-primary",
                       !day.isCurrentMonth && "text-muted-foreground/50",
                       day.isSaturday && day.isCurrentMonth && "text-muted-foreground/30",
@@ -464,14 +473,17 @@ const SummaryPanel = ({
                   >
                     {day.dayNumber}
                   </span>
-                  {/* P&L indicator dot - never shown on Saturday */}
+                  {/* Daily P&L on the day face — green for a winning day, red
+                      for a losing day. Never shown on Saturday/closed days. */}
                   {day.isCurrentMonth && !day.noTrades && !day.isSaturday && (
-                    <div
+                    <span
                       className={cn(
-                        "w-1 h-1 rounded-full mt-0.5",
-                        day.pnl > 0 ? "bg-primary" : "bg-destructive",
+                        "text-[8px] font-semibold leading-none mt-0.5",
+                        day.pnl > 0 ? "text-emerald-500" : "text-destructive",
                       )}
-                    />
+                    >
+                      {fmtDayPnl(day.pnl)}
+                    </span>
                   )}
                 </button>
               ))}
@@ -480,7 +492,7 @@ const SummaryPanel = ({
             {/* Legend */}
             <div className="flex items-center justify-center gap-3 mt-3 pt-2 border-t border-border/20">
               <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                 <span className="text-[9px] text-muted-foreground">Profit</span>
               </div>
               <div className="flex items-center gap-1.5">
