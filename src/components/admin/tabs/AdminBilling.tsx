@@ -1,61 +1,110 @@
-import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
 import { AdminDataTable, Column } from '../AdminDataTable';
-import { AdminStatusBadge, AdminPlanBadge } from '../AdminStatusBadge';
-import { mockSubscriptions, mockTransactions, type MockSubscription, type MockTransaction } from '@/data/mockAdminData';
-import { XCircle, Gift, Eye, RotateCcw, CheckCircle } from 'lucide-react';
+import { AdminStatusBadge } from '../AdminStatusBadge';
+import { useAdminAccounts } from '@/hooks/useAccounts';
+import type { AdminAccount } from '@/types/account';
+import { AlertTriangle } from 'lucide-react';
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+const formatCurrency = (value: string | number | null | undefined): string => {
+  if (value == null) return '—';
+  const num = typeof value === 'string' ? parseFloat(value) : value;
+  if (isNaN(num)) return '—';
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(num);
+};
+
+const formatDate = (iso: string): string =>
+  new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
+const getAmountPaid = (account: AdminAccount): string => {
+  const paid = account.challenges[0]?.amountPaid;
+  return formatCurrency(paid ?? account.accountType.price);
+};
+
+const fullName = (acc: AdminAccount): string =>
+  `${acc.user.firstName} ${acc.user.lastName}`;
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 export function AdminBilling() {
-  const [activeTab, setActiveTab] = useState('subscriptions');
+  const { data: response, isLoading, isError } = useAdminAccounts({ limit: 100 });
+  const accounts = response?.data ?? [];
 
-  const subColumns: Column<MockSubscription>[] = [
-    { key: 'userName', header: 'User', sortable: true },
-    { key: 'email', header: 'Email', sortable: true },
-    { key: 'plan', header: 'Plan', render: (item) => <AdminPlanBadge plan={item.plan} /> },
-    { key: 'status', header: 'Status', render: (item) => <AdminStatusBadge status={item.status} /> },
-    { key: 'startDate', header: 'Start Date', sortable: true },
-    { key: 'renewalDate', header: 'Renewal', sortable: true },
-    { key: 'lastPaymentStatus', header: 'Last Payment', render: (item) => <AdminStatusBadge status={item.lastPaymentStatus} /> },
-    { key: 'amount', header: 'Amount', render: (item) => `$${item.amount}` },
-    { key: 'actions', header: 'Actions', render: () => (
-      <div className="flex gap-1">
-        <Button size="sm" variant="ghost" className="h-7 px-2"><Eye className="h-3 w-3" /></Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2"><Gift className="h-3 w-3" /></Button>
-        <Button size="sm" variant="ghost" className="h-7 px-2 text-destructive"><XCircle className="h-3 w-3" /></Button>
-      </div>
-    )},
+  const columns: Column<AdminAccount>[] = [
+    {
+      key: 'createdAt',
+      header: 'Purchase Date',
+      sortable: true,
+      render: (item) => formatDate(item.createdAt),
+    },
+    {
+      key: 'userName',
+      header: 'User',
+      sortable: true,
+      render: (item) => (
+        <div>
+          <p className="font-medium text-foreground">{fullName(item)}</p>
+          <p className="text-xs text-muted-foreground">{item.user.email}</p>
+        </div>
+      ),
+    },
+    {
+      key: 'plan',
+      header: 'Plan',
+      render: (item) => (
+        <div>
+          <p className="font-medium text-foreground">{item.accountType.displayName}</p>
+          <p className="text-xs text-muted-foreground">
+            {formatCurrency(item.accountType.accountSize)} account
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: 'amountPaid',
+      header: 'Amount Paid',
+      render: (item) => (
+        <span className="font-semibold text-foreground">{getAmountPaid(item)}</span>
+      ),
+    },
+    {
+      key: 'status',
+      header: 'Account Status',
+      render: (item) => <AdminStatusBadge status={item.status} />,
+    },
   ];
 
-  const txnColumns: Column<MockTransaction>[] = [
-    { key: 'date', header: 'Date', sortable: true },
-    { key: 'userName', header: 'User', sortable: true },
-    { key: 'amount', header: 'Amount', sortable: true, render: (item) => `$${item.amount}` },
-    { key: 'type', header: 'Type', sortable: true },
-    { key: 'status', header: 'Status', render: (item) => <AdminStatusBadge status={item.status} /> },
-    { key: 'referenceId', header: 'Reference' },
-    { key: 'actions', header: 'Actions', render: (item) => (
-      <div className="flex gap-1">
-        {item.status === 'Paid' && <Button size="sm" variant="ghost" className="h-7 px-2"><RotateCcw className="h-3 w-3" /></Button>}
-        {item.status === 'Chargeback' && <Button size="sm" variant="ghost" className="h-7 px-2"><CheckCircle className="h-3 w-3" /></Button>}
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted-foreground">
+        <AlertTriangle className="h-10 w-10 text-destructive" />
+        <p className="text-lg font-medium text-foreground">Failed to load billing data</p>
+        <p className="text-sm">Please check your connection and try again.</p>
       </div>
-    )},
-  ];
+    );
+  }
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="bg-muted/20 border border-border/30">
-        <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
-        <TabsTrigger value="transactions">Transactions</TabsTrigger>
-      </TabsList>
-
-      <TabsContent value="subscriptions" className="mt-4">
-        <AdminDataTable data={mockSubscriptions} columns={subColumns} keyField="id" searchable searchPlaceholder="Search subscriptions..." />
-      </TabsContent>
-
-      <TabsContent value="transactions" className="mt-4">
-        <AdminDataTable data={mockTransactions} columns={txnColumns} keyField="id" searchable searchPlaceholder="Search transactions..." />
-      </TabsContent>
-    </Tabs>
+    <AdminDataTable
+      data={accounts}
+      columns={columns}
+      keyField="id"
+      searchable
+      searchPlaceholder="Search by user or email..."
+      loading={isLoading}
+    />
   );
 }

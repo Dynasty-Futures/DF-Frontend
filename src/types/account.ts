@@ -86,11 +86,21 @@ export interface AdminAccountType {
   name: string;
   displayName: string;
   accountSize: string;
+  price: string;
+}
+
+export interface AdminAccountChallenge {
+  id: string;
+  phase: string;
+  status: string;
+  amountPaid: string | null;
+  startedAt: string;
 }
 
 export interface AdminAccount extends Account {
   user: AdminAccountUser;
   accountType: AdminAccountType;
+  challenges: AdminAccountChallenge[];
 }
 
 // ---------------------------------------------------------------------------

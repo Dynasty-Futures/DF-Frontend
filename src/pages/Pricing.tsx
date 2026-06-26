@@ -21,11 +21,28 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
-// Purchasing is handled by the YPF-hosted WooCommerce store (Worthy gateway);
-// YPF provisions the trading account on a completed purchase.
-// TODO: deep-link to the specific product (per plan/size) + pass ypf-ref/email
-// for bound attribution once YPF confirms the product map + ref endpoint.
-const CHECKOUT_STORE_URL = "https://checkout.dynastyfuturesdyn.com/";
+const CHECKOUT_BASE = "https://checkout.dynastyfuturesdyn.com/product/";
+
+const CHECKOUT_URLS: Record<string, Record<number, string>> = {
+  standard: {
+    25000: `${CHECKOUT_BASE}25k-standard-evaluation/`,
+    50000: `${CHECKOUT_BASE}50k-standard-evaluation/`,
+    100000: `${CHECKOUT_BASE}100k-standard-evaluation/`,
+    150000: `${CHECKOUT_BASE}150k-standard-evaluation/`,
+  },
+  advanced: {
+    25000: `${CHECKOUT_BASE}25k-advanced-evaluation/`,
+    50000: `${CHECKOUT_BASE}50k-advanced-evaluation/`,
+    100000: `${CHECKOUT_BASE}100k-advanced-evaluation/`,
+    150000: `${CHECKOUT_BASE}150k-advanced-evaluation/`,
+  },
+  builder: {
+    25000: `${CHECKOUT_BASE}25k-builder-evaluation/`,
+    50000: `${CHECKOUT_BASE}50k-builder-evaluation/`,
+    100000: `${CHECKOUT_BASE}100k-builder-evaluation/`,
+    150000: `${CHECKOUT_BASE}150k-builder-evaluation/`,
+  },
+};
 
 const standardPricing = [
   {
@@ -310,9 +327,9 @@ const Pricing = () => {
       return;
     }
 
-    // Hand off to the WooCommerce store to pick + pay; YPF provisions the account.
+    const url = CHECKOUT_URLS[planType]?.[accountSize] ?? "https://checkout.dynastyfuturesdyn.com/";
     setLoadingKey(key);
-    window.location.href = CHECKOUT_STORE_URL;
+    window.location.href = url;
   };
 
   const currentPlan = planConfig[selectedPlan];

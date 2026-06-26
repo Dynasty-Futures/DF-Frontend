@@ -19,6 +19,15 @@ export interface TradingAccountType {
   displayName: string;
   accountSize: string; // Prisma Decimal → string
   profitSplit: number;
+  price: string; // Prisma Decimal → string
+}
+
+export interface BillingChallenge {
+  id: string;
+  phase: string;
+  status: string;
+  amountPaid: string | null;
+  startedAt: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -27,6 +36,7 @@ export interface TradingAccountType {
 
 export interface TradingAccount extends Account {
   accountType: TradingAccountType;
+  challenges?: BillingChallenge[];
 }
 
 // ---------------------------------------------------------------------------
