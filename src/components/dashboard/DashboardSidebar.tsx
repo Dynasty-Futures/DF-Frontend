@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Activity,
   Briefcase,
-  LineChart,
   CalendarClock,
   Receipt,
   ArrowDownToLine,
@@ -20,7 +19,9 @@ const siteIconSrc = '/favicon.png?v=20260406';
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: Activity },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Briefcase },
-  { name: 'Trade', path: '/dashboard/trade', icon: LineChart },
+  // 'Trade' tab is hidden until the in-app Volumetrica embed is unblocked — for
+  // now traders launch the platform via the "Launch Platform" button. The
+  // /dashboard/trade route + page are intentionally kept for when the embed works.
   { name: 'Economic Calendar', path: '/dashboard/economic-calendar', icon: CalendarClock },
   { name: 'Billing', path: '/dashboard/billing', icon: Receipt },
   { name: 'Payouts', path: '/dashboard/payouts', icon: ArrowDownToLine },
