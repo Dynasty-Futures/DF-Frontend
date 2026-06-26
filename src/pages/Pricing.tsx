@@ -496,7 +496,16 @@ const Pricing = () => {
 
                 {/* Data Display Table */}
                 <div className="rounded-xl border border-border/30 overflow-hidden mb-8">
-                  <table className="w-full text-sm">
+                  {/* table-fixed + explicit column widths so cell geometry
+                      stays constant when values change between sizes/plans —
+                      otherwise auto-layout resizes columns and the centered
+                      text visibly shifts on each click. */}
+                  <table className="w-full text-sm table-fixed">
+                    <colgroup>
+                      <col className="w-2/5" />
+                      <col className="w-[30%]" />
+                      <col className="w-[30%]" />
+                    </colgroup>
                     <thead>
                       <tr className="border-b border-border/30 bg-muted/20">
                         <th className="text-left py-4 px-5 font-semibold text-foreground">
