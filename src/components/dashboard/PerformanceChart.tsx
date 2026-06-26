@@ -198,7 +198,7 @@ const PerformanceChart = ({
           instead of stretching the axis. Flips to "breached" if equity dipped
           to it. The red line still renders when equity drops near it. */}
       {chartType === "equity" && hasMaxLoss && (
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div className="absolute bottom-14 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
           <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border text-destructive border-destructive/40 bg-destructive/10">
             {maxLossBreached
               ? "✗ Max loss breached"

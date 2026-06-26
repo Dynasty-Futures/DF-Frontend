@@ -322,7 +322,7 @@ const BuilderPanel = ({
                     if (day.isCurrentMonth && !day.isSaturday) {
                       onDateChange(day.date);
                       navigate(
-                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}`,
+                        `/dashboard/journal/${format(day.date, "yyyy-MM-dd")}?account=${encodeURIComponent(accountId)}`,
                       );
                     }
                   }}
@@ -537,7 +537,7 @@ const BuilderPanel = ({
                           value,
                         ).toLocaleString()}`}
                       >
-                        <span className="text-[10px] font-medium text-foreground/80 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="text-[10px] font-medium text-foreground/90">
                           {value >= 0 ? "+" : "-"}$
                           {Math.abs(value).toLocaleString()}
                         </span>
