@@ -23,6 +23,16 @@ export interface Streaks {
   currentStreak: number; // positive = winning, negative = losing
 }
 
+export interface ClosedTradePoint {
+  /** ISO close timestamp */
+  time: string;
+  /** Commission-netted realized P&L for this trade */
+  netPnl: number;
+  /** Running account equity after this trade closed */
+  equity: number;
+  symbol: string;
+}
+
 export interface AccountData {
   id: string;
   name: string;
@@ -55,6 +65,10 @@ export interface AccountData {
   streaks: Streaks;
   equityHistory: number[];
   dailyPnL: number[];
+  // Closed trades, oldest→newest by close time, with commission-netted P&L.
+  // Drives the per-trade running-equity curve so intraday dips/recoveries show
+  // instead of collapsing trades into one daily step.
+  closedTrades: ClosedTradePoint[];
   // Live platform fields (YPF) — only present on detail views with live data
   nextProgramName?: string;
   profitSplit?: number;
@@ -148,6 +162,7 @@ export const mockAccounts: AccountData[] = [
     },
     equityHistory: equity25K,
     dailyPnL: pnl25K,
+    closedTrades: [],
   },
   {
     id: '2',
@@ -196,6 +211,7 @@ export const mockAccounts: AccountData[] = [
     },
     equityHistory: equity50K,
     dailyPnL: pnl50K,
+    closedTrades: [],
   },
   {
     id: '3',
@@ -244,6 +260,7 @@ export const mockAccounts: AccountData[] = [
     },
     equityHistory: equity100K,
     dailyPnL: pnl100K,
+    closedTrades: [],
   },
 ];
 

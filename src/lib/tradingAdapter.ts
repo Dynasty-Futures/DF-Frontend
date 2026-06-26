@@ -10,7 +10,7 @@
 // =============================================================================
 
 import { differenceInCalendarDays } from 'date-fns';
-import type { AccountData } from '@/data/mockDashboardData';
+import type { AccountData, ClosedTradePoint } from '@/data/mockDashboardData';
 import type { Challenge } from '@/types/account';
 import type {
   AccountSnapshot,
@@ -25,6 +25,12 @@ const num = (v: string | number | null | undefined, fallback = 0): number => {
   const n = typeof v === 'number' ? v : Number(v);
   return Number.isFinite(n) ? n : fallback;
 };
+
+// Net realized P&L for a trade = gross realized P&L minus commission. YPF (and
+// the trader's platform) reports P&L net of commission, so every P&L figure we
+// derive — equity curve, calendar, day/session metrics — must net it too, or
+// our numbers drift above the platform's (e.g. $8,632 gross vs $6,806 net).
+const tradeNetPnl = (t: Trade): number => num(t.realizedPnl) - num(t.commission);
 
 // ---------------------------------------------------------------------------
 // Plan detection — backend doesn't have an explicit plan column. Best signal
@@ -136,7 +142,7 @@ const buildSeriesFromTrades = (
     .filter((t) => t.exitTime && t.realizedPnl !== null)
     .map((t) => ({
       day: new Date(t.exitTime as string).toISOString().slice(0, 10),
-      pnl: num(t.realizedPnl),
+      pnl: tradeNetPnl(t),
     }));
 
   if (!closed.length) {
@@ -168,6 +174,39 @@ const buildSeriesFromTrades = (
 };
 
 // ---------------------------------------------------------------------------
+// Closed trades → per-trade running-equity points (oldest→newest by close
+// time), starting from the account's true starting balance. This is what the
+// platform plots: equity steps once per closed trade (net of commission), so a
+// losing trade early in the session shows a dip before later wins recover it —
+// instead of collapsing a whole day into a single bar.
+// ---------------------------------------------------------------------------
+
+const buildClosedTrades = (
+  trades: Trade[],
+  startingBalance: number,
+): ClosedTradePoint[] => {
+  const closed = trades
+    .filter((t) => t.exitTime && t.realizedPnl !== null)
+    .sort(
+      (a, b) =>
+        new Date(a.exitTime as string).getTime() -
+        new Date(b.exitTime as string).getTime(),
+    );
+
+  let equity = startingBalance;
+  return closed.map((t) => {
+    const netPnl = tradeNetPnl(t);
+    equity += netPnl;
+    return {
+      time: t.exitTime as string,
+      netPnl,
+      equity,
+      symbol: t.symbol,
+    };
+  });
+};
+
+// ---------------------------------------------------------------------------
 // Trades → win rate, avg win, avg loss, gross profit/loss, session perf,
 // day-of-week perf, streaks. All derived; if no trades, fields zero out.
 // ---------------------------------------------------------------------------
@@ -195,7 +234,7 @@ const computeMetrics = (trades: Trade[]): {
   streaks: AccountData['streaks'];
 } => {
   const closed = trades.filter((t) => t.exitTime && t.realizedPnl !== null);
-  const pnls = closed.map((t) => num(t.realizedPnl));
+  const pnls = closed.map((t) => tradeNetPnl(t));
   const wins = pnls.filter((p) => p > 0);
   const losses = pnls.filter((p) => p < 0);
   const grossProfit = wins.reduce((s, p) => s + p, 0);
@@ -218,7 +257,7 @@ const computeMetrics = (trades: Trade[]): {
   };
 
   for (const t of closed) {
-    const pnl = num(t.realizedPnl);
+    const pnl = tradeNetPnl(t);
     const entry = new Date(t.entryTime);
     const dayKey = entry.toISOString().slice(0, 10);
     byDay.set(dayKey, (byDay.get(dayKey) ?? 0) + pnl);
@@ -342,6 +381,7 @@ export const adaptAccountView = (
     streaks: derived.streaks,
     equityHistory: series.equityHistory,
     dailyPnL: series.dailyPnL,
+    closedTrades: buildClosedTrades(trades, startingBalance),
     ...(live?.nextProgramName ? { nextProgramName: live.nextProgramName } : {}),
     ...(live?.profitSplit !== undefined ? { profitSplit: live.profitSplit } : {}),
     ...(live?.profitTradingDays !== undefined

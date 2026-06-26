@@ -47,4 +47,5 @@ export const EMPTY_ACCOUNT_DATA: AccountData = {
   },
   equityHistory: [],
   dailyPnL: [],
+  closedTrades: [],
 };
