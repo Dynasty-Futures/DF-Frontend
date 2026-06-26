@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useTradingAccounts, useLiveAccount, tradingKeys } from "@/hooks/useTrading";
 import { useAccountView } from "@/hooks/useAccountView";
+import { useSelectedAccount } from "@/hooks/useSelectedAccount";
 import { buildChartData } from "@/lib/chartData";
 
 const DashboardHome = () => {
@@ -48,16 +49,10 @@ const DashboardHome = () => {
   const accountsQ = useTradingAccounts();
   const accounts = useMemo(() => accountsQ.data?.data ?? [], [accountsQ.data]);
 
-  const urlAccountId = searchParams.get("account") ?? undefined;
-  const [selectedAccount, setSelectedAccount] = useState<string>(
-    urlAccountId ?? "",
-  );
-
-  useEffect(() => {
-    if (!selectedAccount && accounts.length > 0) {
-      setSelectedAccount(urlAccountId ?? accounts[0].id);
-    }
-  }, [accounts, selectedAccount, urlAccountId]);
+  // Persisted selection: ?account= URL param + localStorage. Survives refreshes
+  // and round-trips into the calendar/journal and back.
+  const accountIds = useMemo(() => accounts.map((a) => a.id), [accounts]);
+  const [selectedAccount, setSelectedAccount] = useSelectedAccount(accountIds);
 
   const [dateRange, setDateRange] = useState("daily");
   const [chartType, setChartType] = useState<"equity" | "pnl">("equity");

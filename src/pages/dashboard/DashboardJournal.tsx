@@ -1,5 +1,5 @@
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { useState, useEffect, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
   format,
   parseISO,
@@ -35,6 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useTradingAccounts, useAccountTrades } from "@/hooks/useTrading";
+import { useSelectedAccount } from "@/hooks/useSelectedAccount";
+import { useJournalEntry, useSaveJournalEntry } from "@/hooks/useJournal";
 import type { Trade } from "@/types/trading";
 
 const formatCurrency = (value: number, showSign = true) => {
@@ -71,7 +73,6 @@ const formatDuration = (entryIso: string, exitIso: string | null): string => {
 
 const DashboardJournal = () => {
   const { date } = useParams<{ date: string }>();
-  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const selectedDate = useMemo(() => {
@@ -87,19 +88,16 @@ const DashboardJournal = () => {
 
   const dateKey = format(selectedDate, "yyyy-MM-dd");
 
-  // Account selection — prefer ?account= query param, fall back to first.
+  // Account selection — shared with the dashboard via ?account= + localStorage,
+  // so opening a calendar day shows the account you were viewing (not the first
+  // in the list) and switching here persists back to the dashboard.
   const accountsQ = useTradingAccounts();
   const accounts = useMemo(
     () => accountsQ.data?.data ?? [],
     [accountsQ.data],
   );
-  const initialAccountId = searchParams.get("account") ?? "";
-  const [accountId, setAccountId] = useState<string>(initialAccountId);
-  useEffect(() => {
-    if (!accountId && accounts.length > 0) {
-      setAccountId(initialAccountId || accounts[0].id);
-    }
-  }, [accounts, accountId, initialAccountId]);
+  const accountIds = useMemo(() => accounts.map((a) => a.id), [accounts]);
+  const [accountId, setAccountId] = useSelectedAccount(accountIds);
 
   const tradesQ = useAccountTrades(accountId || undefined);
   const allTrades = useMemo(() => tradesQ.data?.data ?? [], [tradesQ.data]);
@@ -146,24 +144,49 @@ const DashboardJournal = () => {
     };
   }, [dayTrades]);
 
-  // Journal entry — local notes layer, persisted to localStorage.
+  // Journal entry — server-persisted per account + day, so notes follow the
+  // trader across devices.
+  const entryQ = useJournalEntry(accountId || undefined, dateKey);
+  const saveMut = useSaveJournalEntry(accountId || undefined);
+
   const [journalEntry, setJournalEntry] = useState("");
+  // Clear the editor immediately on account/date switch (no stale flash of the
+  // previous day's note while the new one loads).
+  const syncedKeyRef = useRef("");
   useEffect(() => {
-    const saved = localStorage.getItem(`journal-${dateKey}`);
-    setJournalEntry(saved ?? "");
-  }, [dateKey]);
+    setJournalEntry("");
+    syncedKeyRef.current = "";
+  }, [accountId, dateKey]);
+  // Seed the editor once the entry for the current account/date resolves.
+  useEffect(() => {
+    const key = `${accountId}|${dateKey}`;
+    if (entryQ.isSuccess && syncedKeyRef.current !== key) {
+      setJournalEntry(entryQ.data.data.content);
+      syncedKeyRef.current = key;
+    }
+  }, [entryQ.isSuccess, entryQ.data, accountId, dateKey]);
 
   const handleSave = () => {
-    localStorage.setItem(`journal-${dateKey}`, journalEntry);
-    toast.success("Journal entry saved");
+    if (!accountId) return;
+    saveMut.mutate(
+      { date: dateKey, content: journalEntry },
+      {
+        onSuccess: () => toast.success("Journal entry saved"),
+        onError: () => toast.error("Failed to save journal entry"),
+      },
+    );
   };
+
+  const accountQuery = accountId
+    ? `?account=${encodeURIComponent(accountId)}`
+    : "";
 
   const navigateDay = (direction: "prev" | "next") => {
     const newDate =
       direction === "prev"
         ? subDays(selectedDate, 1)
         : addDays(selectedDate, 1);
-    navigate(`/dashboard/journal/${format(newDate, "yyyy-MM-dd")}`);
+    navigate(`/dashboard/journal/${format(newDate, "yyyy-MM-dd")}${accountQuery}`);
   };
 
   return (
@@ -174,7 +197,7 @@ const DashboardJournal = () => {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate(`/dashboard${accountQuery}`)}
             className="gap-2"
           >
             <ArrowLeft size={16} />
@@ -471,9 +494,18 @@ const DashboardJournal = () => {
                     Journal Entry
                   </h3>
                 </div>
-                <Button size="sm" onClick={handleSave} className="gap-2">
-                  <Save size={14} />
-                  Save Entry
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={saveMut.isPending || !accountId}
+                  className="gap-2"
+                >
+                  {saveMut.isPending ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Save size={14} />
+                  )}
+                  {saveMut.isPending ? "Saving…" : "Save Entry"}
                 </Button>
               </div>
 
@@ -490,7 +522,8 @@ const DashboardJournal = () => {
               />
 
               <p className="text-xs text-muted-foreground mt-2">
-                Your journal entries are saved locally on this device.
+                Your journal entries are saved to your account and sync across
+                devices.
               </p>
             </div>
           </div>
