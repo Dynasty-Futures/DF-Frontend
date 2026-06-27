@@ -60,6 +60,14 @@ export interface User {
   role: UserRole;
   status: UserStatus;
   kycStatus: KycStatus;
+  // Optional profile/address fields (trader-editable on the dashboard profile).
+  dateOfBirth?: string | null;
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postalCode?: string | null;
+  country?: string | null;
+  timezone?: string | null;
   emailVerified: boolean;
   emailVerifiedAt: string | null;
   lastLoginAt: string | null;
