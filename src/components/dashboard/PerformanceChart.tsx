@@ -100,13 +100,23 @@ const PerformanceChart = ({
   // The target line stays out of the domain by design (shown as a top marker).
   const minBalance = Math.min(...allBalances, startingBalance);
   const maxBalance = Math.max(...allBalances, startingBalance);
-  const padding = Math.max((maxBalance - minBalance) * 0.15, 30);
+  // When equity is flat (an untouched account never moves off its starting
+  // balance), the range is 0 and a fixed ±$30 pad would squeeze the whole axis
+  // into one tick — every label rounds to the same "$50.0k". Fall back to a
+  // balance-proportional pad so the flat line sits mid-axis with distinct ticks.
+  const balanceRange = maxBalance - minBalance;
+  const padding =
+    balanceRange > 0
+      ? Math.max(balanceRange * 0.15, 30)
+      : Math.max(maxBalance * 0.02, 100);
 
   // Calculate P&L domain
   const allPnL = data.map((d) => d.pnl);
   const maxPnL = Math.max(...allPnL, 0);
   const minPnL = Math.min(...allPnL, 0);
-  const pnlPadding = Math.max(Math.abs(maxPnL), Math.abs(minPnL)) * 0.2;
+  // Same flat-case guard: an all-zero P&L series would collapse to a [0,0]
+  // domain and stack every tick on "$0.0k". Floor the pad so the axis reads.
+  const pnlPadding = Math.max(Math.abs(maxPnL), Math.abs(minPnL)) * 0.2 || 100;
 
   // Profit-target marker. The target ($start + profit target) almost always
   // sits ABOVE the equity-driven Y domain, so we keep the chart zoomed to real
