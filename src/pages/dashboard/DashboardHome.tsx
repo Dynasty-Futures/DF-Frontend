@@ -157,7 +157,7 @@ const DashboardHome = () => {
                   value={selectedAccount}
                   onValueChange={setSelectedAccount}
                 />
-                <OpenPlatformButton />
+                <OpenPlatformButton credentials={accountData?.credentials} />
               </>
             )}
             {/* New Challenge button — always visible in top-right */}
