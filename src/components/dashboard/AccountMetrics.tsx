@@ -15,7 +15,9 @@ import {
   Moon,
   Coffee,
 } from "lucide-react";
+import { useMemo } from "react";
 import { useAccountView } from "@/hooks/useAccountView";
+import { useAccountTrades } from "@/hooks/useTrading";
 import { EMPTY_ACCOUNT_DATA } from "@/lib/emptyAccountData";
 import {
   PieChart,
@@ -55,9 +57,96 @@ const SESSION_TIMES = {
   afternoon: "2:00-4:00",
 };
 
+const toNum = (v: string | number | null | undefined): number => {
+  if (v === null || v === undefined) return 0;
+  const n = typeof v === "number" ? v : parseFloat(v);
+  return Number.isFinite(n) ? n : 0;
+};
+
+// Symbols arrive like "ES.CME" / "MNQ.CME"; color by the root ticker.
+const colorForSymbol = (name: string): string => {
+  const root = name.split(/[.\-/]/)[0]?.toUpperCase() ?? name;
+  return (
+    INSTRUMENT_COLORS[root as keyof typeof INSTRUMENT_COLORS] ||
+    "hsl(var(--muted-foreground))"
+  );
+};
+
+const fmtDuration = (mins: number): string => {
+  if (mins <= 0) return "—";
+  if (mins < 60) return `${Math.round(mins)}m`;
+  const h = Math.floor(mins / 60);
+  const m = Math.round(mins % 60);
+  return m > 0 ? `${h}h ${m}m` : `${h}h`;
+};
+
 const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
   const { data: rawAccountData } = useAccountView(accountId);
   const accountData = rawAccountData ?? EMPTY_ACCOUNT_DATA;
+  const { data: tradesData } = useAccountTrades(accountId || undefined);
+  const trades = useMemo(() => tradesData?.data ?? [], [tradesData]);
+
+  // Derive instrument breakdown, trade direction, and avg duration from real
+  // closed trades (commission-netted, consistent with the rest of the dashboard).
+  const derived = useMemo(() => {
+    const closed = trades.filter((t) => t.exitTime && t.realizedPnl !== null);
+    const net = (t: (typeof closed)[number]) =>
+      toNum(t.realizedPnl) - toNum(t.commission);
+
+    const bySymbol = new Map<
+      string,
+      { name: string; trades: number; wins: number; pnl: number }
+    >();
+    for (const t of closed) {
+      const g = bySymbol.get(t.symbol) ?? {
+        name: t.symbol,
+        trades: 0,
+        wins: 0,
+        pnl: 0,
+      };
+      const p = net(t);
+      g.trades += 1;
+      g.pnl += p;
+      if (p > 0) g.wins += 1;
+      bySymbol.set(t.symbol, g);
+    }
+
+    const breakdown = Array.from(bySymbol.values())
+      .map((g) => ({
+        name: g.name,
+        trades: g.trades,
+        winRate: g.trades ? Math.round((g.wins / g.trades) * 100) : 0,
+        pnl: g.pnl,
+        avgPnl: g.trades ? g.pnl / g.trades : 0,
+      }))
+      .sort((a, b) => b.trades - a.trades);
+
+    const longs = closed.filter((t) => t.side === "BUY").length;
+    const total = closed.length;
+    const durations = closed
+      .map((t) =>
+        t.exitTime
+          ? (new Date(t.exitTime).getTime() - new Date(t.entryTime).getTime()) /
+            60000
+          : 0,
+      )
+      .filter((d) => d > 0);
+
+    return {
+      breakdown,
+      totalTrades: total,
+      totalPnl: closed.reduce((s, t) => s + net(t), 0),
+      tradeDirection: total
+        ? {
+            long: Math.round((longs / total) * 100),
+            short: Math.round(((total - longs) / total) * 100),
+          }
+        : { long: 0, short: 0 },
+      avgDurationMin: durations.length
+        ? durations.reduce((a, b) => a + b, 0) / durations.length
+        : 0,
+    };
+  }, [trades]);
 
   const formatCurrency = (value: number, showSign = false) => {
     const formatted = `$${Math.abs(value).toLocaleString()}`;
@@ -93,18 +182,17 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
 
   const bestSession = sessionData.reduce((a, b) => (a.value > b.value ? a : b));
 
-  // TODO: replace with real instrument breakdown from CRM/broker API
-  const instrumentBreakdown: Array<{name: string; trades: number; winRate: number; pnl: number; avgPnl: number}> = [];
+  const instrumentBreakdown = derived.breakdown;
+  const totalTrades = derived.totalTrades;
+  const totalPnl = derived.totalPnl;
 
-  const totalTrades = 0;
-  const totalPnl = 0;
-
-  const sortedByWinRate = [...instrumentBreakdown];
+  const sortedByWinRate = [...instrumentBreakdown].sort(
+    (a, b) => b.winRate - a.winRate,
+  );
   const hasInstrumentData = instrumentBreakdown.length > 0;
 
-  // TODO: derive from real trade data
-  const tradeDirection = { long: 0, short: 0 };
-  const hasTradeDirection = tradeDirection.long > 0 || tradeDirection.short > 0;
+  const tradeDirection = derived.tradeDirection;
+  const hasTradeDirection = totalTrades > 0;
 
   // Get color for profit factor
   const getProfitFactorColor = () => {
@@ -162,7 +250,11 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                 Avg. Duration
               </span>
             </div>
-            <span className="text-lg font-bold text-foreground">—</span>
+            <span className="text-lg font-bold text-foreground">
+              {derived.avgDurationMin > 0
+                ? fmtDuration(derived.avgDurationMin)
+                : "—"}
+            </span>
           </div>
         </div>
       </div>
@@ -390,7 +482,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                         {instrumentBreakdown.map((entry) => (
                           <Cell
                             key={entry.name}
-                            fill={INSTRUMENT_COLORS[entry.name as keyof typeof INSTRUMENT_COLORS] || "hsl(var(--muted-foreground))"}
+                            fill={colorForSymbol(entry.name)}
                           />
                         ))}
                       </Pie>
@@ -405,11 +497,11 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                   {instrumentBreakdown.map((inst) => (
                     <div key={inst.name} className="flex items-center gap-3">
                       <div className="flex items-center gap-2 min-w-[50px]">
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: colorForSymbol(inst.name) }} />
                         <span className="text-xs font-medium text-foreground">{inst.name}</span>
                       </div>
                       <div className="flex-1 h-2 rounded-full bg-muted/20 overflow-hidden">
-                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(inst.trades / totalTrades) * 100}%`, backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(inst.trades / totalTrades) * 100}%`, backgroundColor: colorForSymbol(inst.name) }} />
                       </div>
                       <span className="text-[10px] text-muted-foreground min-w-[45px] text-right">{inst.trades} trades</span>
                     </div>
@@ -429,7 +521,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                   {sortedByWinRate.map((inst, index) => (
                     <div key={inst.name} className="flex items-center gap-3">
                       <div className="flex items-center gap-2 min-w-[50px]">
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: colorForSymbol(inst.name) }} />
                         <span className="text-xs font-medium text-foreground">{inst.name}</span>
                       </div>
                       <div className="flex-1 h-3 rounded-full bg-muted/20 overflow-hidden">
@@ -459,7 +551,7 @@ const AccountMetrics = ({ accountId }: AccountMetricsProps) => {
                   {instrumentBreakdown.map((inst) => (
                     <div key={inst.name} className="p-3 rounded-lg bg-muted/10 border border-border/20 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: INSTRUMENT_COLORS[inst.name as keyof typeof INSTRUMENT_COLORS] }} />
+                        <div className="w-3 h-3 rounded-full" style={{ backgroundColor: colorForSymbol(inst.name) }} />
                         <span className="text-sm font-medium text-foreground">{inst.name}</span>
                       </div>
                       <div className="text-right">

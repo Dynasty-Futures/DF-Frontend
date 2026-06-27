@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Eye, ChevronRight, RotateCcw, AlertCircle, Loader2, Plus } from "lucide-react";
-import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,16 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useTradingAccounts } from "@/hooks/useTrading";
+import ResetAccountModal, {
+  type ResetAccountTarget,
+} from "@/components/dashboard/ResetAccountModal";
 import type { TradingAccount, AccountStatus } from "@/types/trading";
 
 type StageLabel = "Evaluation" | "Funded" | "Closed";
@@ -31,6 +25,7 @@ interface AccountView {
   startDate: string;
   planType: string;
   accountSize: string;
+  accountSizeUsd: number;
   stage: StageLabel;
   status: StatusLabel;
   rawStatus: AccountStatus;
@@ -76,11 +71,15 @@ const toView = (a: TradingAccount): AccountView => ({
   startDate: fmtDate(a.activatedAt ?? a.createdAt),
   planType: a.accountType.displayName || a.accountType.name,
   accountSize: fmtUsd(a.accountType.accountSize),
+  accountSizeUsd: Number(a.accountType.accountSize) || 0,
   stage: STAGE_BY_STATUS[a.status],
   status: STATUS_LABEL_BY_STATUS[a.status],
   rawStatus: a.status,
   balance: fmtUsd(a.currentBalance),
-  isResettable: a.status === "EVALUATION" || a.status === "PHASE_2",
+  // Reset applies to violated (breached) accounts — restart the evaluation in
+  // the same program. Not active accounts (no reason to reset a live one) and
+  // not permanently CLOSED/disabled accounts (YPF won't reset those).
+  isResettable: a.status === "FAILED" || a.status === "SUSPENDED",
 });
 
 const getStatusBadge = (status: StatusLabel): string => {
@@ -101,86 +100,40 @@ const getStageBadge = (stage: StageLabel): string => {
   return styles[stage];
 };
 
-// =============================================================================
-// Reset pricing
-// TODO: Replace with real plan/size pricing data from CRM or pricing API once
-//       account billing integration is complete.
-// =============================================================================
-
-type PlanKey = "standard" | "advanced" | "builder";
-type SizeKey = "25k" | "50k" | "100k" | "150k";
-
-interface ResetPricing {
-  evalReset: number;
-  fundedReset: number;
-}
-
-const RESET_PRICING: Record<PlanKey, Record<SizeKey, ResetPricing>> = {
-  standard: {
-    "25k": { evalReset: 30, fundedReset: 119 },
-    "50k": { evalReset: 40, fundedReset: 159 },
-    "100k": { evalReset: 65, fundedReset: 259 },
-    "150k": { evalReset: 80, fundedReset: 319 },
-  },
-  advanced: {
-    "25k": { evalReset: 40, fundedReset: 159 },
-    "50k": { evalReset: 55, fundedReset: 219 },
-    "100k": { evalReset: 90, fundedReset: 359 },
-    "150k": { evalReset: 115, fundedReset: 459 },
-  },
-  builder: {
-    "25k": { evalReset: 55, fundedReset: 219 },
-    "50k": { evalReset: 75, fundedReset: 299 },
-    "100k": { evalReset: 120, fundedReset: 479 },
-    "150k": { evalReset: 150, fundedReset: 599 },
-  },
-};
-
-function resolvePlanKey(planType: string): PlanKey {
-  const lc = planType.toLowerCase();
-  if (lc.includes("builder")) return "builder";
-  if (lc.includes("advanced")) return "advanced";
-  return "standard";
-}
-
-function resolveSizeKey(rawSize: number): SizeKey {
-  if (rawSize <= 25000) return "25k";
-  if (rawSize <= 50000) return "50k";
-  if (rawSize <= 100000) return "100k";
-  return "150k";
-}
-
-interface ResetPriceInfo {
-  price: number;
-  resetType: "Evaluation Reset" | "Funded Reset";
-}
-
-function getResetPriceInfo(account: AccountView): ResetPriceInfo | null {
-  const planKey = resolvePlanKey(account.planType);
-  const rawSize = parseInt(account.accountSize.replace(/[^0-9]/g, ""), 10);
-  if (isNaN(rawSize) || rawSize === 0) return null;
-  const sizeKey = resolveSizeKey(rawSize);
-  const pricing = RESET_PRICING[planKey]?.[sizeKey];
-  if (!pricing) return null;
-  const isFunded = account.stage === "Funded";
-  return {
-    price: isFunded ? pricing.fundedReset : pricing.evalReset,
-    resetType: isFunded ? "Funded Reset" : "Evaluation Reset",
-  };
-}
-
-const truncateId = (id: string) => id.length > 12 ? `${id.slice(0, 8)}…` : id;
+const truncateId = (id: string) => (id.length > 12 ? `${id.slice(0, 8)}…` : id);
 
 // =============================================================================
 // Sub-components
 // =============================================================================
 
-interface ActiveAccountsTableProps {
-  accounts: AccountView[];
-  onReset: (account: AccountView) => void;
-}
+const ViewButton = ({ id }: { id: string }) => (
+  <Button
+    variant="outline"
+    size="sm"
+    className="border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all"
+    asChild
+  >
+    <Link to={`/dashboard?account=${id}`}>
+      <Eye size={16} className="mr-2" />
+      View
+      <ChevronRight size={14} className="ml-1" />
+    </Link>
+  </Button>
+);
 
-const ActiveAccountsTable = ({ accounts, onReset }: ActiveAccountsTableProps) => {
+const ResetButton = ({ onClick }: { onClick: () => void }) => (
+  <Button
+    variant="outline"
+    size="sm"
+    className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
+    onClick={onClick}
+  >
+    <RotateCcw size={14} className="mr-2" />
+    Reset
+  </Button>
+);
+
+const ActiveAccountsTable = ({ accounts }: { accounts: AccountView[] }) => {
   if (accounts.length === 0) {
     return (
       <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-10 text-center text-muted-foreground">
@@ -191,7 +144,7 @@ const ActiveAccountsTable = ({ accounts, onReset }: ActiveAccountsTableProps) =>
   }
 
   return (
-    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-hidden">
+    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow className="border-border/30 hover:bg-transparent">
@@ -230,29 +183,7 @@ const ActiveAccountsTable = ({ accounts, onReset }: ActiveAccountsTableProps) =>
               <TableCell className="font-semibold text-foreground py-4">{account.balance}</TableCell>
               <TableCell className="text-right py-4">
                 <div className="flex items-center justify-end gap-2">
-                  {account.isResettable && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70 transition-all"
-                      onClick={() => onReset(account)}
-                    >
-                      <RotateCcw size={14} className="mr-2" />
-                      Reset
-                    </Button>
-                  )}
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50 transition-all"
-                    asChild
-                  >
-                    <Link to={`/dashboard?account=${account.id}`}>
-                      <Eye size={16} className="mr-2" />
-                      View
-                      <ChevronRight size={14} className="ml-1" />
-                    </Link>
-                  </Button>
+                  <ViewButton id={account.id} />
                 </div>
               </TableCell>
             </TableRow>
@@ -265,9 +196,10 @@ const ActiveAccountsTable = ({ accounts, onReset }: ActiveAccountsTableProps) =>
 
 interface InactiveAccountsTableProps {
   accounts: AccountView[];
+  onReset: (account: AccountView) => void;
 }
 
-const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
+const InactiveAccountsTable = ({ accounts, onReset }: InactiveAccountsTableProps) => {
   if (accounts.length === 0) {
     return (
       <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-10 text-center text-muted-foreground">
@@ -278,7 +210,7 @@ const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
   }
 
   return (
-    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-hidden">
+    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow className="border-border/30 hover:bg-transparent">
@@ -287,6 +219,7 @@ const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
             <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
             <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
             <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
+            <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -312,6 +245,14 @@ const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
                   {account.status}
                 </span>
               </TableCell>
+              <TableCell className="text-right py-4">
+                <div className="flex items-center justify-end gap-2">
+                  {account.isResettable && (
+                    <ResetButton onClick={() => onReset(account)} />
+                  )}
+                  <ViewButton id={account.id} />
+                </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -327,7 +268,8 @@ const InactiveAccountsTable = ({ accounts }: InactiveAccountsTableProps) => {
 const DashboardAccounts = () => {
   const { data, isLoading, isError, error } = useTradingAccounts();
 
-  const [resetModalAccount, setResetModalAccount] = useState<AccountView | null>(null);
+  const [resetTarget, setResetTarget] = useState<ResetAccountTarget | null>(null);
+  const [resetOpen, setResetOpen] = useState(false);
 
   const accounts = useMemo<AccountView[]>(
     () => (data?.data ?? []).map(toView),
@@ -344,17 +286,14 @@ const DashboardAccounts = () => {
     [accounts],
   );
 
-  const openResetModal = (account: AccountView) => setResetModalAccount(account);
-  const closeResetModal = () => setResetModalAccount(null);
-
-  // TODO: Connect to CRM account lookup, billing/checkout, and account reset
-  //       API once integration is complete.
-  const handleContinueToReset = () => {
-    toast.info("Reset checkout will be available once account billing is connected.");
-    closeResetModal();
+  const openReset = (account: AccountView) => {
+    setResetTarget({
+      planType: account.planType,
+      accountSizeUsd: account.accountSizeUsd,
+      isFunded: account.stage === "Funded",
+    });
+    setResetOpen(true);
   };
-
-  const resetPriceInfo = resetModalAccount ? getResetPriceInfo(resetModalAccount) : null;
 
   return (
     <div className="space-y-10 pt-16 lg:pt-0">
@@ -406,7 +345,7 @@ const DashboardAccounts = () => {
               </span>
             )}
           </div>
-          <ActiveAccountsTable accounts={activeAccounts} onReset={openResetModal} />
+          <ActiveAccountsTable accounts={activeAccounts} />
         </ScrollReveal>
       )}
 
@@ -422,62 +361,15 @@ const DashboardAccounts = () => {
               </span>
             )}
           </div>
-          <InactiveAccountsTable accounts={inactiveAccounts} />
+          <InactiveAccountsTable accounts={inactiveAccounts} onReset={openReset} />
         </ScrollReveal>
       )}
 
-      {/* Reset Account confirmation modal */}
-      <Dialog open={resetModalAccount !== null} onOpenChange={(open) => !open && closeResetModal()}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Reset Account</DialogTitle>
-            <DialogDescription asChild>
-              <div className="space-y-4 pt-1">
-                {resetModalAccount && (
-                  <>
-                    <div className="rounded-xl border border-border/30 bg-muted/20 p-4 space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Account</span>
-                        <span className="text-foreground font-medium">
-                          {resetModalAccount.accountSize} {resetModalAccount.planType}
-                        </span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Stage</span>
-                        <span className="text-foreground">{resetModalAccount.stage}</span>
-                      </div>
-                      {resetPriceInfo && (
-                        <>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Reset Type</span>
-                            <span className="text-foreground">{resetPriceInfo.resetType}</span>
-                          </div>
-                          <div className="flex justify-between border-t border-border/20 pt-2 mt-2">
-                            <span className="text-muted-foreground">Reset Price</span>
-                            <span className="text-foreground font-semibold">
-                              ${resetPriceInfo.price.toLocaleString()}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Resetting this account will require a reset purchase.
-                      {resetPriceInfo
-                        ? ` The reset price for this account is $${resetPriceInfo.price.toLocaleString()}.`
-                        : " Reset pricing will be calculated at checkout."}
-                    </p>
-                  </>
-                )}
-              </div>
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="gap-2 sm:gap-2">
-            <Button variant="outline" onClick={closeResetModal}>Cancel</Button>
-            <Button onClick={handleContinueToReset}>Continue to Reset</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ResetAccountModal
+        account={resetTarget}
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+      />
     </div>
   );
 };

@@ -28,7 +28,7 @@ const AccountSelector = ({ value, onValueChange }: AccountSelectorProps) => {
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-[300px] bg-card/50 border-border/30 backdrop-blur-sm rounded-xl h-11">
+      <SelectTrigger className="w-full sm:w-[300px] bg-card/50 border-border/30 backdrop-blur-sm rounded-xl h-11">
         <SelectValue
           placeholder={isLoading ? 'Loading accounts…' : 'Select account'}
         />

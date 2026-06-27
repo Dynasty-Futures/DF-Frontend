@@ -351,12 +351,14 @@ const SummaryPanel = ({
                   </div>
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-muted-foreground">Login</span>
+                      <span className="text-xs text-muted-foreground flex-shrink-0">
+                        Login
+                      </span>
                       <button
                         onClick={() =>
                           copyToClipboard(account.credentials!.login, "Login")
                         }
-                        className="text-xs font-mono text-foreground hover:text-primary transition-colors"
+                        className="text-xs font-mono text-foreground hover:text-primary transition-colors truncate min-w-0 text-right"
                         title="Click to copy"
                       >
                         {account.credentials.login}
@@ -465,7 +467,7 @@ const SummaryPanel = ({
                 >
                   <span
                     className={cn(
-                      "font-medium leading-none",
+                      "text-[11px] sm:text-xs font-medium leading-none",
                       day.isSelected && !day.isSaturday && "text-primary",
                       !day.isCurrentMonth && "text-muted-foreground/50",
                       day.isSaturday && day.isCurrentMonth && "text-muted-foreground/30",
@@ -478,7 +480,7 @@ const SummaryPanel = ({
                   {day.isCurrentMonth && !day.noTrades && !day.isSaturday && (
                     <span
                       className={cn(
-                        "text-[8px] font-semibold leading-none mt-0.5",
+                        "text-[10px] sm:text-xs font-semibold leading-none mt-1",
                         day.pnl > 0 ? "text-emerald-500" : "text-destructive",
                       )}
                     >
@@ -644,9 +646,9 @@ const SummaryPanel = ({
                   const getHeatmapColor = () => {
                     if (value === 0) return "bg-muted/30";
                     if (value > 0) {
-                      if (intensity > 0.7) return "bg-primary";
-                      if (intensity > 0.4) return "bg-primary/70";
-                      return "bg-primary/40";
+                      if (intensity > 0.7) return "bg-emerald-500";
+                      if (intensity > 0.4) return "bg-emerald-500/70";
+                      return "bg-emerald-500/40";
                     } else {
                       if (intensity > 0.7) return "bg-destructive";
                       if (intensity > 0.4) return "bg-destructive/70";
@@ -666,8 +668,7 @@ const SummaryPanel = ({
                         ).toLocaleString()}`}
                       >
                         <span className="text-[10px] font-medium text-foreground/90">
-                          {value >= 0 ? "+" : "-"}$
-                          {Math.abs(value).toLocaleString()}
+                          {value === 0 ? "$0" : fmtDayPnl(value)}
                         </span>
                       </div>
                       <span className="text-[10px] text-muted-foreground mt-1 block">
@@ -690,7 +691,7 @@ const SummaryPanel = ({
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded bg-primary" />
+                <div className="w-3 h-3 rounded bg-emerald-500" />
                 <span className="text-[9px] text-muted-foreground">Profit</span>
               </div>
             </div>
