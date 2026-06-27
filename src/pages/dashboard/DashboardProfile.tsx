@@ -46,6 +46,13 @@ const KYC_PORTAL_URL = "https://admin.dynastyfuturesdyn.com";
 const DashboardProfile = () => {
   const { user, refreshUser } = useAuth();
 
+  // The DF User model only stores name/email/phone. Country, city, postal code,
+  // address and date of birth live on the YPF trading-platform profile (the
+  // trader entered them at checkout) — pull them in so the profile isn't full
+  // of blank fields. Returns 400 (caught by the hook) until the user is linked.
+  const platformProfileQ = useUserPlatformProfile(user?.id);
+  const platformProfile = platformProfileQ.data?.data;
+
   // Personal info form state
   const [profileForm, setProfileForm] = useState({
     firstName: "",
@@ -104,21 +111,41 @@ const DashboardProfile = () => {
     "F2H7-X4Z9",
   ];
 
-  // Sync form when user loads or changes
+  // Sync the Personal Information form when the user / platform profile loads.
+  // Name/email/phone come from the DF user; country/city/DOB are backfilled from
+  // the YPF platform profile. Timezone has no source yet, so it stays editable.
   useEffect(() => {
     if (user) {
+      const dob = user.dateOfBirth ?? platformProfile?.birthday ?? "";
       setProfileForm({
         firstName: user.firstName ?? "",
         lastName: user.lastName ?? "",
-        dateOfBirth: "", // TODO: backend - populate when field is available
+        dateOfBirth: dob ? dob.slice(0, 10) : "",
         email: user.email ?? "",
-        phone: user.phone ?? "",
-        country: "", // TODO: backend - not yet on User model
-        city: "", // TODO: backend - not yet on User model
-        timezone: "", // TODO: backend - not yet on User model
+        phone: user.phone ?? platformProfile?.phone ?? "",
+        country: user.country ?? platformProfile?.country ?? "",
+        city: user.city ?? platformProfile?.city ?? "",
+        timezone: user.timezone ?? "",
       });
     }
-  }, [user]);
+  }, [user, platformProfile]);
+
+  // Backfill the Address Details from the user + platform profile so it isn't a
+  // wall of "—". Street/state may be blank when YPF doesn't have them.
+  useEffect(() => {
+    if (user) {
+      setAddressForm({
+        fullName: `${user.firstName ?? ""} ${user.lastName ?? ""}`.trim(),
+        email: user.email ?? "",
+        phone: user.phone ?? platformProfile?.phone ?? "",
+        streetAddress: user.address ?? platformProfile?.address ?? "",
+        city: user.city ?? platformProfile?.city ?? "",
+        state: user.state ?? platformProfile?.state ?? "",
+        postalCode: user.postalCode ?? platformProfile?.postalCode ?? "",
+        country: user.country ?? platformProfile?.country ?? "",
+      });
+    }
+  }, [user, platformProfile]);
 
   // KYC progress derived from user data
   const kycSteps = [
@@ -139,7 +166,10 @@ const DashboardProfile = () => {
           firstName: profileForm.firstName.trim(),
           lastName: profileForm.lastName.trim(),
           phone: profileForm.phone.trim() || null,
-          // TODO: backend - add dateOfBirth, city, country, timezone when supported
+          dateOfBirth: profileForm.dateOfBirth || null,
+          country: profileForm.country.trim() || null,
+          city: profileForm.city.trim() || null,
+          timezone: profileForm.timezone.trim() || null,
         },
       );
       await refreshUser();
@@ -167,13 +197,33 @@ const DashboardProfile = () => {
     });
   };
 
-  // TODO: backend - save address to user profile endpoint
-  const handleSaveAddress = () => {
-    setIsEditingAddress(false);
-    toast({
-      title: "Address saved",
-      description: "Address will sync once the backend endpoint is connected.",
-    });
+  const handleSaveAddress = async () => {
+    if (!user) return;
+    try {
+      await apiClient.patch<{ success: true; data: UserType }>(
+        `/users/${user.id}`,
+        {
+          phone: addressForm.phone.trim() || null,
+          address: addressForm.streetAddress.trim() || null,
+          city: addressForm.city.trim() || null,
+          state: addressForm.state.trim() || null,
+          postalCode: addressForm.postalCode.trim() || null,
+          country: addressForm.country.trim() || null,
+        },
+      );
+      await refreshUser();
+      setIsEditingAddress(false);
+      toast({
+        title: "Address saved",
+        description: "Your address has been updated.",
+      });
+    } catch (error) {
+      const message =
+        error instanceof ApiError
+          ? error.message
+          : "Failed to save address. Please try again.";
+      toast({ title: "Error", description: message, variant: "destructive" });
+    }
   };
 
   const copyBackupCodes = () => {
