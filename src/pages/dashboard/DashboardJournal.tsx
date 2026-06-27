@@ -195,13 +195,13 @@ const DashboardJournal = () => {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-4">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => navigate(`/dashboard${accountQuery}`)}
-            className="gap-2"
+            className="gap-2 border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
           >
             <ArrowLeft size={16} />
-            Back to Dashboard
+            Back to Calendar
           </Button>
         </div>
 

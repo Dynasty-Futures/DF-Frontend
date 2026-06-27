@@ -834,22 +834,22 @@ const DashboardAffiliate = () => {
                 Our affiliate support team is here for you.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
               <Button
                 onClick={() =>
                   (window.location.href =
                     "mailto:affiliates@dynastyfuturesdyn.com")
                 }
-                className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground h-auto min-h-10 whitespace-normal break-all text-center"
               >
-                <Mail size={16} className="mr-2" />
+                <Mail size={16} className="mr-2 flex-shrink-0" />
                 affiliates@dynastyfuturesdyn.com
               </Button>
               <Button
                 variant="outline"
                 className="border-border/30 hover:bg-card/70"
               >
-                <MessageCircle size={16} className="mr-2" />
+                <MessageCircle size={16} className="mr-2 flex-shrink-0" />
                 Open Support Ticket
               </Button>
             </div>

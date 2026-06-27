@@ -358,10 +358,20 @@ export const adaptAccountView = (
   const startingBalance = num(account.startingBalance);
   const currentBalance = num(account.currentBalance);
   const challenges = 'challenges' in account ? account.challenges : undefined;
-  const { profitTarget, maxDrawdown, dailyLossLimit } = challengeRules(
-    challenges,
-    startingBalance,
-  );
+  const plan = detectPlan(account);
+  const rules = challengeRules(challenges, startingBalance);
+  const { maxDrawdown, dailyLossLimit } = rules;
+  // A passed evaluation advances its challenge to the FUNDED phase, which carries
+  // a 0 profit target — so a passed/closed eval account would otherwise lose its
+  // target line entirely. Standard/Advanced are evaluation-based (~6% target), so
+  // fall back to that when the current challenge reports no target, keeping the
+  // (now-reached) target line on the chart. Builder/Dynasty are instant-funded
+  // and genuinely have no evaluation target → leave at 0 (no line).
+  const EVAL_TARGET_PCT = 6;
+  const profitTarget =
+    rules.profitTarget === 0 && (plan === 'Standard' || plan === 'Advanced')
+      ? (EVAL_TARGET_PCT / 100) * startingBalance
+      : rules.profitTarget;
 
   // Prefer real daily snapshots; fall back to a trade-derived series when the
   // backend has none (the common case, since YPF has no snapshot time series).
@@ -388,8 +398,8 @@ export const adaptAccountView = (
     id: account.id,
     name: account.accountType.displayName || account.accountType.name,
     size: num(account.accountType.accountSize, startingBalance),
-    plan: detectPlan(account),
-    planType: detectPlan(account),
+    plan,
+    planType: plan,
     stage: stageFor(account.status),
     status: uiStatusFor(account.status),
     startingBalance,

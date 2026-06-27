@@ -11,6 +11,7 @@ import {
   Loader2,
   AlertCircle,
   Plus,
+  RotateCcw,
 } from "lucide-react";
 import { format, isToday } from "date-fns";
 import { toast } from "sonner";
@@ -22,7 +23,11 @@ import PerformanceChart from "@/components/dashboard/PerformanceChart";
 import SummaryPanel from "@/components/dashboard/SummaryPanel";
 import BuilderPanel from "@/components/dashboard/BuilderPanel";
 import AccountMetrics from "@/components/dashboard/AccountMetrics";
+import AccountTradeLog from "@/components/dashboard/AccountTradeLog";
 import DailyAnalytics from "@/components/dashboard/DailyAnalytics";
+import ResetAccountModal, {
+  type ResetAccountTarget,
+} from "@/components/dashboard/ResetAccountModal";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useTradingAccounts, useLiveAccount, tradingKeys } from "@/hooks/useTrading";
@@ -57,6 +62,7 @@ const DashboardHome = () => {
   const [dateRange, setDateRange] = useState("daily");
   const [chartType, setChartType] = useState<"equity" | "pnl">("equity");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [resetOpen, setResetOpen] = useState(false);
 
   const view = useAccountView(selectedAccount || undefined);
   const liveQ = useLiveAccount(selectedAccount || undefined, {
@@ -132,7 +138,7 @@ const DashboardHome = () => {
               Overview of your funded trading performance
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
             {hasAccounts && (
               <>
                 {/* Date Range Selector */}
@@ -158,6 +164,17 @@ const DashboardHome = () => {
                   onValueChange={setSelectedAccount}
                 />
                 <OpenPlatformButton credentials={accountData?.credentials} />
+                {accountData?.status === "Violated" && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setResetOpen(true)}
+                    className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70"
+                  >
+                    <RotateCcw size={14} className="mr-2" />
+                    Reset Account
+                  </Button>
+                )}
               </>
             )}
             {/* New Challenge button — always visible in top-right */}
@@ -269,6 +286,17 @@ const DashboardHome = () => {
               <AccountMetrics accountId={selectedAccount} />
             </div>
           </div>
+
+          {/* Full account-wide trade log (all trades, not just one calendar day) */}
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <BarChart3 size={14} className="text-muted-foreground" />
+              <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
+                Trade Log
+              </span>
+            </div>
+            <AccountTradeLog accountId={selectedAccount} />
+          </div>
         </div>
       </ScrollReveal>
 
@@ -289,6 +317,20 @@ const DashboardHome = () => {
           <DailyAnalytics accountId={selectedAccount} selectedDate={selectedDate} />
         </div>
       </ScrollReveal>
+
+      <ResetAccountModal
+        account={
+          accountData
+            ? {
+                planType: accountData.plan,
+                accountSizeUsd: accountData.size,
+                isFunded: accountData.stage === "Funded",
+              }
+            : null
+        }
+        open={resetOpen}
+        onOpenChange={setResetOpen}
+      />
     </div>
   );
 };
