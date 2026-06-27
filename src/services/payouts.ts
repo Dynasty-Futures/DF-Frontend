@@ -9,6 +9,17 @@
 import { apiClient } from '@/services/api';
 import type { ApiResponse } from '@/types/api';
 
+/** One payout-eligibility rule's outcome, mirrored from the backend engine. */
+export interface PayoutRule {
+  key: string;
+  label: string;
+  passed: boolean;
+  enforced: boolean;
+  current?: number;
+  required?: number;
+  reason?: string;
+}
+
 export interface EligibleAccount {
   accountId: string;
   accountName: string;
@@ -18,6 +29,16 @@ export interface EligibleAccount {
   availableProfit: number;
   hasPendingPayout: boolean;
   eligible: boolean;
+  /** Per-rule eligibility breakdown for the UI checklist. */
+  rules: PayoutRule[];
+  /** Minimum a single request must be (0 = no minimum). */
+  minAmount: number;
+  /** Maximum a single request may be. */
+  maxAmount: number;
+  /** Trader's profit-split % on this account, when known. */
+  profitSplit?: number | null;
+  /** First blocking reason when ineligible. */
+  blockingReason?: string | null;
 }
 
 export type PayoutStatus =

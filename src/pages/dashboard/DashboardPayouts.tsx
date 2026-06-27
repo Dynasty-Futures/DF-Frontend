@@ -116,16 +116,28 @@ const PayoutRequestModal = ({ account, open, onOpenChange }: PayoutModalProps) =
 
   if (!account) return null;
 
+  const minAmount = account.minAmount ?? 0;
+  const maxAmount = account.maxAmount ?? account.availableProfit;
   const numericAmount = Number(amount);
   const amountValid =
     Number.isFinite(numericAmount) &&
     numericAmount > 0 &&
-    numericAmount <= account.availableProfit;
+    numericAmount >= minAmount &&
+    numericAmount <= maxAmount;
   const detailsValid =
     accountHolder.trim() !== "" &&
     accountNumber.trim() !== "" &&
     swiftBic.trim() !== "";
-  const canSubmit = amountValid && detailsValid && !requestPayout.isPending;
+  const canSubmit =
+    account.eligible && amountValid && detailsValid && !requestPayout.isPending;
+
+  // Net after the profit split (YPF keeps the rest). 0/undefined split = no split.
+  const split = account.profitSplit ?? 0;
+  const netAmount =
+    amountValid && split > 0 ? (numericAmount * split) / 100 : numericAmount;
+
+  // Rules the engine actually enforced — the meaningful checklist for the trader.
+  const enforcedRules = account.rules?.filter((r) => r.enforced) ?? [];
 
   const handleSubmit = () => {
     if (!canSubmit) return;
@@ -154,22 +166,93 @@ const PayoutRequestModal = ({ account, open, onOpenChange }: PayoutModalProps) =
         </DialogHeader>
 
         <div className="space-y-4 py-2">
+          {/* Eligibility checklist */}
+          {enforcedRules.length > 0 && (
+            <div className="rounded-lg border border-border/40 bg-muted/10 p-3 space-y-2">
+              <p className="text-xs font-medium text-muted-foreground">
+                Payout requirements
+              </p>
+              <ul className="space-y-1.5">
+                {enforcedRules.map((rule) => (
+                  <li
+                    key={rule.key}
+                    className="flex items-center gap-2 text-xs"
+                  >
+                    {rule.passed ? (
+                      <CheckCircle
+                        size={14}
+                        className="text-primary flex-shrink-0"
+                      />
+                    ) : (
+                      <XCircle
+                        size={14}
+                        className="text-destructive flex-shrink-0"
+                      />
+                    )}
+                    <span
+                      className={
+                        rule.passed
+                          ? "text-muted-foreground"
+                          : "text-foreground"
+                      }
+                    >
+                      {rule.label}
+                      {rule.required !== undefined &&
+                        rule.current !== undefined &&
+                        ` (${rule.current}/${rule.required})`}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Blocked banner */}
+          {!account.eligible && (
+            <div className="flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-3">
+              <AlertCircle
+                size={16}
+                className="text-destructive flex-shrink-0 mt-0.5"
+              />
+              <p className="text-xs text-destructive">
+                {account.blockingReason ??
+                  "This account is not eligible for a payout right now."}
+              </p>
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label htmlFor="amount">Amount ({account.currency})</Label>
             <Input
               id="amount"
               type="number"
-              min={0}
-              max={account.availableProfit}
+              min={minAmount}
+              max={maxAmount}
               step="0.01"
               placeholder="0.00"
               value={amount}
+              disabled={!account.eligible}
               onChange={(e) => setAmount(e.target.value)}
             />
+            <p className="text-xs text-muted-foreground">
+              {minAmount > 0
+                ? `Between ${formatCurrency(minAmount, account.currency)} and ${formatCurrency(maxAmount, account.currency)}.`
+                : `Up to ${formatCurrency(maxAmount, account.currency)} available.`}
+            </p>
             {amount !== "" && !amountValid && (
               <p className="text-xs text-destructive">
-                Enter an amount between $0 and{" "}
-                {formatCurrency(account.availableProfit, account.currency)}.
+                {minAmount > 0
+                  ? `Enter an amount between ${formatCurrency(minAmount, account.currency)} and ${formatCurrency(maxAmount, account.currency)}.`
+                  : `Enter an amount between $0 and ${formatCurrency(maxAmount, account.currency)}.`}
+              </p>
+            )}
+            {amountValid && split > 0 && (
+              <p className="text-xs text-muted-foreground">
+                After your {split}% profit split, you'll receive approximately{" "}
+                <span className="font-semibold text-foreground">
+                  {formatCurrency(netAmount, account.currency)}
+                </span>
+                .
               </p>
             )}
           </div>
@@ -407,14 +490,25 @@ const DashboardPayouts = () => {
                         <span className="text-xs text-muted-foreground">
                           Request in progress
                         </span>
-                      ) : (
-                        <Button
-                          size="sm"
-                          disabled={!account.eligible}
-                          onClick={() => openModal(account)}
-                        >
+                      ) : account.eligible ? (
+                        <Button size="sm" onClick={() => openModal(account)}>
                           Request Payout
                         </Button>
+                      ) : (
+                        <div className="flex flex-col items-end gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openModal(account)}
+                          >
+                            View Requirements
+                          </Button>
+                          {account.blockingReason && (
+                            <span className="text-[11px] text-muted-foreground max-w-[180px] text-right">
+                              {account.blockingReason}
+                            </span>
+                          )}
+                        </div>
                       )}
                     </TableCell>
                   </TableRow>
