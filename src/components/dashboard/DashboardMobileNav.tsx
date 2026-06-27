@@ -7,17 +7,18 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 /** Same asset as <link rel="icon"> in index.html */
 const siteIconSrc = '/favicon.png?v=20260406';
 
+// Order mirrors the desktop sidebar: primary items first, then Profile /
+// Affiliate / Help Center. 'Trade' stays hidden (launch via the "Launch
+// Platform" button); its route + page are kept for later.
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Wallet },
-  // 'Trade' tab hidden until the in-app Volumetrica embed is unblocked; traders
-  // launch via the "Launch Platform" button. Route + page kept for later.
-  { name: 'Economic Calendar', path: '/dashboard/economic-calendar', icon: CalendarClock },
   { name: 'Billing', path: '/dashboard/billing', icon: CreditCard },
   { name: 'Payouts', path: '/dashboard/payouts', icon: Banknote },
-  { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },
-  { name: 'Profile', path: '/dashboard/profile', icon: User },
   { name: 'Awards', path: '/dashboard/awards', icon: Trophy },
+  { name: 'Economic Calendar', path: '/dashboard/economic-calendar', icon: CalendarClock },
+  { name: 'Profile', path: '/dashboard/profile', icon: User },
+  { name: 'Affiliate', path: '/dashboard/affiliate', icon: Users },
   { name: 'Help Center', path: '/dashboard/help', icon: HelpCircle },
 ];
 
