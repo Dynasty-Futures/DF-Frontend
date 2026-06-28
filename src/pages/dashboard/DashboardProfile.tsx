@@ -38,6 +38,7 @@ import { ApiError } from "@/types/api";
 import type { User as UserType } from "@/types/user";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useUserPlatformProfile } from "@/hooks/useUsers";
+import { useKycStatus, useRequestKyc } from "@/hooks/useKyc";
 
 // KYC is completed in the YPF-hosted trading portal (it owns identity
 // verification); we surface status here and hand off to complete/resubmit.
@@ -52,6 +53,13 @@ const DashboardProfile = () => {
   // of blank fields. Returns 400 (caught by the hook) until the user is linked.
   const platformProfileQ = useUserPlatformProfile(user?.id);
   const platformProfile = platformProfileQ.data?.data;
+
+  // KYC status is synced from YPF (identity verification is hosted there). This
+  // refreshes on mount so the badge is truthful rather than the stale local
+  // default; falls back to the auth user's value while loading.
+  const kycQuery = useKycStatus(!!user);
+  const requestKycMutation = useRequestKyc();
+  const kycStatus = kycQuery.data?.data?.status ?? user?.kycStatus ?? "NOT_STARTED";
 
   // Personal info form state
   const [profileForm, setProfileForm] = useState({
@@ -147,11 +155,27 @@ const DashboardProfile = () => {
     }
   }, [user, platformProfile]);
 
+  // Initiate verification on YPF (flips their requestKyc flag) then hand off to
+  // the YPF-hosted Sumsub flow. We don't host Sumsub — YPF owns it and reports
+  // the result back via the synced kycStatus above.
+  const handleStartKyc = () => {
+    requestKycMutation.mutate(undefined, {
+      onSuccess: () =>
+        window.open(KYC_PORTAL_URL, "_blank", "noopener,noreferrer"),
+      onError: (e) =>
+        toast({
+          title: "Couldn't start verification",
+          description: e.message,
+          variant: "destructive",
+        }),
+    });
+  };
+
   // KYC progress derived from user data
   const kycSteps = [
     { label: "Email Verified", done: user?.emailVerified ?? false },
     { label: "Phone Verified", done: false },
-    { label: "ID Verification", done: user?.kycStatus === "APPROVED" },
+    { label: "ID Verification", done: kycStatus === "APPROVED" },
   ];
   const kycCompleted = kycSteps.filter((s) => s.done).length;
   const kycProgress = Math.round((kycCompleted / kycSteps.length) * 100);
@@ -284,17 +308,17 @@ const DashboardProfile = () => {
                 <p className="text-muted-foreground text-sm mt-1">{user?.email}</p>
                 <span
                   className={`inline-flex items-center gap-1.5 mt-2 text-xs font-semibold px-2.5 py-1 rounded-full ${
-                    user?.kycStatus === "APPROVED"
+                    kycStatus === "APPROVED"
                       ? "bg-primary/20 text-primary"
                       : "bg-yellow-500/20 text-yellow-500"
                   }`}
                 >
-                  {user?.kycStatus === "APPROVED" ? (
+                  {kycStatus === "APPROVED" ? (
                     <CheckCircle size={11} />
                   ) : (
                     <AlertCircle size={11} />
                   )}
-                  {user?.kycStatus === "APPROVED" ? "Verified" : "Unverified"}
+                  {kycStatus === "APPROVED" ? "Verified" : "Unverified"}
                 </span>
               </div>
             </div>
@@ -731,7 +755,7 @@ const DashboardProfile = () => {
               </div>
 
               {(() => {
-                const status = user?.kycStatus ?? "NOT_STARTED";
+                const status = kycStatus;
                 const cfg = {
                   APPROVED: {
                     cls: "bg-primary/10 border-primary/20 text-primary",
@@ -801,21 +825,25 @@ const DashboardProfile = () => {
 
               <p className="text-xs text-muted-foreground mt-6">
                 KYC status:{" "}
-                <span className="font-medium text-foreground">
-                  {user?.kycStatus ?? "NOT_STARTED"}
-                </span>
+                <span className="font-medium text-foreground">{kycStatus}</span>
               </p>
 
-              {user?.kycStatus !== "APPROVED" && user?.kycStatus !== "PENDING" && (
+              {kycStatus !== "APPROVED" && kycStatus !== "PENDING" && (
                 <Button
-                  asChild
+                  onClick={handleStartKyc}
+                  disabled={requestKycMutation.isPending}
                   className="w-full mt-4 btn-gradient-animated text-primary-foreground py-6 text-base"
                 >
-                  <a href={KYC_PORTAL_URL} target="_blank" rel="noopener noreferrer">
-                    {user?.kycStatus === "REJECTED"
-                      ? "Resubmit Verification"
-                      : "Start Verification"}
-                  </a>
+                  {requestKycMutation.isPending ? (
+                    <>
+                      <Loader2 size={16} className="mr-2 animate-spin" />
+                      Starting…
+                    </>
+                  ) : kycStatus === "REJECTED" ? (
+                    "Resubmit Verification"
+                  ) : (
+                    "Start Verification"
+                  )}
                 </Button>
               )}
             </div>
