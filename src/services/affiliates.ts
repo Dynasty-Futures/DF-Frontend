@@ -9,6 +9,32 @@
 // =============================================================================
 
 import { apiClient } from '@/services/api';
+import type { ApiResponse } from '@/types/api';
+
+export type AffiliateApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type AffiliateCouponStatus = 'CREATED' | 'APPROVED' | 'REJECTED';
+
+export interface AffiliateCouponView {
+  code: string;
+  discountType: string | null;
+  discountValue: number;
+  status: AffiliateCouponStatus;
+}
+
+/**
+ * The user's affiliate state, sourced from webhook-mirrored data. Earnings,
+ * clicks, and tier metrics require the affiliate-platform service token and are
+ * intentionally absent — the UI renders them as "syncing".
+ */
+export interface MyAffiliateStatus {
+  hasApplied: boolean;
+  status: AffiliateApplicationStatus | null;
+  isApproved: boolean;
+  preferredCode: string | null;
+  referralCode: string | null;
+  appliedAt: string | null;
+  coupons: AffiliateCouponView[];
+}
 
 export interface AffiliateApplicationInput {
   websiteUrl?: string;
@@ -44,4 +70,11 @@ export const affiliateService = {
    */
   apply: (data: AffiliateApplicationInput): Promise<AffiliateApplicationResponse> =>
     apiClient.post<AffiliateApplicationResponse>('/affiliates/apply', data),
+
+  /**
+   * The current user's affiliate status, referral code, and discount coupons.
+   * GET /v1/affiliates/me
+   */
+  me: (): Promise<ApiResponse<MyAffiliateStatus>> =>
+    apiClient.get<ApiResponse<MyAffiliateStatus>>('/affiliates/me'),
 } as const;
