@@ -42,7 +42,9 @@ import { useKycStatus, useRequestKyc } from "@/hooks/useKyc";
 
 // KYC is completed in the YPF-hosted trading portal (it owns identity
 // verification); we surface status here and hand off to complete/resubmit.
-const KYC_PORTAL_URL = "https://admin.dynastyfuturesdyn.com";
+// Deep-link straight to the verification page (the bare dashboard root drops
+// the trader on their dashboard, not the Sumsub verification flow).
+const KYC_PORTAL_URL = "https://admin.dynastyfuturesdyn.com/verifications";
 
 const DashboardProfile = () => {
   const { user, refreshUser } = useAuth();
@@ -155,13 +157,23 @@ const DashboardProfile = () => {
     }
   }, [user, platformProfile]);
 
+  const openVerificationPortal = () =>
+    window.open(KYC_PORTAL_URL, "_blank", "noopener,noreferrer");
+
   // Initiate verification on YPF (flips their requestKyc flag) then hand off to
   // the YPF-hosted Sumsub flow. We don't host Sumsub — YPF owns it and reports
   // the result back via the synced kycStatus above.
+  //
+  // Only NOT_STARTED needs the request call. Once it's PENDING/REJECTED the
+  // verification already exists on YPF's side — re-requesting 400s ("KYC already
+  // requested"), so "Continue/Resubmit" just deep-links to the verification page.
   const handleStartKyc = () => {
+    if (kycStatus === "PENDING" || kycStatus === "REJECTED") {
+      openVerificationPortal();
+      return;
+    }
     requestKycMutation.mutate(undefined, {
-      onSuccess: () =>
-        window.open(KYC_PORTAL_URL, "_blank", "noopener,noreferrer"),
+      onSuccess: openVerificationPortal,
       onError: (e) =>
         toast({
           title: "Couldn't start verification",
