@@ -828,7 +828,7 @@ const DashboardProfile = () => {
                 <span className="font-medium text-foreground">{kycStatus}</span>
               </p>
 
-              {kycStatus !== "APPROVED" && kycStatus !== "PENDING" && (
+              {kycStatus !== "APPROVED" && (
                 <Button
                   onClick={handleStartKyc}
                   disabled={requestKycMutation.isPending}
@@ -837,10 +837,12 @@ const DashboardProfile = () => {
                   {requestKycMutation.isPending ? (
                     <>
                       <Loader2 size={16} className="mr-2 animate-spin" />
-                      Starting…
+                      {kycStatus === "PENDING" ? "Resuming…" : "Starting…"}
                     </>
                   ) : kycStatus === "REJECTED" ? (
                     "Resubmit Verification"
+                  ) : kycStatus === "PENDING" ? (
+                    "Continue Verification"
                   ) : (
                     "Start Verification"
                   )}
