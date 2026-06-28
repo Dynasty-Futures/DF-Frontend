@@ -206,19 +206,29 @@ const DashboardAffiliate = () => {
           </div>
         ) : applicationStatus === "PENDING" ? (
           <div className="rounded-2xl bg-gold-dark/5 backdrop-blur-sm border border-gold-dark/30 p-6">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gold-dark/15 flex items-center justify-center shrink-0">
-                <Clock size={20} className="text-gold-dark" />
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gold-dark/15 flex items-center justify-center shrink-0">
+                  <Clock size={20} className="text-gold-dark" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">
+                    Your affiliate application is under review.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    We'll notify you once it's approved. Your referral link and
+                    discount code unlock automatically on approval. Need to
+                    update or resend it? You can re-apply below.
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground mb-1">
-                  Your affiliate application is under review.
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  We'll notify you once it's approved. Your referral link and
-                  discount code unlock automatically on approval.
-                </p>
-              </div>
+              <Button
+                variant="outline"
+                className="border-gold-dark/30 hover:bg-card/70 shrink-0"
+                onClick={() => setIsAffiliateModalOpen(true)}
+              >
+                Re-apply
+              </Button>
             </div>
           </div>
         ) : applicationStatus === "REJECTED" ? (
