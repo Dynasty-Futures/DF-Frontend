@@ -29,7 +29,25 @@ import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import { useAffiliateStatus } from "@/hooks/useAffiliate";
 import AffiliateRegistrationModal from "@/components/dashboard/AffiliateRegistrationModal";
+
+// Base used to build an affiliate's referral link from their referral code.
+// Adjust if YPF/WooCommerce expects a different referral URL scheme.
+const REFERRAL_LINK_BASE = "https://www.dynastyfuturesdyn.com/";
+
+const buildReferralLink = (code: string): string =>
+  `${REFERRAL_LINK_BASE}?ref=${encodeURIComponent(code)}`;
+
+const formatCouponDiscount = (
+  discountType: string | null,
+  discountValue: number
+): string | null => {
+  if (!discountValue) return null;
+  return discountType?.toLowerCase().includes("percent")
+    ? `${discountValue}% off`
+    : `$${discountValue} off`;
+};
 
 type AffiliateTier = "Community Affiliate" | "Growth Affiliate" | "Dynasty Partner";
 
@@ -71,23 +89,6 @@ const TIER_CONFIG: Record<AffiliateTier, TierConfig> = {
     nextSalesGoal: null,
     nextRevenueGoal: null,
   },
-};
-
-// Replace with real API response when affiliate backend is ready.
-// affiliateData is only displayed when isApprovedAffiliate is true.
-const affiliateData = {
-  referralLink: "https://dynastyfutures.com/ref/USER123",
-  discountCode: "DYNASTY15",
-  currentBalance: 1250.0,
-  totalEarned: 4800.0,
-  pendingPayouts: 450.0,
-  clicks: 1247,
-  signups: 89,
-  conversions: 34,
-  totalSales: 34,
-  currentTier: "Community Affiliate" as AffiliateTier,
-  qualifiedSales90d: 8,
-  referredRevenue90d: 1240.0,
 };
 
 const benefits = [
@@ -138,17 +139,31 @@ const documents = [
 ];
 
 const DashboardAffiliate = () => {
-  useAuth();
+  const { user } = useAuth();
 
   const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
 
-  // Drive this from user.affiliateStatus once the backend field is available.
-  // Until then all users are treated as non-affiliates.
-  const isApprovedAffiliate = false;
+  const { data: affiliateResponse } = useAffiliateStatus(Boolean(user));
+  const affiliate = affiliateResponse?.data;
 
-  const tierConfig = isApprovedAffiliate
-    ? TIER_CONFIG[affiliateData.currentTier]
-    : TIER_CONFIG["Community Affiliate"];
+  const applicationStatus = affiliate?.status ?? null;
+  const isApprovedAffiliate = affiliate?.isApproved ?? false;
+
+  // Referral link is built from the platform-assigned referral code (captured
+  // via the AffiliatePartnerRegistered webhook). It may not exist yet right
+  // after approval.
+  const referralLink = affiliate?.referralCode
+    ? buildReferralLink(affiliate.referralCode)
+    : null;
+
+  // Discount coupons mirrored from the affiliate platform's coupon webhooks.
+  const coupons = affiliate?.coupons ?? [];
+  const primaryCoupon =
+    coupons.find((c) => c.status === "APPROVED") ?? coupons[0] ?? null;
+
+  // Tier / earnings / performance data isn't available without the affiliate
+  // platform service token, so those sections render zeros + a "syncing" note.
+  const tierConfig = TIER_CONFIG["Community Affiliate"];
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -169,9 +184,78 @@ const DashboardAffiliate = () => {
         </div>
       </ScrollReveal>
 
-      {/* Non-Affiliate Status Banner */}
-      {!isApprovedAffiliate && (
-        <ScrollReveal delay={75}>
+      {/* Status Banner — reflects the live application status */}
+      <ScrollReveal delay={75}>
+        {isApprovedAffiliate ? (
+          <div className="rounded-2xl bg-primary/5 backdrop-blur-sm border border-primary/30 p-6">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
+                <Check size={20} className="text-primary" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">
+                  You're an approved Dynasty Futures affiliate.
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  Your referral link and discount code are below. Earnings and
+                  performance tracking sync once your affiliate analytics are
+                  connected.
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : applicationStatus === "PENDING" ? (
+          <div className="rounded-2xl bg-gold-dark/5 backdrop-blur-sm border border-gold-dark/30 p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gold-dark/15 flex items-center justify-center shrink-0">
+                  <Clock size={20} className="text-gold-dark" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">
+                    Your affiliate application is under review.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    We'll notify you once it's approved. Your referral link and
+                    discount code unlock automatically on approval. Need to
+                    update or resend it? You can re-apply below.
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="outline"
+                className="border-gold-dark/30 hover:bg-card/70 shrink-0"
+                onClick={() => setIsAffiliateModalOpen(true)}
+              >
+                Re-apply
+              </Button>
+            </div>
+          </div>
+        ) : applicationStatus === "REJECTED" ? (
+          <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-destructive/30 p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-destructive/15 flex items-center justify-center shrink-0">
+                  <X size={20} className="text-destructive" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground mb-1">
+                    Your affiliate application was not approved.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    You're welcome to review the guidelines below and reapply.
+                  </p>
+                </div>
+              </div>
+              <Button
+                className="bg-primary hover:bg-primary/90 text-primary-foreground shrink-0"
+                onClick={() => setIsAffiliateModalOpen(true)}
+              >
+                Reapply
+              </Button>
+            </div>
+          </div>
+        ) : (
           <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
@@ -190,8 +274,8 @@ const DashboardAffiliate = () => {
               </Button>
             </div>
           </div>
-        </ScrollReveal>
-      )}
+        )}
+      </ScrollReveal>
 
       {/* Referral Link & Discount Code */}
       <ScrollReveal delay={150} className="space-y-8">
@@ -206,18 +290,33 @@ const DashboardAffiliate = () => {
                 Your Referral Link
               </span>
             </div>
-            {isApprovedAffiliate ? (
+            {isApprovedAffiliate && referralLink ? (
               <>
                 <div className="bg-background/50 rounded-xl p-3 mb-4 border border-border/20">
                   <p className="text-sm text-foreground font-mono truncate">
-                    {affiliateData.referralLink}
+                    {referralLink}
                   </p>
                 </div>
                 <Button
-                  onClick={() =>
-                    copyToClipboard(affiliateData.referralLink, "Referral link")
-                  }
+                  onClick={() => copyToClipboard(referralLink, "Referral link")}
                   className="w-full bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20"
+                >
+                  <Copy size={16} className="mr-2" />
+                  Copy Link
+                </Button>
+              </>
+            ) : isApprovedAffiliate ? (
+              <>
+                <div className="bg-background/30 rounded-xl p-3 mb-4 border border-border/20 flex items-center gap-2">
+                  <Clock size={14} className="text-muted-foreground flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground italic">
+                    Your referral link is being generated — check back shortly.
+                  </p>
+                </div>
+                <Button
+                  disabled
+                  className="w-full opacity-40 cursor-not-allowed"
+                  variant="outline"
                 >
                   <Copy size={16} className="mr-2" />
                   Copy Link
@@ -253,21 +352,80 @@ const DashboardAffiliate = () => {
                 Customer Discount Code
               </span>
             </div>
-            {isApprovedAffiliate ? (
+            {isApprovedAffiliate && primaryCoupon ? (
               <>
                 <div className="bg-background/50 rounded-xl p-3 mb-2 border border-border/20">
                   <p className="text-lg text-foreground font-bold tracking-wider text-center">
-                    {affiliateData.discountCode}
+                    {primaryCoupon.code}
                   </p>
+                  {formatCouponDiscount(
+                    primaryCoupon.discountType,
+                    primaryCoupon.discountValue
+                  ) && (
+                    <p className="text-xs text-gold-dark font-semibold text-center mt-1">
+                      {formatCouponDiscount(
+                        primaryCoupon.discountType,
+                        primaryCoupon.discountValue
+                      )}
+                    </p>
+                  )}
                 </div>
                 <p className="text-xs text-muted-foreground text-center mb-4">
                   Share this code so your audience saves on their purchase
                 </p>
                 <Button
                   onClick={() =>
-                    copyToClipboard(affiliateData.discountCode, "Discount code")
+                    copyToClipboard(primaryCoupon.code, "Discount code")
                   }
                   className="w-full bg-gold-dark/10 hover:bg-gold-dark/20 text-gold-dark border border-gold-dark/20"
+                >
+                  <Copy size={16} className="mr-2" />
+                  Copy Code
+                </Button>
+                {coupons.length > 1 && (
+                  <div className="mt-4 pt-4 border-t border-border/20 space-y-2">
+                    <p className="text-xs text-muted-foreground">
+                      Your other codes
+                    </p>
+                    {coupons
+                      .filter((c) => c.code !== primaryCoupon.code)
+                      .map((c) => (
+                        <button
+                          key={c.code}
+                          onClick={() => copyToClipboard(c.code, "Discount code")}
+                          className="w-full flex items-center justify-between gap-2 bg-background/30 rounded-lg px-3 py-2 border border-border/20 hover:border-gold-dark/30 transition-colors text-left"
+                        >
+                          <span className="text-sm font-mono text-foreground">
+                            {c.code}
+                          </span>
+                          <span className="flex items-center gap-2">
+                            {formatCouponDiscount(c.discountType, c.discountValue) && (
+                              <span className="text-xs text-muted-foreground">
+                                {formatCouponDiscount(c.discountType, c.discountValue)}
+                              </span>
+                            )}
+                            <Copy size={14} className="text-muted-foreground" />
+                          </span>
+                        </button>
+                      ))}
+                  </div>
+                )}
+              </>
+            ) : isApprovedAffiliate ? (
+              <>
+                <div className="bg-background/30 rounded-xl p-3 mb-2 border border-border/20 flex items-center gap-2">
+                  <Clock size={14} className="text-muted-foreground flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground italic">
+                    Your discount code is being set up — check back shortly.
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground text-center mb-4">
+                  Share this code so your audience saves on their purchase
+                </p>
+                <Button
+                  disabled
+                  className="w-full opacity-40 cursor-not-allowed"
+                  variant="outline"
                 >
                   <Copy size={16} className="mr-2" />
                   Copy Code
@@ -324,7 +482,7 @@ const DashboardAffiliate = () => {
                     <div>
                       <p className="text-xs text-muted-foreground">Current Tier</p>
                       <p className={`text-base font-bold ${tierConfig.colorClass}`}>
-                        {affiliateData.currentTier}
+                        Community Affiliate
                       </p>
                     </div>
                   </div>
@@ -343,99 +501,30 @@ const DashboardAffiliate = () => {
                   </div>
                 </div>
 
-                {/* Rolling 90-day stats */}
+                {/* Rolling 90-day stats — sync pending */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-background/30 rounded-xl p-3 border border-border/20">
                     <p className="text-xs text-muted-foreground mb-1">
                       Qualified Sales (90-day)
                     </p>
-                    <p className="text-xl font-bold text-foreground">
-                      {affiliateData.qualifiedSales90d}
-                    </p>
+                    <p className="text-xl font-bold text-foreground">0</p>
                   </div>
                   <div className="bg-background/30 rounded-xl p-3 border border-border/20">
                     <p className="text-xs text-muted-foreground mb-1">
                       Referred Revenue (90-day)
                     </p>
-                    <p className="text-xl font-bold text-foreground">
-                      $
-                      {affiliateData.referredRevenue90d.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </p>
+                    <p className="text-xl font-bold text-foreground">$0.00</p>
                   </div>
                 </div>
 
-                {/* Progress toward next tier */}
-                {tierConfig.nextTier ? (
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-muted-foreground">
-                          Progress toward{" "}
-                          <span className="text-foreground font-medium">
-                            {tierConfig.nextTier}
-                          </span>
-                        </p>
-                        <p className="text-xs text-foreground font-medium">
-                          {affiliateData.qualifiedSales90d} /{" "}
-                          {tierConfig.nextSalesGoal} sales
-                        </p>
-                      </div>
-                      <div className="w-full bg-background/40 rounded-full h-2 border border-border/20">
-                        <div
-                          className="h-2 rounded-full bg-primary transition-all duration-700"
-                          style={{
-                            width: `${Math.min(
-                              (affiliateData.qualifiedSales90d /
-                                tierConfig.nextSalesGoal!) *
-                                100,
-                              100
-                            )}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    {tierConfig.nextRevenueGoal !== null && (
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <p className="text-xs text-muted-foreground">
-                            Revenue path (alternative to sales goal)
-                          </p>
-                          <p className="text-xs text-foreground font-medium">
-                            $
-                            {affiliateData.referredRevenue90d.toLocaleString(
-                              "en-US",
-                              { maximumFractionDigits: 0 }
-                            )}{" "}
-                            / $7,500
-                          </p>
-                        </div>
-                        <div className="w-full bg-background/40 rounded-full h-2 border border-border/20">
-                          <div
-                            className="h-2 rounded-full bg-gold-dark transition-all duration-700"
-                            style={{
-                              width: `${Math.min(
-                                (affiliateData.referredRevenue90d /
-                                  tierConfig.nextRevenueGoal) *
-                                  100,
-                                100
-                              )}%`,
-                            }}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-3 bg-gold-light/10 rounded-xl p-4 border border-gold-light/20">
-                    <Award size={20} className="text-gold-light flex-shrink-0" />
-                    <p className="text-sm font-semibold text-gold-light">
-                      Highest tier unlocked — Dynasty Partner
-                    </p>
-                  </div>
-                )}
+                {/* Syncing note — tier/sales data needs the analytics connection */}
+                <div className="flex items-start gap-2 bg-primary/5 rounded-xl p-4 border border-primary/15">
+                  <Activity size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Tier progress and qualified-sales tracking sync once your
+                    affiliate analytics are connected.
+                  </p>
+                </div>
 
                 {/* Qualified sale definition */}
                 <div className="flex items-start gap-2 mt-5 pt-4 border-t border-border/20">
@@ -545,14 +634,7 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Current Balance
               </p>
-              <p className="text-2xl font-bold text-primary">
-                $
-                {isApprovedAffiliate
-                  ? affiliateData.currentBalance.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                    })
-                  : "0.00"}
-              </p>
+              <p className="text-2xl font-bold text-primary">$0.00</p>
             </div>
             <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-gold-dark/30 hover:translate-y-[-2px]">
               <div className="flex items-center gap-3 mb-3">
@@ -563,14 +645,7 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Total Commissions Earned
               </p>
-              <p className="text-2xl font-bold text-gold-dark">
-                $
-                {isApprovedAffiliate
-                  ? affiliateData.totalEarned.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                    })
-                  : "0.00"}
-              </p>
+              <p className="text-2xl font-bold text-gold-dark">$0.00</p>
             </div>
             <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-gold-light/30 hover:translate-y-[-2px]">
               <div className="flex items-center gap-3 mb-3">
@@ -581,16 +656,18 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Pending Payouts
               </p>
-              <p className="text-2xl font-bold text-gold-light">
-                $
-                {isApprovedAffiliate
-                  ? affiliateData.pendingPayouts.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                    })
-                  : "0.00"}
-              </p>
+              <p className="text-2xl font-bold text-gold-light">$0.00</p>
             </div>
           </div>
+          {isApprovedAffiliate && (
+            <div className="flex items-start gap-2 mt-4 bg-primary/5 rounded-xl p-4 border border-primary/15">
+              <Activity size={16} className="text-primary mt-0.5 flex-shrink-0" />
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Earnings sync once your affiliate analytics are connected. Your
+                referred sales are already tracked on the affiliate platform.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Affiliate Payout Details */}
@@ -638,40 +715,28 @@ const DashboardAffiliate = () => {
               <MousePointerClick size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Clicks</span>
             </div>
-            <p className="text-xl font-bold text-foreground">
-              {isApprovedAffiliate ? affiliateData.clicks.toLocaleString() : "0"}
-            </p>
+            <p className="text-xl font-bold text-foreground">0</p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <UserPlus size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Signups</span>
             </div>
-            <p className="text-xl font-bold text-foreground">
-              {isApprovedAffiliate ? affiliateData.signups.toLocaleString() : "0"}
-            </p>
+            <p className="text-xl font-bold text-foreground">0</p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <Target size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Conversions</span>
             </div>
-            <p className="text-xl font-bold text-foreground">
-              {isApprovedAffiliate
-                ? affiliateData.conversions.toLocaleString()
-                : "0"}
-            </p>
+            <p className="text-xl font-bold text-foreground">0</p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <ShoppingCart size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Total Sales</span>
             </div>
-            <p className="text-xl font-bold text-foreground">
-              {isApprovedAffiliate
-                ? affiliateData.totalSales.toLocaleString()
-                : "0"}
-            </p>
+            <p className="text-xl font-bold text-foreground">0</p>
           </div>
         </div>
       </ScrollReveal>
