@@ -587,10 +587,82 @@ const Legal = () => {
                     </div>
                   </div>
 
-                  {/* 13. No Guarantee of Success — Simulated Trading Disclosure */}
+                  {/* 13. Account Ownership and Authorized Use */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
-                      13. No Guarantee of Success — Simulated Trading Disclosure
+                      13. Account Ownership and Authorized Use
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        All Dynasty Futures accounts are issued to and intended solely for the individual who purchased and registered the account.
+                      </p>
+                      <p>
+                        Accounts may not be shared, leased, rented, transferred, sublicensed, managed, operated, traded, or otherwise controlled by any third party, company, group, organization, account management service, or other individual.
+                      </p>
+                      <p>
+                        The registered account holder must be the sole decision-maker and trader of record for all activity conducted on the account.
+                      </p>
+                      <p>
+                        Any attempt to purchase an account on behalf of another person, allow another individual to trade the account, permit a third party to execute trades, or otherwise circumvent Dynasty Futures account ownership requirements may result in account suspension, account termination, forfeiture of profits, denial of funded status, denial of payouts, and removal from the Dynasty Futures platform.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the right to request additional verification, documentation, or identity confirmation at any time to verify compliance with these requirements.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 14. Platform Integrity, IP Monitoring, and Coordinated Activity */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      14. Platform Integrity, IP Monitoring, and Coordinated Activity
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures monitors account activity, device information, network information, IP addresses, trading behavior, and related data to maintain platform integrity.
+                      </p>
+                      <p>
+                        Multiple accounts displaying substantially identical trading activity, coordinated execution patterns, mirrored trading behavior, shared control, account pooling, hedging schemes, risk-offsetting strategies, signal-sharing arrangements, or other activity designed to circumvent Dynasty Futures rules may be subject to review.
+                      </p>
+                      <p>
+                        The use of shared devices, shared networks, VPNs, remote desktop services, proxy services, account farming operations, or other methods intended to conceal account ownership or coordinated activity may result in additional review and verification requirements.
+                      </p>
+                      <p>
+                        Accounts determined, in Dynasty Futures' sole discretion, to be engaged in coordinated trading between multiple individuals, rule circumvention, unauthorized account sharing, payout manipulation, hedging between participants, or other activity inconsistent with the intended purpose of the evaluation program may be restricted, suspended, terminated, denied funded status, denied payouts, or otherwise disqualified.
+                      </p>
+                      <p>
+                        For the avoidance of doubt, this section is not intended to prohibit a registered account holder from using trade copier software to mirror their own trades across accounts they personally own and control. This section is directed at account sharing between multiple individuals, coordinated activity across accounts controlled by different persons, hedging schemes, payout manipulation, and other forms of rule circumvention.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the right to investigate and make final determinations regarding suspicious or coordinated activity.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 15. Minimum Trade Duration Requirement */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      15. Minimum Trade Duration Requirement
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Trades must be maintained for a minimum duration of ten (10) seconds.
+                      </p>
+                      <p>
+                        Trading activity that consistently enters and exits positions in less than ten (10) seconds, including but not limited to latency-based strategies, ultra-short-duration execution intended to exploit simulated pricing environments, or other activity inconsistent with the intended evaluation process, may impact eligibility for funded status, payout eligibility, account approval, or continued participation in Dynasty Futures programs.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the right to review trading activity and determine whether a participant's trading style complies with the spirit and intent of the evaluation and funded account programs.
+                      </p>
+                      <p>
+                        Meeting profit objectives alone does not guarantee funded status, payout approval, or continued participation if trading activity is determined to violate Dynasty Futures policies or platform integrity requirements.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* 16. No Guarantee of Success — Simulated Trading Disclosure */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      16. No Guarantee of Success — Simulated Trading Disclosure
                     </h3>
                     <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
                       <p>
@@ -611,7 +683,7 @@ const Legal = () => {
                     </div>
                   </div>
 
-                  {/* 14. CFTC Rule 4.41 Disclosure */}
+                  {/* CFTC Rule 4.41 Disclosure */}
                   <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
                       CFTC Rule 4.41 Disclosure
@@ -621,40 +693,40 @@ const Legal = () => {
                     </p>
                   </div>
 
-                  {/* 15. Disclaimer of Warranties */}
+                  {/* 17. Disclaimer of Warranties */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
-                      15. Disclaimer of Warranties
+                      17. Disclaimer of Warranties
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Dynasty Futures provides its website, services, platforms, and any related content on an "as is" and "as available" basis. To the fullest extent permitted by law, Dynasty Futures disclaims all warranties of any kind, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, non-infringement, accuracy, reliability, or availability. Dynasty Futures does not warrant that the services will be uninterrupted, error-free, secure, or free from defects. Your use of the services is at your sole risk.
                     </p>
                   </div>
 
-                  {/* 16. Limitation of Liability */}
+                  {/* 18. Limitation of Liability */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
-                      16. Limitation of Liability
+                      18. Limitation of Liability
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       To the fullest extent permitted by applicable law, Dynasty Futures shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use our services, including but not limited to loss of profits, loss of data, business interruption, or any other commercial damages or losses, even if Dynasty Futures has been advised of the possibility of such damages.
                     </p>
                   </div>
 
-                  {/* 17. Governing Law */}
+                  {/* 19. Governing Law */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
-                      17. Governing Law
+                      19. Governing Law
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       These Terms of Use are governed by and construed in accordance with the laws of the State of Wyoming, without regard to its conflict of law principles. Any disputes arising under these Terms shall be subject to the exclusive jurisdiction of the courts of the State of Wyoming.
                     </p>
                   </div>
 
-                  {/* 18. Modifications to Terms */}
+                  {/* 20. Modifications to Terms */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
-                      18. Modifications to Terms
+                      20. Modifications to Terms
                     </h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       Dynasty Futures reserves the right to modify, update, or replace these Terms of Use and any incorporated policy at any time. Changes are effective upon posting to the website. Continued use of Dynasty Futures services after any modification constitutes your acceptance of the updated Terms. You are responsible for reviewing these Terms periodically.
