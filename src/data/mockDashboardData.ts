@@ -74,6 +74,11 @@ export interface AccountData {
   profitSplit?: number;
   profitTradingDays?: number;
   credentials?: { login: string; password: string };
+  // True when the account hit its profit target and YPF will allow an
+  // eval → funded upgrade (drives the "Upgrade to Funded" CTA).
+  canUpgrade?: boolean;
+  // True once an upgrade has been requested and is awaiting CRM approval.
+  upgradePending?: boolean;
 }
 
 // Generate random but realistic equity curves

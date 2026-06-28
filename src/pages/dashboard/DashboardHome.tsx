@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Plus,
   RotateCcw,
+  ArrowUpCircle,
 } from "lucide-react";
 import { format, isToday } from "date-fns";
 import { toast } from "sonner";
@@ -28,6 +29,11 @@ import DailyAnalytics from "@/components/dashboard/DailyAnalytics";
 import ResetAccountModal, {
   type ResetAccountTarget,
 } from "@/components/dashboard/ResetAccountModal";
+import UpgradeAccountModal from "@/components/dashboard/UpgradeAccountModal";
+import {
+  standardActivationUrl,
+  STANDARD_ACTIVATION_FEE_USD,
+} from "@/lib/activation";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useTradingAccounts, useLiveAccount, tradingKeys } from "@/hooks/useTrading";
@@ -63,6 +69,7 @@ const DashboardHome = () => {
   const [chartType, setChartType] = useState<"equity" | "pnl">("equity");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [resetOpen, setResetOpen] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
 
   const view = useAccountView(selectedAccount || undefined);
   const liveQ = useLiveAccount(selectedAccount || undefined, {
@@ -81,6 +88,12 @@ const DashboardHome = () => {
   }, [view.data, liveQ.data]);
 
   const isBuilderAccount = accountData?.planType === "Builder";
+
+  // Standard plans go funded via a paid activation checkout; others upgrade
+  // directly. Null for non-Standard (or unknown size) → the direct-upgrade CTA.
+  const activationUrl = accountData
+    ? standardActivationUrl(accountData.plan, accountData.size)
+    : null;
 
   const chartData = useMemo(() => {
     if (!accountData) return [];
@@ -164,6 +177,35 @@ const DashboardHome = () => {
                   onValueChange={setSelectedAccount}
                 />
                 <OpenPlatformButton credentials={accountData?.credentials} />
+                {accountData?.canUpgrade &&
+                  (activationUrl ? (
+                    // Standard plans pay an $80 activation fee on the YPF store.
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        window.open(activationUrl, "_blank", "noopener,noreferrer")
+                      }
+                      className="btn-gradient-animated text-primary-foreground"
+                    >
+                      <ArrowUpCircle size={14} className="mr-2" />
+                      Activate Account – ${STANDARD_ACTIVATION_FEE_USD}
+                    </Button>
+                  ) : (
+                    <Button
+                      size="sm"
+                      onClick={() => setUpgradeOpen(true)}
+                      className="btn-gradient-animated text-primary-foreground"
+                    >
+                      <ArrowUpCircle size={14} className="mr-2" />
+                      Upgrade to Funded
+                    </Button>
+                  ))}
+                {accountData?.upgradePending && (
+                  <span className="inline-flex items-center gap-1.5 rounded-md border border-primary/30 bg-primary/5 px-3 py-1.5 text-sm font-medium text-primary">
+                    <ArrowUpCircle size={14} />
+                    Upgrade Pending Approval
+                  </span>
+                )}
                 {accountData?.status === "Violated" && (
                   <Button
                     variant="outline"
@@ -328,6 +370,23 @@ const DashboardHome = () => {
         }
         open={resetOpen}
         onOpenChange={setResetOpen}
+      />
+
+      <UpgradeAccountModal
+        account={
+          accountData && selectedAccount
+            ? {
+                accountId: selectedAccount,
+                accountName: accountData.name,
+                currentProgram: accountData.plan
+                  ? `${accountData.plan} Evaluation`
+                  : undefined,
+                nextProgram: accountData.nextProgramName,
+              }
+            : null
+        }
+        open={upgradeOpen}
+        onOpenChange={setUpgradeOpen}
       />
     </div>
   );

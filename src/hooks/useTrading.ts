@@ -213,3 +213,24 @@ export const useResetAccount = (
     },
   });
 };
+
+/**
+ * Upgrade an evaluation account that has hit its profit target to a funded
+ * account (mirrors YPF's "Upgrade Account" button). Invalidates the account
+ * detail + lists so the dashboard reflects the new FUNDED phase.
+ */
+export const useUpgradeAccount = (
+  options?: UseMutationOptions<ApiResponse<LiveSnapshot>, ApiError, string>,
+) => {
+  const qc = useQueryClient();
+  return useMutation<ApiResponse<LiveSnapshot>, ApiError, string>({
+    mutationFn: (id: string) => tradingService.upgradeAccount(id),
+    ...options,
+    onSuccess: (data, id, ctx) => {
+      qc.invalidateQueries({ queryKey: tradingKeys.detail(id) });
+      qc.invalidateQueries({ queryKey: tradingKeys.live(id) });
+      qc.invalidateQueries({ queryKey: tradingKeys.accounts() });
+      options?.onSuccess?.(data, id, ctx);
+    },
+  });
+};

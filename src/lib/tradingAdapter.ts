@@ -422,6 +422,16 @@ export const adaptAccountView = (
       ? { profitTradingDays: live.profitTradingDays }
       : {}),
     ...(live?.loginCredentials ? { credentials: live.loginCredentials } : {}),
+    // Eligible for an eval → funded upgrade when YPF reports the level-up has
+    // been reached AND the account is still Active (once requested it moves to
+    // "UpgradePending" — a second request 400s). Backend re-validates.
+    ...(live?.isLevelUpReached &&
+    !live.upgradeRequestDate &&
+    live.status === "Active"
+      ? { canUpgrade: true }
+      : {}),
+    // An upgrade was requested and is awaiting approval in the YPF CRM.
+    ...(live?.status === "UpgradePending" ? { upgradePending: true } : {}),
   };
 };
 

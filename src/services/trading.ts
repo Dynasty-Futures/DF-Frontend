@@ -82,6 +82,14 @@ export const tradingService = {
     apiClient.post<ApiResponse<LiveSnapshot>>(`/trading/accounts/${id}/reset`),
 
   /**
+   * Upgrade an evaluation account that hit its profit target to a funded
+   * account. Mirrors YPF's own "Upgrade Account" button.
+   * POST /v1/trading/accounts/:id/upgrade
+   */
+  upgradeAccount: (id: string): Promise<ApiResponse<LiveSnapshot>> =>
+    apiClient.post<ApiResponse<LiveSnapshot>>(`/trading/accounts/${id}/upgrade`),
+
+  /**
    * One-time SSO URL into the trading platform's web dashboard.
    * GET /v1/trading/dashboard-url
    *
