@@ -288,12 +288,10 @@ const DashboardHome = () => {
           </div>
 
           {/* Full account-wide trade log (all trades, not just one calendar day) */}
-          <div className="mt-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <BarChart3 size={14} className="text-muted-foreground" />
-              <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                Trade Log
-              </span>
+          <div className="mt-10 pt-8 border-t border-border/30">
+            <div className="flex items-center gap-2 mb-4">
+              <BarChart3 size={20} className="text-primary" />
+              <h2 className="text-lg font-semibold text-foreground">Trade Log</h2>
             </div>
             <AccountTradeLog accountId={selectedAccount} />
           </div>

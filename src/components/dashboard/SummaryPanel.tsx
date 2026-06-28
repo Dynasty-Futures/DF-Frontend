@@ -127,12 +127,6 @@ const SummaryPanel = ({
     );
   };
 
-  const hasPlatformDetails =
-    !!account.nextProgramName ||
-    account.profitSplit !== undefined ||
-    account.profitTradingDays !== undefined ||
-    !!account.credentials;
-
   const goToPreviousMonth = () => setViewedMonth((prev) => subMonths(prev, 1));
   const goToNextMonth = () => setViewedMonth((prev) => addMonths(prev, 1));
 
@@ -308,94 +302,88 @@ const SummaryPanel = ({
           </div>
         </div>
 
-        {/* Account Details Group (live platform data) */}
-        {hasPlatformDetails && (
-          <>
-            <div className="border-t border-border/30 my-4" />
-            <div>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
-                Account Details
-              </span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-                {account.nextProgramName && (
-                  <SummaryItem
-                    label="Next Phase"
-                    value={account.nextProgramName}
-                    icon={<GitBranch size={14} className="text-primary" />}
-                  />
-                )}
-                {account.profitSplit !== undefined && (
-                  <SummaryItem
-                    label="Profit Split"
-                    value={`${account.profitSplit}%`}
-                    icon={<Percent size={14} className="text-primary" />}
-                    variant="success"
-                  />
-                )}
-                {account.profitTradingDays !== undefined && (
-                  <SummaryItem
-                    label="Profitable Days"
-                    value={`${account.profitTradingDays}`}
-                    icon={<TrendingUp size={14} className="text-primary" />}
-                  />
-                )}
-              </div>
+        {/* Account Details Group */}
+        <div className="border-t border-border/30 my-4" />
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
+            Account Details
+          </span>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+            <SummaryItem
+              label="Profit Split"
+              value={account.profitSplit !== undefined ? `${account.profitSplit}%` : "90/10"}
+              icon={<Percent size={14} className="text-primary" />}
+              variant="success"
+            />
+            {account.nextProgramName && (
+              <SummaryItem
+                label="Next Phase"
+                value={account.nextProgramName}
+                icon={<GitBranch size={14} className="text-primary" />}
+              />
+            )}
+            {account.profitTradingDays !== undefined && (
+              <SummaryItem
+                label="Profitable Days"
+                value={`${account.profitTradingDays}`}
+                icon={<TrendingUp size={14} className="text-primary" />}
+              />
+            )}
+          </div>
 
-              {account.credentials && (
-                <div className="mt-2 p-3 rounded-lg bg-muted/10 border border-border/20">
-                  <div className="flex items-center gap-2 mb-2">
-                    <KeyRound size={14} className="text-gold-dark" />
-                    <span className="text-xs font-medium text-foreground">
-                      Platform Credentials
-                    </span>
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-muted-foreground flex-shrink-0">
-                        Login
-                      </span>
-                      <button
-                        onClick={() =>
-                          copyToClipboard(account.credentials!.login, "Login")
-                        }
-                        className="text-xs font-mono text-foreground hover:text-primary transition-colors truncate min-w-0 text-right"
-                        title="Click to copy"
-                      >
-                        {account.credentials.login}
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-muted-foreground">
-                        Password
-                      </span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() =>
-                            copyToClipboard(
-                              account.credentials!.password,
-                              "Password",
-                            )
-                          }
-                          className="text-xs font-mono text-foreground hover:text-primary transition-colors"
-                          title="Click to copy"
-                        >
-                          {showCreds ? account.credentials.password : "••••••••"}
-                        </button>
-                        <button
-                          onClick={() => setShowCreds((s) => !s)}
-                          className="text-muted-foreground hover:text-foreground transition-colors"
-                          title={showCreds ? "Hide" : "Show"}
-                        >
-                          {showCreds ? <EyeOff size={14} /> : <Eye size={14} />}
-                        </button>
-                      </div>
-                    </div>
+          {account.credentials && (
+            <div className="mt-2 p-3 rounded-lg bg-muted/10 border border-border/20">
+              <div className="flex items-center gap-2 mb-2">
+                <KeyRound size={14} className="text-gold-dark" />
+                <span className="text-xs font-medium text-foreground">
+                  Platform Credentials
+                </span>
+              </div>
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-muted-foreground flex-shrink-0">
+                    Login
+                  </span>
+                  <button
+                    onClick={() =>
+                      copyToClipboard(account.credentials!.login, "Login")
+                    }
+                    className="text-xs font-mono text-foreground hover:text-primary transition-colors truncate min-w-0 text-right"
+                    title="Click to copy"
+                  >
+                    {account.credentials.login}
+                  </button>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs text-muted-foreground">
+                    Password
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() =>
+                        copyToClipboard(
+                          account.credentials!.password,
+                          "Password",
+                        )
+                      }
+                      className="text-xs font-mono text-foreground hover:text-primary transition-colors"
+                      title="Click to copy"
+                    >
+                      {showCreds ? account.credentials.password : "••••••••"}
+                    </button>
+                    <button
+                      onClick={() => setShowCreds((s) => !s)}
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                      title={showCreds ? "Hide" : "Show"}
+                    >
+                      {showCreds ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
 
         <div className="border-t border-border/30 my-4" />
 
