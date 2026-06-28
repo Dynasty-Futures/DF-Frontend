@@ -4,7 +4,9 @@ import PageMeta from "@/components/seo/PageMeta";
 import JsonLd, { breadcrumb, faqPageSchema } from "@/components/seo/JsonLd";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Accordion,
   AccordionContent,
@@ -204,6 +206,20 @@ const affiliateFaqs = [
 
 const Affiliates = () => {
   const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
+  const { isAuthenticated, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  // Anyone can read the page, but submitting an application requires an account.
+  // Logged out → send to login and return here afterwards (no wasted form fill).
+  const handleApplyClick = () => {
+    if (isLoading) return;
+    if (!isAuthenticated) {
+      toast.info("Please log in or create an account to apply as an affiliate.");
+      navigate("/login", { state: { from: "/affiliates" } });
+      return;
+    }
+    setIsAffiliateModalOpen(true);
+  };
 
   return (
     <Layout>
@@ -275,7 +291,7 @@ const Affiliates = () => {
                   variant="outline"
                   size="lg"
                   className="border-border/50 hover:border-primary/50 hover:text-primary"
-                  onClick={() => setIsAffiliateModalOpen(true)}
+                  onClick={handleApplyClick}
                 >
                   Apply to Become an Affiliate
                 </Button>
@@ -723,7 +739,7 @@ const Affiliates = () => {
                   variant="outline"
                   size="lg"
                   className="border-border/50 hover:border-primary/50 hover:text-primary"
-                  onClick={() => setIsAffiliateModalOpen(true)}
+                  onClick={handleApplyClick}
                 >
                   Apply to Become an Affiliate
                 </Button>
