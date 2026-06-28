@@ -9,6 +9,7 @@ import SimulatedTrading from '@/components/home/SimulatedTrading';
 import PreLaunchModal from '@/components/PreLaunchModal';
 import SponsorTicker, { DefaultSponsors } from '@/components/ui/SponsorTicker';
 import ScrollReveal from '@/components/ui/ScrollReveal';
+import LaunchCountdown from '@/components/home/LaunchCountdown';
 
 const Index = () => {
   return (
@@ -36,6 +37,7 @@ const Index = () => {
           with account sizes ranging from $25,000 to $150,000. All trading is 100% simulated; traders
           never trade live capital.
         </p>
+        <LaunchCountdown />
         <Hero />
         
         {/* Sponsor Ticker */}
