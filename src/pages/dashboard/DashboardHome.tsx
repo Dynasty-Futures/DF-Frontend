@@ -276,7 +276,7 @@ const DashboardHome = () => {
                 />
               )}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 mt-8 pt-8 border-t border-border/30 lg:mt-0 lg:pt-0 lg:border-t-0">
               <div className="flex items-center gap-2">
                 <BarChart3 size={14} className="text-muted-foreground" />
                 <span className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
