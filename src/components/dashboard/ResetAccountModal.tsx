@@ -1,4 +1,3 @@
-import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,24 +11,21 @@ import {
 // =============================================================================
 // Reset Account modal (shared by the Accounts page + the dashboard)
 // =============================================================================
-// Paid account resets are GATED: YPF has not configured reset checkout URLs /
-// products yet (probe 2026-06-27 found 0/27 programs with an accountResetUrl,
-// and the direct checkout-reset API resets without payment). So this surfaces
-// the reset price + a "coming soon" state instead of a dead-end action. Flip
-// `RESET_ENABLED` + wire the checkout link once YPF provides it.
-// =============================================================================
 
-const RESET_ENABLED = false;
+const CHECKOUT_BASE = "https://checkout.dynastyfuturesdyn.com/product/";
 
 type PlanKey = "standard" | "advanced" | "builder";
 type SizeKey = "25k" | "50k" | "100k" | "150k";
+
+// ---------------------------------------------------------------------------
+// Pricing
+// ---------------------------------------------------------------------------
 
 interface ResetPricing {
   evalReset: number;
   fundedReset: number;
 }
 
-// TODO: replace with real pricing once the YPF reset checkout is available.
 const RESET_PRICING: Record<PlanKey, Record<SizeKey, ResetPricing>> = {
   standard: {
     "25k": { evalReset: 30, fundedReset: 119 },
@@ -51,6 +47,74 @@ const RESET_PRICING: Record<PlanKey, Record<SizeKey, ResetPricing>> = {
   },
 };
 
+// ---------------------------------------------------------------------------
+// Checkout URLs
+// Note: 25k Standard eval slug is missing "standard" — matches WooCommerce as-is.
+// Note: 50k Advanced funded slug is "25k-advanced-funded-reset-2" — WooCommerce
+//       naming issue on their end; URL is correct per Trey's confirmation.
+// ---------------------------------------------------------------------------
+
+const RESET_URLS: Record<PlanKey, Record<SizeKey, { eval: string; funded: string }>> = {
+  standard: {
+    "25k": {
+      eval:   `${CHECKOUT_BASE}25k-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}25k-standard-funded-reset/`,
+    },
+    "50k": {
+      eval:   `${CHECKOUT_BASE}50k-standard-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}50k-standard-funded-reset/`,
+    },
+    "100k": {
+      eval:   `${CHECKOUT_BASE}100k-standard-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}100k-standard-funded-reset/`,
+    },
+    "150k": {
+      eval:   `${CHECKOUT_BASE}150k-standard-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}150k-standard-funded-reset/`,
+    },
+  },
+  advanced: {
+    "25k": {
+      eval:   `${CHECKOUT_BASE}25k-advanced-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}25k-advanced-funded-reset/`,
+    },
+    "50k": {
+      eval:   `${CHECKOUT_BASE}50k-advanced-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}25k-advanced-funded-reset-2/`,
+    },
+    "100k": {
+      eval:   `${CHECKOUT_BASE}100k-advanced-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}100k-advanced-funded-reset/`,
+    },
+    "150k": {
+      eval:   `${CHECKOUT_BASE}150k-advanced-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}150k-advanced-funded-reset/`,
+    },
+  },
+  builder: {
+    "25k": {
+      eval:   `${CHECKOUT_BASE}25k-builder-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}25k-builder-funded-reset/`,
+    },
+    "50k": {
+      eval:   `${CHECKOUT_BASE}50k-builder-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}50k-builder-funded-reset/`,
+    },
+    "100k": {
+      eval:   `${CHECKOUT_BASE}100k-builder-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}100k-builder-funded-reset/`,
+    },
+    "150k": {
+      eval:   `${CHECKOUT_BASE}150k-builder-evaluation-reset/`,
+      funded: `${CHECKOUT_BASE}150k-builder-funded-reset/`,
+    },
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
 const resolvePlanKey = (planType: string): PlanKey => {
   const lc = planType.toLowerCase();
   if (lc.includes("builder") || lc.includes("dynasty")) return "builder";
@@ -65,25 +129,33 @@ const resolveSizeKey = (rawSize: number): SizeKey => {
   return "150k";
 };
 
-interface ResetPriceInfo {
+interface ResetInfo {
   price: number;
   resetType: "Evaluation Reset" | "Funded Reset";
+  checkoutUrl: string;
 }
 
-const getResetPriceInfo = (
+const getResetInfo = (
   planType: string,
   accountSizeUsd: number,
   isFunded: boolean,
-): ResetPriceInfo | null => {
+): ResetInfo | null => {
   if (!Number.isFinite(accountSizeUsd) || accountSizeUsd <= 0) return null;
-  const pricing =
-    RESET_PRICING[resolvePlanKey(planType)]?.[resolveSizeKey(accountSizeUsd)];
-  if (!pricing) return null;
+  const planKey = resolvePlanKey(planType);
+  const sizeKey = resolveSizeKey(accountSizeUsd);
+  const pricing = RESET_PRICING[planKey]?.[sizeKey];
+  const urls = RESET_URLS[planKey]?.[sizeKey];
+  if (!pricing || !urls) return null;
   return {
     price: isFunded ? pricing.fundedReset : pricing.evalReset,
     resetType: isFunded ? "Funded Reset" : "Evaluation Reset",
+    checkoutUrl: isFunded ? urls.funded : urls.eval,
   };
 };
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
 
 export interface ResetAccountTarget {
   planType: string;
@@ -97,14 +169,24 @@ interface ResetAccountModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 const ResetAccountModal = ({
   account,
   open,
   onOpenChange,
 }: ResetAccountModalProps) => {
-  const priceInfo = account
-    ? getResetPriceInfo(account.planType, account.accountSizeUsd, account.isFunded)
+  const resetInfo = account
+    ? getResetInfo(account.planType, account.accountSizeUsd, account.isFunded)
     : null;
+
+  const handleReset = () => {
+    if (resetInfo?.checkoutUrl) {
+      window.location.href = resetInfo.checkoutUrl;
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -127,35 +209,29 @@ const ResetAccountModal = ({
                         {account.planType}
                       </span>
                     </div>
-                    {priceInfo && (
+                    {resetInfo && (
                       <>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Reset Type</span>
                           <span className="text-foreground">
-                            {priceInfo.resetType}
+                            {resetInfo.resetType}
                           </span>
                         </div>
                         <div className="flex justify-between border-t border-border/20 pt-2 mt-2">
                           <span className="text-muted-foreground">Reset Price</span>
                           <span className="text-foreground font-semibold">
-                            ${priceInfo.price.toLocaleString()}
+                            ${resetInfo.price.toLocaleString()}
                           </span>
                         </div>
                       </>
                     )}
                   </div>
 
-                  <div className="flex items-start gap-2 rounded-xl border border-primary/20 bg-primary/5 p-3">
-                    <Clock
-                      size={16}
-                      className="text-primary flex-shrink-0 mt-0.5"
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Account resets are coming soon. You'll be able to reset this
-                      account and start a fresh evaluation in the same program
-                      directly from here.
-                    </p>
-                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    You'll be taken to the checkout page to complete your reset purchase.
+                    Once payment is confirmed your new account will appear in your
+                    dashboard within a few minutes — no need to sign up again.
+                  </p>
                 </>
               )}
             </div>
@@ -163,10 +239,10 @@ const ResetAccountModal = ({
         </DialogHeader>
         <DialogFooter className="gap-2 sm:gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Close
+            Cancel
           </Button>
-          <Button disabled={!RESET_ENABLED}>
-            {RESET_ENABLED ? "Continue to Reset" : "Coming Soon"}
+          <Button onClick={handleReset} disabled={!resetInfo}>
+            Continue to Reset
           </Button>
         </DialogFooter>
       </DialogContent>
