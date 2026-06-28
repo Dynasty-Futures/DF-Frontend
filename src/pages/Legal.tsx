@@ -18,6 +18,9 @@ const RULE_EXPLAINERS = [
   { id: "payouts-split", label: "Payouts & Profit Split" },
   { id: "violations-resets", label: "Account Violations & Resets" },
   { id: "copy-trading", label: "Copy Trading & Automated Systems Policy" },
+  { id: "account-ownership", label: "Account Ownership & Authorized Use" },
+  { id: "platform-integrity", label: "Platform Integrity & Coordinated Activity" },
+  { id: "minimum-trade-duration", label: "Minimum Trade Duration Requirement" },
 ];
 
 const Legal = () => {
@@ -366,6 +369,7 @@ const Legal = () => {
                           "50% withdrawal limit per payout request",
                           "Consistency rules where applicable (Standard and Builder plans)",
                           "Maximum account allocation of 3 accounts",
+                          "Minimum trade duration of ten (10) seconds",
                         ].map((item) => (
                           <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
                             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/60 flex-shrink-0" />
@@ -2846,6 +2850,139 @@ const Legal = () => {
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-3">Consequences of Using Prohibited Systems</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">Use of automated bots or prohibited algorithmic execution systems is a serious rule violation that may result in immediate account termination without refund. Dynasty Futures monitors trading patterns and reserves the right to investigate and act on suspicious activity consistent with automated execution.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── ACCOUNT OWNERSHIP & AUTHORIZED USE ── */}
+                {activeRule === "account-ownership" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Account Ownership &amp; Authorized Use</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures accounts are issued solely to the individual who purchased and registered the account. The registered account holder must be the sole trader and decision-maker for all activity conducted on the account.</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-amber-500/30 bg-amber-500/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Important:</strong> Accounts may not be shared, rented, leased, transferred, managed, operated, or traded by another person, company, organization, or third party under any circumstances.
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">What Is Prohibited</h3>
+                      <div className="space-y-2">
+                        {[
+                          "Sharing account credentials with another individual",
+                          "Allowing a third party to trade, manage, or access your account",
+                          "Renting or leasing your account to another person or service",
+                          "Transferring account ownership or access to another party",
+                          "Purchasing an account on behalf of another person",
+                          "Operating an account management service using Dynasty Futures accounts",
+                        ].map(item => (
+                          <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Consequences of Violations</h3>
+                      <div className="space-y-2">
+                        {[
+                          "Account suspension or permanent termination",
+                          "Denial of funded status",
+                          "Denial of payout requests",
+                          "Forfeiture of profits",
+                          "Removal from the Dynasty Futures platform",
+                        ].map(item => (
+                          <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                            {item}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Verification Rights</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures reserves the right to request additional verification, documentation, or identity confirmation at any time to verify compliance with account ownership requirements.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── PLATFORM INTEGRITY & COORDINATED ACTIVITY ── */}
+                {activeRule === "platform-integrity" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Platform Integrity &amp; Coordinated Activity</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures monitors account activity, device information, IP addresses, and trading behavior to maintain platform integrity. Attempts to circumvent program rules through coordinated activity are subject to investigation and disciplinary action.</p>
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">Permitted</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Using trade copier software on accounts you personally own and control",
+                            "Trading multiple accounts you registered and manage yourself",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-destructive mb-3">Prohibited</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Coordinated trading activity between multiple individuals",
+                            "Account pooling or shared control across participants",
+                            "Hedging between accounts controlled by different persons",
+                            "Payout manipulation through coordinated positions",
+                            "Using shared devices or networks to conceal coordinated activity",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">What We Monitor</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-3">Dynasty Futures uses account activity analysis, device fingerprinting, IP address tracking, and trading pattern review to identify coordinated or suspicious activity. This monitoring applies continuously, not only at payout time.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Enforcement</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures reserves the right to investigate suspicious activity and make final determinations regarding rule violations. Accounts found to be in violation may be restricted, suspended, terminated, denied funded status, denied payouts, or otherwise disqualified.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── MINIMUM TRADE DURATION ── */}
+                {activeRule === "minimum-trade-duration" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Minimum Trade Duration Requirement</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Trades must be held for a minimum of ten (10) seconds. This requirement applies across all plans and both the evaluation and funded phases.</p>
+                    </div>
+                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Rule:</strong> Consistently entering and exiting positions in less than ten seconds may impact eligibility for funded status, payout eligibility, or continued participation in Dynasty Futures programs.
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h3>
+                      <div className="space-y-3">
+                        {[
+                          { q: "What is the minimum trade duration?", a: "All trades must be held for a minimum of ten (10) seconds before being closed." },
+                          { q: "Does this apply during both evaluation and funded phases?", a: "Yes. The minimum trade duration requirement applies across all plans and both phases." },
+                          { q: "What happens if I consistently trade below the minimum duration?", a: "Trading activity that consistently enters and exits positions in less than ten seconds may impact funded status eligibility, payout eligibility, or continued participation in Dynasty Futures programs." },
+                          { q: "Does meeting profit targets override this requirement?", a: "No. Meeting profit objectives alone does not guarantee funded status or payout approval if trading activity is determined to violate Dynasty Futures policies or platform integrity requirements." },
+                        ].map(({ q, a }) => (
+                          <div key={q} className="p-5 rounded-xl border border-border/50 bg-muted/10">
+                            <p className="text-sm font-semibold text-foreground mb-2">{q}</p>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{a}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Review & Enforcement</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures reserves the right to review trading activity and determine compliance with the intended purpose of the evaluation and funded account programs. This rule is intended to ensure trading activity reflects genuine market participation rather than strategies designed to exploit simulated pricing environments.</p>
                     </div>
                   </div>
                 )}

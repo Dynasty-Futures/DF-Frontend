@@ -153,6 +153,14 @@ const universalRules = [
       "Funded accounts operate on a 90/10 profit split, with traders keeping 90% of approved profits. After five (5) approved payouts, accounts may be internally reviewed for potential live trading consideration based on consistency, risk management, compliance history, operational availability, broker/platform support, and jurisdictional eligibility. Live trading placement is not guaranteed and remains subject to Dynasty Futures approval and applicable legal/compliance requirements.",
     allowed: true,
   },
+  {
+    icon: ClockIcon,
+    title: "Minimum Trade Duration Requirement",
+    label: "10-Second Minimum Hold",
+    description:
+      "All trades must be held for a minimum of ten (10) seconds. Trading activity that consistently enters and exits positions in less than ten seconds may impact funded status eligibility, payout eligibility, or continued participation in Dynasty Futures programs. Dynasty Futures reserves the right to review trading activity and determine compliance with the intended purpose of the evaluation and funded account programs.",
+    allowed: false,
+  },
 ];
 
 const accountRules = [
