@@ -37,7 +37,7 @@ const LaunchCountdown = () => {
   }, []);
 
   return (
-    <div className="flex justify-center px-4 mt-8 mb-6">
+    <div className="flex justify-center px-4 mt-16 sm:mt-20 mb-6">
       <div
         className="glass-card border border-gold/30 rounded-xl px-6 py-4 text-center"
         style={{
