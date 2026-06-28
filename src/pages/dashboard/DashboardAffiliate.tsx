@@ -33,11 +33,11 @@ import { useAffiliateStatus } from "@/hooks/useAffiliate";
 import AffiliateRegistrationModal from "@/components/dashboard/AffiliateRegistrationModal";
 
 // Base used to build an affiliate's referral link from their referral code.
-// Adjust if YPF/WooCommerce expects a different referral URL scheme.
-const REFERRAL_LINK_BASE = "https://www.dynastyfuturesdyn.com/";
+// Must match the CRM's referral URL scheme (checkout host + `refcode` param).
+const REFERRAL_LINK_BASE = "https://checkout.dynastyfuturesdyn.com/checkout";
 
 const buildReferralLink = (code: string): string =>
-  `${REFERRAL_LINK_BASE}?ref=${encodeURIComponent(code)}`;
+  `${REFERRAL_LINK_BASE}?refcode=${encodeURIComponent(code)}`;
 
 const formatCouponDiscount = (
   discountType: string | null,
