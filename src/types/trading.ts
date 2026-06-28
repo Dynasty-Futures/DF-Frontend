@@ -76,6 +76,10 @@ export interface LiveSnapshot {
   activeDays?: number;
   // Trader's profit-split % on this account
   profitSplit?: number;
+  // Eval → funded upgrade eligibility (YPF's own "level up reached" flag)
+  isLevelUpReached?: boolean;
+  // ISO timestamp once an upgrade has been requested (absent = none pending)
+  upgradeRequestDate?: string;
   // Drawdown metrics
   drawDown?: number;
   maxDrawDown?: number;

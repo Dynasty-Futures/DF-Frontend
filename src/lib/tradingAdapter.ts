@@ -422,6 +422,11 @@ export const adaptAccountView = (
       ? { profitTradingDays: live.profitTradingDays }
       : {}),
     ...(live?.loginCredentials ? { credentials: live.loginCredentials } : {}),
+    // Eligible for an eval → funded upgrade when YPF reports the level-up has
+    // been reached and no upgrade is already pending. Backend re-validates.
+    ...(live?.isLevelUpReached && !live.upgradeRequestDate
+      ? { canUpgrade: true }
+      : {}),
   };
 };
 
