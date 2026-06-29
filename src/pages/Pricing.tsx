@@ -630,7 +630,7 @@ const Pricing = () => {
                           </div>
                         </td>
                         <td className="py-5 px-6 text-primary font-bold text-lg">
-                          $500
+                          $250
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
                           $5,000
@@ -655,7 +655,7 @@ const Pricing = () => {
                           </div>
                         </td>
                         <td className="py-5 px-6 text-gold-light font-bold text-lg">
-                          $500
+                          $250
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
                           $3,500
@@ -680,7 +680,7 @@ const Pricing = () => {
                           </div>
                         </td>
                         <td className="py-5 px-6 text-primary font-bold text-lg">
-                          $500
+                          $250
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
                           $3,000

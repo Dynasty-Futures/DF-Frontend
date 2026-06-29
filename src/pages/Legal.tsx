@@ -2680,7 +2680,7 @@ const Legal = () => {
                         {[
                           { title: "5 Winning Days", desc: "You must have at least 5 trading days that meet the minimum winning day threshold since your last payout." },
                           { title: "Minimum Winning Day", desc: "Standard Plan: $150 minimum profit per qualifying day. Advanced & Builder: $200 minimum profit per qualifying day." },
-                          { title: "$500 Minimum Payout", desc: "The minimum payout amount is $500. You may withdraw up to 50% of your account balance per request." },
+                          { title: "$250 Minimum Payout", desc: "The minimum payout amount is $250. You may withdraw up to 50% of your account balance per request." },
                           { title: "5-Day Payout Cycles", desc: "At least 5 qualifying trading days must pass between payout requests. Up to 4 payout requests per calendar month." },
                         ].map(({ title, desc }) => (
                           <div key={title} className="p-5 rounded-xl border border-border/50 bg-muted/10">
