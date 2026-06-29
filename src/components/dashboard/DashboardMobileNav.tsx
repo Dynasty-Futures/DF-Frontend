@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, LayoutDashboard, Wallet, CalendarClock, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
+import { Menu, LayoutDashboard, Wallet, CandlestickChart, CalendarClock, CreditCard, Banknote, Users, User, Trophy, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -8,11 +8,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 const siteIconSrc = '/favicon.png?v=20260406';
 
 // Order mirrors the desktop sidebar: primary items first, then Profile /
-// Affiliate / Help Center. 'Trade' stays hidden (launch via the "Launch
-// Platform" button); its route + page are kept for later.
+// Affiliate / Help Center. 'Trade' embeds the Volumetrica web-trader in-app.
 const sidebarLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Wallet },
+  { name: 'Trade', path: '/dashboard/trade', icon: CandlestickChart },
   { name: 'Billing', path: '/dashboard/billing', icon: CreditCard },
   { name: 'Payouts', path: '/dashboard/payouts', icon: Banknote },
   { name: 'Awards', path: '/dashboard/awards', icon: Trophy },

@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Activity,
   Briefcase,
+  CandlestickChart,
   CalendarClock,
   Receipt,
   ArrowDownToLine,
@@ -15,12 +16,13 @@ import { cn } from '@/lib/utils';
 
 const siteIconSrc = '/favicon.png?v=20260406';
 
-// Primary nav (top). 'Trade' stays hidden until the in-app Volumetrica embed is
-// unblocked — traders launch via the "Launch Platform" button. The
-// /dashboard/trade route + page are intentionally kept for when the embed works.
+// Primary nav (top). The in-app Volumetrica web-trader embed is live, so 'Trade'
+// renders the platform inside the dashboard; the "Launch Platform" button remains
+// as a new-tab fallback.
 const primaryLinks = [
   { name: 'Dashboard', path: '/dashboard', icon: Activity },
   { name: 'Accounts', path: '/dashboard/accounts', icon: Briefcase },
+  { name: 'Trade', path: '/dashboard/trade', icon: CandlestickChart },
   { name: 'Billing', path: '/dashboard/billing', icon: Receipt },
   { name: 'Payouts', path: '/dashboard/payouts', icon: ArrowDownToLine },
   { name: 'Awards', path: '/dashboard/awards', icon: Award },
