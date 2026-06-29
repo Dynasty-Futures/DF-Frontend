@@ -69,6 +69,9 @@ export interface AccountData {
   // Drives the per-trade running-equity curve so intraday dips/recoveries show
   // instead of collapsing trades into one daily step.
   closedTrades: ClosedTradePoint[];
+  // DF plan-level max payout per eligible payout cycle (from AccountType).
+  // Undefined = uncapped / not configured.
+  payoutCycleCap?: number;
   // Live platform fields (YPF) — only present on detail views with live data
   nextProgramName?: string;
   profitSplit?: number;

@@ -239,8 +239,12 @@ const BuilderPanel = ({
                 icon={<Calendar size={14} className="text-gold-dark" />}
               />
               <DetailRow
-                label="Weekly Max"
-                value="$7,000"
+                label="Max Payout / Cycle"
+                value={
+                  account?.payoutCycleCap != null
+                    ? `$${account.payoutCycleCap.toLocaleString("en-US")}`
+                    : "—"
+                }
                 icon={<ArrowUpRight size={14} className="text-primary" />}
               />
             </>

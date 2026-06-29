@@ -20,6 +20,7 @@ export interface TradingAccountType {
   accountSize: string; // Prisma Decimal → string
   profitSplit: number;
   price: string; // Prisma Decimal → string
+  payoutCycleCap?: string | null; // Prisma Decimal → string; null = uncapped
 }
 
 export interface BillingChallenge {

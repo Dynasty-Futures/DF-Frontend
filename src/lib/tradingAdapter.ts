@@ -406,6 +406,9 @@ export const adaptAccountView = (
     stage: stageFor(account.status),
     status: uiStatusFor(account.status),
     startingBalance,
+    ...(account.accountType.payoutCycleCap != null
+      ? { payoutCycleCap: num(account.accountType.payoutCycleCap) }
+      : {}),
     profitTarget,
     maxDrawdown,
     dailyLossLimit,

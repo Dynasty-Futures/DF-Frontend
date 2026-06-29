@@ -315,6 +315,13 @@ const SummaryPanel = ({
               icon={<Percent size={14} className="text-primary" />}
               variant="success"
             />
+            {account.payoutCycleCap != null && (
+              <SummaryItem
+                label="Max Payout / Cycle"
+                value={`$${account.payoutCycleCap.toLocaleString("en-US")}`}
+                icon={<ArrowUpRight size={14} className="text-primary" />}
+              />
+            )}
             {account.nextProgramName && (
               <SummaryItem
                 label="Next Phase"
