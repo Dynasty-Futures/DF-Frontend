@@ -18,7 +18,7 @@ import ResetAccountModal, {
 import type { TradingAccount, AccountStatus } from "@/types/trading";
 
 type StageLabel = "Evaluation" | "Funded" | "Closed";
-type StatusLabel = "Active" | "Violated" | "Closed";
+type StatusLabel = "Active" | "Violated" | "Closed" | "Upgraded";
 
 interface AccountView {
   id: string;
@@ -54,6 +54,7 @@ const STAGE_BY_STATUS: Record<AccountStatus, StageLabel> = {
   SUSPENDED: "Funded",
   FAILED: "Closed",
   CLOSED: "Closed",
+  UPGRADED: "Funded",
 };
 
 const STATUS_LABEL_BY_STATUS: Record<AccountStatus, StatusLabel> = {
@@ -64,6 +65,7 @@ const STATUS_LABEL_BY_STATUS: Record<AccountStatus, StatusLabel> = {
   SUSPENDED: "Violated",
   FAILED: "Violated",
   CLOSED: "Closed",
+  UPGRADED: "Upgraded",
 };
 
 const toView = (a: TradingAccount): AccountView => ({
@@ -87,6 +89,7 @@ const getStatusBadge = (status: StatusLabel): string => {
     Active: "bg-primary/20 text-primary border-primary/30",
     Violated: "bg-destructive/20 text-destructive border-destructive/30",
     Closed: "bg-muted text-muted-foreground border-border",
+    Upgraded: "bg-gold-dark/20 text-gold-dark border-gold-dark/30",
   };
   return styles[status];
 };
@@ -98,6 +101,23 @@ const getStageBadge = (stage: StageLabel): string => {
     Closed: "bg-muted text-muted-foreground border-border",
   };
   return styles[stage];
+};
+
+// Group accounts of the same plan family + size together so each section reads
+// in a predictable order rather than the arbitrary order the API returns.
+const planRank = (name: string): number => {
+  const n = name.toLowerCase();
+  if (n.includes("standard")) return 0;
+  if (n.includes("advanced")) return 1;
+  return 2; // Builder / Dynasty
+};
+
+const byTypeAndSize = (a: AccountView, b: AccountView): number => {
+  const rank = planRank(a.planType) - planRank(b.planType);
+  if (rank !== 0) return rank;
+  const sizeDiff = a.accountSizeUsd - b.accountSizeUsd;
+  if (sizeDiff !== 0) return sizeDiff;
+  return a.planType.localeCompare(b.planType);
 };
 
 const truncateId = (id: string) => (id.length > 12 ? `${id.slice(0, 8)}…` : id);
@@ -277,12 +297,12 @@ const DashboardAccounts = () => {
   );
 
   const activeAccounts = useMemo(
-    () => accounts.filter((a) => a.status === "Active"),
+    () => accounts.filter((a) => a.status === "Active").sort(byTypeAndSize),
     [accounts],
   );
 
   const inactiveAccounts = useMemo(
-    () => accounts.filter((a) => a.status !== "Active"),
+    () => accounts.filter((a) => a.status !== "Active").sort(byTypeAndSize),
     [accounts],
   );
 

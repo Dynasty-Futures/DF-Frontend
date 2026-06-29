@@ -40,7 +40,7 @@ export interface AccountData {
   plan: 'Standard' | 'Advanced' | 'Builder';
   planType: 'Standard' | 'Advanced' | 'Builder';
   stage: 'Evaluation' | 'Funded';
-  status: 'Active' | 'Violated' | 'Closed';
+  status: 'Active' | 'Violated' | 'Closed' | 'Upgraded';
   startingBalance: number;
   profitTarget: number;
   maxDrawdown: number;
