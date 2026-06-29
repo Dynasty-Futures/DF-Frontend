@@ -49,6 +49,14 @@ const formatCouponDiscount = (
     : `$${discountValue} off`;
 };
 
+const fmtMoney = (n: number): string =>
+  `$${n.toLocaleString("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+
+const fmtInt = (n: number): string => n.toLocaleString("en-US");
+
 type AffiliateTier = "Community Affiliate" | "Growth Affiliate" | "Dynasty Partner";
 
 interface TierConfig {
@@ -161,9 +169,16 @@ const DashboardAffiliate = () => {
   const primaryCoupon =
     coupons.find((c) => c.status === "APPROVED") ?? coupons[0] ?? null;
 
-  // Tier / earnings / performance data isn't available without the affiliate
-  // platform service token, so those sections render zeros + a "syncing" note.
-  const tierConfig = TIER_CONFIG["Community Affiliate"];
+  // Live earnings / performance from the affiliate platform (service-token
+  // backed). When null, the platform isn't connected for this partner yet, so
+  // those sections render a "syncing" note instead of untrusted zeros.
+  const analytics = affiliate?.analytics ?? null;
+  const hasAnalytics = analytics != null;
+
+  const tierName =
+    (analytics?.tierName as AffiliateTier | undefined) ?? "Community Affiliate";
+  const tierConfig = TIER_CONFIG[tierName] ?? TIER_CONFIG["Community Affiliate"];
+  const commissionRate = analytics?.commissionRate ?? tierConfig.commission;
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -197,9 +212,9 @@ const DashboardAffiliate = () => {
                   You're an approved Dynasty Futures affiliate.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Your referral link and discount code are below. Earnings and
-                  performance tracking sync once your affiliate analytics are
-                  connected.
+                  {hasAnalytics
+                    ? "Your referral link, discount code, earnings, and performance are below — updated live from the affiliate platform."
+                    : "Your referral link and discount code are below. Earnings and performance tracking sync once your affiliate analytics are connected."}
                 </p>
               </div>
             </div>
@@ -482,7 +497,7 @@ const DashboardAffiliate = () => {
                     <div>
                       <p className="text-xs text-muted-foreground">Current Tier</p>
                       <p className={`text-base font-bold ${tierConfig.colorClass}`}>
-                        Community Affiliate
+                        {tierName}
                       </p>
                     </div>
                   </div>
@@ -495,36 +510,42 @@ const DashboardAffiliate = () => {
                         Your Commission Rate
                       </p>
                       <p className="text-base font-bold text-primary">
-                        {tierConfig.commission}% per sale
+                        {commissionRate}% per sale
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Rolling 90-day stats — sync pending */}
+                {/* Lifetime referral stats */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-background/30 rounded-xl p-3 border border-border/20">
                     <p className="text-xs text-muted-foreground mb-1">
-                      Qualified Sales (90-day)
+                      Qualified Sales
                     </p>
-                    <p className="text-xl font-bold text-foreground">0</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {hasAnalytics ? fmtInt(analytics.totalOrders) : "0"}
+                    </p>
                   </div>
                   <div className="bg-background/30 rounded-xl p-3 border border-border/20">
                     <p className="text-xs text-muted-foreground mb-1">
-                      Referred Revenue (90-day)
+                      Referred Revenue
                     </p>
-                    <p className="text-xl font-bold text-foreground">$0.00</p>
+                    <p className="text-xl font-bold text-foreground">
+                      {hasAnalytics ? fmtMoney(analytics.totalRevenue) : "$0.00"}
+                    </p>
                   </div>
                 </div>
 
-                {/* Syncing note — tier/sales data needs the analytics connection */}
-                <div className="flex items-start gap-2 bg-primary/5 rounded-xl p-4 border border-primary/15">
-                  <Activity size={16} className="text-primary mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    Tier progress and qualified-sales tracking sync once your
-                    affiliate analytics are connected.
-                  </p>
-                </div>
+                {/* Syncing note — only while the analytics connection is pending */}
+                {!hasAnalytics && (
+                  <div className="flex items-start gap-2 bg-primary/5 rounded-xl p-4 border border-primary/15">
+                    <Activity size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      Tier progress and qualified-sales tracking sync once your
+                      affiliate analytics are connected.
+                    </p>
+                  </div>
+                )}
 
                 {/* Qualified sale definition */}
                 <div className="flex items-start gap-2 mt-5 pt-4 border-t border-border/20">
@@ -634,7 +655,9 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Current Balance
               </p>
-              <p className="text-2xl font-bold text-primary">$0.00</p>
+              <p className="text-2xl font-bold text-primary">
+                {hasAnalytics ? fmtMoney(analytics.availablePayoutAmount) : "$0.00"}
+              </p>
             </div>
             <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-gold-dark/30 hover:translate-y-[-2px]">
               <div className="flex items-center gap-3 mb-3">
@@ -645,7 +668,9 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Total Commissions Earned
               </p>
-              <p className="text-2xl font-bold text-gold-dark">$0.00</p>
+              <p className="text-2xl font-bold text-gold-dark">
+                {hasAnalytics ? fmtMoney(analytics.totalCommissions) : "$0.00"}
+              </p>
             </div>
             <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 p-5 transition-all duration-300 hover:border-gold-light/30 hover:translate-y-[-2px]">
               <div className="flex items-center gap-3 mb-3">
@@ -656,10 +681,12 @@ const DashboardAffiliate = () => {
               <p className="text-xs text-muted-foreground mb-1">
                 Pending Payouts
               </p>
-              <p className="text-2xl font-bold text-gold-light">$0.00</p>
+              <p className="text-2xl font-bold text-gold-light">
+                {hasAnalytics ? fmtMoney(analytics.pendingCommissions) : "$0.00"}
+              </p>
             </div>
           </div>
-          {isApprovedAffiliate && (
+          {isApprovedAffiliate && !hasAnalytics && (
             <div className="flex items-start gap-2 mt-4 bg-primary/5 rounded-xl p-4 border border-primary/15">
               <Activity size={16} className="text-primary mt-0.5 flex-shrink-0" />
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -715,28 +742,36 @@ const DashboardAffiliate = () => {
               <MousePointerClick size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Clicks</span>
             </div>
-            <p className="text-xl font-bold text-foreground">0</p>
+            <p className="text-xl font-bold text-foreground">
+              {hasAnalytics ? fmtInt(analytics.totalReferralClicks) : "0"}
+            </p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <UserPlus size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Signups</span>
             </div>
-            <p className="text-xl font-bold text-foreground">0</p>
+            <p className="text-xl font-bold text-foreground">
+              {hasAnalytics ? fmtInt(analytics.directReferrals) : "0"}
+            </p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <Target size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Conversions</span>
             </div>
-            <p className="text-xl font-bold text-foreground">0</p>
+            <p className="text-xl font-bold text-foreground">
+              {hasAnalytics ? fmtInt(analytics.paidOrders) : "0"}
+            </p>
           </div>
           <div className="rounded-xl bg-card/30 backdrop-blur-sm border border-border/20 p-4 transition-all duration-300 hover:border-primary/20 hover:translate-y-[-2px]">
             <div className="flex items-center gap-2 mb-2">
               <ShoppingCart size={16} className="text-muted-foreground" />
               <span className="text-xs text-muted-foreground">Total Sales</span>
             </div>
-            <p className="text-xl font-bold text-foreground">0</p>
+            <p className="text-xl font-bold text-foreground">
+              {hasAnalytics ? fmtInt(analytics.totalOrders) : "0"}
+            </p>
           </div>
         </div>
       </ScrollReveal>

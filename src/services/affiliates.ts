@@ -22,9 +22,30 @@ export interface AffiliateCouponView {
 }
 
 /**
- * The user's affiliate state, sourced from webhook-mirrored data. Earnings,
- * clicks, and tier metrics require the affiliate-platform service token and are
- * intentionally absent — the UI renders them as "syncing".
+ * Live earnings / analytics from the affiliate platform. Present only when the
+ * service token is configured and the partner is linked; `null` otherwise (the
+ * UI then renders "syncing" placeholders instead of untrusted zeros).
+ */
+export interface AffiliateAnalytics {
+  tierName: string | null;
+  /** Commission rate as a percentage (e.g. 10 for 10%). */
+  commissionRate: number | null;
+  totalRevenue: number;
+  totalCommissions: number;
+  paidCommissions: number;
+  pendingCommissions: number;
+  availablePayoutAmount: number;
+  payoutOnHoldAmount: number;
+  totalOrders: number;
+  paidOrders: number;
+  totalReferralClicks: number;
+  totalReferralClicksLast30Days: number;
+  directReferrals: number;
+}
+
+/**
+ * The user's affiliate state. Status / referral / coupons are sourced from
+ * webhook-mirrored data; `analytics` carries live earnings when available.
  */
 export interface MyAffiliateStatus {
   hasApplied: boolean;
@@ -34,6 +55,7 @@ export interface MyAffiliateStatus {
   referralCode: string | null;
   appliedAt: string | null;
   coupons: AffiliateCouponView[];
+  analytics: AffiliateAnalytics | null;
 }
 
 export interface AffiliateApplicationInput {
