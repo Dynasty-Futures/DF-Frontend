@@ -24,7 +24,10 @@ const Layout = ({ children, hideFooter = false }: LayoutProps) => {
         <BackgroundScene beamCount={18} />
       </div>
       <Navbar />
-      <main className="flex-1 pt-16 md:pt-20 relative z-[1]">{children}</main>
+      <main
+        className="flex-1 relative z-[1]"
+        style={{ paddingTop: 'calc(var(--navbar-h) + var(--maint-h, 0px))' }}
+      >{children}</main>
       {!hideFooter && (
         <div className="relative z-[1]">
           <Footer />

@@ -34,7 +34,7 @@ const DashboardMobileNav = () => {
   };
 
   return (
-    <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border/30">
+    <div className="lg:hidden fixed left-0 right-0 z-50 bg-card/80 backdrop-blur-xl border-b border-border/30" style={{ top: 'var(--maint-h, 0px)' }}>
       <div className="flex items-center justify-between p-4">
         <Link to="/" className="flex items-center gap-2">
           <img src={siteIconSrc} alt="Dynasty Futures" className="h-10 w-10 object-contain logo-blend" />
