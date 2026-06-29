@@ -6,7 +6,6 @@ import FundingModels from '@/components/home/FundingModels';
 import HowItWorks from '@/components/home/HowItWorks';
 import DiscordCTA from '@/components/home/DiscordCTA';
 import SimulatedTrading from '@/components/home/SimulatedTrading';
-import PreLaunchModal from '@/components/PreLaunchModal';
 import SponsorTicker, { DefaultSponsors } from '@/components/ui/SponsorTicker';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import LaunchCountdown from '@/components/home/LaunchCountdown';
@@ -26,7 +25,6 @@ const Index = () => {
           { name: 'Home', url: 'https://www.dynastyfuturesdyn.com/' },
         ])}
       />
-      <PreLaunchModal />
       <div className="page-transition">
         {/* Quotable definition block for AI citation and SEO */}
         <p className="sr-only">

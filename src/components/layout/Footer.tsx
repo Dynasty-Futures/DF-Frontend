@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/Dynasty_Futures.png";
-import PreLaunchModal from "@/components/PreLaunchModal";
 
 const quickLinks = [
   { name: "Home", path: "/" },
@@ -33,8 +31,6 @@ const dynastyArticleLinks = [
 ];
 
 const Footer = () => {
-  const [showAnnouncement, setShowAnnouncement] = useState(false);
-
   const handleLinkClick = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
@@ -134,14 +130,6 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
-              <li>
-                <button
-                  onClick={() => setShowAnnouncement(true)}
-                  className="text-muted-foreground text-sm hover:text-primary transition-colors duration-300 link-transition"
-                >
-                  Pre-Launch Announcement
-                </button>
-              </li>
             </ul>
           </div>
 
@@ -278,10 +266,6 @@ const Footer = () => {
         </div>
       </div>
 
-      <PreLaunchModal
-        externalOpen={showAnnouncement}
-        onExternalClose={() => setShowAnnouncement(false)}
-      />
     </footer>
   );
 };
