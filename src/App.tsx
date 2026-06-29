@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import ExternalDashboardGate from "@/components/auth/ExternalDashboardGate";
 import { getPerfFlags } from "@/lib/perfFlags";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
+import MaintenanceBanner from "@/components/ui/MaintenanceBanner";
 import CrispChat from "@/components/integrations/CrispChat";
 
 // Keep home route eagerly loaded; lazy-load the rest.
@@ -142,6 +143,7 @@ const App = () => {
               <Sonner />
               <CrispChat />
               <BrowserRouter>
+                <MaintenanceBanner />
                 <ScrollToTop />
                 <AppRoutes />
                 <CookieConsentBanner />

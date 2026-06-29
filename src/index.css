@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Maintenance banner height: set to 0 by default; MaintenanceBanner.tsx sets
+   --maint-h at runtime so navbars and content automatically shift down. */
+:root {
+  --maint-h: 0px;
+  --navbar-h: 4rem; /* matches pt-16 */
+}
+@media (min-width: 768px) {
+  :root {
+    --navbar-h: 5rem; /* matches pt-20 */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 4%;
