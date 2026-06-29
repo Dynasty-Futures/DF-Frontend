@@ -1,7 +1,9 @@
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
@@ -13,18 +15,85 @@ interface AccountSelectorProps {
   onValueChange?: (value: string) => void;
 }
 
-const stageLabel = (status: TradingAccount['status']): string =>
-  status === 'PASSED' || status === 'FUNDED' ? 'Funded' : 'Evaluation';
+type StatusLabel = 'Active' | 'Violated' | 'Closed' | 'Upgraded';
 
-const statusLabel = (status: TradingAccount['status']): 'Active' | 'Violated' | 'Closed' => {
+const stageLabel = (status: TradingAccount['status']): string =>
+  status === 'PASSED' || status === 'FUNDED' || status === 'UPGRADED'
+    ? 'Funded'
+    : 'Evaluation';
+
+const statusLabel = (status: TradingAccount['status']): StatusLabel => {
+  if (status === 'UPGRADED') return 'Upgraded';
   if (status === 'CLOSED') return 'Closed';
   if (status === 'FAILED' || status === 'SUSPENDED') return 'Violated';
   return 'Active';
 };
 
+const badgeClass = (status: StatusLabel): string => {
+  switch (status) {
+    case 'Active':
+      return 'bg-primary/20 text-primary';
+    case 'Violated':
+      return 'bg-destructive/20 text-destructive';
+    case 'Upgraded':
+      return 'bg-gold-dark/20 text-gold-dark';
+    default:
+      return 'bg-muted text-muted-foreground';
+  }
+};
+
+// Group accounts of the same plan/size together: rank by plan family, then by
+// account size ascending, so the dropdown reads in a predictable order rather
+// than the arbitrary order the API returns.
+const planRank = (name: string): number => {
+  const n = name.toLowerCase();
+  if (n.includes('standard')) return 0;
+  if (n.includes('advanced')) return 1;
+  return 2; // Builder / Dynasty
+};
+
+const sortByTypeAndSize = (a: TradingAccount, b: TradingAccount): number => {
+  const an = a.accountType.displayName || a.accountType.name;
+  const bn = b.accountType.displayName || b.accountType.name;
+  const rank = planRank(an) - planRank(bn);
+  if (rank !== 0) return rank;
+  const sizeDiff = Number(a.accountType.accountSize) - Number(b.accountType.accountSize);
+  if (sizeDiff !== 0) return sizeDiff;
+  return an.localeCompare(bn);
+};
+
 const AccountSelector = ({ value, onValueChange }: AccountSelectorProps) => {
   const { data, isLoading } = useTradingAccounts();
   const accounts = data?.data ?? [];
+
+  // Active accounts first, inactive (violated / closed / upgraded) after — each
+  // sorted by plan family + size.
+  const isActive = (a: TradingAccount) => statusLabel(a.status) === 'Active';
+  const activeAccounts = accounts.filter(isActive).sort(sortByTypeAndSize);
+  const inactiveAccounts = accounts.filter((a) => !isActive(a)).sort(sortByTypeAndSize);
+
+  const renderItem = (account: TradingAccount) => {
+    const stage = stageLabel(account.status);
+    const status = statusLabel(account.status);
+    const name = account.accountType.displayName || account.accountType.name;
+    return (
+      <SelectItem
+        key={account.id}
+        value={account.id}
+        className="focus:bg-primary/10 focus:text-foreground rounded-lg my-0.5"
+      >
+        <div className="flex items-center gap-3">
+          <span className="font-medium">{name}</span>
+          <span className="text-xs text-muted-foreground">• {stage}</span>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full font-medium ${badgeClass(status)}`}
+          >
+            {status}
+          </span>
+        </div>
+      </SelectItem>
+    );
+  };
 
   return (
     <Select value={value} onValueChange={onValueChange}>
@@ -39,35 +108,24 @@ const AccountSelector = ({ value, onValueChange }: AccountSelectorProps) => {
             No accounts yet
           </div>
         )}
-        {accounts.map((account) => {
-          const stage = stageLabel(account.status);
-          const status = statusLabel(account.status);
-          const name =
-            account.accountType.displayName || account.accountType.name;
-          return (
-            <SelectItem
-              key={account.id}
-              value={account.id}
-              className="focus:bg-primary/10 focus:text-foreground rounded-lg my-0.5"
-            >
-              <div className="flex items-center gap-3">
-                <span className="font-medium">{name}</span>
-                <span className="text-xs text-muted-foreground">• {stage}</span>
-                <span
-                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                    status === 'Active'
-                      ? 'bg-primary/20 text-primary'
-                      : status === 'Violated'
-                      ? 'bg-destructive/20 text-destructive'
-                      : 'bg-muted text-muted-foreground'
-                  }`}
-                >
-                  {status}
-                </span>
-              </div>
-            </SelectItem>
-          );
-        })}
+
+        {activeAccounts.length > 0 && (
+          <SelectGroup>
+            <SelectLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+              Active Accounts
+            </SelectLabel>
+            {activeAccounts.map(renderItem)}
+          </SelectGroup>
+        )}
+
+        {inactiveAccounts.length > 0 && (
+          <SelectGroup>
+            <SelectLabel className="text-xs uppercase tracking-wide text-muted-foreground">
+              Inactive Accounts
+            </SelectLabel>
+            {inactiveAccounts.map(renderItem)}
+          </SelectGroup>
+        )}
       </SelectContent>
     </Select>
   );

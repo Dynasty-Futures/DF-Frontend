@@ -81,6 +81,10 @@ const STATUS_CONFIG: Record<
     className:
       "text-muted-foreground bg-muted/30 border border-border/30",
   },
+  UPGRADED: {
+    label: "Upgraded",
+    className: "text-gold-dark bg-gold-dark/10 border border-gold-dark/20",
+  },
 };
 
 const StatusBadge = ({ status }: { status: AccountStatus }) => {

@@ -52,9 +52,12 @@ const detectPlan = (a: TradingAccount): AccountData['plan'] => {
 };
 
 const stageFor = (status: TradingAccount['status']): AccountData['stage'] =>
-  status === 'PASSED' || status === 'FUNDED' ? 'Funded' : 'Evaluation';
+  status === 'PASSED' || status === 'FUNDED' || status === 'UPGRADED'
+    ? 'Funded'
+    : 'Evaluation';
 
 const uiStatusFor = (status: TradingAccount['status']): AccountData['status'] => {
+  if (status === 'UPGRADED') return 'Upgraded';
   if (status === 'CLOSED') return 'Closed';
   if (status === 'FAILED' || status === 'SUSPENDED') return 'Violated';
   return 'Active';

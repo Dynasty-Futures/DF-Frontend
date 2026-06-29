@@ -16,7 +16,8 @@ export type AccountStatus =
   | 'FUNDED'
   | 'SUSPENDED'
   | 'FAILED'
-  | 'CLOSED';
+  | 'CLOSED'
+  | 'UPGRADED';
 
 export type ChallengePhase = 'PHASE_1' | 'PHASE_2' | 'FUNDED';
 
