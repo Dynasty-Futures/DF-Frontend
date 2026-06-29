@@ -583,11 +583,12 @@ const Pricing = () => {
             <section className="mb-20">
               <ScrollReveal className="text-center max-w-3xl mx-auto mb-10">
                 <h2 className="font-display text-2xl md:text-3xl font-bold mb-4">
-                  Weekly{" "}
-                  <span className="text-gradient-animated">Payout Limits</span>
+                  Payout{" "}
+                  <span className="text-gradient-animated">Limits</span>
                 </h2>
                 <p className="text-muted-foreground">
-                  Plan comparison for the currently available offerings.
+                  Maximum payout per request / eligible payout cycle after
+                  meeting 5 qualifying winning days.
                 </p>
               </ScrollReveal>
               <ScrollReveal
@@ -602,10 +603,10 @@ const Pricing = () => {
                           Plan
                         </th>
                         <th className="text-left py-5 px-6 text-foreground font-semibold">
-                          Weekly Minimum
+                          Minimum per Cycle
                         </th>
                         <th className="text-left py-5 px-6 text-foreground font-semibold">
-                          Weekly Maximum
+                          Maximum per Eligible Payout Cycle
                         </th>
                       </tr>
                     </thead>
@@ -632,7 +633,7 @@ const Pricing = () => {
                           $500
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
-                          $5,000/week
+                          $5,000
                         </td>
                       </tr>
                       <tr className="border-b border-border/20 hover:bg-primary/5 transition-colors">
@@ -657,7 +658,7 @@ const Pricing = () => {
                           $500
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
-                          $7,000/week
+                          $3,500
                         </td>
                       </tr>
                       <tr className="hover:bg-primary/5 transition-colors">
@@ -682,42 +683,20 @@ const Pricing = () => {
                           $500
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
-                          $7,000/week
+                          $3,000
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="mt-8 p-6 rounded-xl bg-muted/15 backdrop-blur-sm border border-border/30">
-                  <h4 className="font-display font-semibold text-foreground mb-4">
-                    Monthly Maximum Payout Caps
-                  </h4>
-                  <div className="grid md:grid-cols-3 gap-4">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">
-                        Standard Plan
-                      </span>
-                      <span className="font-semibold text-primary">
-                        $20,000/month
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">
-                        Advanced Plan
-                      </span>
-                      <span className="font-semibold text-gold-light">
-                        $28,000/month
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-card/60 backdrop-blur-sm">
-                      <span className="text-sm text-muted-foreground">
-                        Builder Plan
-                      </span>
-                      <span className="font-semibold text-primary">
-                        $28,000/month
-                      </span>
-                    </div>
-                  </div>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Each cap is the maximum payout per request / eligible payout
+                    cycle after meeting 5 qualifying winning days. Payout caps do
+                    not change payout eligibility, winning-day, consistency,
+                    drawdown, or account-standing requirements — those remain as
+                    described in the Trading Rules.
+                  </p>
                 </div>
               </ScrollReveal>
             </section>

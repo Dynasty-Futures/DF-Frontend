@@ -35,7 +35,7 @@ const faqs = [
     id: "payouts",
     question: "When do payouts happen?",
     answer:
-      "For Standard, Advanced, and Builder plans, payouts occur on 5-day cycles once you're funded. Monthly caps remain structured by plan and account type. Payouts are processed through Rise Works after approval and may require standard verification before funds are released.",
+      "For Standard, Advanced, and Builder plans, payouts occur on 5-day cycles once you're funded. Each plan has a maximum payout per request / eligible payout cycle after meeting 5 qualifying winning days — Standard $5,000, Advanced $3,500, and Builder $3,000. Payouts are processed through Rise Works after approval and may require standard verification before funds are released.",
   },
   {
     id: "static-drawdown",
