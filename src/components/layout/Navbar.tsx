@@ -13,6 +13,7 @@ import {
   Users,
   ChevronDown,
   LifeBuoy,
+  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -29,7 +30,20 @@ import {
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import {
+  EXTERNAL_DASHBOARD_URL,
+  shouldUseExternalDashboard,
+} from "@/lib/externalDashboard";
 import logo from "@/assets/Dynasty_Futures.png";
+
+// When external = true the link points off-site (full-page nav) rather than to
+// an in-app route, so it renders as an <a href> instead of a react-router <Link>.
+type NavLink = {
+  name: string;
+  path: string;
+  icon: LucideIcon;
+  external?: boolean;
+};
 
 const helpCenterLinks = [
   { name: "Support", to: "/support" },
@@ -55,10 +69,24 @@ const Navbar = () => {
     navigate("/");
   };
 
+  // While our reset/activation flows are unfinished, non-allowlisted traders
+  // are redirected to the YPF-hosted dashboard, so the Dashboard link points
+  // off-site for them. See src/lib/externalDashboard.ts.
+  const redirectDashboard = shouldUseExternalDashboard(user?.email);
+
   // Build navigation links dynamically based on auth state
-  const navLinks = [
+  const navLinks: NavLink[] = [
     { name: "Home", path: "/", icon: Home },
-    ...(isAuthenticated ? [{ name: "Dashboard", path: "/dashboard", icon: LayoutDashboard }] : []),
+    ...(isAuthenticated
+      ? [
+          {
+            name: "Dashboard",
+            path: redirectDashboard ? EXTERNAL_DASHBOARD_URL : "/dashboard",
+            icon: LayoutDashboard,
+            external: redirectDashboard,
+          },
+        ]
+      : []),
     { name: "About", path: "/about", icon: Info },
     { name: "Pricing", path: "/pricing", icon: Tag },
     { name: "Rules", path: "/rules", icon: BookOpen },
@@ -85,32 +113,46 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                onClick={handleLinkClick}
-                className={cn(
-                  "relative font-medium text-sm transition-all duration-300 hover:text-primary link-transition",
-                  location.pathname === link.path ||
-                    location.pathname.startsWith(link.path + "/")
-                    ? "text-primary"
-                    : "text-muted-foreground",
-                )}
-              >
-                {link.name}
-                <span
-                  className={cn(
-                    "absolute -bottom-1 left-0 h-0.5 transition-all duration-300",
-                    "bg-gradient-to-r from-gold-dark via-primary to-gold-light",
-                    location.pathname === link.path ||
-                      location.pathname.startsWith(link.path + "/")
-                      ? "w-full"
-                      : "w-0",
-                  )}
-                />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const active =
+                location.pathname === link.path ||
+                location.pathname.startsWith(link.path + "/");
+              const className = cn(
+                "relative font-medium text-sm transition-all duration-300 hover:text-primary link-transition",
+                active ? "text-primary" : "text-muted-foreground",
+              );
+              const inner = (
+                <>
+                  {link.name}
+                  <span
+                    className={cn(
+                      "absolute -bottom-1 left-0 h-0.5 transition-all duration-300",
+                      "bg-gradient-to-r from-gold-dark via-primary to-gold-light",
+                      active ? "w-full" : "w-0",
+                    )}
+                  />
+                </>
+              );
+              return link.external ? (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  onClick={handleLinkClick}
+                  className={className}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={handleLinkClick}
+                  className={className}
+                >
+                  {inner}
+                </Link>
+              );
+            })}
 
             {/* Help Center dropdown */}
             <DropdownMenu>
@@ -214,23 +256,38 @@ const Navbar = () => {
                       const active =
                         location.pathname === link.path ||
                         location.pathname.startsWith(link.path + "/");
-                      return (
-                        <Link
-                          key={link.path}
-                          to={link.path}
-                          onClick={handleLinkClick}
-                          className={cn(
-                            "flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300",
-                            active
-                              ? "bg-primary/10 text-primary border border-primary/20"
-                              : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
-                          )}
-                        >
+                      const className = cn(
+                        "flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-300",
+                        active
+                          ? "bg-primary/10 text-primary border border-primary/20"
+                          : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+                      );
+                      const inner = (
+                        <>
                           <Icon
                             size={20}
                             className={active ? "text-primary" : ""}
                           />
                           <span>{link.name}</span>
+                        </>
+                      );
+                      return link.external ? (
+                        <a
+                          key={link.path}
+                          href={link.path}
+                          onClick={handleLinkClick}
+                          className={className}
+                        >
+                          {inner}
+                        </a>
+                      ) : (
+                        <Link
+                          key={link.path}
+                          to={link.path}
+                          onClick={handleLinkClick}
+                          className={className}
+                        >
+                          {inner}
                         </Link>
                       );
                     })}

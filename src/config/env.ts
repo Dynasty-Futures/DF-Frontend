@@ -42,6 +42,20 @@ export const env = {
    */
   crispWebsiteId: import.meta.env.VITE_CRISP_WEBSITE_ID || '',
 
+  /**
+   * Temporary: when 'true', traders are redirected to the YPF-hosted dashboard
+   * (admin.dynastyfuturesdyn.com) instead of our in-app dashboard while our
+   * reset/activation checkout flows are still being finished. Flip to 'false'
+   * (or remove) to restore the in-app dashboard for everyone — no code change.
+   */
+  externalDashboardEnabled: import.meta.env.VITE_EXTERNAL_DASHBOARD === 'true',
+
+  /**
+   * Comma-separated emails that keep using our in-app dashboard even when
+   * externalDashboardEnabled is true (e.g. staff / test accounts).
+   */
+  dashboardAllowlist: import.meta.env.VITE_DASHBOARD_ALLOWLIST || '',
+
   /** True when running `npm run build` (NODE_ENV=production) */
   isProduction: import.meta.env.PROD,
 

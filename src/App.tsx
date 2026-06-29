@@ -9,6 +9,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { env } from "@/config/env";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import ExternalDashboardGate from "@/components/auth/ExternalDashboardGate";
 import { getPerfFlags } from "@/lib/perfFlags";
 import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 import CrispChat from "@/components/integrations/CrispChat";
@@ -95,9 +96,11 @@ export const AppRoutes = () => (
     {/* Dashboard Routes — requires authentication */}
     <Route path="/dashboard" element={
       <ProtectedRoute>
-        <LazyRoute>
-          <DashboardLayout />
-        </LazyRoute>
+        <ExternalDashboardGate>
+          <LazyRoute>
+            <DashboardLayout />
+          </LazyRoute>
+        </ExternalDashboardGate>
       </ProtectedRoute>
     }>
       <Route index element={<LazyRoute><DashboardHome /></LazyRoute>} />
