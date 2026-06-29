@@ -7,7 +7,6 @@ import {
   ChevronRight,
   MessageCircle,
   Headphones,
-  Rocket,
   Ticket,
   Loader2,
   Send,
@@ -23,7 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import PreLaunchModal from "@/components/PreLaunchModal";
 import {
   useTicketsByEmail,
   useUserTickets,
@@ -147,8 +145,6 @@ const TicketRow = ({ ticket }: { ticket: SupportTicket }) => (
 
 const DashboardHelp = () => {
   const { user } = useAuth();
-  const [showAnnouncement, setShowAnnouncement] = useState(false);
-
   // Logged-in user's tickets — primary path.
   const myTicketsQ = useUserTickets(user?.id ?? "");
   const myTickets = myTicketsQ.data?.data ?? [];
@@ -244,12 +240,6 @@ const DashboardHelp = () => {
               to="/faq#getting-started"
             />
 
-            <HelpCard
-              title="Pre-Launch Announcement"
-              description="View the pre-launch announcement and launch timeline."
-              icon={<Rocket size={28} className="text-primary" />}
-              onClick={() => setShowAnnouncement(true)}
-            />
           </div>
         </div>
       </ScrollReveal>
@@ -484,10 +474,6 @@ const DashboardHelp = () => {
         </div>
       </ScrollReveal>
 
-      <PreLaunchModal
-        externalOpen={showAnnouncement}
-        onExternalClose={() => setShowAnnouncement(false)}
-      />
     </div>
   );
 };
