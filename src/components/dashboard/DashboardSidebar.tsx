@@ -11,6 +11,7 @@ import {
   Award,
   Headphones,
   ExternalLink,
+  PanelLeftClose,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -36,7 +37,12 @@ const secondaryLinks = [
   { name: 'Help Center', path: '/dashboard/help', icon: Headphones },
 ];
 
-const DashboardSidebar = () => {
+interface DashboardSidebarProps {
+  /** When provided, renders a collapse button that hides the sidebar. */
+  onCollapse?: () => void;
+}
+
+const DashboardSidebar = ({ onCollapse }: DashboardSidebarProps) => {
   const location = useLocation();
 
   const isActive = (path: string) => {
@@ -72,7 +78,18 @@ const DashboardSidebar = () => {
   return (
     <aside className="w-52 shrink-0 h-screen sticky top-0 bg-transparent backdrop-blur-xl border-r border-border/30 flex flex-col overflow-hidden">
       {/* Logo + Home link */}
-      <div className="px-4 py-4 flex flex-col items-center gap-2 border-b border-border/20">
+      <div className="relative px-4 py-4 flex flex-col items-center gap-2 border-b border-border/20">
+        {onCollapse && (
+          <button
+            type="button"
+            onClick={onCollapse}
+            aria-label="Collapse sidebar"
+            title="Collapse sidebar"
+            className="absolute top-2 right-2 p-1.5 rounded-lg text-muted-foreground hover:bg-muted/50 hover:text-foreground transition-colors"
+          >
+            <PanelLeftClose size={16} />
+          </button>
+        )}
         <Link to="/" className="group">
           <img
             src={siteIconSrc}

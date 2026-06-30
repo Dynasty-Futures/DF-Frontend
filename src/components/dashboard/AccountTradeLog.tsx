@@ -83,7 +83,65 @@ const AccountTradeLog = ({ accountId }: AccountTradeLogProps) => {
           <p className="text-sm">No trades on this account yet</p>
         </div>
       ) : (
-        <div className="max-h-[420px] overflow-auto">
+        <>
+        {/* Mobile: stacked cards (no horizontal scroll) */}
+        <div className="sm:hidden max-h-[420px] overflow-y-auto p-3 space-y-2.5">
+          {trades.map((trade) => {
+            const direction = trade.side === "BUY" ? "Long" : "Short";
+            const pnl = toNum(trade.realizedPnl) - toNum(trade.commission);
+            return (
+              <div
+                key={trade.id}
+                className="rounded-xl bg-muted/10 border border-border/30 p-3 space-y-2"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-medium text-foreground">
+                      {trade.symbol}
+                    </span>
+                    <span
+                      className={cn(
+                        "text-xs font-medium px-1.5 py-0.5 rounded",
+                        direction === "Long"
+                          ? "text-emerald-500 bg-emerald-500/10"
+                          : "text-destructive bg-destructive/10",
+                      )}
+                    >
+                      {direction}
+                    </span>
+                  </div>
+                  <span
+                    className={cn(
+                      "font-semibold text-sm whitespace-nowrap",
+                      trade.realizedPnl === null
+                        ? "text-muted-foreground"
+                        : pnl >= 0
+                          ? "text-emerald-500"
+                          : "text-destructive",
+                    )}
+                  >
+                    {trade.realizedPnl !== null ? fmtCurrency(pnl) : "—"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{fmtDateTime(trade.exitTime ?? trade.entryTime)}</span>
+                  <span>{fmtDuration(trade.entryTime, trade.exitTime)}</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <span>Qty {trade.quantity}</span>
+                  <span>Entry {toNum(trade.entryPrice).toFixed(2)}</span>
+                  <span>
+                    Exit{" "}
+                    {trade.exitPrice ? toNum(trade.exitPrice).toFixed(2) : "—"}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* sm+: full table */}
+        <div className="hidden sm:block max-h-[420px] overflow-auto">
           <table className="w-full text-sm">
             <thead className="sticky top-0 bg-card/95 backdrop-blur-sm z-10">
               <tr className="border-b border-border/30">
@@ -168,6 +226,7 @@ const AccountTradeLog = ({ accountId }: AccountTradeLogProps) => {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   );

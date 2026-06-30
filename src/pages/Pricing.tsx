@@ -595,7 +595,70 @@ const Pricing = () => {
                 className="glass-card rounded-2xl border border-border/50 overflow-hidden"
                 delay={150}
               >
-                <div className="overflow-x-auto">
+                {/* Mobile: stacked cards (no horizontal scroll) */}
+                <div className="md:hidden p-4 space-y-3">
+                  {[
+                    {
+                      plan: "Standard",
+                      desc: "Monthly subscription, activation fee after pass",
+                      min: "$250",
+                      max: "$5,000",
+                      img: "standard" as const,
+                    },
+                    {
+                      plan: "Advanced",
+                      desc: "Monthly subscription, no activation fee",
+                      min: "$250",
+                      max: "$3,500",
+                      img: "advanced" as const,
+                    },
+                    {
+                      plan: "Builder",
+                      desc: "Higher max loss limit, no activation fee",
+                      min: "$250",
+                      max: "$3,000",
+                      img: "builder" as const,
+                    },
+                  ].map((row) => (
+                    <div
+                      key={row.plan}
+                      className="rounded-xl bg-muted/10 border border-border/30 p-4 space-y-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-card/90 border border-border/30 flex items-center justify-center shrink-0">
+                          <PlanImage plan={row.img} size={26} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-foreground">
+                            {row.plan}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {row.desc}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">
+                            Minimum per Cycle
+                          </p>
+                          <p className="text-primary font-bold">{row.min}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-1">
+                            Maximum per Eligible Payout Cycle
+                          </p>
+                          <p className="text-foreground font-semibold">
+                            {row.max}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* md+: full table */}
+                <div className="hidden md:block overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-border/30 bg-muted/10">

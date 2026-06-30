@@ -388,7 +388,73 @@ const DashboardJournal = () => {
               </div>
 
               {dayTrades.length > 0 ? (
-                <div className="overflow-x-auto">
+                <>
+                {/* Mobile: stacked cards (no horizontal scroll) */}
+                <div className="sm:hidden space-y-2.5">
+                  {dayTrades.map((trade) => {
+                    const direction = trade.side === "BUY" ? "Long" : "Short";
+                    const pnl = Number(trade.realizedPnl ?? 0);
+                    return (
+                      <div
+                        key={trade.id}
+                        className="rounded-xl bg-muted/10 border border-border/30 p-3 space-y-2"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="font-medium text-foreground">
+                              {trade.symbol}
+                            </span>
+                            <span
+                              className={cn(
+                                "text-xs font-medium px-1.5 py-0.5 rounded",
+                                direction === "Long"
+                                  ? "text-primary bg-primary/10"
+                                  : "text-destructive bg-destructive/10",
+                              )}
+                            >
+                              {direction}
+                            </span>
+                          </div>
+                          <span
+                            className={cn(
+                              "font-semibold text-sm whitespace-nowrap",
+                              trade.realizedPnl === null
+                                ? "text-muted-foreground"
+                                : pnl >= 0
+                                  ? "text-primary"
+                                  : "text-destructive",
+                            )}
+                          >
+                            {trade.realizedPnl !== null
+                              ? formatCurrency(pnl)
+                              : "—"}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>
+                            {formatTime(trade.entryTime)} →{" "}
+                            {trade.exitTime ? formatTime(trade.exitTime) : "Open"}
+                          </span>
+                          <span>
+                            {formatDuration(trade.entryTime, trade.exitTime)}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span>In {Number(trade.entryPrice).toFixed(2)}</span>
+                          <span>
+                            Out{" "}
+                            {trade.exitPrice
+                              ? Number(trade.exitPrice).toFixed(2)
+                              : "—"}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* sm+: full table */}
+                <div className="hidden sm:block overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
                       <tr className="border-b border-border/30">
@@ -477,6 +543,7 @@ const DashboardJournal = () => {
                     </tbody>
                   </table>
                 </div>
+                </>
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
                   <Clock size={32} className="mb-3 opacity-40" />

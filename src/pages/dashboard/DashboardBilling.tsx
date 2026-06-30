@@ -228,76 +228,101 @@ const DashboardBilling = () => {
               All account purchases
             </p>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/30 hover:bg-transparent">
-                <TableHead className="text-muted-foreground font-medium py-4">
-                  Date
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-4">
-                  Plan
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-4">
-                  Amount
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-4">
-                  Status
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <Loader2
-                      size={18}
-                      className="animate-spin text-muted-foreground mx-auto"
-                    />
-                  </TableCell>
-                </TableRow>
-              ) : accounts.length > 0 ? (
-                accounts.map((account) => (
-                  <TableRow
+          {isLoading ? (
+            <div className="py-12 text-center">
+              <Loader2
+                size={18}
+                className="animate-spin text-muted-foreground mx-auto"
+              />
+            </div>
+          ) : accounts.length === 0 ? (
+            <div className="py-16 text-center">
+              <div className="flex flex-col items-center gap-3">
+                <div className="p-4 rounded-2xl bg-muted/20 border border-border/20">
+                  <FileText size={28} className="text-muted-foreground/40" />
+                </div>
+                <p className="text-muted-foreground font-medium">
+                  No purchases yet
+                </p>
+                <p className="text-sm text-muted-foreground/60 max-w-xs mx-auto">
+                  Transactions will appear here after your first purchase.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Mobile: stacked cards (no horizontal scroll) */}
+              <div className="md:hidden p-4 space-y-3">
+                {accounts.map((account) => (
+                  <div
                     key={account.id}
-                    className="border-border/30 hover:bg-muted/10"
+                    className="rounded-xl bg-muted/10 border border-border/30 p-4 space-y-3"
                   >
-                    <TableCell className="py-4 text-muted-foreground">
-                      {formatDate(account.createdAt)}
-                    </TableCell>
-                    <TableCell className="py-4 font-medium text-foreground">
-                      {account.accountType.displayName}
-                    </TableCell>
-                    <TableCell className="py-4 font-semibold text-foreground">
-                      {getAmountPaid(account)}
-                    </TableCell>
-                    <TableCell className="py-4">
-                      <StatusBadge status={account.status} />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-16 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="p-4 rounded-2xl bg-muted/20 border border-border/20">
-                        <FileText
-                          size={28}
-                          className="text-muted-foreground/40"
-                        />
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground truncate">
+                          {account.accountType.displayName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatDate(account.createdAt)}
+                        </p>
                       </div>
-                      <p className="text-muted-foreground font-medium">
-                        No purchases yet
-                      </p>
-                      <p className="text-sm text-muted-foreground/60 max-w-xs">
-                        Transactions will appear here after your first
-                        purchase.
-                      </p>
+                      <StatusBadge status={account.status} />
                     </div>
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Amount</span>
+                      <span className="font-semibold text-foreground">
+                        {getAmountPaid(account)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* md+: full table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/30 hover:bg-transparent">
+                      <TableHead className="text-muted-foreground font-medium py-4">
+                        Date
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-4">
+                        Plan
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-4">
+                        Amount
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-4">
+                        Status
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {accounts.map((account) => (
+                      <TableRow
+                        key={account.id}
+                        className="border-border/30 hover:bg-muted/10"
+                      >
+                        <TableCell className="py-4 text-muted-foreground">
+                          {formatDate(account.createdAt)}
+                        </TableCell>
+                        <TableCell className="py-4 font-medium text-foreground">
+                          {account.accountType.displayName}
+                        </TableCell>
+                        <TableCell className="py-4 font-semibold text-foreground">
+                          {getAmountPaid(account)}
+                        </TableCell>
+                        <TableCell className="py-4">
+                          <StatusBadge status={account.status} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          )}
         </div>
       </ScrollReveal>
     </div>
