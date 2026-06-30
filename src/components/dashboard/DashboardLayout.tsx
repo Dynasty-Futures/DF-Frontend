@@ -90,9 +90,10 @@ const DashboardLayout = () => {
           </button>
         )}
 
-        {/* Main Content */}
+        {/* Main Content. When the sidebar is collapsed, pad the content left on
+            desktop so the fixed reopen button never overlaps the page heading. */}
         <main className="flex-1 min-h-screen">
-          <div className="p-6 lg:p-8">
+          <div className={`p-6 lg:p-8 ${sidebarCollapsed ? "lg:pl-20" : ""}`}>
             <Outlet />
           </div>
         </main>
