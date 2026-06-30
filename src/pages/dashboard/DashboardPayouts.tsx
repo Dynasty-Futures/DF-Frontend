@@ -410,112 +410,185 @@ const DashboardPayouts = () => {
               </p>
             </div>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/30 hover:bg-transparent">
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Account
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Balance
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Available Profit
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5 text-right">
-                  Action
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {eligibleQ.isLoading ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                      <Loader2 className="animate-spin" size={18} /> Loading
-                      accounts…
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : eligibleQ.isError ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <div className="flex flex-col items-center gap-2 text-destructive">
-                      <AlertCircle size={20} />
-                      <p className="text-sm">
-                        {eligibleQ.error?.message ??
-                          "Failed to load eligible accounts."}
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : eligibleAccounts.length === 0 ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
-                        <CircleOff size={20} className="text-muted-foreground/50" />
-                      </div>
-                      <p className="text-sm font-medium text-foreground">
-                        No funded accounts are currently eligible for payout.
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Eligible funded accounts will appear here once payout
-                        requirements are met.
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                eligibleAccounts.map((account, index) => (
-                  <TableRow
+          {eligibleQ.isLoading ? (
+            <div className="py-12 text-center">
+              <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                <Loader2 className="animate-spin" size={18} /> Loading accounts…
+              </div>
+            </div>
+          ) : eligibleQ.isError ? (
+            <div className="py-12 text-center">
+              <div className="flex flex-col items-center gap-2 text-destructive">
+                <AlertCircle size={20} />
+                <p className="text-sm">
+                  {eligibleQ.error?.message ??
+                    "Failed to load eligible accounts."}
+                </p>
+              </div>
+            </div>
+          ) : eligibleAccounts.length === 0 ? (
+            <div className="py-12 text-center">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
+                  <CircleOff size={20} className="text-muted-foreground/50" />
+                </div>
+                <p className="text-sm font-medium text-foreground">
+                  No funded accounts are currently eligible for payout.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Eligible funded accounts will appear here once payout
+                  requirements are met.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Mobile: stacked cards (no horizontal scroll) */}
+              <div className="md:hidden p-4 space-y-3">
+                {eligibleAccounts.map((account) => (
+                  <div
                     key={account.accountId}
-                    className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                      index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-                    }`}
+                    className="rounded-xl bg-muted/10 border border-border/30 p-4 space-y-3"
                   >
-                    <TableCell className="font-medium text-foreground py-6">
+                    <p className="font-medium text-foreground">
                       {account.accountName}
-                    </TableCell>
-                    <TableCell className="text-foreground py-6">
-                      {formatCurrency(account.currentBalance, account.currency)}
-                    </TableCell>
-                    <TableCell className="py-6">
-                      <span className="px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold border border-primary/20">
-                        {formatCurrency(account.availableProfit, account.currency)}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right py-6">
+                    </p>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Balance
+                        </p>
+                        <p className="text-foreground">
+                          {formatCurrency(
+                            account.currentBalance,
+                            account.currency,
+                          )}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Available Profit
+                        </p>
+                        <p className="text-primary font-bold">
+                          {formatCurrency(
+                            account.availableProfit,
+                            account.currency,
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="pt-1">
                       {account.hasPendingPayout ? (
                         <span className="text-xs text-muted-foreground">
                           Request in progress
                         </span>
                       ) : account.eligible ? (
-                        <Button size="sm" onClick={() => openModal(account)}>
+                        <Button
+                          size="sm"
+                          className="w-full"
+                          onClick={() => openModal(account)}
+                        >
                           Request Payout
                         </Button>
                       ) : (
-                        <div className="flex flex-col items-end gap-1">
+                        <div className="space-y-1">
                           <Button
                             size="sm"
                             variant="outline"
+                            className="w-full"
                             onClick={() => openModal(account)}
                           >
                             View Requirements
                           </Button>
                           {account.blockingReason && (
-                            <span className="text-[11px] text-muted-foreground max-w-[180px] text-right">
+                            <span className="block text-[11px] text-muted-foreground">
                               {account.blockingReason}
                             </span>
                           )}
                         </div>
                       )}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* md+: full table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/30 hover:bg-transparent">
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Account
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Balance
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Available Profit
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5 text-right">
+                        Action
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {eligibleAccounts.map((account, index) => (
+                      <TableRow
+                        key={account.accountId}
+                        className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                          index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                        }`}
+                      >
+                        <TableCell className="font-medium text-foreground py-6">
+                          {account.accountName}
+                        </TableCell>
+                        <TableCell className="text-foreground py-6">
+                          {formatCurrency(
+                            account.currentBalance,
+                            account.currency,
+                          )}
+                        </TableCell>
+                        <TableCell className="py-6">
+                          <span className="px-4 py-2 rounded-lg bg-primary/10 text-primary font-bold border border-primary/20">
+                            {formatCurrency(
+                              account.availableProfit,
+                              account.currency,
+                            )}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-right py-6">
+                          {account.hasPendingPayout ? (
+                            <span className="text-xs text-muted-foreground">
+                              Request in progress
+                            </span>
+                          ) : account.eligible ? (
+                            <Button size="sm" onClick={() => openModal(account)}>
+                              Request Payout
+                            </Button>
+                          ) : (
+                            <div className="flex flex-col items-end gap-1">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openModal(account)}
+                              >
+                                View Requirements
+                              </Button>
+                              {account.blockingReason && (
+                                <span className="text-[11px] text-muted-foreground max-w-[180px] text-right">
+                                  {account.blockingReason}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Rise Works Info */}
@@ -564,69 +637,44 @@ const DashboardPayouts = () => {
               </p>
             </div>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/30 hover:bg-transparent">
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Request Date
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Amount
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Net Transfer
-                </TableHead>
-                <TableHead className="text-muted-foreground font-medium py-5">
-                  Status
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {historyQ.isLoading ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                      <Loader2 className="animate-spin" size={18} /> Loading
-                      history…
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : payoutHistory.length === 0 ? (
-                <TableRow className="border-border/30 hover:bg-transparent">
-                  <TableCell colSpan={4} className="py-12 text-center">
-                    <div className="flex flex-col items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
-                        <CircleOff size={20} className="text-muted-foreground/50" />
-                      </div>
-                      <p className="text-sm font-medium text-foreground">
-                        No payout history available.
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Completed payout requests will appear here.
-                      </p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                payoutHistory.map((payout: Payout, index) => (
-                  <TableRow
+          {historyQ.isLoading ? (
+            <div className="py-12 text-center">
+              <div className="flex items-center justify-center gap-2 text-muted-foreground">
+                <Loader2 className="animate-spin" size={18} /> Loading history…
+              </div>
+            </div>
+          ) : payoutHistory.length === 0 ? (
+            <div className="py-12 text-center">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-muted/30 flex items-center justify-center">
+                  <CircleOff size={20} className="text-muted-foreground/50" />
+                </div>
+                <p className="text-sm font-medium text-foreground">
+                  No payout history available.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Completed payout requests will appear here.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Mobile: stacked cards (no horizontal scroll) */}
+              <div className="md:hidden p-4 space-y-3">
+                {payoutHistory.map((payout: Payout) => (
+                  <div
                     key={payout.id}
-                    className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                      index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-                    }`}
+                    className="rounded-xl bg-muted/10 border border-border/30 p-4 space-y-3"
                   >
-                    <TableCell className="font-medium text-foreground py-5">
-                      {new Date(payout.requestedAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell className="font-bold text-foreground py-5">
-                      {formatCurrency(payout.amount, payout.currency)}
-                    </TableCell>
-                    <TableCell className="text-foreground py-5">
-                      {payout.transferAmount !== null
-                        ? formatCurrency(payout.transferAmount, payout.currency)
-                        : "—"}
-                    </TableCell>
-                    <TableCell className="py-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Requested
+                        </p>
+                        <p className="font-medium text-foreground">
+                          {new Date(payout.requestedAt).toLocaleDateString()}
+                        </p>
+                      </div>
                       <span
                         className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusStyle(payout.status)}`}
                         title={payout.rejectionReason ?? undefined}
@@ -634,12 +682,91 @@ const DashboardPayouts = () => {
                         {getStatusIcon(payout.status)}
                         {statusLabel[payout.status]}
                       </span>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Amount
+                        </p>
+                        <p className="font-bold text-foreground">
+                          {formatCurrency(payout.amount, payout.currency)}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Net Transfer
+                        </p>
+                        <p className="text-foreground">
+                          {payout.transferAmount !== null
+                            ? formatCurrency(
+                                payout.transferAmount,
+                                payout.currency,
+                              )
+                            : "—"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* md+: full table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-border/30 hover:bg-transparent">
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Request Date
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Amount
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Net Transfer
+                      </TableHead>
+                      <TableHead className="text-muted-foreground font-medium py-5">
+                        Status
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {payoutHistory.map((payout: Payout, index) => (
+                      <TableRow
+                        key={payout.id}
+                        className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                          index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                        }`}
+                      >
+                        <TableCell className="font-medium text-foreground py-5">
+                          {new Date(payout.requestedAt).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="font-bold text-foreground py-5">
+                          {formatCurrency(payout.amount, payout.currency)}
+                        </TableCell>
+                        <TableCell className="text-foreground py-5">
+                          {payout.transferAmount !== null
+                            ? formatCurrency(
+                                payout.transferAmount,
+                                payout.currency,
+                              )
+                            : "—"}
+                        </TableCell>
+                        <TableCell className="py-5">
+                          <span
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusStyle(payout.status)}`}
+                            title={payout.rejectionReason ?? undefined}
+                          >
+                            {getStatusIcon(payout.status)}
+                            {statusLabel[payout.status]}
+                          </span>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </>
+          )}
         </div>
       </ScrollReveal>
 

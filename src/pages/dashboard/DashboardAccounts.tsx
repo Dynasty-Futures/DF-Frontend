@@ -153,6 +153,67 @@ const ResetButton = ({ onClick }: { onClick: () => void }) => (
   </Button>
 );
 
+// Mobile card — a stacked, scroll-free view of one account. Replaces the
+// horizontally-overflowing table on small screens (the table only fits its
+// 6–7 columns on md+).
+const AccountCard = ({
+  account,
+  showBalance = false,
+  onReset,
+}: {
+  account: AccountView;
+  showBalance?: boolean;
+  onReset?: (account: AccountView) => void;
+}) => (
+  <div
+    className={`rounded-xl bg-card/50 backdrop-blur-sm border border-border/30 p-4 space-y-3 ${
+      account.status === "Active" ? "border-l-2 border-l-primary" : ""
+    }`}
+  >
+    <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        <p className="text-foreground font-medium truncate">{account.planType}</p>
+        <p className="font-mono text-xs text-muted-foreground truncate">
+          {truncateId(account.id)}
+        </p>
+      </div>
+      <span
+        className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}
+      >
+        {account.status}
+      </span>
+    </div>
+
+    <div className="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+      <div>
+        <p className="text-xs text-muted-foreground mb-1">Account Size</p>
+        <p className="text-foreground">{account.accountSize}</p>
+      </div>
+      <div>
+        <p className="text-xs text-muted-foreground mb-1">Stage</p>
+        <span
+          className={`inline-block px-2.5 py-1 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}
+        >
+          {account.stage}
+        </span>
+      </div>
+      {showBalance && (
+        <div>
+          <p className="text-xs text-muted-foreground mb-1">Balance</p>
+          <p className="text-foreground font-semibold">{account.balance}</p>
+        </div>
+      )}
+    </div>
+
+    <div className="flex items-center gap-2 pt-1">
+      {onReset && account.isResettable && (
+        <ResetButton onClick={() => onReset(account)} />
+      )}
+      <ViewButton id={account.id} />
+    </div>
+  </div>
+);
+
 const ActiveAccountsTable = ({ accounts }: { accounts: AccountView[] }) => {
   if (accounts.length === 0) {
     return (
@@ -164,53 +225,63 @@ const ActiveAccountsTable = ({ accounts }: { accounts: AccountView[] }) => {
   }
 
   return (
-    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow className="border-border/30 hover:bg-transparent">
-            <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Balance</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {accounts.map((account, index) => (
-            <TableRow
-              key={account.id}
-              className={`border-border/30 hover:bg-muted/20 transition-colors border-l-2 border-l-primary ${
-                index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-              }`}
-            >
-              <TableCell className="font-mono text-xs text-muted-foreground py-4">
-                {truncateId(account.id)}
-              </TableCell>
-              <TableCell className="text-foreground py-4">{account.planType}</TableCell>
-              <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
-              <TableCell className="py-4">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
-                  {account.stage}
-                </span>
-              </TableCell>
-              <TableCell className="py-4">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
-                  {account.status}
-                </span>
-              </TableCell>
-              <TableCell className="font-semibold text-foreground py-4">{account.balance}</TableCell>
-              <TableCell className="text-right py-4">
-                <div className="flex items-center justify-end gap-2">
-                  <ViewButton id={account.id} />
-                </div>
-              </TableCell>
+    <>
+      {/* Mobile: stacked cards (no horizontal scroll) */}
+      <div className="md:hidden space-y-3">
+        {accounts.map((account) => (
+          <AccountCard key={account.id} account={account} showBalance />
+        ))}
+      </div>
+
+      {/* md+: full table */}
+      <div className="hidden md:block rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-border/30 hover:bg-transparent">
+              <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Balance</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {accounts.map((account, index) => (
+              <TableRow
+                key={account.id}
+                className={`border-border/30 hover:bg-muted/20 transition-colors border-l-2 border-l-primary ${
+                  index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                }`}
+              >
+                <TableCell className="font-mono text-xs text-muted-foreground py-4">
+                  {truncateId(account.id)}
+                </TableCell>
+                <TableCell className="text-foreground py-4">{account.planType}</TableCell>
+                <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
+                <TableCell className="py-4">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
+                    {account.stage}
+                  </span>
+                </TableCell>
+                <TableCell className="py-4">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
+                    {account.status}
+                  </span>
+                </TableCell>
+                <TableCell className="font-semibold text-foreground py-4">{account.balance}</TableCell>
+                <TableCell className="text-right py-4">
+                  <div className="flex items-center justify-end gap-2">
+                    <ViewButton id={account.id} />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 };
 
@@ -230,54 +301,64 @@ const InactiveAccountsTable = ({ accounts, onReset }: InactiveAccountsTableProps
   }
 
   return (
-    <div className="rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow className="border-border/30 hover:bg-transparent">
-            <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
-            <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {accounts.map((account, index) => (
-            <TableRow
-              key={account.id}
-              className={`border-border/30 hover:bg-muted/20 transition-colors ${
-                index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
-              }`}
-            >
-              <TableCell className="font-mono text-xs text-muted-foreground py-4">
-                {truncateId(account.id)}
-              </TableCell>
-              <TableCell className="text-foreground py-4">{account.planType}</TableCell>
-              <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
-              <TableCell className="py-4">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
-                  {account.stage}
-                </span>
-              </TableCell>
-              <TableCell className="py-4">
-                <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
-                  {account.status}
-                </span>
-              </TableCell>
-              <TableCell className="text-right py-4">
-                <div className="flex items-center justify-end gap-2">
-                  {account.isResettable && (
-                    <ResetButton onClick={() => onReset(account)} />
-                  )}
-                  <ViewButton id={account.id} />
-                </div>
-              </TableCell>
+    <>
+      {/* Mobile: stacked cards (no horizontal scroll) */}
+      <div className="md:hidden space-y-3">
+        {accounts.map((account) => (
+          <AccountCard key={account.id} account={account} onReset={onReset} />
+        ))}
+      </div>
+
+      {/* md+: full table */}
+      <div className="hidden md:block rounded-2xl bg-card/50 backdrop-blur-sm border border-border/30 overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-border/30 hover:bg-transparent">
+              <TableHead className="text-muted-foreground font-medium py-4">Account ID</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Plan</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Account Size</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Stage</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4">Status</TableHead>
+              <TableHead className="text-muted-foreground font-medium py-4 text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {accounts.map((account, index) => (
+              <TableRow
+                key={account.id}
+                className={`border-border/30 hover:bg-muted/20 transition-colors ${
+                  index % 2 === 0 ? "bg-transparent" : "bg-muted/5"
+                }`}
+              >
+                <TableCell className="font-mono text-xs text-muted-foreground py-4">
+                  {truncateId(account.id)}
+                </TableCell>
+                <TableCell className="text-foreground py-4">{account.planType}</TableCell>
+                <TableCell className="text-foreground py-4">{account.accountSize}</TableCell>
+                <TableCell className="py-4">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStageBadge(account.stage)}`}>
+                    {account.stage}
+                  </span>
+                </TableCell>
+                <TableCell className="py-4">
+                  <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusBadge(account.status)}`}>
+                    {account.status}
+                  </span>
+                </TableCell>
+                <TableCell className="text-right py-4">
+                  <div className="flex items-center justify-end gap-2">
+                    {account.isResettable && (
+                      <ResetButton onClick={() => onReset(account)} />
+                    )}
+                    <ViewButton id={account.id} />
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 };
 

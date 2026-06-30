@@ -152,7 +152,30 @@ const Payouts = () => {
                     </h2>
                   </div>
 
-                  <div className="overflow-x-auto">
+                  {/* Mobile: stacked cards (no horizontal scroll) */}
+                  <div className="sm:hidden space-y-3">
+                    {mockData.payoutHistory.map((payout) => (
+                      <div
+                        key={payout.id}
+                        className="rounded-xl bg-muted/10 border border-border/30 p-4 flex items-center justify-between gap-3"
+                      >
+                        <div>
+                          <p className="text-foreground font-semibold">
+                            ${payout.amount.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {payout.date}
+                          </p>
+                        </div>
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                          {payout.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* sm+: full table */}
+                  <div className="hidden sm:block overflow-x-auto">
                     <table className="w-full">
                       <thead>
                         <tr className="border-b border-border/30">
