@@ -188,7 +188,7 @@ const PerformanceChart = ({
           target is still above the chart; flips to a green "✓ target reached"
           once equity climbs to it. */}
       {chartType === "equity" && hasTarget && (
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div className="absolute top-16 sm:top-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
           <div
             className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold border ${
               targetReached
