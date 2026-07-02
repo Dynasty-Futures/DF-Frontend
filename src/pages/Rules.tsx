@@ -161,6 +161,28 @@ const universalRules = [
       "All trades must be held for a minimum of ten (10) seconds. Trading activity that consistently enters and exits positions in less than ten seconds may impact funded status eligibility, payout eligibility, or continued participation in Dynasty Futures programs. Dynasty Futures reserves the right to review trading activity and determine compliance with the intended purpose of the evaluation and funded account programs.",
     allowed: false,
   },
+  {
+    icon: Lock,
+    title: "Account Ownership Requirement",
+    description:
+      "All Dynasty Futures accounts must be traded solely by the individual who purchased and registered the account. Purchasing an account for another person, allowing another individual to trade on your behalf, sharing account credentials, or otherwise transferring account control is strictly prohibited. Accounts must remain under the control of the original account holder at all times. Violations may result in account review, suspension, payout denial, account termination, or loss of funded eligibility.",
+    allowed: false,
+  },
+  {
+    icon: ShieldIcon,
+    title: "IP Address & Device Compliance",
+    description:
+      "Dynasty Futures monitors account activity for compliance and risk management purposes. Multiple traders operating from the same IP address, device, network, VPN environment, or location may be subject to additional review. Users may be asked to verify account ownership and trading activity when unusual account relationships or coordinated trading behavior are detected. Activity designed to circumvent account ownership rules, create artificial trading performance, manipulate evaluations, or coordinate trading between multiple individuals may result in account restrictions, payout review, funded-status review, or account termination.",
+    allowed: false,
+  },
+  {
+    icon: TrendingDown,
+    title: "Hedging Policy",
+    label: "Hedging Prohibited",
+    description:
+      "Hedging is prohibited within the Dynasty Futures ecosystem. This includes hedging positions between multiple Dynasty Futures accounts; hedging positions between accounts owned by different individuals; coordinated trading designed to offset risk across multiple traders; hedging correlated assets with the intent of reducing or eliminating market exposure; and trading opposite positions across accounts using shared IP addresses, shared devices, shared households, shared business entities, or coordinated groups. Accounts identified as participating in hedging activity may be subject to investigation, payout denial, funded-status review, account suspension, or account termination.",
+    allowed: false,
+  },
 ];
 
 const accountRules = [
