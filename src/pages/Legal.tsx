@@ -2237,7 +2237,7 @@ const Legal = () => {
                               <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Static (fixed) drawdown</li>
                               <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />No profit target</li>
                               <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Consistency rule: Builder only (40%)</li>
-                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />Daily loss limit: Standard only</li>
+                              <li className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40 mt-1.5 flex-shrink-0" />No daily loss limit (evaluation-only rule)</li>
                             </ul>
                           </div>
                         </div>
@@ -2289,18 +2289,18 @@ const Legal = () => {
                 )}
 
                 {/* ── DAILY LOSS LIMIT ── */}
-                {activeRule === "daily-loss" && (
+                {activeRule === "daily-loss-limit" && (
                   <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
                     <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
                     <div>
                       <h2 className="font-display text-2xl font-bold text-foreground mb-3">Daily Loss Limit Explained</h2>
-                      <p className="text-sm text-muted-foreground leading-relaxed">The Daily Loss Limit (DLL) applies to the <strong className="text-foreground">Standard Plan only</strong> and is active during both the evaluation and funded phases. It caps how much you can lose in a single trading day, providing an additional layer of risk management on top of the Maximum Loss Limit.</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">The Daily Loss Limit (DLL) applies only to <strong className="text-foreground">Standard Plan evaluation accounts</strong>. If the Daily Loss Limit is hit or exceeded during the evaluation phase, it is considered a hard breach and the account will be closed. It does not apply to Advanced or Builder plans, and it does not apply to funded accounts.</p>
                     </div>
-                    <div className="p-4 rounded-xl border border-primary/30 bg-primary/5 text-sm text-muted-foreground">
-                      <strong className="text-foreground">Important:</strong> The DLL applies to Standard Plan accounts in both the evaluation and funded phases. Advanced and Builder plan accounts do not have a Daily Loss Limit.
+                    <div className="p-4 rounded-xl border border-destructive/30 bg-destructive/5 text-sm text-muted-foreground">
+                      <strong className="text-foreground">Hard Breach:</strong> Hitting or exceeding the Daily Loss Limit during evaluation is a hard breach. The account is closed immediately. Traders are responsible for monitoring their daily P&L and stopping before the limit is reached.
                     </div>
                     <div>
-                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Daily Loss Limit by Account Size (Standard Plan)</h3>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-4">Daily Loss Limit by Account Size (Standard Plan Evaluation Only)</h3>
                       <div className="overflow-x-auto rounded-xl border border-border/50">
                         <table className="w-full text-sm">
                           <thead>
@@ -2330,7 +2330,7 @@ const Legal = () => {
                       <div className="grid sm:grid-cols-2 gap-4">
                         <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
                           <p className="text-sm font-semibold text-foreground mb-2">Daily Loss Limit (DLL)</p>
-                          <p className="text-sm text-muted-foreground leading-relaxed">A per-day loss cap. If your account loses the DLL amount within a single trading day, your account is in violation and no further trading is permitted that day. Resets each trading day.</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">A per-day loss cap that applies to Standard Plan evaluation accounts only. If the DLL is hit or exceeded during the evaluation phase, it is a hard breach and the account is closed. Advanced and Builder plans have no DLL.</p>
                         </div>
                         <div className="p-5 rounded-xl border border-border/50 bg-muted/10">
                           <p className="text-sm font-semibold text-foreground mb-2">Maximum Loss Limit (MLL)</p>
@@ -2342,10 +2342,10 @@ const Legal = () => {
                       <h3 className="font-display text-lg font-semibold text-foreground mb-4">Frequently Asked Questions</h3>
                       <div className="space-y-3">
                         {[
-                          { q: "Does the DLL apply on funded accounts?", a: "Yes. For Standard Plan accounts, the Daily Loss Limit applies in both the evaluation and funded phases." },
-                          { q: "Does the DLL reset each day?", a: "Yes. The DLL is calculated on a per-day basis and resets at the start of each new trading day." },
-                          { q: "What happens if I hit the DLL?", a: "Trading is halted for the remainder of that day. If losses also exceed the MLL, the account is terminated." },
-                          { q: "Do Advanced or Builder plans have a DLL?", a: "No. The Daily Loss Limit is exclusive to the Standard Plan." },
+                          { q: "Does the Daily Loss Limit close my account?", a: "Yes. The Daily Loss Limit applies to Standard Plan evaluation accounts only. If the Daily Loss Limit is hit or exceeded during the evaluation phase, it is a hard breach and the account will be closed." },
+                          { q: "Does the DLL apply on funded accounts?", a: "No. The Daily Loss Limit only applies during the Standard Plan evaluation phase. It does not apply to funded accounts." },
+                          { q: "Do Advanced or Builder plans have a DLL?", a: "No. The Daily Loss Limit is exclusive to Standard Plan evaluation accounts. Advanced and Builder plans have no Daily Loss Limit." },
+                          { q: "Who is responsible for monitoring the DLL?", a: "Traders are responsible for monitoring their own daily P&L and stopping before the Daily Loss Limit is reached. Hitting the limit is a hard breach with no appeal." },
                         ].map(({ q, a }) => (
                           <div key={q} className="p-5 rounded-xl border border-border/50 bg-muted/10">
                             <p className="text-sm font-semibold text-foreground mb-2">{q}</p>

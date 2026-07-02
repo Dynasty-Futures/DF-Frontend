@@ -62,10 +62,16 @@ const faqs = [
       "We support connections to platforms like Volumetrica with DeepCharts data feed integration. These are third-party platforms and feeds—Dynasty Futures is a proprietary trading firm, not a brokerage.",
   },
   {
+    id: "daily-loss-limit",
+    question: "Does the Daily Loss Limit close my account?",
+    answer:
+      "Yes. The Daily Loss Limit applies to Standard Plan evaluation accounts only. If the Daily Loss Limit is hit or exceeded during the evaluation phase, it is a hard breach and the account will be closed. It does not apply to Advanced or Builder plans, and it does not apply to funded accounts.",
+  },
+  {
     id: "rule-violation",
     question: "What happens if I break a rule?",
     answer:
-      "If you violate any of the trading rules (such as exceeding the daily loss limit, Max Loss Limit, holding over the weekend, or trading during high-impact news), your account may be flagged or terminated depending on the severity. Always review the rules carefully before trading.",
+      "If you violate any of the trading rules (such as exceeding the Daily Loss Limit on a Standard evaluation account, Max Loss Limit, holding over the weekend, or trading during high-impact news), your account may be flagged or closed depending on the severity. Always review the rules carefully before trading.",
   },
   {
     id: "news-trading",
