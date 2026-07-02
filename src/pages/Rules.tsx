@@ -187,7 +187,7 @@ const accountRules = [
   },
   {
     size: "150K Account",
-    profitTarget: "$8,000",
+    profitTarget: "$9,000",
     standardAdvancedMaxDrawdown: "$4,000",
     builderMaxDrawdown: "$5,000",
     dailyLoss: "$3,000",
