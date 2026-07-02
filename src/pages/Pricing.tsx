@@ -154,7 +154,7 @@ const standardAdvancedRules = {
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$8,000",
+    profitTarget: "$9,000",
     maxDrawdown: "$4,000",
     dailyLoss: "$3,000",
   },
@@ -177,7 +177,7 @@ const builderRules = {
     dailyLoss: "$2,000",
   },
   "$150,000": {
-    profitTarget: "$8,000",
+    profitTarget: "$9,000",
     maxDrawdown: "$5,000",
     dailyLoss: "$3,000",
   },

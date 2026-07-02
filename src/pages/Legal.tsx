@@ -2180,7 +2180,7 @@ const Legal = () => {
                                 { size: "25K", target: "$1,500", stdLoss: "$1,000", builderLoss: "$1,500", dll: "$750" },
                                 { size: "50K", target: "$3,000", stdLoss: "$2,000", builderLoss: "$2,500", dll: "$1,500" },
                                 { size: "100K", target: "$6,000", stdLoss: "$2,500", builderLoss: "$3,500", dll: "$2,000" },
-                                { size: "150K", target: "$8,000", stdLoss: "$4,000", builderLoss: "$5,000", dll: "$3,000" },
+                                { size: "150K", target: "$9,000", stdLoss: "$4,000", builderLoss: "$5,000", dll: "$3,000" },
                               ].map((row, i) => (
                                 <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
                                   <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
@@ -2632,7 +2632,7 @@ const Legal = () => {
                               { size: "25K", target: "$1,500", funded: "No target" },
                               { size: "50K", target: "$3,000", funded: "No target" },
                               { size: "100K", target: "$6,000", funded: "No target" },
-                              { size: "150K", target: "$8,000", funded: "No target" },
+                              { size: "150K", target: "$9,000", funded: "No target" },
                             ].map((row, i) => (
                               <tr key={row.size} className={`border-b border-border/30 ${i % 2 === 0 ? "bg-muted/5" : ""}`}>
                                 <td className="px-4 py-3 font-semibold text-foreground">{row.size}</td>
