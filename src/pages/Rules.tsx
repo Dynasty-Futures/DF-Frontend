@@ -134,6 +134,14 @@ const universalRules = [
   },
   {
     icon: TrendingDown,
+    title: "Daily Loss Limit (Standard Plan Evaluation Only)",
+    label: "Hard Breach — Account Closed",
+    description:
+      "The Daily Loss Limit applies only to Standard Plan evaluation accounts. If the Daily Loss Limit is hit or exceeded during the evaluation phase, it is a hard breach and the account will be closed immediately. Traders are responsible for monitoring their daily P&L and stopping before the limit is reached. The Daily Loss Limit does not apply to Advanced or Builder plans, and it does not apply to funded accounts.",
+    allowed: false,
+  },
+  {
+    icon: TrendingDown,
     title: "Post-Payout MLL Reset",
     description:
       "After a payout is processed, your Maximum Loss Limit (MLL) is reset to $0.00. Your remaining post-payout balance becomes your entire loss buffer. If losses reduce your account balance to $0.00 or below, the account is failed.",
