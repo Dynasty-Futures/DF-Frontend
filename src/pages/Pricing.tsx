@@ -364,6 +364,10 @@ const Pricing = () => {
         selectedPlan === "standard"
           ? (currentRules?.dailyLoss ?? "N/A")
           : "N/A",
+      note:
+        selectedPlan === "standard"
+          ? "Standard evaluation only. Hard breach. Account closes if hit."
+          : undefined,
     },
     {
       label: "Max Position Size",
@@ -546,7 +550,10 @@ const Pricing = () => {
                           )}
                         >
                           <td className="py-4 px-5 text-muted-foreground">
-                            {row.label}
+                            <span>{row.label}</span>
+                            {"note" in row && row.note && (
+                              <p className="text-xs text-amber-500/80 mt-0.5">{row.note}</p>
+                            )}
                           </td>
                           <td className="py-4 px-4 text-center font-semibold text-foreground">
                             {row.evaluation}
@@ -559,6 +566,12 @@ const Pricing = () => {
                     </tbody>
                   </table>
                 </div>
+
+                {selectedPlan === "standard" && (
+                  <p className="text-xs text-amber-500/80 mt-2 px-1">
+                    Daily Loss Limit applies to Standard Plan evaluation accounts only. Hitting or exceeding the Daily Loss Limit is a hard breach and will close the evaluation account.
+                  </p>
+                )}
 
                 {/* CTA */}
                 <div className="text-center">

@@ -387,6 +387,27 @@ const Legal = () => {
                     </div>
                   </div>
 
+                  {/* Daily Loss Limit */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      Daily Loss Limit / Daily Drawdown Rule
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        The Daily Loss Limit applies only to <strong className="text-foreground">Standard Plan evaluation accounts</strong>.
+                      </p>
+                      <p>
+                        If a Standard Plan evaluation account hits or exceeds the Daily Loss Limit at any point during the evaluation phase, it is considered a <strong className="text-foreground">hard breach</strong> and the account will be closed.
+                      </p>
+                      <p>
+                        The Daily Loss Limit does not apply to Advanced Plan accounts, Builder Plan accounts, or funded accounts unless otherwise stated by Dynasty Futures.
+                      </p>
+                      <p>
+                        Traders are responsible for monitoring their daily P&amp;L and managing risk before the Daily Loss Limit is reached.
+                      </p>
+                    </div>
+                  </div>
+
                   {/* 7. KYC, AML & Compliance Reviews */}
                   <div>
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
