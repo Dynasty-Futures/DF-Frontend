@@ -127,6 +127,30 @@ const faqs = [
     answer:
       "After five approved payouts, Dynasty Futures may internally review the account for potential live trading consideration. Reviews may include trading consistency, compliance history, payout history, risk management, operational availability, and jurisdictional eligibility. Transition to a live environment is not guaranteed and remains at the sole discretion of Dynasty Futures.",
   },
+  {
+    id: "account-ownership",
+    question: "Can someone else trade my account?",
+    answer:
+      "No. All accounts must be traded exclusively by the original purchaser and registered account holder. Purchasing an account for another person, allowing another individual to trade on your behalf, sharing account credentials, or otherwise transferring account control is strictly prohibited. Violations may result in account review, suspension, payout denial, account termination, or loss of funded eligibility.",
+  },
+  {
+    id: "shared-ip",
+    question: "Can multiple traders use the same IP address?",
+    answer:
+      "Shared IP addresses may be reviewed for compliance purposes. Dynasty Futures monitors account activity and may request verification when account activity appears related or coordinated. Multiple traders operating from the same IP address, device, network, VPN environment, or location may be subject to additional review.",
+  },
+  {
+    id: "hedging",
+    question: "Is hedging allowed?",
+    answer:
+      "No. Hedging is prohibited within the Dynasty Futures ecosystem. This includes hedging across Dynasty Futures accounts, hedging between accounts owned by different individuals, coordinated trading activity designed to offset risk, and correlated offsetting positions. Accounts identified as participating in hedging activity may be subject to investigation, payout denial, funded-status review, account suspension, or account termination.",
+  },
+  {
+    id: "min-trade-duration",
+    question: "Is there a minimum trade duration?",
+    answer:
+      "Yes. Trades should remain open for a minimum of 10 seconds. Consistently opening and closing trades in under 10 seconds may negatively impact funded eligibility, payout eligibility, or account approval decisions. Dynasty Futures reserves the right to review accounts that demonstrate excessive ultra-short-duration trading activity.",
+  },
 ];
 
 const FAQ = () => {
