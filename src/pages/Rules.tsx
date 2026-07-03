@@ -232,12 +232,12 @@ const planRules = [
       "Evaluation Fee + $80 Activation Fee (after passing)",
       "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
       "50% consistency rule (evaluation only)",
-      "5-day payout cycles",
+      "5-day payout cycles — maximum $3,000 per eligible payout cycle",
       "Copy trading allowed",
       "One funded reset allowed per account",
     ],
     eligibility:
-      "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $150 or more.",
+      "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $150 or more. Standard includes more structure and a higher payout cap, making it a strong option for traders who want a larger payout ceiling.",
   },
   {
     name: "Advanced Plan",
@@ -247,12 +247,12 @@ const planRules = [
       "Evaluations use trailing end-of-day drawdown. Funded accounts use static drawdown.",
       "No consistency rule",
       "Immediate activation",
-      "5-day payout cycles",
+      "5-day payout cycles — maximum $2,000 per eligible payout cycle",
       "Copy trading allowed",
       "One funded reset allowed per account",
     ],
     eligibility:
-      "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more.",
+      "Payout Eligibility: To be eligible for a payout, traders must have at least 5 Winning Days, each with a profit of $200 or more. Advanced is designed to offer a faster and lower-friction path to funded status, including no activation fee and no consistency requirement. Because of that structure, Advanced carries a more conservative payout cap.",
   },
   {
     name: "Builder Plan",

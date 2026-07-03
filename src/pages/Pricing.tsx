@@ -223,7 +223,7 @@ const planConfig: Record<
     label: "Standard Plan",
     tagline: "Pass First, Activate Later",
     description:
-      "Lower evaluation fee up front. If passed, a one-time $80 activation fee is required to activate your funded account.",
+      "Standard includes more structure and a higher payout cap ($3,000 per cycle), making it a strong option for traders who want a larger payout ceiling. Lower evaluation fee up front; a one-time $80 activation fee is required to activate your funded account.",
     evalConsistencyRule: "50%",
     fundedConsistencyRule: "None",
     pricing: standardPricing,
@@ -234,7 +234,7 @@ const planConfig: Record<
     label: "Advanced Plan",
     tagline: "Instant Activation, No Activation Fee",
     description:
-      "Pay once. When you pass, you're activated with no extra activation cost.",
+      "Advanced is designed to offer a faster and lower-friction path to funded status, including no activation fee and no consistency requirement. Because of that structure, Advanced carries a more conservative payout cap ($2,000 per cycle).",
     evalConsistencyRule: "None",
     fundedConsistencyRule: "None",
     pricing: advancedPricing,
@@ -615,14 +615,14 @@ const Pricing = () => {
                       plan: "Standard",
                       desc: "Monthly subscription, activation fee after pass",
                       min: "$250",
-                      max: "$5,000",
+                      max: "$3,000",
                       img: "standard" as const,
                     },
                     {
                       plan: "Advanced",
                       desc: "Monthly subscription, no activation fee",
                       min: "$250",
-                      max: "$3,500",
+                      max: "$2,000",
                       img: "advanced" as const,
                     },
                     {
@@ -709,7 +709,7 @@ const Pricing = () => {
                           $250
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
-                          $5,000
+                          $3,000
                         </td>
                       </tr>
                       <tr className="border-b border-border/20 hover:bg-primary/5 transition-colors">
@@ -734,7 +734,7 @@ const Pricing = () => {
                           $250
                         </td>
                         <td className="py-5 px-6 text-foreground font-semibold">
-                          $3,500
+                          $2,000
                         </td>
                       </tr>
                       <tr className="hover:bg-primary/5 transition-colors">
