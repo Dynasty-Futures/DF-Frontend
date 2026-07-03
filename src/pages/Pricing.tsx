@@ -178,7 +178,7 @@ const builderRules = {
   },
   "$150,000": {
     profitTarget: "$9,000",
-    maxDrawdown: "$5,000",
+    maxDrawdown: "$4,500",
     dailyLoss: "$3,000",
   },
 };
