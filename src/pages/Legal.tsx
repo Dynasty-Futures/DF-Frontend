@@ -224,7 +224,7 @@ const Legal = () => {
                       Terms of Use
                     </h2>
                     <p className="text-sm text-muted-foreground leading-relaxed">
-                      Last updated: May 2026 · Governing law: State of Wyoming
+                      Last updated: July 2026 · Governing law: State of Wyoming
                     </p>
                   </div>
 
@@ -753,9 +753,23 @@ const Legal = () => {
                     <h3 className="text-foreground font-display text-lg font-semibold mb-3">
                       20. Modifications to Terms
                     </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Dynasty Futures reserves the right to modify, update, or replace these Terms of Use and any incorporated policy at any time. Changes are effective upon posting to the website. Continued use of Dynasty Futures services after any modification constitutes your acceptance of the updated Terms. You are responsible for reviewing these Terms periodically.
-                    </p>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures reserves the right to modify, update, amend, add, remove, or clarify any provision contained within these Terms of Use at any time.
+                      </p>
+                      <p>
+                        Such updates may be made to address operational requirements, legal obligations, risk management considerations, business needs, platform improvements, or other circumstances deemed necessary by Dynasty Futures.
+                      </p>
+                      <p>
+                        The current version of the Terms of Use will always be maintained on the Dynasty Futures website and supersedes all prior versions. Continued use of Dynasty Futures services following the publication of an updated Terms of Use constitutes acceptance of the revised Terms of Use.
+                      </p>
+                      <p>
+                        Dynasty Futures may, but is not obligated to, provide notice prior to updating these Terms of Use.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the sole and absolute discretion to interpret and enforce the provisions contained within these Terms of Use, including situations not expressly addressed herein.
+                      </p>
+                    </div>
                   </div>
 
                   {/* Contact */}
