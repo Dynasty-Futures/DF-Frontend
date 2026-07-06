@@ -56,6 +56,12 @@ const faqs = [
       "Copy trading is allowed on all plans. You can use copy trade platforms, trade copiers, your own accounts as masters, and social trading tools. However, bots and automated trading systems are NOT allowed—all trading must be manually executed.",
   },
   {
+    id: "signal-sharing",
+    question: "Can I follow another trader's signals or trade calls?",
+    answer:
+      "No. Dynasty Futures requires traders to make independent trading decisions. Public market discussion and educational content are allowed, but using another person's real-time trade signals, entries, exits, targets, stop losses, or trade management instructions is prohibited and may impact funded status, payouts, or account eligibility.",
+  },
+  {
     id: "platforms",
     question: "What platforms do you support?",
     answer:

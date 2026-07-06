@@ -191,6 +191,14 @@ const universalRules = [
       "Hedging is prohibited within the Dynasty Futures ecosystem. This includes hedging positions between multiple Dynasty Futures accounts; hedging positions between accounts owned by different individuals; coordinated trading designed to offset risk across multiple traders; hedging correlated assets with the intent of reducing or eliminating market exposure; and trading opposite positions across accounts using shared IP addresses, shared devices, shared households, shared business entities, or coordinated groups. Accounts identified as participating in hedging activity may be subject to investigation, payout denial, funded-status review, account suspension, or account termination.",
     allowed: false,
   },
+  {
+    icon: ShieldIcon,
+    title: "Coordinated Trading & Signal Sharing",
+    label: "Prohibited",
+    description:
+      "Dynasty Futures requires each trader to make independent trading decisions. Coordinated trading between separate users is prohibited. This includes, but is not limited to: sharing real-time entries or exits; sharing real-time targets or stop losses; sharing real-time trade direction; sharing real-time trade management instructions; copy trading between separate users; coordinating trades between multiple individuals; account sharing; operating multiple accounts in a manner that causes separate traders to appear as a single trading group; and any activity intended to artificially replicate, mirror, coordinate, or synchronize trading decisions between separate users. Public market discussion, educational content, market commentary, and general trade ideas are permitted. However, traders may not rely on another person's real-time signals, alerts, trade calls, execution instructions, or coordinated trade management. Dynasty Futures reserves the right to review account activity, request additional verification, delay or deny payouts, remove profits, reset accounts, close accounts, restrict account activity, deny funded status, or terminate user access if coordinated trading, signal-based trading, or group trading behavior is identified. Dynasty Futures reserves the sole discretion to determine whether activity constitutes coordinated trading, signal sharing, or rule circumvention.",
+    allowed: false,
+  },
 ];
 
 const accountRules = [
