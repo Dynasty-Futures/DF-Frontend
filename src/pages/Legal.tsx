@@ -21,6 +21,7 @@ const RULE_EXPLAINERS = [
   { id: "account-ownership", label: "Account Ownership & Authorized Use" },
   { id: "platform-integrity", label: "Platform Integrity & Coordinated Activity" },
   { id: "minimum-trade-duration", label: "Minimum Trade Duration Requirement" },
+  { id: "coordinated-trading", label: "Coordinated Trading & Signal Sharing" },
 ];
 
 const Legal = () => {
@@ -405,6 +406,46 @@ const Legal = () => {
                       <p>
                         Traders are responsible for monitoring their daily P&amp;L and managing risk before the Daily Loss Limit is reached.
                       </p>
+                    </div>
+                  </div>
+
+                  {/* 6a. Coordinated Trading & Signal Sharing */}
+                  <div>
+                    <h3 className="text-foreground font-display text-lg font-semibold mb-3">
+                      Coordinated Trading &amp; Signal Sharing
+                    </h3>
+                    <div className="space-y-3 text-muted-foreground text-sm leading-relaxed">
+                      <p>
+                        Dynasty Futures requires each trader to make independent trading decisions. Coordinated trading between separate users is prohibited. This includes, but is not limited to:
+                      </p>
+                      <ul className="list-none space-y-1.5 pl-2">
+                        {[
+                          "Sharing real-time entries or exits",
+                          "Sharing real-time targets or stop losses",
+                          "Sharing real-time trade direction",
+                          "Sharing real-time trade management instructions",
+                          "Copy trading between separate users",
+                          "Coordinating trades between multiple individuals",
+                          "Account sharing",
+                          "Operating multiple accounts in a manner that causes separate traders to appear as a single trading group",
+                          "Any activity intended to artificially replicate, mirror, coordinate, or synchronize trading decisions between separate users",
+                        ].map((item) => (
+                          <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive/60 flex-shrink-0" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      <p>
+                        Public market discussion, educational content, market commentary, and general trade ideas are permitted. However, traders may not rely on another person's real-time signals, alerts, trade calls, execution instructions, or coordinated trade management.
+                      </p>
+                      <p>
+                        Dynasty Futures reserves the right to review account activity, request additional verification, delay or deny payouts, remove profits, reset accounts, close accounts, restrict account activity, deny funded status, or terminate user access if coordinated trading, signal-based trading, or group trading behavior is identified. Dynasty Futures reserves the sole discretion to determine whether activity constitutes coordinated trading, signal sharing, or rule circumvention.
+                      </p>
+                    </div>
+                    <div className="mt-4 p-4 rounded-xl border border-border/50 bg-muted/20 text-sm text-muted-foreground">
+                      Full rule definitions are available on the{" "}
+                      <button onClick={() => { setActiveTab("trading-rules"); }} className="text-primary hover:underline font-medium">Trading Rules page</button>.
                     </div>
                   </div>
 
@@ -2984,6 +3025,58 @@ const Legal = () => {
                     <div>
                       <h3 className="font-display text-lg font-semibold text-foreground mb-3">Enforcement</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures reserves the right to investigate suspicious activity and make final determinations regarding rule violations. Accounts found to be in violation may be restricted, suspended, terminated, denied funded status, denied payouts, or otherwise disqualified.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* ── COORDINATED TRADING & SIGNAL SHARING ── */}
+                {activeRule === "coordinated-trading" && (
+                  <div className="bg-gradient-card rounded-3xl border border-border/50 p-8 md:p-10 space-y-8">
+                    <button onClick={() => handleSetActiveRule(null)} className="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors mb-2">← Back to Trading Rules Overview</button>
+                    <div>
+                      <h2 className="font-display text-2xl font-bold text-foreground mb-3">Coordinated Trading &amp; Signal Sharing</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures requires each trader to make independent trading decisions. Coordinated trading between separate users is prohibited.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Prohibited Activities</h3>
+                      <div className="p-5 rounded-xl border border-destructive/30 bg-destructive/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-destructive mb-3">Prohibited</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Sharing real-time entries or exits",
+                            "Sharing real-time targets or stop losses",
+                            "Sharing real-time trade direction",
+                            "Sharing real-time trade management instructions",
+                            "Copy trading between separate users",
+                            "Coordinating trades between multiple individuals",
+                            "Account sharing",
+                            "Operating multiple accounts in a manner that causes separate traders to appear as a single trading group",
+                            "Any activity intended to artificially replicate, mirror, coordinate, or synchronize trading decisions between separate users",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-destructive/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">What Is Permitted</h3>
+                      <div className="p-5 rounded-xl border border-primary/30 bg-primary/5">
+                        <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">Permitted</p>
+                        <ul className="space-y-2 text-sm text-muted-foreground">
+                          {[
+                            "Public market discussion",
+                            "Educational content and market commentary",
+                            "General trade ideas",
+                          ].map(item => (
+                            <li key={item} className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-1.5 flex-shrink-0" />{item}</li>
+                          ))}
+                        </ul>
+                        <p className="text-sm text-muted-foreground leading-relaxed mt-3">However, traders may not rely on another person's real-time signals, alerts, trade calls, execution instructions, or coordinated trade management.</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-display text-lg font-semibold text-foreground mb-3">Enforcement</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">Dynasty Futures reserves the right to review account activity, request additional verification, delay or deny payouts, remove profits, reset accounts, close accounts, restrict account activity, deny funded status, or terminate user access if coordinated trading, signal-based trading, or group trading behavior is identified. Dynasty Futures reserves the sole discretion to determine whether activity constitutes coordinated trading, signal sharing, or rule circumvention.</p>
                     </div>
                   </div>
                 )}
