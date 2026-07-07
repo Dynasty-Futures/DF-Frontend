@@ -1,3 +1,5 @@
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -7,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useCheckoutUrl } from "@/hooks/useTrading";
 
 // =============================================================================
 // Reset Account modal (shared by the Accounts page + the dashboard)
@@ -158,6 +161,8 @@ const getResetInfo = (
 // ---------------------------------------------------------------------------
 
 export interface ResetAccountTarget {
+  /** DF account id — used to mint an account-bound `ypf-ref` checkout URL. */
+  accountId: string;
   planType: string;
   accountSizeUsd: number;
   isFunded: boolean;
@@ -182,10 +187,23 @@ const ResetAccountModal = ({
     ? getResetInfo(account.planType, account.accountSizeUsd, account.isFunded)
     : null;
 
+  // The reset checkout URL is minted server-side with a fresh, account-bound
+  // `ypf-ref` (so the purchase reliably attaches to THIS account). `resetInfo`
+  // is used only for the pricing preview.
+  const checkoutMutation = useCheckoutUrl({
+    onSuccess: (res) => {
+      window.location.href = res.data.url;
+    },
+    onError: (err) => {
+      toast.error(
+        err.message || "Couldn't start the reset checkout. Please try again.",
+      );
+    },
+  });
+
   const handleReset = () => {
-    if (resetInfo?.checkoutUrl) {
-      window.location.href = resetInfo.checkoutUrl;
-    }
+    if (!account?.accountId) return;
+    checkoutMutation.mutate({ accountId: account.accountId, purpose: "reset" });
   };
 
   return (
@@ -238,11 +256,25 @@ const ResetAccountModal = ({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="gap-2 sm:gap-2">
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={checkoutMutation.isPending}
+          >
             Cancel
           </Button>
-          <Button onClick={handleReset} disabled={!resetInfo}>
-            Continue to Reset
+          <Button
+            onClick={handleReset}
+            disabled={!resetInfo || !account?.accountId || checkoutMutation.isPending}
+          >
+            {checkoutMutation.isPending ? (
+              <>
+                <Loader2 size={14} className="mr-2 animate-spin" />
+                Preparing…
+              </>
+            ) : (
+              "Continue to Reset"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

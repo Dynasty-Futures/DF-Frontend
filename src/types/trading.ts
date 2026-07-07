@@ -169,6 +169,11 @@ export interface PlatformUrlResult {
   url: string;
 }
 
+/** Account-bound WooCommerce checkout URL (reset / activation) with a minted ypf-ref. */
+export interface CheckoutUrlResult {
+  url: string;
+}
+
 // ---------------------------------------------------------------------------
 // Query params
 // ---------------------------------------------------------------------------
