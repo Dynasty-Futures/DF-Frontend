@@ -81,6 +81,9 @@ export interface LiveSnapshot {
   isLevelUpReached?: boolean;
   // ISO timestamp once an upgrade has been requested (absent = none pending)
   upgradeRequestDate?: string;
+  // True once the account has been reset — a reset may be bought only once per
+  // account, so this hides the reset CTA (backend also blocks a second reset).
+  isResetBefore?: boolean;
   // Drawdown metrics
   drawDown?: number;
   maxDrawDown?: number;

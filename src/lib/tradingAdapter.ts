@@ -433,6 +433,8 @@ export const adaptAccountView = (
     ...(live?.isLevelUpReached && !live.upgradeRequestDate
       ? { canUpgrade: true }
       : {}),
+    // A reset can be bought only once per account; hide the CTA once used.
+    ...(live?.isResetBefore ? { alreadyReset: true } : {}),
   };
 };
 
