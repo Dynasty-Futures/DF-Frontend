@@ -229,17 +229,18 @@ const DashboardHome = () => {
                       Upgrade to Funded
                     </Button>
                   ))}
-                {accountData?.status === "Violated" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setResetOpen(true)}
-                    className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70"
-                  >
-                    <RotateCcw size={14} className="mr-2" />
-                    Reset Account
-                  </Button>
-                )}
+                {accountData?.status === "Violated" &&
+                  !accountData?.alreadyReset && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setResetOpen(true)}
+                      className="border-border/40 text-muted-foreground hover:text-foreground hover:border-border/70"
+                    >
+                      <RotateCcw size={14} className="mr-2" />
+                      Reset Account
+                    </Button>
+                  )}
               </>
             )}
             {/* New Challenge button — always visible in top-right */}

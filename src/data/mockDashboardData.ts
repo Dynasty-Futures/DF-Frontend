@@ -80,6 +80,9 @@ export interface AccountData {
   // True when the account hit its profit target and YPF will allow an
   // eval → funded upgrade (drives the "Upgrade to Funded" CTA).
   canUpgrade?: boolean;
+  // True once the account has already been reset (a reset is allowed only once
+  // per account) — hides the "Reset Account" CTA.
+  alreadyReset?: boolean;
 }
 
 // Generate random but realistic equity curves
