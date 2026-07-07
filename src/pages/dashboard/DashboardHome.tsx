@@ -36,7 +36,12 @@ import {
 } from "@/lib/activation";
 import { Button } from "@/components/ui/button";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import { useTradingAccounts, useLiveAccount, tradingKeys } from "@/hooks/useTrading";
+import {
+  useTradingAccounts,
+  useLiveAccount,
+  useCheckoutUrl,
+  tradingKeys,
+} from "@/hooks/useTrading";
 import { useAccountView } from "@/hooks/useAccountView";
 import { useSelectedAccount } from "@/hooks/useSelectedAccount";
 import { buildChartData } from "@/lib/chartData";
@@ -94,6 +99,27 @@ const DashboardHome = () => {
   const activationUrl = accountData
     ? standardActivationUrl(accountData.plan, accountData.size)
     : null;
+
+  // Standard activation checkout is minted server-side with an account-bound
+  // `ypf-ref` (so the $80 purchase attaches to THIS account), then we redirect.
+  const activationMutation = useCheckoutUrl({
+    onSuccess: (res) => {
+      window.location.href = res.data.url;
+    },
+    onError: (err) => {
+      toast.error(
+        err.message || "Couldn't start activation checkout. Please try again.",
+      );
+    },
+  });
+
+  const handleActivate = () => {
+    if (!selectedAccount) return;
+    activationMutation.mutate({
+      accountId: selectedAccount,
+      purpose: "activation",
+    });
+  };
 
   const chartData = useMemo(() => {
     if (!accountData) return [];
@@ -182,12 +208,15 @@ const DashboardHome = () => {
                     // Standard plans pay an $80 activation fee on the YPF store.
                     <Button
                       size="sm"
-                      onClick={() =>
-                        window.open(activationUrl, "_blank", "noopener,noreferrer")
-                      }
+                      onClick={handleActivate}
+                      disabled={activationMutation.isPending}
                       className="btn-gradient-animated text-primary-foreground"
                     >
-                      <ArrowUpCircle size={14} className="mr-2" />
+                      {activationMutation.isPending ? (
+                        <Loader2 size={14} className="mr-2 animate-spin" />
+                      ) : (
+                        <ArrowUpCircle size={14} className="mr-2" />
+                      )}
                       Activate Account – ${STANDARD_ACTIVATION_FEE_USD}
                     </Button>
                   ) : (
@@ -354,8 +383,9 @@ const DashboardHome = () => {
 
       <ResetAccountModal
         account={
-          accountData
+          accountData && selectedAccount
             ? {
+                accountId: selectedAccount,
                 planType: accountData.plan,
                 accountSizeUsd: accountData.size,
                 isFunded: accountData.stage === "Funded",

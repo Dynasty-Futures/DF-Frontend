@@ -19,6 +19,7 @@ import type {
   Trade,
   AccountReport,
   PlatformUrlResult,
+  CheckoutUrlResult,
   LiveOption,
   ReportRange,
 } from '@/types/trading';
@@ -88,6 +89,26 @@ export const tradingService = {
    */
   upgradeAccount: (id: string): Promise<ApiResponse<LiveSnapshot>> =>
     apiClient.post<ApiResponse<LiveSnapshot>>(`/trading/accounts/${id}/upgrade`),
+
+  /**
+   * Mint an account-bound WooCommerce RESET checkout URL (carries a fresh,
+   * 5-min `ypf-ref` so the purchase binds to THIS account).
+   * POST /v1/trading/accounts/:id/reset-checkout
+   */
+  resetCheckoutUrl: (id: string): Promise<ApiResponse<CheckoutUrlResult>> =>
+    apiClient.post<ApiResponse<CheckoutUrlResult>>(
+      `/trading/accounts/${id}/reset-checkout`,
+    ),
+
+  /**
+   * Mint an account-bound WooCommerce ACTIVATION checkout URL (Standard $80
+   * fee), same `ypf-ref` binding.
+   * POST /v1/trading/accounts/:id/activation-checkout
+   */
+  activationCheckoutUrl: (id: string): Promise<ApiResponse<CheckoutUrlResult>> =>
+    apiClient.post<ApiResponse<CheckoutUrlResult>>(
+      `/trading/accounts/${id}/activation-checkout`,
+    ),
 
   /**
    * One-time SSO URL into the trading platform's web dashboard.

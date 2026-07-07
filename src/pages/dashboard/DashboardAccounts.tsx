@@ -389,6 +389,7 @@ const DashboardAccounts = () => {
 
   const openReset = (account: AccountView) => {
     setResetTarget({
+      accountId: account.id,
       planType: account.planType,
       accountSizeUsd: account.accountSizeUsd,
       isFunded: account.stage === "Funded",

@@ -26,6 +26,7 @@ import type {
   Trade,
   AccountReport,
   PlatformUrlResult,
+  CheckoutUrlResult,
   LiveOption,
   ReportRange,
 } from '@/types/trading';
@@ -234,3 +235,29 @@ export const useUpgradeAccount = (
     },
   });
 };
+
+/**
+ * Mint an account-bound WooCommerce checkout URL (reset or activation). The
+ * backend mints a fresh 5-min `ypf-ref` bound to the account, so the caller
+ * should redirect to the returned URL immediately. Read-only server-side (no
+ * cache to invalidate).
+ */
+export interface CheckoutUrlVars {
+  accountId: string;
+  purpose: 'reset' | 'activation';
+}
+
+export const useCheckoutUrl = (
+  options?: UseMutationOptions<
+    ApiResponse<CheckoutUrlResult>,
+    ApiError,
+    CheckoutUrlVars
+  >,
+) =>
+  useMutation<ApiResponse<CheckoutUrlResult>, ApiError, CheckoutUrlVars>({
+    mutationFn: ({ accountId, purpose }: CheckoutUrlVars) =>
+      purpose === 'reset'
+        ? tradingService.resetCheckoutUrl(accountId)
+        : tradingService.activationCheckoutUrl(accountId),
+    ...options,
+  });
