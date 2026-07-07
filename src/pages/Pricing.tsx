@@ -450,6 +450,99 @@ const Pricing = () => {
 
             {/* Interactive Pricing Selector */}
             <section className="mb-20">
+              {/* Promotional Banner */}
+              <ScrollReveal className="flex justify-center mb-6">
+                <div
+                  className="relative flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 sm:py-0 sm:h-[68px] w-[65%] rounded-[16px] overflow-hidden"
+                  style={{
+                    background: "hsl(var(--charcoal, 220 14% 11%))",
+                    border: "1px solid #C9A227",
+                    boxShadow: "0 0 18px 2px rgba(212,175,55,0.18), 0 2px 16px 0 rgba(0,0,0,0.45)",
+                  }}
+                >
+                  {/* Left: badge + icon */}
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="shrink-0"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M9 14l-4-4 1.5-1.5L9 11l8.5-8.5L19 4z"
+                        stroke="url(#goldGrad)"
+                        strokeWidth="0"
+                        fill="none"
+                      />
+                      <path
+                        d="M20.59 6.41L9 18l-4.59-4.58L6 12l3 3L19 5l1.59 1.41z"
+                        fill="none"
+                      />
+                      <circle cx="12" cy="12" r="10" stroke="url(#goldGrad)" strokeWidth="1.5" fill="none"/>
+                      <path d="M8 11.5l2.5 2.5 5-5" stroke="url(#goldGrad)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <defs>
+                        <linearGradient id="goldGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                          <stop stopColor="#D4AF37"/>
+                          <stop offset="1" stopColor="#F0C55A"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                    <span
+                      className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded-full"
+                      style={{
+                        background: "linear-gradient(90deg, rgba(212,175,55,0.18) 0%, rgba(240,197,90,0.12) 100%)",
+                        border: "1px solid rgba(212,175,55,0.45)",
+                        color: "#F0C55A",
+                        letterSpacing: "0.12em",
+                      }}
+                    >
+                      Limited Time Offer
+                    </span>
+                  </div>
+
+                  {/* Center: main copy */}
+                  <div className="flex flex-col items-center text-center gap-0.5">
+                    <p className="font-display font-bold text-sm sm:text-[15px] leading-snug text-white/95">
+                      Use Code{" "}
+                      <span
+                        style={{
+                          background: "linear-gradient(90deg, #F0C55A 0%, #D4AF37 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                          fontWeight: 800,
+                          fontSize: "1.05em",
+                        }}
+                      >
+                        USA
+                      </span>{" "}
+                      for{" "}
+                      <span
+                        style={{
+                          background: "linear-gradient(90deg, #D4AF37 0%, #F0C55A 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                          fontWeight: 900,
+                          fontSize: "1.2em",
+                        }}
+                      >
+                        25% OFF
+                      </span>{" "}
+                      Any Account
+                    </p>
+                    <p className="text-[11px] text-white/50 font-normal">
+                      Valid through Friday &bull; Up to 3 uses per trader
+                    </p>
+                  </div>
+
+                  {/* Right: spacer to balance badge on desktop */}
+                  <div className="hidden sm:block w-[120px] shrink-0" />
+                </div>
+              </ScrollReveal>
+
               <ScrollReveal className="glass-card-strong rounded-3xl border border-border/50 overflow-hidden p-8 md:p-12">
                 {/* Plan Selector */}
                 <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-8">
