@@ -470,20 +470,11 @@ const Pricing = () => {
                       className="shrink-0"
                       aria-hidden="true"
                     >
-                      <path
-                        d="M9 14l-4-4 1.5-1.5L9 11l8.5-8.5L19 4z"
-                        stroke="url(#goldGrad)"
-                        strokeWidth="0"
-                        fill="none"
-                      />
-                      <path
-                        d="M20.59 6.41L9 18l-4.59-4.58L6 12l3 3L19 5l1.59 1.41z"
-                        fill="none"
-                      />
-                      <circle cx="12" cy="12" r="10" stroke="url(#goldGrad)" strokeWidth="1.5" fill="none"/>
-                      <path d="M8 11.5l2.5 2.5 5-5" stroke="url(#goldGrad)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+                      <circle cx="12" cy="12" r="10" stroke="url(#goldGrad2)" strokeWidth="1.5" fill="none"/>
+                      <path d="M12 7v5.5" stroke="url(#goldGrad2)" strokeWidth="1.8" strokeLinecap="round"/>
+                      <circle cx="12" cy="16" r="1" fill="#F0C55A"/>
                       <defs>
-                        <linearGradient id="goldGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                        <linearGradient id="goldGrad2" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
                           <stop stopColor="#D4AF37"/>
                           <stop offset="1" stopColor="#F0C55A"/>
                         </linearGradient>
@@ -498,43 +489,17 @@ const Pricing = () => {
                         letterSpacing: "0.12em",
                       }}
                     >
-                      Limited Time Offer
+                      ⚠️ Temporary Notice
                     </span>
                   </div>
 
                   {/* Center: main copy */}
                   <div className="flex flex-col items-center text-center gap-0.5">
                     <p className="font-display font-bold text-sm sm:text-[15px] leading-snug text-white/95">
-                      Use Code{" "}
-                      <span
-                        style={{
-                          background: "linear-gradient(90deg, #F0C55A 0%, #D4AF37 100%)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                          fontWeight: 800,
-                          fontSize: "1.05em",
-                        }}
-                      >
-                        USA
-                      </span>{" "}
-                      for{" "}
-                      <span
-                        style={{
-                          background: "linear-gradient(90deg, #D4AF37 0%, #F0C55A 100%)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                          fontWeight: 900,
-                          fontSize: "1.2em",
-                        }}
-                      >
-                        25% OFF
-                      </span>{" "}
-                      Any Account
+                      Please Do Not Purchase Accounts Right Now
                     </p>
                     <p className="text-[11px] text-white/50 font-normal">
-                      Valid through Friday &bull; Up to 3 uses per trader
+                      Dynasty Futures is temporarily pausing new account purchases while we complete a platform update. We will announce as soon as account purchases are available again.
                     </p>
                   </div>
 
