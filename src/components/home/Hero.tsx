@@ -7,38 +7,6 @@ import logo from "@/assets/DF_Logo.png";
 import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 
-declare global {
-  interface Window {
-    Trustpilot?: { loadFromElement: (el: Element, reinitialize: boolean) => void };
-  }
-}
-
-const TrustpilotWidget = () => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current && window.Trustpilot) {
-      window.Trustpilot.loadFromElement(ref.current, true);
-    }
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className="trustpilot-widget"
-      data-locale="en-US"
-      data-template-id="56278e9abfbbba0bdcd568bc"
-      data-businessunit-id="6a2b945f8f56de259c00cd76"
-      data-style-height="52px"
-      data-style-width="100%"
-      data-token="7ef7d5f6-8481-4d7d-97e8-cd139cf18ebbb"
-    >
-      <a href="https://www.trustpilot.com/review/dynastyfuturesdyn.com" target="_blank" rel="noopener">
-        Trustpilot
-      </a>
-    </div>
-  );
-};
 
 const Hero = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -204,12 +172,6 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Official Trustpilot Review Collector widget */}
-            <div className="flex justify-center lg:justify-start mt-3 animate-fade-in" style={{ animationDelay: "0.45s" }}>
-              <div className="trustpilot-hero-widget">
-                <TrustpilotWidget />
-              </div>
-            </div>
           </div>
 
           {/* Right content - Trading Dashboard Mock */}

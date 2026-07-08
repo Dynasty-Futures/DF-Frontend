@@ -802,20 +802,3 @@
     }
   }
 }
-
-.trustpilot-hero-widget {
-  max-width: 320px;
-  width: 100%;
-  height: 52px;
-  margin-top: 12px;
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-}
-
-@media (min-width: 769px) {
-  .trustpilot-hero-widget {
-    margin-left: -12px;
-  }
-}
