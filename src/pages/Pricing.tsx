@@ -515,14 +515,14 @@ const Pricing = () => {
                 >
                   <div className="cert-track">
                     {[
-                      { src: "/certificates/payout-cert-1.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
-                      { src: "/certificates/payout-cert-1.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
-                      { src: "/certificates/payout-cert-4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
+                      { src: "/certificates/Payout certificate one.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
+                      { src: "/certificates/Payout certificate one.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout certificate 4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
                     ].map((cert, i) => (
                       <div
                         key={i}
