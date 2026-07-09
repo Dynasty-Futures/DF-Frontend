@@ -533,7 +533,7 @@ const Pricing = () => {
                           alt={cert.alt}
                           className="object-contain rounded-xl"
                           style={{
-                            height: "clamp(160px, 22vw, 280px)",
+                            height: "clamp(200px, 26vw, 340px)",
                             width: "auto",
                             boxShadow: "0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,39,0.15)",
                             borderRadius: "10px",
