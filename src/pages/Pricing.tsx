@@ -448,6 +448,105 @@ const Pricing = () => {
               </p>
             </ScrollReveal>
 
+            {/* Payout Certificate Marquee */}
+            <div className="mb-12 -mx-4">
+              <div className="text-center mb-5">
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary/60 mb-1">
+                  Verified Proof
+                </p>
+                <h2 className="font-display text-xl md:text-2xl font-bold text-foreground">
+                  Recent Dynasty Futures{" "}
+                  <span className="text-gradient">Payout Certificates</span>
+                </h2>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Verified payout proof from Dynasty Futures traders.
+                </p>
+              </div>
+              <div
+                className="relative"
+                style={{
+                  background: "rgba(0,0,0,0.25)",
+                  border: "1px solid rgba(201,162,39,0.2)",
+                  boxShadow: "0 0 30px 0 rgba(212,175,55,0.06), inset 0 1px 0 rgba(212,175,55,0.1)",
+                  borderRadius: "16px",
+                  padding: "20px 0",
+                }}
+              >
+                <style>{`
+                  .cert-track {
+                    display: flex;
+                    align-items: center;
+                    animation: scroll-certs 40s linear infinite;
+                    -webkit-animation: scroll-certs 40s linear infinite;
+                  }
+                  .cert-track:hover {
+                    animation-play-state: paused;
+                    -webkit-animation-play-state: paused;
+                  }
+                  @keyframes scroll-certs {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                  }
+                  @-webkit-keyframes scroll-certs {
+                    0% { -webkit-transform: translateX(0); }
+                    100% { -webkit-transform: translateX(-50%); }
+                  }
+                  @media (prefers-reduced-motion: reduce) {
+                    .cert-track {
+                      animation: none !important;
+                      -webkit-animation: none !important;
+                      flex-wrap: wrap;
+                      justify-content: center;
+                    }
+                  }
+                  @media (max-width: 768px) {
+                    .cert-track {
+                      animation-duration: 28s;
+                      -webkit-animation-duration: 28s;
+                    }
+                  }
+                `}</style>
+                <div
+                  className="overflow-hidden"
+                  style={{
+                    WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+                    maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+                  }}
+                >
+                  <div className="cert-track">
+                    {[
+                      { src: "/certificates/payout-cert-1.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
+                      { src: "/certificates/payout-cert-1.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-2.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-3.png", alt: "Dynasty Futures Payout Certificate – Bryce Amoruso" },
+                      { src: "/certificates/payout-cert-4.png", alt: "Dynasty Futures Payout Certificate – Catalino Escalona" },
+                    ].map((cert, i) => (
+                      <div
+                        key={i}
+                        className="flex-shrink-0 mx-4"
+                      >
+                        <img
+                          src={cert.src}
+                          alt={cert.alt}
+                          className="object-contain rounded-xl"
+                          style={{
+                            height: "clamp(90px, 14vw, 155px)",
+                            width: "auto",
+                            boxShadow: "0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,162,39,0.15)",
+                            borderRadius: "10px",
+                          }}
+                          draggable={false}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Interactive Pricing Selector */}
             <section className="mb-20">
               {/* Promotional Banner */}
